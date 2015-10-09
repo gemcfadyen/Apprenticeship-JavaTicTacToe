@@ -17,33 +17,23 @@ public class Board {
     }
 
     public boolean containsWinningRow() {
-        if (topRowHasMatchingSymbols()) {
+        if (hasMatchingSymbolsBetween(0, 3)) {
             return true;
-        } else if (middleRowHasMatchingSymbols()) {
+        } else if (hasMatchingSymbolsBetween(3, 5)) {
             return true;
-        } else if (bottomRowHasMatchingSymbols()) {
+        } else if (hasMatchingSymbolsBetween(6, 9)) {
             return true;
         }
 
         return false;
     }
 
-    private boolean bottomRowHasMatchingSymbols() {
-        return symbols[6] == "X"
-                && symbols[7] == "X"
-                && symbols[8] == "X";
-    }
+    private boolean hasMatchingSymbolsBetween(int startingIndex, int finishingIndex) {
+        boolean isSameSymbol = true;
+        for (int i = startingIndex; i < finishingIndex; i++) {
+            isSameSymbol = isSameSymbol && symbols[i] == "X";
+        }
 
-    private boolean middleRowHasMatchingSymbols() {
-        return symbols[3] == "X"
-                && symbols[4] == "X"
-                && symbols[5] == "X";
+        return isSameSymbol;
     }
-
-    private boolean topRowHasMatchingSymbols() {
-        return symbols[0] == "X"
-                && symbols[1] == "X"
-                && symbols[2] == "X";
-    }
-
 }
