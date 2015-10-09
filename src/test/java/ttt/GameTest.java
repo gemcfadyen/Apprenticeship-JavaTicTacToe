@@ -8,7 +8,7 @@ import static org.junit.Assert.assertThat;
 /**
  * Created by Georgina on 09/10/15.
  */
-public class TicTacToeTest {
+public class GameTest {
 
     @Test
     public void reportsDrawWhenBoardIsFull() {

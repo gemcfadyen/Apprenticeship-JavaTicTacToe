@@ -6,6 +6,12 @@ package ttt;
 public class Board {
     String[] symbols = new String[9];
 
+    public Board() {
+        for (int i = 0; i < 9; i++) {
+            symbols[i] = "-";
+        }
+    }
+
     public Board(String... symbols) {
         this.symbols = symbols;
     }
@@ -19,4 +25,5 @@ public class Board {
 
         return false;
     }
+
 }
