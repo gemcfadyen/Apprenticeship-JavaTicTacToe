@@ -21,4 +21,10 @@ public class BoardTest {
         Board board = new Board("X", "X", "X", "-", "-", "-", "-", "-", "-");
         assertThat(board.containsWinningRow(), is(true));
     }
+
+    @Test
+    public void returnsTrueWhenBoardHasThreeMatchingSymbolsInMiddleRow() {
+        Board board = new Board("-", "-", "-", "-", "-", "-", "X", "X", "X");
+        assertThat(board.containsWinningRow(), is(true));
+    }
 }
