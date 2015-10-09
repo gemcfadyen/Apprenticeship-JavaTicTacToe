@@ -19,7 +19,7 @@ public class Board {
     public boolean containsWinningRow() {
         if (hasMatchingSymbolsBetween(0, 3)) {
             return true;
-        } else if (hasMatchingSymbolsBetween(3, 5)) {
+        } else if (hasMatchingSymbolsBetween(3, 6)) {
             return true;
         } else if (hasMatchingSymbolsBetween(6, 9)) {
             return true;
@@ -30,16 +30,18 @@ public class Board {
 
     private boolean hasMatchingSymbolsBetween(int startingIndex, int finishingIndex) {
         boolean isSameSymbol = true;
-        String firstSymbol = symbols[startingIndex];
+        String symbol = symbols[startingIndex];
 
-        if(firstSymbol == "-") {
-            return false;
-        }
+        if (vacant(symbol)) return false;
 
         for (int i = startingIndex; i < finishingIndex; i++) {
-            isSameSymbol = isSameSymbol && symbols[i] == firstSymbol;
+            isSameSymbol = isSameSymbol && symbols[i].equals(symbol);
         }
 
         return isSameSymbol;
+    }
+
+    private boolean vacant(String symbol) {
+        return symbol.equals("-");
     }
 }

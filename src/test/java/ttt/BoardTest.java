@@ -11,26 +11,26 @@ import static org.junit.Assert.assertThat;
 public class BoardTest {
 
     @Test
-    public void returnsFalseWhenBoardHasNoRowsOfSameSymbol() {
+    public void noWinningRowWhenBoardIsAllVacant() {
         Board board = new Board();
         assertThat(board.containsWinningRow(), is(false));
     }
 
     @Test
-    public void returnsTrueWhenBoardHasThreeMatchingSymbolsInTopRow() {
+    public void winningRowIdentifiedInTopRow() {
         Board board = new Board("O", "O", "O", "-", "-", "-", "-", "-", "-");
         assertThat(board.containsWinningRow(), is(true));
     }
 
     @Test
-    public void returnsTrueWhenBoardHasThreeMatchingSymbolsInMiddleRow() {
-        Board board = new Board("-", "-", "-", "-", "-", "-", "X", "X", "X");
+    public void winningRowIdentifiedInMiddleRow() {
+        Board board = new Board("-", "-", "-", "X", "X", "X", "-", "-", "-");
         assertThat(board.containsWinningRow(), is(true));
     }
 
     @Test
-    public void returnsTrueWhenBoardHasThreeMatchingSymbolsInBottomRow() {
-        Board board = new Board("-", "-", "-", "X", "X", "X", "-", "-", "-");
+    public void winningRowIdentifiedInBottomRow() {
+        Board board = new Board("-", "-", "-", "-", "-", "-", "X", "X", "X");
         assertThat(board.containsWinningRow(), is(true));
     }
 }
