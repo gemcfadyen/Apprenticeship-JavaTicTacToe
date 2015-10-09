@@ -30,8 +30,14 @@ public class Board {
 
     private boolean hasMatchingSymbolsBetween(int startingIndex, int finishingIndex) {
         boolean isSameSymbol = true;
+        String firstSymbol = symbols[startingIndex];
+
+        if(firstSymbol == "-") {
+            return false;
+        }
+
         for (int i = startingIndex; i < finishingIndex; i++) {
-            isSameSymbol = isSameSymbol && symbols[i] == "X";
+            isSameSymbol = isSameSymbol && symbols[i] == firstSymbol;
         }
 
         return isSameSymbol;

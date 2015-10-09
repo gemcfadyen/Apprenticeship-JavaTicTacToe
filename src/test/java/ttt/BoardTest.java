@@ -18,7 +18,7 @@ public class BoardTest {
 
     @Test
     public void returnsTrueWhenBoardHasThreeMatchingSymbolsInTopRow() {
-        Board board = new Board("X", "X", "X", "-", "-", "-", "-", "-", "-");
+        Board board = new Board("O", "O", "O", "-", "-", "-", "-", "-", "-");
         assertThat(board.containsWinningRow(), is(true));
     }
 
