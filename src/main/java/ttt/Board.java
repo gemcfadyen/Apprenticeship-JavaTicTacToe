@@ -25,6 +25,10 @@ public class Board {
                 && symbols[7] == "X"
                 && symbols[8] == "X") {
             return true;
+        } else if (symbols[3] == "X"
+                && symbols[4] == "X"
+                && symbols[5] == "X") {
+            return true;
         }
 
         return false;
