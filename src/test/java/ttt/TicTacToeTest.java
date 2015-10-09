@@ -11,8 +11,9 @@ import static org.junit.Assert.assertThat;
 public class TicTacToeTest {
 
     @Test
-    public void theGameIsDrawnWhenThereIsNoWinner() {
-        Game game = new Game();
+    public void reportsDrawWhenBoardIsFull() {
+        Board board = new Board("X", "X", "O", "O", "X", "X", "O", "O", "O");
+        Game game = new Game(board);
 
         String status = game.play();
 
