@@ -53,8 +53,14 @@ public class BoardTest {
     }
 
     @Test
-    public void winningDiagonal() {
+    public void winningBackSlashDiagonal() {
         Board board = new Board("X", "-", "-", "-", "X", "-", "-", "-", "X");
+        assertThat(board.hasWinningCombination(), is(true));
+    }
+
+    @Test
+    public void winningForwardSlashDiagonal() {
+        Board board = new Board("-", "-", "O", "-", "O", "-", "O", "-", "-");
         assertThat(board.hasWinningCombination(), is(true));
     }
 }

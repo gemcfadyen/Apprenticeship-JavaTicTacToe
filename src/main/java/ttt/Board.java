@@ -26,13 +26,33 @@ public class Board {
     }
 
     private boolean hasWinningDiagonal() {
-        String symbol = "X";
-        if(symbols[0].equals(symbol)
-                && symbols[4].equals(symbol)
-                && symbols[8].equals(symbol)) {
+        return checkBackslashDiagonal() || checkForwardslashDiagonal();
+    }
+
+    private boolean checkForwardslashDiagonal() {
+        String symbol = symbols[2];
+        if (vacant(symbol)) {
+            return false;
+        }
+        if (symbols[4].equals(symbol)
+                && symbols[6].equals(symbol)) {
             return true;
         }
         return false;
+    }
+
+    private boolean checkBackslashDiagonal() {
+        String symbol = symbols[0];
+        if (vacant(symbol)) {
+            return false;
+        }
+
+        if (symbols[4].equals(symbol)
+                && symbols[8].equals(symbol)) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
     private boolean hasWinningColumn() {
