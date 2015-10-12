@@ -90,4 +90,8 @@ public class Board {
     public void updateAt(int index, String symbol) {
         symbols[index] = symbol;
     }
+
+    public String getSymbolAt(Integer index) {
+        return symbols[index];
+    }
 }

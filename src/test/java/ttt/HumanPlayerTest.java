@@ -25,8 +25,25 @@ public class HumanPlayerTest {
         FakePrompt prompt = new FakePrompt("1");
         HumanPlayer player = new HumanPlayer(prompt, "X");
         Board board = new Board("X", "-", "X", "O", "X", "O", "X", "O");
-        int indexOfMove = player.chooseNextMoveFrom(board);
 
-        assertThat(indexOfMove, is(1));
+        assertThat(player.chooseNextMoveFrom(board), is(1));
+    }
+
+    @Test
+    public void playerRepromptedUntilValidNumberIsEntered() throws IOException {
+        FakePrompt prompt = new FakePrompt("a", "b", "1");
+        HumanPlayer player = new HumanPlayer(prompt, "X");
+        Board board = new Board("X", "-", "X", "O", "X", "O", "X", "O");
+
+        assertThat(player.chooseNextMoveFrom(board), is(1));
+    }
+
+    @Test
+    public void playerRepromptedIfTheyChooseAnOccupiedSpaceOnTheBoard() throws IOException {
+        FakePrompt prompt = new FakePrompt("0", "0", "1");
+        HumanPlayer player = new HumanPlayer(prompt, "X");
+        Board board = new Board("X", "-", "X", "O", "X", "O", "X", "O");
+
+        assertThat(player.chooseNextMoveFrom(board), is(1));
     }
 }

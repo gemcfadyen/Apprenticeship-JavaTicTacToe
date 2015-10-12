@@ -15,9 +15,36 @@ public class HumanPlayer {
     }
 
     public int chooseNextMoveFrom(Board board) throws IOException {
-        prompt.display("Please enter the index for your next move");
+        String usersInput = getNextMoveFromPrompt();
 
+        while (!isNumber(usersInput)
+                || !hasFreeSpace(Integer.valueOf(usersInput), board)) {
+            usersInput = getNextMoveFromPrompt();
+        }
+
+        return Integer.valueOf(usersInput);
+    }
+
+    private boolean hasFreeSpace(Integer index, Board board) {
+        if (board.getSymbolAt(index) == "-") {
+            return true;
+        }
+        return false;
+    }
+
+    private String getNextMoveFromPrompt() throws IOException {
+        prompt.display("Please enter the index for your next move");
         return prompt.read();
+    }
+
+    private boolean isNumber(String input) {
+        try {
+            Integer.valueOf(input);
+        } catch (NumberFormatException e) {
+            return false;
+        }
+
+        return true;
     }
 
     public String getSymbols() {

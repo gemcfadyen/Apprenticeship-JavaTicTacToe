@@ -14,7 +14,7 @@ public class GameTest {
 
     @Test
     public void reportsDrawWhenBoardIsFull() throws IOException {
-        Board board = new Board("X", "X", "O", "O", "X", "X", "X", "O", "O");
+        Board board = new Board("X", "X", "-", "O", "X", "X", "X", "O", "O");
         Prompt prompt = new FakePrompt("2");
         HumanPlayer player = new HumanPlayer(prompt, "O");
         Game game = new Game(board, player);
@@ -26,7 +26,7 @@ public class GameTest {
 
 
     @Test
-    public void reportsWinWhenPlayerMakesWinningMove() throws IOException {
+    public void gameIsWonWhenPlayerMakesWinningMove() throws IOException {
         Board board = new Board("X", "X", "-", "O", "X", "X", "X", "O", "O");
         Prompt prompt = new FakePrompt("2");
         HumanPlayer player = new HumanPlayer(prompt, "X");
@@ -36,4 +36,5 @@ public class GameTest {
 
         assertThat(status, is("Win"));
     }
+
 }

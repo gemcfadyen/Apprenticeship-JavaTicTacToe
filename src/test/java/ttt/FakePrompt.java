@@ -8,10 +8,12 @@ import java.io.StringReader;
  */
 public class FakePrompt implements Prompt {
     private StringReader reader;
-    private String positionOfNextMove;
+    private String[] positionOfNextMoves;
+    private int indexOfCurrentMove;
 
-    public FakePrompt(String positionOfNextMove) {
-        this.positionOfNextMove = positionOfNextMove;
+    public FakePrompt(String... inputs) {
+        this.positionOfNextMoves = inputs;
+        this.indexOfCurrentMove = 0;
     }
 
     @Override
@@ -20,10 +22,11 @@ public class FakePrompt implements Prompt {
     }
 
     @Override
-    public int read() throws IOException {
-        reader = new StringReader(positionOfNextMove);
+    public String read() throws IOException {
+        reader = new StringReader(positionOfNextMoves[indexOfCurrentMove]);
+        indexOfCurrentMove++;
         char input = (char)reader.read();
 
-        return Integer.valueOf(String.valueOf(input));
+        return String.valueOf(input);
     }
 }

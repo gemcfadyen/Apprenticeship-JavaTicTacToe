@@ -8,5 +8,5 @@ import java.io.IOException;
 public interface Prompt {
     void display(String message);
 
-    int read() throws IOException;
+    String read() throws IOException;
 }
