@@ -1,8 +1,6 @@
 package ttt;
 
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
+import java.io.*;
 
 /**
  * Created by Georgina on 09/10/15.
@@ -17,8 +15,8 @@ public class Game {
     }
 
     public static void main(String... args) throws IOException {
-        InputStreamReader reader1 = new InputStreamReader(System.in);
-        InputStreamReader reader2 = new InputStreamReader(System.in);
+        Reader reader1 = new InputStreamReader(System.in);
+        Reader reader2 = new InputStreamReader(System.in);
         OutputStreamWriter writer1 = new OutputStreamWriter(System.out);
         OutputStreamWriter writer2 = new OutputStreamWriter(System.out);
         Prompt promptForPlayerOne = new UserPrompt(reader1, writer1);

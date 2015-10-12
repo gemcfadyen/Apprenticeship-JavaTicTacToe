@@ -24,10 +24,4 @@ public class UserPromptTest {
         assertThat(boardForDisplay, is(expectedDisplay));
     }
 
-    @Test
-    public void readIgnoresNewLineCharacters() throws IOException {
-        UserPrompt prompt = new UserPrompt(new StringReader("\n2\n"), new StringWriter());
-        String index = prompt.read();
-        assertThat(index, is("2"));
-    }
 }

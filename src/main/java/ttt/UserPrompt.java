@@ -1,5 +1,6 @@
 package ttt;
 
+import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.Reader;
 import java.io.Writer;
@@ -8,11 +9,11 @@ import java.io.Writer;
  * Created by Georgina on 12/10/15.
  */
 public class UserPrompt implements Prompt {
-    private Reader reader;
+    private BufferedReader reader;
     private Writer writer;
 
     public UserPrompt(Reader reader, Writer writer) {
-        this.reader = reader;
+        this.reader = new BufferedReader(reader);
         this.writer = writer;
     }
 
@@ -30,11 +31,7 @@ public class UserPrompt implements Prompt {
 
     @Override
     public String read() throws IOException {
-        char input = (char) reader.read();
-        while (String.valueOf(input).equals("\n")) {
-            input = (char) reader.read();
-        }
-        return String.valueOf(input);
+        return reader.readLine();
     }
 
     @Override

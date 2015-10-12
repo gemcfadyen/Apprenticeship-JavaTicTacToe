@@ -48,4 +48,13 @@ public class HumanPlayerTest {
 
         assertThat(player.chooseNextMoveFrom(board), is(1));
     }
+
+    @Test
+    public void playerRepromptedIfTheyChooseASpaceOutsideOfTheBoard() throws IOException {
+        UserPrompt prompt = new UserPrompt(new StringReader("10\n4\n"), new StringWriter());
+        HumanPlayer player = new HumanPlayer(prompt, "X");
+        Board board = new Board("X", "-", "X", "O", "-", "O", "X", "O", "-");
+
+        assertThat(player.chooseNextMoveFrom(board), is(4));
+    }
 }

@@ -19,11 +19,19 @@ public class HumanPlayer {
         String usersInput = getNextMoveFromPrompt();
 
         while (!isNumber(usersInput)
+                || outsideBoard(asInteger(usersInput))
                 || !hasFreeSpace(asInteger(usersInput), board)) {
             usersInput = getNextMoveFromPrompt();
         }
 
         return asInteger(usersInput);
+    }
+
+    private boolean outsideBoard(Integer usersInput) {
+        if (usersInput >= 0 && usersInput < 9) {
+            return false;
+        }
+        return true;
     }
 
     private Integer asInteger(String usersInput) {
