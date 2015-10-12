@@ -16,7 +16,7 @@ public class HumanPlayerTest {
 
     @Test
     public void getThePlayersSymbol() {
-        Prompt prompt = new UserPrompt(new StringReader("2"), new StringWriter());
+        Prompt prompt = new UserPrompt(new StringReader("2\n"), new StringWriter());
         HumanPlayer player = new HumanPlayer(prompt, "X");
 
         assertThat(player.getSymbols(), is("X"));
@@ -24,7 +24,7 @@ public class HumanPlayerTest {
 
     @Test
     public void playerProvidesPromptWithNextMove() throws IOException {
-        UserPrompt prompt = new UserPrompt(new StringReader("1"), new StringWriter());
+        UserPrompt prompt = new UserPrompt(new StringReader("1\n"), new StringWriter());
         HumanPlayer player = new HumanPlayer(prompt, "X");
         Board board = new Board("X", "-", "X", "O", "X", "O", "X", "O", "-");
 
@@ -33,7 +33,7 @@ public class HumanPlayerTest {
 
     @Test
     public void playerRepromptedUntilValidNumberIsEntered() throws IOException {
-        UserPrompt prompt = new UserPrompt(new StringReader("ab1"), new StringWriter());
+        UserPrompt prompt = new UserPrompt(new StringReader("a\nb\n1\n"), new StringWriter());
         HumanPlayer player = new HumanPlayer(prompt, "X");
         Board board = new Board("X", "-", "X", "O", "X", "O", "X", "O", "-");
 
@@ -42,7 +42,7 @@ public class HumanPlayerTest {
 
     @Test
     public void playerRepromptedIfTheyChooseAnOccupiedSpaceOnTheBoard() throws IOException {
-        UserPrompt prompt = new UserPrompt(new StringReader("001"), new StringWriter());
+        UserPrompt prompt = new UserPrompt(new StringReader("0\n0\n1\n"), new StringWriter());
         HumanPlayer player = new HumanPlayer(prompt, "X");
         Board board = new Board("X", "-", "X", "O", "X", "O", "X", "O", "-");
 

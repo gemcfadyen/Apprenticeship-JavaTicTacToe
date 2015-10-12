@@ -17,8 +17,8 @@ public class GameTest {
     @Test
     public void gameIsWonWhenPlayerMakesWinningMove() throws IOException {
         Board board = new Board("X", "X", "-", "O", "X", "X", "X", "O", "O");
-        Prompt promptForPlayerOne = new UserPrompt(new StringReader("2"), new StringWriter());
-        Prompt promptForPlayerTwo = new UserPrompt(new StringReader("z"), new StringWriter());
+        Prompt promptForPlayerOne = new UserPrompt(new StringReader("2\n"), new StringWriter());
+        Prompt promptForPlayerTwo = new UserPrompt(new StringReader("z\n"), new StringWriter());
         HumanPlayer playerOne = new HumanPlayer(promptForPlayerOne, "X");
         HumanPlayer playerTwo = new HumanPlayer(promptForPlayerTwo, "X");
         Game game = new Game(board, playerOne, playerTwo);
@@ -31,8 +31,8 @@ public class GameTest {
     @Test
     public void gameIsDrawnWhenPlayersHaveMadeFinalMovesAndNoWinningCombinationsFound() throws IOException {
         Board board = new Board("-", "O", "-", "O", "X", "X", "X", "-", "O");
-        Prompt promptForPlayerOne = new UserPrompt(new StringReader("70"), new StringWriter());
-        Prompt promptForPlayerTwo = new UserPrompt(new StringReader("2"), new StringWriter());
+        Prompt promptForPlayerOne = new UserPrompt(new StringReader("7\n0\n"), new StringWriter());
+        Prompt promptForPlayerTwo = new UserPrompt(new StringReader("2\n"), new StringWriter());
 
         HumanPlayer playerOne = new HumanPlayer(promptForPlayerOne, "X");
         HumanPlayer playerTwo = new HumanPlayer(promptForPlayerTwo, "O");

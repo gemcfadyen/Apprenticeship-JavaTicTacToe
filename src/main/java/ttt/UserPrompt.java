@@ -31,6 +31,9 @@ public class UserPrompt implements Prompt {
     @Override
     public String read() throws IOException {
         char input = (char) reader.read();
+        while (String.valueOf(input).equals("\n")) {
+            input = (char) reader.read();
+        }
         return String.valueOf(input);
     }
 
