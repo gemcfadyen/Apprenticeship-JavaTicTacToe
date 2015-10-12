@@ -17,15 +17,19 @@ public class Game {
     }
 
     public static void main(String... args) throws IOException {
-        Reader reader = new InputStreamReader(System.in);
-        OutputStreamWriter writer = new OutputStreamWriter(System.out);
-        Prompt prompt = new UserPrompt(reader, writer);
+        Prompt prompt = createPrompt();
 
         Game game = new Game(new Board(),
                 prompt,
-                new HumanPlayer(prompt, "X"),
-                new HumanPlayer(prompt, "O"));
+                new HumanPlayer(createPrompt(), "X"),
+                new HumanPlayer(createPrompt(), "O"));
         game.play();
+    }
+
+    private static Prompt createPrompt() {
+        Reader reader = new InputStreamReader(System.in);
+        OutputStreamWriter writer = new OutputStreamWriter(System.out);
+        return new UserPrompt(reader, writer);
     }
 
     public String play() throws IOException {

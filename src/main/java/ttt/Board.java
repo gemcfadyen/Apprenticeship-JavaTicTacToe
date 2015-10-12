@@ -25,35 +25,26 @@ public class Board {
         return false;
     }
 
-    private boolean hasWinningDiagonal() {
-        return checksDiagonalAt(0, BOARD_DIMENSION + 1, BOARD_DIMENSION * BOARD_DIMENSION - 1) ||
-                checksDiagonalAt(BOARD_DIMENSION - 1, BOARD_DIMENSION + 1, 2 * (BOARD_DIMENSION));
+    public void updateAt(int index, String symbol) {
+        symbols[index] = symbol;
     }
 
-    private boolean checksDiagonalAt(int topRowIndex, int middleRowIndex, int bottomRowIndex) {
-        String symbol = symbols[topRowIndex];
-        if (vacant(symbol)) {
-            return false;
-        }
-
-        if (symbols[middleRowIndex].equals(symbol)
-                && symbols[bottomRowIndex].equals(symbol)) {
-            return true;
-        } else {
-            return false;
-        }
+    public String getSymbolAt(Integer index) {
+        return symbols[index];
     }
 
-    private boolean hasWinningColumn() {
-        for (int i = 0; i < BOARD_DIMENSION; i++) {
-            String symbol = symbols[i];
+    public boolean hasFreeSpace() {
+        for (String symbol : symbols) {
             if (vacant(symbol)) {
-                continue;
+                return true;
             }
+        }
+        return false;
+    }
 
-            if (symbols[i].equals(symbol)
-                    && symbols[i + BOARD_DIMENSION].equals(symbol)
-                    && symbols[i + (2 * BOARD_DIMENSION)].equals(symbol)) {
+    private boolean hasWinningRow() {
+        for (int i = 0; i < BOARD_DIMENSION * BOARD_DIMENSION; i = i + BOARD_DIMENSION) {
+            if (hasMatchingSymbolsBetween(i, i + BOARD_DIMENSION)) {
                 return true;
             }
         }
@@ -73,34 +64,43 @@ public class Board {
         return isSameSymbol;
     }
 
-    private boolean hasWinningRow() {
-        for (int i = 0; i < BOARD_DIMENSION * BOARD_DIMENSION; i = i + BOARD_DIMENSION) {
-            if (hasMatchingSymbolsBetween(i, i + BOARD_DIMENSION)) {
-                return true;
-            }
-        }
-        return false;
-    }
-
     private boolean vacant(String symbol) {
         return symbol.equals("-");
     }
 
-
-    public void updateAt(int index, String symbol) {
-        symbols[index] = symbol;
-    }
-
-    public String getSymbolAt(Integer index) {
-        return symbols[index];
-    }
-
-    public boolean hasFreeSpace() {
-        for (String symbol : symbols) {
+    private boolean hasWinningColumn() {
+        for (int i = 0; i < BOARD_DIMENSION; i++) {
+            String symbol = symbols[i];
             if (vacant(symbol)) {
+                continue;
+            }
+
+            if (symbols[i].equals(symbol)
+                    && symbols[i + BOARD_DIMENSION].equals(symbol)
+                    && symbols[i + (2 * BOARD_DIMENSION)].equals(symbol)) {
                 return true;
             }
         }
         return false;
+    }
+
+    private boolean hasWinningDiagonal() {
+        return checksDiagonalAt(0, BOARD_DIMENSION + 1, BOARD_DIMENSION * BOARD_DIMENSION - 1) ||
+                checksDiagonalAt(BOARD_DIMENSION - 1, BOARD_DIMENSION + 1, 2 * (BOARD_DIMENSION));
+    }
+
+
+    private boolean checksDiagonalAt(int topRowIndex, int middleRowIndex, int bottomRowIndex) {
+        String symbol = symbols[topRowIndex];
+        if (vacant(symbol)) {
+            return false;
+        }
+
+        if (symbols[middleRowIndex].equals(symbol)
+                && symbols[bottomRowIndex].equals(symbol)) {
+            return true;
+        } else {
+            return false;
+        }
     }
 }

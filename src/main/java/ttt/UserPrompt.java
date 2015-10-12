@@ -18,19 +18,14 @@ public class UserPrompt implements Prompt {
     }
 
     @Override
-    public void askUserForTheirMove() throws IOException {
-        String promptForUser = "\nPlease enter the index for your next move\n";
-        display(promptForUser);
-    }
-
-    private void display(String message) throws IOException {
-        writer.write(message);
-        writer.flush();
+    public String read() throws IOException {
+        return reader.readLine();
     }
 
     @Override
-    public String read() throws IOException {
-        return reader.readLine();
+    public void askUserForTheirMove() throws IOException {
+        String promptForUser = "\nPlease enter the index for your next move\n";
+        display(promptForUser);
     }
 
     @Override
@@ -44,6 +39,21 @@ public class UserPrompt implements Prompt {
         display(boardForDisplay.toString());
     }
 
+    @Override
+    public void printWinningMessage() throws IOException {
+        display("Congratulations - There is a winner");
+    }
+
+    @Override
+    public void printDrawMessage() throws IOException {
+        display("No winner this time");
+    }
+
+    private void display(String message) throws IOException {
+        writer.write(message);
+        writer.flush();
+    }
+
     private String optionallyAddNewLine(int i) {
         if (endOfRow(i)) {
             return ("\n");
@@ -53,14 +63,5 @@ public class UserPrompt implements Prompt {
 
     private boolean endOfRow(int i) {
         return (i+1)  % 3 == 0;
-    }
-
-    public void printWinningMessage() throws IOException {
-        display("Congratulations - There is a winner");
-    }
-
-    @Override
-    public void printDrawMessage() throws IOException {
-        display("No winner this time");
     }
 }

@@ -27,27 +27,8 @@ public class HumanPlayer {
         return asInteger(usersInput);
     }
 
-    private boolean outsideBoard(Integer usersInput) {
-        if (usersInput >= 0 && usersInput < 9) {
-            return false;
-        }
-        return true;
-    }
-
-    private Integer asInteger(String usersInput) {
-        return Integer.valueOf(usersInput);
-    }
-
-    private boolean hasFreeSpace(Integer index, Board board) {
-        if (board.getSymbolAt(index) == "-") {
-            return true;
-        }
-        return false;
-    }
-
-    private String getNextMoveFromPrompt() throws IOException {
-        prompt.askUserForTheirMove();
-        return prompt.read();
+    public String getSymbols() {
+        return symbol;
     }
 
     private boolean isNumber(String input) {
@@ -60,7 +41,26 @@ public class HumanPlayer {
         return true;
     }
 
-    public String getSymbols() {
-        return symbol;
+    private boolean outsideBoard(Integer usersInput) {
+        if (usersInput >= 0 && usersInput < 9) {
+            return false;
+        }
+        return true;
+    }
+
+    private boolean hasFreeSpace(Integer index, Board board) {
+        if (board.getSymbolAt(index) == "-") {
+            return true;
+        }
+        return false;
+    }
+
+    private Integer asInteger(String usersInput) {
+        return Integer.valueOf(usersInput);
+    }
+
+    private String getNextMoveFromPrompt() throws IOException {
+        prompt.askUserForTheirMove();
+        return prompt.read();
     }
 }
