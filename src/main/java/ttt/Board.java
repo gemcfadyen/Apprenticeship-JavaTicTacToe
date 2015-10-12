@@ -18,26 +18,34 @@ public class Board {
     }
 
     public boolean hasWinningCombination() {
-        if (hasWinningRow() || hasWinningColumn()) {
+        if (hasWinningRow() || hasWinningColumn() || hasWinningDiagonal()) {
             return true;
         }
 
+        return false;
+    }
+
+    private boolean hasWinningDiagonal() {
+        String symbol = "X";
+        if(symbols[0].equals(symbol)
+                && symbols[4].equals(symbol)
+                && symbols[8].equals(symbol)) {
+            return true;
+        }
         return false;
     }
 
     private boolean hasWinningColumn() {
-        if (symbols[0].equals("X") &&
-                symbols[3].equals("X") && symbols[6].equals("X")) {
-            return true;
-        } else if (symbols[1].equals("X") && symbols[4].equals("X") && symbols[7].equals("X")) {
-            return true;
-        }
-        return false;
-    }
 
-    private boolean hasWinningRow() {
-        for (int i = 0; i < BOARD_DIMENSION * BOARD_DIMENSION; i = i + BOARD_DIMENSION) {
-            if (hasMatchingSymbolsBetween(i, i + BOARD_DIMENSION)) {
+        for (int i = 0; i < BOARD_DIMENSION; i++) {
+            String symbol = symbols[i];
+            if (vacant(symbol)) {
+                continue;
+            }
+
+            if (symbols[i].equals(symbol)
+                    && symbols[i + BOARD_DIMENSION].equals(symbol)
+                    && symbols[i + (2 * BOARD_DIMENSION)].equals(symbol)) {
                 return true;
             }
         }
@@ -55,6 +63,15 @@ public class Board {
         }
 
         return isSameSymbol;
+    }
+
+    private boolean hasWinningRow() {
+        for (int i = 0; i < BOARD_DIMENSION * BOARD_DIMENSION; i = i + BOARD_DIMENSION) {
+            if (hasMatchingSymbolsBetween(i, i + BOARD_DIMENSION)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     private boolean vacant(String symbol) {

@@ -41,9 +41,20 @@ public class BoardTest {
     }
 
     @Test
-    public void winningColumnInMiddleRowIdentified() {
+    public void winningColumnInMiddleColumnIdentified() {
         Board board = new Board("-", "X", "-", "-", "X", "-", "-", "X", "-");
         assertThat(board.hasWinningCombination(), is(true));
+    }
 
+    @Test
+    public void winningColumnInRightColumn() {
+        Board board = new Board("-", "-", "O", "-", "-", "O", "-", "-", "O");
+        assertThat(board.hasWinningCombination(), is(true));
+    }
+
+    @Test
+    public void winningDiagonal() {
+        Board board = new Board("X", "-", "-", "-", "X", "-", "-", "-", "X");
+        assertThat(board.hasWinningCombination(), is(true));
     }
 }
