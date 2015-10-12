@@ -13,7 +13,8 @@ public class GameTest {
     @Test
     public void reportsDrawWhenBoardIsFull() {
         Board board = new Board("X", "X", "O", "O", "X", "X", "X", "O", "O");
-        Game game = new Game(board);
+        HumanPlayer player = new HumanPlayer("O");
+        Game game = new Game(board, player);
 
         String status = game.play();
 
@@ -22,9 +23,10 @@ public class GameTest {
 
 
     @Test
-    public void reportsWinWhenBoardContainsARowOfMatchingSymbols() {
-        Board board = new Board("X", "X", "X", "O", "X", "X", "X", "O", "O");
-        Game game = new Game(board);
+    public void reportsWinWhenPlayerMakesWinningMove() {
+        Board board = new Board("X", "X", "-", "O", "X", "X", "X", "O", "O");
+        HumanPlayer player = new HumanPlayer("X");
+        Game game = new Game(board, player);
 
         String status = game.play();
 

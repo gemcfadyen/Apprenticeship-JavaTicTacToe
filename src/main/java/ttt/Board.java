@@ -85,4 +85,9 @@ public class Board {
     private boolean vacant(String symbol) {
         return symbol.equals("-");
     }
+
+
+    public void updateAt(int index, String symbol) {
+        symbols[index] = symbol;
+    }
 }
