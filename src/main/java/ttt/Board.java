@@ -5,10 +5,10 @@ package ttt;
  */
 public class Board {
     private static final int BOARD_DIMENSION = 3;
-    String[] symbols = new String[9];
+    String[] symbols = new String[BOARD_DIMENSION * BOARD_DIMENSION];
 
     public Board() {
-        for (int i = 0; i < 9; i++) {
+        for (int i = 0; i < BOARD_DIMENSION * BOARD_DIMENSION; i++) {
             symbols[i] = "-";
         }
     }
@@ -26,29 +26,18 @@ public class Board {
     }
 
     private boolean hasWinningDiagonal() {
-        return checkBackslashDiagonal() || checkForwardslashDiagonal();
+        return checksDiagonalAt(0, BOARD_DIMENSION + 1, BOARD_DIMENSION * BOARD_DIMENSION - 1) ||
+                checksDiagonalAt(BOARD_DIMENSION - 1, BOARD_DIMENSION + 1, 2 * (BOARD_DIMENSION));
     }
 
-    private boolean checkForwardslashDiagonal() {
-        String symbol = symbols[2];
-        if (vacant(symbol)) {
-            return false;
-        }
-        if (symbols[4].equals(symbol)
-                && symbols[6].equals(symbol)) {
-            return true;
-        }
-        return false;
-    }
-
-    private boolean checkBackslashDiagonal() {
-        String symbol = symbols[0];
+    private boolean checksDiagonalAt(int topRowIndex, int middleRowIndex, int bottomRowIndex) {
+        String symbol = symbols[topRowIndex];
         if (vacant(symbol)) {
             return false;
         }
 
-        if (symbols[4].equals(symbol)
-                && symbols[8].equals(symbol)) {
+        if (symbols[middleRowIndex].equals(symbol)
+                && symbols[bottomRowIndex].equals(symbol)) {
             return true;
         } else {
             return false;
@@ -56,7 +45,6 @@ public class Board {
     }
 
     private boolean hasWinningColumn() {
-
         for (int i = 0; i < BOARD_DIMENSION; i++) {
             String symbol = symbols[i];
             if (vacant(symbol)) {
