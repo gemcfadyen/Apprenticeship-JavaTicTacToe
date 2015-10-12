@@ -4,6 +4,7 @@ package ttt;
  * Created by Georgina on 09/10/15.
  */
 public class Board {
+    private static final int BOARD_DIMENSION = 3;
     String[] symbols = new String[9];
 
     public Board() {
@@ -16,15 +17,20 @@ public class Board {
         this.symbols = symbols;
     }
 
-    public boolean containsWinningRow() {
-        if (hasMatchingSymbolsBetween(0, 3)) {
-            return true;
-        } else if (hasMatchingSymbolsBetween(3, 6)) {
-            return true;
-        } else if (hasMatchingSymbolsBetween(6, 9)) {
+    public boolean hasWinningCombination() {
+        if (hasWinningRow()) {
             return true;
         }
 
+        return false;
+    }
+
+    private boolean hasWinningRow() {
+        for (int i = 0; i < BOARD_DIMENSION * BOARD_DIMENSION; i = i + BOARD_DIMENSION) {
+            if (hasMatchingSymbolsBetween(i, i + BOARD_DIMENSION)) {
+                return true;
+            }
+        }
         return false;
     }
 

@@ -11,7 +11,7 @@ public class Game {
     }
 
     public String play() {
-        if (board.containsWinningRow()) {
+        if (board.hasWinningCombination()) {
             return "Win";
         } else {
             return "Draw";
