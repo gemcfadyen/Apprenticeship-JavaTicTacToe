@@ -4,6 +4,7 @@ import org.junit.Test;
 
 import java.io.IOException;
 import java.io.StringReader;
+import java.io.StringWriter;
 
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
@@ -15,7 +16,7 @@ public class HumanPlayerTest {
 
     @Test
     public void getThePlayersSymbol() {
-        Prompt prompt = new UserPrompt(new StringReader("2"));
+        Prompt prompt = new UserPrompt(new StringReader("2"), new StringWriter());
         HumanPlayer player = new HumanPlayer(prompt, "X");
 
         assertThat(player.getSymbols(), is("X"));
@@ -23,27 +24,27 @@ public class HumanPlayerTest {
 
     @Test
     public void playerProvidesPromptWithNextMove() throws IOException {
-        UserPrompt prompt = new UserPrompt(new StringReader("1"));
+        UserPrompt prompt = new UserPrompt(new StringReader("1"), new StringWriter());
         HumanPlayer player = new HumanPlayer(prompt, "X");
-        Board board = new Board("X", "-", "X", "O", "X", "O", "X", "O");
+        Board board = new Board("X", "-", "X", "O", "X", "O", "X", "O", "-");
 
         assertThat(player.chooseNextMoveFrom(board), is(1));
     }
 
     @Test
     public void playerRepromptedUntilValidNumberIsEntered() throws IOException {
-        UserPrompt prompt = new UserPrompt(new StringReader("ab1"));
+        UserPrompt prompt = new UserPrompt(new StringReader("ab1"), new StringWriter());
         HumanPlayer player = new HumanPlayer(prompt, "X");
-        Board board = new Board("X", "-", "X", "O", "X", "O", "X", "O");
+        Board board = new Board("X", "-", "X", "O", "X", "O", "X", "O", "-");
 
         assertThat(player.chooseNextMoveFrom(board), is(1));
     }
 
     @Test
     public void playerRepromptedIfTheyChooseAnOccupiedSpaceOnTheBoard() throws IOException {
-        UserPrompt prompt = new UserPrompt(new StringReader("001"));
+        UserPrompt prompt = new UserPrompt(new StringReader("001"), new StringWriter());
         HumanPlayer player = new HumanPlayer(prompt, "X");
-        Board board = new Board("X", "-", "X", "O", "X", "O", "X", "O");
+        Board board = new Board("X", "-", "X", "O", "X", "O", "X", "O", "-");
 
         assertThat(player.chooseNextMoveFrom(board), is(1));
     }

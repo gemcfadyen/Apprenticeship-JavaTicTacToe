@@ -15,6 +15,7 @@ public class HumanPlayer {
     }
 
     public int chooseNextMoveFrom(Board board) throws IOException {
+        prompt.print(board);
         String usersInput = getNextMoveFromPrompt();
 
         while (!isNumber(usersInput)
@@ -37,7 +38,7 @@ public class HumanPlayer {
     }
 
     private String getNextMoveFromPrompt() throws IOException {
-        prompt.display("Please enter the index for your next move");
+        prompt.askUserForTheirMove();
         return prompt.read();
     }
 
