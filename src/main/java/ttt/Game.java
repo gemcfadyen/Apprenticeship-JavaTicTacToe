@@ -1,5 +1,7 @@
 package ttt;
 
+import java.io.IOException;
+
 /**
  * Created by Georgina on 09/10/15.
  */
@@ -12,9 +14,10 @@ public class Game {
         this.firstPlayer = firstPlayer;
     }
 
-    public String play() {
+    public String play() throws IOException {
         int nextMove = firstPlayer.chooseNextMoveFrom(board);
         board.updateAt(nextMove, firstPlayer.getSymbols());
+
         if (board.hasWinningCombination()) {
             return "Win";
         } else {

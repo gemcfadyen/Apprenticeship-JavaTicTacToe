@@ -2,6 +2,8 @@ package ttt;
 
 import org.junit.Test;
 
+import java.io.IOException;
+
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
 
@@ -11,9 +13,10 @@ import static org.junit.Assert.assertThat;
 public class GameTest {
 
     @Test
-    public void reportsDrawWhenBoardIsFull() {
+    public void reportsDrawWhenBoardIsFull() throws IOException {
         Board board = new Board("X", "X", "O", "O", "X", "X", "X", "O", "O");
-        HumanPlayer player = new HumanPlayer("O");
+        Prompt prompt = new FakePrompt("2");
+        HumanPlayer player = new HumanPlayer(prompt, "O");
         Game game = new Game(board, player);
 
         String status = game.play();
@@ -23,9 +26,10 @@ public class GameTest {
 
 
     @Test
-    public void reportsWinWhenPlayerMakesWinningMove() {
+    public void reportsWinWhenPlayerMakesWinningMove() throws IOException {
         Board board = new Board("X", "X", "-", "O", "X", "X", "X", "O", "O");
-        HumanPlayer player = new HumanPlayer("X");
+        Prompt prompt = new FakePrompt("2");
+        HumanPlayer player = new HumanPlayer(prompt, "X");
         Game game = new Game(board, player);
 
         String status = game.play();
