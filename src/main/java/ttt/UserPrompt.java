@@ -58,4 +58,9 @@ public class UserPrompt implements Prompt {
     public void printWinningMessage() throws IOException {
         display("Congratulations - There is a winner");
     }
+
+    @Override
+    public void printDrawMessage() throws IOException {
+        display("No winner this time");
+    }
 }

@@ -34,4 +34,14 @@ public class UserPromptTest {
         assertThat(writer.toString(), is("Congratulations - There is a winner"));
     }
 
+    @Test
+    public void displaysDrawMessage() throws IOException {
+        Reader reader = new StringReader("");
+        StringWriter writer = new StringWriter();
+        UserPrompt prompt = new UserPrompt(reader, writer);
+
+        prompt.printDrawMessage();
+
+        assertThat(writer.toString(), is("No winner this time"));
+    }
 }

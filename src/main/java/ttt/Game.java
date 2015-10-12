@@ -45,6 +45,7 @@ public class Game {
             }
         }
         prompt.print(board);
+        prompt.printDrawMessage();
         return "Draw";
     }
 
