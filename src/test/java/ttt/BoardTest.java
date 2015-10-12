@@ -33,4 +33,11 @@ public class BoardTest {
         Board board = new Board("-", "-", "-", "-", "-", "-", "X", "X", "X");
         assertThat(board.hasWinningCombination(), is(true));
     }
+
+    @Test
+    public void winningColumnIdentified() {
+        Board board = new Board("X", "-", "-", "X", "-", "-", "X", "-", "-");
+        assertThat(board.hasWinningCombination(), is(true));
+
+    }
 }

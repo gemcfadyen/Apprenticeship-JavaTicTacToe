@@ -1,5 +1,7 @@
 package ttt;
 
+import org.omg.CORBA.BAD_CONTEXT;
+
 /**
  * Created by Georgina on 09/10/15.
  */
@@ -18,11 +20,20 @@ public class Board {
     }
 
     public boolean hasWinningCombination() {
-        if (hasWinningRow()) {
+        if (hasWinningRow() || hasWinningColumn()) {
             return true;
         }
 
         return false;
+    }
+
+    private boolean hasWinningColumn() {
+        if(symbols[0] == "X" &&
+                symbols[3] == "X" && symbols[6] == "X") {
+            return true;
+        }
+        return false;
+
     }
 
     private boolean hasWinningRow() {
