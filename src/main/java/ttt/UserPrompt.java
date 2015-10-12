@@ -23,10 +23,9 @@ public class UserPrompt implements Prompt {
         display(promptForUser);
     }
 
-    private String display(String message) throws IOException {
+    private void display(String message) throws IOException {
         writer.write(message);
         writer.flush();
-        return message;
     }
 
     @Override
@@ -35,14 +34,14 @@ public class UserPrompt implements Prompt {
     }
 
     @Override
-    public String print(Board board) throws IOException {
+    public void print(Board board) throws IOException {
         StringBuffer boardForDisplay = new StringBuffer();
         for (int i = 0; i < 9; i++) {
             boardForDisplay.append(board.getSymbolAt(i) + " ");
             boardForDisplay.append(optionallyAddNewLine(i));
         }
 
-        return display(boardForDisplay.toString());
+        display(boardForDisplay.toString());
     }
 
     private String optionallyAddNewLine(int i) {
@@ -54,5 +53,9 @@ public class UserPrompt implements Prompt {
 
     private boolean endOfRow(int i) {
         return (i+1)  % 3 == 0;
+    }
+
+    public void printWinningMessage() throws IOException {
+        display("Congratulations - There is a winner");
     }
 }

@@ -2,9 +2,7 @@ package ttt;
 
 import org.junit.Test;
 
-import java.io.IOException;
-import java.io.StringReader;
-import java.io.StringWriter;
+import java.io.*;
 
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
@@ -16,12 +14,24 @@ public class UserPromptTest {
     @Test
     public void displaysBoard() throws IOException {
         Board board = new Board();
-        UserPrompt prompt = new UserPrompt(new StringReader(""), new StringWriter());
+        StringWriter writer = new StringWriter();
+        UserPrompt prompt = new UserPrompt(new StringReader(""), writer);
 
-        String boardForDisplay = prompt.print(board);
+        prompt.print(board);
 
         String expectedDisplay = "- - - \n- - - \n- - - \n";
-        assertThat(boardForDisplay, is(expectedDisplay));
+        assertThat(writer.toString(), is(expectedDisplay));
+    }
+
+    @Test
+    public void displaysWinningMessage() throws IOException {
+        Reader reader = new StringReader("");
+        StringWriter writer = new StringWriter();
+        UserPrompt prompt = new UserPrompt(reader, writer);
+
+        prompt.printWinningMessage();
+
+        assertThat(writer.toString(), is("Congratulations - There is a winner"));
     }
 
 }

@@ -6,25 +6,25 @@ import java.io.*;
  * Created by Georgina on 09/10/15.
  */
 public class Game {
-    private final HumanPlayer[] players;
     private Board board;
+    private final HumanPlayer[] players;
+    private Prompt prompt;
 
-    public Game(Board board, HumanPlayer... players) {
+    public Game(Board board, Prompt prompt, HumanPlayer... players) {
         this.board = board;
+        this.prompt = prompt;
         this.players = players;
     }
 
     public static void main(String... args) throws IOException {
-        Reader reader1 = new InputStreamReader(System.in);
-        Reader reader2 = new InputStreamReader(System.in);
-        OutputStreamWriter writer1 = new OutputStreamWriter(System.out);
-        OutputStreamWriter writer2 = new OutputStreamWriter(System.out);
-        Prompt promptForPlayerOne = new UserPrompt(reader1, writer1);
-        Prompt promptForPlayerTwo = new UserPrompt(reader2, writer2);
+        Reader reader = new InputStreamReader(System.in);
+        OutputStreamWriter writer = new OutputStreamWriter(System.out);
+        Prompt prompt = new UserPrompt(reader, writer);
 
         Game game = new Game(new Board(),
-                new HumanPlayer(promptForPlayerOne, "X"),
-                new HumanPlayer(promptForPlayerTwo, "O"));
+                prompt,
+                new HumanPlayer(prompt, "X"),
+                new HumanPlayer(prompt, "O"));
         game.play();
     }
 
@@ -39,9 +39,12 @@ public class Game {
             playerIndex = toggle(playerIndex);
 
             if (board.hasWinningCombination()) {
+                prompt.print(board);
+                prompt.printWinningMessage();
                 return "Win";
             }
         }
+        prompt.print(board);
         return "Draw";
     }
 

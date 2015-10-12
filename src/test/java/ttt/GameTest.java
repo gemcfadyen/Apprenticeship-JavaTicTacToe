@@ -17,11 +17,12 @@ public class GameTest {
     @Test
     public void gameIsWonWhenPlayerMakesWinningMove() throws IOException {
         Board board = new Board("X", "X", "-", "O", "X", "X", "X", "O", "O");
-        Prompt promptForPlayerOne = new UserPrompt(new StringReader("2\n"), new StringWriter());
-        Prompt promptForPlayerTwo = new UserPrompt(new StringReader("z\n"), new StringWriter());
-        HumanPlayer playerOne = new HumanPlayer(promptForPlayerOne, "X");
-        HumanPlayer playerTwo = new HumanPlayer(promptForPlayerTwo, "X");
-        Game game = new Game(board, playerOne, playerTwo);
+        Prompt mockPromptForPlayerOne = new UserPrompt(new StringReader("2\n"), new StringWriter());
+        Prompt mockPromptForPlayerTwo = new UserPrompt(new StringReader("z\n"), new StringWriter());
+        Prompt mockGamePrompt = new UserPrompt(new StringReader(""), new StringWriter());
+        HumanPlayer playerOne = new HumanPlayer(mockPromptForPlayerOne, "X");
+        HumanPlayer playerTwo = new HumanPlayer(mockPromptForPlayerTwo, "X");
+        Game game = new Game(board, mockGamePrompt, playerOne, playerTwo);
 
         String status = game.play();
 
@@ -31,12 +32,13 @@ public class GameTest {
     @Test
     public void gameIsDrawnWhenPlayersHaveMadeFinalMovesAndNoWinningCombinationsFound() throws IOException {
         Board board = new Board("-", "O", "-", "O", "X", "X", "X", "-", "O");
-        Prompt promptForPlayerOne = new UserPrompt(new StringReader("7\n0\n"), new StringWriter());
-        Prompt promptForPlayerTwo = new UserPrompt(new StringReader("2\n"), new StringWriter());
+        Prompt mockPromptForPlayerOne = new UserPrompt(new StringReader("7\n0\n"), new StringWriter());
+        Prompt mockPromptForPlayerTwo = new UserPrompt(new StringReader("2\n"), new StringWriter());
+        Prompt mockGamePrompt = new UserPrompt(new StringReader(""), new StringWriter());
 
-        HumanPlayer playerOne = new HumanPlayer(promptForPlayerOne, "X");
-        HumanPlayer playerTwo = new HumanPlayer(promptForPlayerTwo, "O");
-        Game game = new Game(board, playerOne, playerTwo);
+        HumanPlayer playerOne = new HumanPlayer(mockPromptForPlayerOne, "X");
+        HumanPlayer playerTwo = new HumanPlayer(mockPromptForPlayerTwo, "O");
+        Game game = new Game(board, mockGamePrompt, playerOne, playerTwo);
 
         String status = game.play();
 

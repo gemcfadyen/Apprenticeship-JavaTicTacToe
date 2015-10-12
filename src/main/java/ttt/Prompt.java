@@ -8,5 +8,6 @@ import java.io.IOException;
 public interface Prompt {
     void askUserForTheirMove() throws IOException;
     String read() throws IOException;
-    String print(Board board) throws IOException;
+    void print(Board board) throws IOException;
+    void printWinningMessage() throws IOException;
 }
