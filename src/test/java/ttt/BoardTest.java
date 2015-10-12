@@ -38,6 +38,12 @@ public class BoardTest {
     public void winningColumnIdentified() {
         Board board = new Board("X", "-", "-", "X", "-", "-", "X", "-", "-");
         assertThat(board.hasWinningCombination(), is(true));
+    }
+
+    @Test
+    public void winningColumnInMiddleRowIdentified() {
+        Board board = new Board("-", "X", "-", "-", "X", "-", "-", "X", "-");
+        assertThat(board.hasWinningCombination(), is(true));
 
     }
 }
