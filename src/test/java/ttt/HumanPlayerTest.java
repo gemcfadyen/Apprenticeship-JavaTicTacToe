@@ -3,6 +3,7 @@ package ttt;
 import org.junit.Test;
 
 import java.io.IOException;
+import java.io.StringReader;
 
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
@@ -14,7 +15,7 @@ public class HumanPlayerTest {
 
     @Test
     public void getThePlayersSymbol() {
-        Prompt prompt = new FakePrompt("2");
+        Prompt prompt = new UserPrompt(new StringReader("2"));
         HumanPlayer player = new HumanPlayer(prompt, "X");
 
         assertThat(player.getSymbols(), is("X"));
@@ -22,7 +23,7 @@ public class HumanPlayerTest {
 
     @Test
     public void playerProvidesPromptWithNextMove() throws IOException {
-        FakePrompt prompt = new FakePrompt("1");
+        UserPrompt prompt = new UserPrompt(new StringReader("1"));
         HumanPlayer player = new HumanPlayer(prompt, "X");
         Board board = new Board("X", "-", "X", "O", "X", "O", "X", "O");
 
@@ -31,7 +32,7 @@ public class HumanPlayerTest {
 
     @Test
     public void playerRepromptedUntilValidNumberIsEntered() throws IOException {
-        FakePrompt prompt = new FakePrompt("a", "b", "1");
+        UserPrompt prompt = new UserPrompt(new StringReader("ab1"));
         HumanPlayer player = new HumanPlayer(prompt, "X");
         Board board = new Board("X", "-", "X", "O", "X", "O", "X", "O");
 
@@ -40,7 +41,7 @@ public class HumanPlayerTest {
 
     @Test
     public void playerRepromptedIfTheyChooseAnOccupiedSpaceOnTheBoard() throws IOException {
-        FakePrompt prompt = new FakePrompt("0", "0", "1");
+        UserPrompt prompt = new UserPrompt(new StringReader("001"));
         HumanPlayer player = new HumanPlayer(prompt, "X");
         Board board = new Board("X", "-", "X", "O", "X", "O", "X", "O");
 

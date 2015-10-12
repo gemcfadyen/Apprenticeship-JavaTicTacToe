@@ -18,10 +18,14 @@ public class HumanPlayer {
         String usersInput = getNextMoveFromPrompt();
 
         while (!isNumber(usersInput)
-                || !hasFreeSpace(Integer.valueOf(usersInput), board)) {
+                || !hasFreeSpace(asInteger(usersInput), board)) {
             usersInput = getNextMoveFromPrompt();
         }
 
+        return asInteger(usersInput);
+    }
+
+    private Integer asInteger(String usersInput) {
         return Integer.valueOf(usersInput);
     }
 
@@ -39,7 +43,7 @@ public class HumanPlayer {
 
     private boolean isNumber(String input) {
         try {
-            Integer.valueOf(input);
+            asInteger(input);
         } catch (NumberFormatException e) {
             return false;
         }

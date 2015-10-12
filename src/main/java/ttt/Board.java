@@ -94,4 +94,13 @@ public class Board {
     public String getSymbolAt(Integer index) {
         return symbols[index];
     }
+
+    public boolean hasFreeSpace() {
+        for (String symbol : symbols) {
+            if (vacant(symbol)) {
+                return true;
+            }
+        }
+        return false;
+    }
 }

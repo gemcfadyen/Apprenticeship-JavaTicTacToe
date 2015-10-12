@@ -4,11 +4,30 @@ import org.junit.Test;
 
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
+import static org.junit.Assert.assertTrue;
 
 /**
  * Created by Georgina on 09/10/15.
  */
 public class BoardTest {
+
+    @Test
+    public void getsSymbolFromSpecifiedPosition() {
+        Board board = new Board();
+        assertThat(board.getSymbolAt(5), is("-"));
+    }
+
+    @Test
+    public void identifiesThatThereIsAFreeSpaceOnTheBoard() {
+        Board board = new Board();
+        assertTrue(board.hasFreeSpace());
+    }
+
+    @Test
+    public void identifiesThatThereIsNoFreeSpaceOnTheBoard() {
+        Board board = new Board("O", "O", "O", "X", "X", "O", "O", "X", "O");
+        assertThat(board.hasFreeSpace(), is(false));
+    }
 
     @Test
     public void noWinningRowWhenBoardIsAllVacant() {
