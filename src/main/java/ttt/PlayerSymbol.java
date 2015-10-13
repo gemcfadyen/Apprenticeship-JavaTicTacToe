@@ -1,8 +1,5 @@
 package ttt;
 
-/**
- * Created by Georgina on 13/10/15.
- */
 public enum PlayerSymbol {
     X("X"), VACANT("-"), O("O");
 

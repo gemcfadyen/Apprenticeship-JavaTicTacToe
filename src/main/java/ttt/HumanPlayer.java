@@ -5,9 +5,6 @@ import java.io.IOException;
 import static ttt.Board.NUMBER_OF_SLOTS;
 import static ttt.PlayerSymbol.VACANT;
 
-/**
- * Created by Georgina on 12/10/15.
- */
 public class HumanPlayer {
     private Prompt prompt;
     private final PlayerSymbol symbol;
@@ -21,9 +18,7 @@ public class HumanPlayer {
         prompt.print(board);
         String usersInput = getNextMoveFromPrompt();
 
-        while (!isNumber(usersInput)
-                || outsideBoard(asInteger(usersInput))
-                || !hasFreeSpace(asInteger(usersInput), board)) {
+        while (!isNumber(usersInput) || outsideBoard(asInteger(usersInput)) || !hasFreeSpace(asInteger(usersInput), board)) {
             usersInput = getNextMoveFromPrompt();
         }
 
@@ -44,21 +39,15 @@ public class HumanPlayer {
         return true;
     }
 
-    private boolean outsideBoard(Integer usersInput) {
-        if (usersInput >= 0 && usersInput < NUMBER_OF_SLOTS) {
-            return false;
-        }
-        return true;
+    private boolean outsideBoard(int usersInput) {
+        return !(usersInput >= 0 && usersInput < NUMBER_OF_SLOTS);
     }
 
-    private boolean hasFreeSpace(Integer index, Board board) {
-        if (board.getSymbolAt(index) == VACANT) {
-            return true;
-        }
-        return false;
+    private boolean hasFreeSpace(int index, Board board) {
+        return board.getSymbolAt(index) == VACANT;
     }
 
-    private Integer asInteger(String usersInput) {
+    private int asInteger(String usersInput) {
         return Integer.valueOf(usersInput);
     }
 
