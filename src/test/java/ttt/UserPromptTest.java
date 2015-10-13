@@ -19,7 +19,7 @@ public class UserPromptTest {
 
         prompt.print(board);
 
-        String expectedDisplay = "- - - \n- - - \n- - - \n";
+        String expectedDisplay = " 0  1  2 \n 3  4  5 \n 6  7  8 \n\n -  -  - \n -  -  - \n -  -  - \n";
         assertThat(writer.toString(), is(expectedDisplay));
     }
 

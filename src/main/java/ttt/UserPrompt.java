@@ -34,8 +34,16 @@ public class UserPrompt implements Prompt {
     @Override
     public void print(Board board) throws IOException {
         StringBuilder boardForDisplay = new StringBuilder();
+
         for (int i = 0; i < NUMBER_OF_SLOTS; i++) {
-            boardForDisplay.append(board.getSymbolAt(i).getSymbolForDisplay() + " ");
+            boardForDisplay.append(" " + i + " ");
+            boardForDisplay.append(optionallyAddNewLine(i));
+        }
+
+        boardForDisplay.append("\n");
+
+        for (int i = 0; i < NUMBER_OF_SLOTS; i++) {
+            boardForDisplay.append(" " + board.getSymbolAt(i).getSymbolForDisplay() + " ");
             boardForDisplay.append(optionallyAddNewLine(i));
         }
 
@@ -65,6 +73,6 @@ public class UserPrompt implements Prompt {
     }
 
     private boolean endOfRow(int i) {
-        return (i+1)  % BOARD_DIMENSION == 0;
+        return (i + 1) % BOARD_DIMENSION == 0;
     }
 }
