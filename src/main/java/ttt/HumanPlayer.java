@@ -2,6 +2,7 @@ package ttt;
 
 import java.io.IOException;
 
+import static ttt.Board.NUMBER_OF_SLOTS;
 import static ttt.PlayerSymbol.VACANT;
 
 /**
@@ -44,7 +45,7 @@ public class HumanPlayer {
     }
 
     private boolean outsideBoard(Integer usersInput) {
-        if (usersInput >= 0 && usersInput < 9) {
+        if (usersInput >= 0 && usersInput < NUMBER_OF_SLOTS) {
             return false;
         }
         return true;

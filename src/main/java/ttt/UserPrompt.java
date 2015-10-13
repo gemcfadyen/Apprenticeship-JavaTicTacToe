@@ -5,6 +5,9 @@ import java.io.IOException;
 import java.io.Reader;
 import java.io.Writer;
 
+import static ttt.Board.BOARD_DIMENSION;
+import static ttt.Board.NUMBER_OF_SLOTS;
+
 /**
  * Created by Georgina on 12/10/15.
  */
@@ -30,8 +33,8 @@ public class UserPrompt implements Prompt {
 
     @Override
     public void print(Board board) throws IOException {
-        StringBuffer boardForDisplay = new StringBuffer();
-        for (int i = 0; i < 9; i++) {
+        StringBuilder boardForDisplay = new StringBuilder();
+        for (int i = 0; i < NUMBER_OF_SLOTS; i++) {
             boardForDisplay.append(board.getSymbolAt(i).getSymbolForDisplay() + " ");
             boardForDisplay.append(optionallyAddNewLine(i));
         }
@@ -62,6 +65,6 @@ public class UserPrompt implements Prompt {
     }
 
     private boolean endOfRow(int i) {
-        return (i+1)  % 3 == 0;
+        return (i+1)  % BOARD_DIMENSION == 0;
     }
 }
