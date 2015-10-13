@@ -32,7 +32,7 @@ public class UserPrompt implements Prompt {
     public void print(Board board) throws IOException {
         StringBuffer boardForDisplay = new StringBuffer();
         for (int i = 0; i < 9; i++) {
-            boardForDisplay.append(board.getSymbolAt(i) + " ");
+            boardForDisplay.append(board.getSymbolAt(i).getSymbolForDisplay() + " ");
             boardForDisplay.append(optionallyAddNewLine(i));
         }
 

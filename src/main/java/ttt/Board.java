@@ -1,21 +1,24 @@
 package ttt;
 
+import static ttt.PlayerSymbol.VACANT;
+
 /**
  * Created by Georgina on 09/10/15.
  */
 public class Board {
     private static final int BOARD_DIMENSION = 3;
-    String[] symbols = new String[BOARD_DIMENSION * BOARD_DIMENSION];
+    PlayerSymbol[] symbols = new PlayerSymbol[BOARD_DIMENSION * BOARD_DIMENSION];
 
     public Board() {
         for (int i = 0; i < BOARD_DIMENSION * BOARD_DIMENSION; i++) {
-            symbols[i] = "-";
+            symbols[i] = VACANT;
         }
     }
 
-    public Board(String... symbols) {
+    public Board(PlayerSymbol... symbols) {
         this.symbols = symbols;
     }
+
 
     public boolean hasWinningCombination() {
         if (hasWinningRow() || hasWinningColumn() || hasWinningDiagonal()) {
@@ -25,16 +28,16 @@ public class Board {
         return false;
     }
 
-    public void updateAt(int index, String symbol) {
+    public void updateAt(int index, PlayerSymbol symbol) {
         symbols[index] = symbol;
     }
 
-    public String getSymbolAt(Integer index) {
+    public PlayerSymbol getSymbolAt(Integer index) {
         return symbols[index];
     }
 
     public boolean hasFreeSpace() {
-        for (String symbol : symbols) {
+        for (PlayerSymbol symbol : symbols) {
             if (vacant(symbol)) {
                 return true;
             }
@@ -53,7 +56,7 @@ public class Board {
 
     private boolean hasMatchingSymbolsBetween(int startingIndex, int finishingIndex) {
         boolean isSameSymbol = true;
-        String symbol = symbols[startingIndex];
+        PlayerSymbol symbol = symbols[startingIndex];
 
         if (vacant(symbol)) return false;
 
@@ -64,13 +67,13 @@ public class Board {
         return isSameSymbol;
     }
 
-    private boolean vacant(String symbol) {
-        return symbol.equals("-");
+    private boolean vacant(PlayerSymbol symbol) {
+        return symbol.equals(VACANT);
     }
 
     private boolean hasWinningColumn() {
         for (int i = 0; i < BOARD_DIMENSION; i++) {
-            String symbol = symbols[i];
+            PlayerSymbol symbol = symbols[i];
             if (vacant(symbol)) {
                 continue;
             }
@@ -91,7 +94,7 @@ public class Board {
 
 
     private boolean checksDiagonalAt(int topRowIndex, int middleRowIndex, int bottomRowIndex) {
-        String symbol = symbols[topRowIndex];
+        PlayerSymbol symbol = symbols[topRowIndex];
         if (vacant(symbol)) {
             return false;
         }

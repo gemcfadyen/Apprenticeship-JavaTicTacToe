@@ -2,14 +2,16 @@ package ttt;
 
 import java.io.IOException;
 
+import static ttt.PlayerSymbol.VACANT;
+
 /**
  * Created by Georgina on 12/10/15.
  */
 public class HumanPlayer {
     private Prompt prompt;
-    private final String symbol;
+    private final PlayerSymbol symbol;
 
-    public HumanPlayer(Prompt prompt, String symbol) {
+    public HumanPlayer(Prompt prompt, PlayerSymbol symbol) {
         this.prompt = prompt;
         this.symbol = symbol;
     }
@@ -27,7 +29,7 @@ public class HumanPlayer {
         return asInteger(usersInput);
     }
 
-    public String getSymbols() {
+    public PlayerSymbol getSymbols() {
         return symbol;
     }
 
@@ -49,7 +51,7 @@ public class HumanPlayer {
     }
 
     private boolean hasFreeSpace(Integer index, Board board) {
-        if (board.getSymbolAt(index) == "-") {
+        if (board.getSymbolAt(index) == VACANT) {
             return true;
         }
         return false;
