@@ -66,7 +66,7 @@ public class UserPrompt implements Prompt {
             writer.write(message);
             writer.flush();
         } catch (IOException e) {
-            throw new WriteToPromptException("An exception occurred when writing");
+            throw new WriteToPromptException("An exception occurred when writing", e);
         }
     }
 

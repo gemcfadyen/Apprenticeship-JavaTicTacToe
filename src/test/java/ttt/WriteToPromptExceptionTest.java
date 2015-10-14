@@ -8,14 +8,15 @@ import java.io.IOException;
 import static org.hamcrest.Matchers.equalTo;
 import static org.junit.Assert.assertThat;
 
-public class ReadFromPromptExceptionTest {
+public class WriteToPromptExceptionTest {
+
     private IOException originalException;
-    private ReadFromPromptException wrappedException;
+    private WriteToPromptException wrappedException;
 
     @Before
     public void setup() {
         originalException = new IOException();
-        wrappedException = new ReadFromPromptException("useful message", originalException);
+        wrappedException = new WriteToPromptException("useful message", originalException);
     }
 
     @Test
