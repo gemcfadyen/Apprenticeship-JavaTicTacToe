@@ -22,7 +22,7 @@ public class UserPrompt implements Prompt {
         try {
             return reader.readLine();
         } catch (IOException e) {
-            throw new ReadFromPromptException("An exception occurred when reading input");
+            throw new ReadFromPromptException(e.getMessage(), e);
         }
     }
 

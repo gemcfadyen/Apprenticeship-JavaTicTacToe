@@ -2,15 +2,14 @@ package ttt;
 
 import org.junit.Test;
 
-import java.io.*;
+import java.io.IOException;
+import java.io.StringReader;
+import java.io.StringWriter;
 
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
 import static ttt.PlayerSymbol.*;
 
-/**
- * Created by Georgina on 12/10/15.
- */
 public class HumanPlayerTest {
 
     @Test
