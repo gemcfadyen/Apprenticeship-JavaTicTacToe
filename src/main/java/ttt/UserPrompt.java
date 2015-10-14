@@ -8,9 +8,6 @@ import java.io.Writer;
 import static ttt.Board.BOARD_DIMENSION;
 import static ttt.Board.NUMBER_OF_SLOTS;
 
-/**
- * Created by Georgina on 12/10/15.
- */
 public class UserPrompt implements Prompt {
     private BufferedReader reader;
     private Writer writer;
@@ -21,18 +18,22 @@ public class UserPrompt implements Prompt {
     }
 
     @Override
-    public String read() throws IOException {
-        return reader.readLine();
+    public String read() {
+        try {
+            return reader.readLine();
+        } catch (IOException e) {
+            throw new ReadFromPromptException("An exception occurred when reading input");
+        }
     }
 
     @Override
-    public void askUserForTheirMove() throws IOException {
+    public void askUserForTheirMove() {
         String promptForUser = "\nPlease enter the index for your next move\n";
         display(promptForUser);
     }
 
     @Override
-    public void print(Board board) throws IOException {
+    public void print(Board board) {
         StringBuilder boardForDisplay = new StringBuilder();
 
         for (int i = 0; i < NUMBER_OF_SLOTS; i++) {
@@ -51,18 +52,22 @@ public class UserPrompt implements Prompt {
     }
 
     @Override
-    public void printWinningMessage() throws IOException {
+    public void printWinningMessage() {
         display("Congratulations - There is a winner");
     }
 
     @Override
-    public void printDrawMessage() throws IOException {
+    public void printDrawMessage() {
         display("No winner this time");
     }
 
-    private void display(String message) throws IOException {
-        writer.write(message);
-        writer.flush();
+    private void display(String message) {
+        try {
+            writer.write(message);
+            writer.flush();
+        } catch (IOException e) {
+            throw new WriteToPromptException("An exception occurred when writing");
+        }
     }
 
     private String optionallyAddNewLine(int i) {

@@ -7,15 +7,13 @@ import java.io.*;
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
 
-/**
- * Created by Georgina on 12/10/15.
- */
+
 public class UserPromptTest {
     @Test
-    public void displaysBoard() throws IOException {
+    public void displaysBoard() {
         Board board = new Board();
         StringWriter writer = new StringWriter();
-        UserPrompt prompt = new UserPrompt(new StringReader(""), writer);
+        Prompt prompt = new UserPrompt(new StringReader(""), writer);
 
         prompt.print(board);
 
@@ -24,7 +22,7 @@ public class UserPromptTest {
     }
 
     @Test
-    public void displaysWinningMessage() throws IOException {
+    public void displaysWinningMessage() {
         Reader reader = new StringReader("");
         StringWriter writer = new StringWriter();
         UserPrompt prompt = new UserPrompt(reader, writer);
@@ -35,7 +33,7 @@ public class UserPromptTest {
     }
 
     @Test
-    public void displaysDrawMessage() throws IOException {
+    public void displaysDrawMessage() {
         Reader reader = new StringReader("");
         StringWriter writer = new StringWriter();
         UserPrompt prompt = new UserPrompt(reader, writer);
@@ -43,5 +41,20 @@ public class UserPromptTest {
         prompt.printDrawMessage();
 
         assertThat(writer.toString(), is("No winner this time"));
+    }
+
+    @Test(expected = ReadFromPromptException.class)
+    public void raiseInputExceptionWhenThereIsAProblemReadingFromPrompt() {
+        Reader readerWhichThrowsIOException = new ReaderWhichThrowsExceptionOnRead();
+        Prompt promptWhichHasExceptionOnRead = new UserPrompt(readerWhichThrowsIOException, new StringWriter());
+
+        promptWhichHasExceptionOnRead.read();
+    }
+
+    @Test(expected = WriteToPromptException.class)
+    public void raiseOutputExceptionWhenThereIsAProblemWritingToPrompt() {
+        Writer writerWhichThrowsIOException = new WriterWhichThrowsExceptionOnWrite();
+        Prompt promptWhichThrowsExceptionOnWrite = new UserPrompt(new StringReader(""), writerWhichThrowsIOException);
+        promptWhichThrowsExceptionOnWrite.printWinningMessage();
     }
 }

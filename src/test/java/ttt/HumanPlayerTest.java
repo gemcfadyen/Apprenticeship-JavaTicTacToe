@@ -2,9 +2,7 @@ package ttt;
 
 import org.junit.Test;
 
-import java.io.IOException;
-import java.io.StringReader;
-import java.io.StringWriter;
+import java.io.*;
 
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;

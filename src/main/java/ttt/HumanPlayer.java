@@ -1,7 +1,5 @@
 package ttt;
 
-import java.io.IOException;
-
 import static ttt.Board.NUMBER_OF_SLOTS;
 import static ttt.PlayerSymbol.VACANT;
 
@@ -14,7 +12,7 @@ public class HumanPlayer {
         this.symbol = symbol;
     }
 
-    public int chooseNextMoveFrom(Board board) throws IOException {
+    public int chooseNextMoveFrom(Board board) {
         prompt.print(board);
         String usersInput = getNextMoveFromPrompt();
 
@@ -51,7 +49,7 @@ public class HumanPlayer {
         return Integer.valueOf(usersInput);
     }
 
-    private String getNextMoveFromPrompt() throws IOException {
+    private String getNextMoveFromPrompt() {
         prompt.askUserForTheirMove();
         return prompt.read();
     }
