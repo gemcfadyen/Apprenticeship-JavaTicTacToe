@@ -3,7 +3,7 @@ package ttt;
 import static ttt.Board.NUMBER_OF_SLOTS;
 import static ttt.PlayerSymbol.VACANT;
 
-public class HumanPlayer {
+public class HumanPlayer implements Player {
     private Prompt prompt;
     private final PlayerSymbol symbol;
 
@@ -12,6 +12,7 @@ public class HumanPlayer {
         this.symbol = symbol;
     }
 
+    @Override
     public int chooseNextMoveFrom(Board board) {
         prompt.print(board);
         String usersInput = getNextMoveFromPrompt();
@@ -23,7 +24,8 @@ public class HumanPlayer {
         return asInteger(usersInput);
     }
 
-    public PlayerSymbol getSymbols() {
+    @Override
+    public PlayerSymbol getSymbol() {
         return symbol;
     }
 

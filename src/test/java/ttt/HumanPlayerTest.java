@@ -17,7 +17,7 @@ public class HumanPlayerTest {
         Prompt prompt = new UserPrompt(new StringReader("2\n"), new StringWriter());
         HumanPlayer player = new HumanPlayer(prompt, X);
 
-        assertThat(player.getSymbols(), is(X));
+        assertThat(player.getSymbol(), is(X));
     }
 
     @Test

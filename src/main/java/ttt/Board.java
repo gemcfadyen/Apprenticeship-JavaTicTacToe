@@ -95,4 +95,8 @@ public class Board {
         }
         return false;
     }
+
+    public void updateAt(int move, PlayerSymbol symbol) {
+        grid[move] = symbol;
+    }
 }

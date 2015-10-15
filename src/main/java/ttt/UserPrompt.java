@@ -20,7 +20,8 @@ public class UserPrompt implements Prompt {
     @Override
     public String read() {
         try {
-            return reader.readLine();
+            String lineRead = reader.readLine();
+            return lineRead;
         } catch (IOException e) {
             throw new ReadFromPromptException(e.getMessage(), e);
         }
