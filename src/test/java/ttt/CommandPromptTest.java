@@ -53,7 +53,7 @@ public class CommandPromptTest {
 
         prompt.printWinningMessage();
 
-        assertThat(writer.toString(), is("Congratulations - There is a winner"));
+        assertThat(writer.toString(), is("Congratulations - There is a winner\n"));
     }
 
     @Test
@@ -64,7 +64,7 @@ public class CommandPromptTest {
 
         prompt.printDrawMessage();
 
-        assertThat(writer.toString(), is("No winner this time"));
+        assertThat(writer.toString(), is("No winner this time\n"));
     }
 
     @Test(expected = ReadFromPromptException.class)

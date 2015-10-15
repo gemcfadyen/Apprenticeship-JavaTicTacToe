@@ -12,57 +12,77 @@ import static ttt.PlayerSymbol.*;
 public class GameTest {
 
     @Test
-    public void playersTakeTurnUntilTheBoardIsFull() {
-        PlayerSpy player1Spy = new PlayerSpy(createCommandPromptToReadInput("0\n4\n5\n6\n7\n"), X);
-        PlayerSpy player2Spy = new PlayerSpy(createCommandPromptToReadInput("1\n2\n3\n8\n"), O);
+    public void playersTakeTurnsUntilTheBoardIsFull() {
+        PlayerSpy player1 = new PlayerSpy(createCommandPromptToReadInput("0\n4\n5\n6\n7\n"), X);
+        PlayerSpy player2 = new PlayerSpy(createCommandPromptToReadInput("1\n2\n3\n8\n"), O);
 
-        StringWriter gamePromptWriter = new StringWriter();
         Game game = new Game(new Board(),
-                createCommandPromptWithWriter(gamePromptWriter),
-                player1Spy,
-                player2Spy);
+                createCommandPromptToReadInput(""),
+                player1,
+                player2);
 
         game.play();
 
-        assertThat(player1Spy.numberOfTurnsTaken(), is(5));
-        assertThat(player2Spy.numberOfTurnsTaken(), is(4));
-    }
-
-    private CommandPrompt createCommandPromptWithWriter(StringWriter gamePromptWriter) {
-        return new CommandPrompt(new StringReader(""), gamePromptWriter);
+        assertThat(player1.numberOfTurnsTaken(), is(5));
+        assertThat(player2.numberOfTurnsTaken(), is(4));
     }
 
     @Test
     public void displaysCongratulatoryMessageWhenThereIsAWinningFormation() {
-        Prompt promptForPlayerOne = new CommandPrompt(new StringReader("0\n1\n2\n"), new StringWriter());
-        Prompt promptForPlayerTwo = new CommandPrompt(new StringReader("4\n7\n"), new StringWriter());
-        StringWriter gamePromptWriter = new StringWriter();
+        PromptSpy gamePrompt = new PromptSpy();
 
         Game game = new Game(new Board(),
-                createCommandPromptWithWriter(gamePromptWriter),
-                createHumanPlayer(promptForPlayerOne, X),
-                new HumanPlayer(promptForPlayerTwo, O));
+                gamePrompt,
+                createHumanPlayer(createCommandPromptToReadInput("0\n1\n2\n"), X),
+                createHumanPlayer(createCommandPromptToReadInput("4\n7\n"), O));
 
         game.play();
 
-        assertThat(gamePromptWriter.toString(), is("Congratulations - There is a winner"));
+        assertThat(gamePrompt.getLastMessagePrinted(), is("Congratulatory message printed"));
     }
 
     @Test
-    public void displaysNoWinnerMessageWhenThereAreNoMoreSpacesOnTheBoardAndNoWinner() {
+    public void displaysDrawMessageWhenThereAreNoMoreSpacesOnTheBoardAndNoWinner() {
         Board board = new Board(X, O, O, O, X, X, VACANT, VACANT, O);
-        Prompt promptForPlayerOne = new CommandPrompt(new StringReader("7\n"), new StringWriter());
-        Prompt promptForPlayerTwo = new CommandPrompt(new StringReader("6\n"), new StringWriter());
-        StringWriter gamePromptWriter = new StringWriter();
+        PromptSpy gamePrompt = new PromptSpy();
 
         Game game = new Game(board,
-                createCommandPromptWithWriter(gamePromptWriter),
-                createHumanPlayer(promptForPlayerOne, X),
-                createHumanPlayer(promptForPlayerTwo, O));
+                gamePrompt,
+                createHumanPlayer(createCommandPromptToReadInput("7\n"), X),
+                createHumanPlayer(createCommandPromptToReadInput("6\n"), O));
 
         game.play();
 
-        assertThat(gamePromptWriter.toString(), is("No winner this time"));
+        assertThat(gamePrompt.getLastMessagePrinted(), is("Draw message printed"));
+    }
+
+    @Test
+    public void displaysTheFinalWinningStateOfTheBoard() {
+        Board board = new Board(X, VACANT, X, O, X, O, O, O, X);
+        PromptSpy gamePrompt = new PromptSpy();
+
+        Game game = new Game(board, gamePrompt,
+                createHumanPlayer(createCommandPromptToReadInput("1\n"), X),
+                createHumanPlayer(createCommandPromptToReadInput("\n"), O));
+
+        game.play();
+
+        assertThat(gamePrompt.getLastBoardThatWasPrinted(), is("XXXOXOOOX"));
+    }
+
+    @Test
+    public void displaysTheFinalDrawnStateOfTheBoard() {
+        Board board = new Board(X, O, O, O, X, O, O, O, X);
+        PromptSpy gamePrompt = new PromptSpy();
+
+        Game game = new Game(board,
+                gamePrompt,
+                createHumanPlayer(createCommandPromptToReadInput("\n"), X),
+                createHumanPlayer(createCommandPromptToReadInput("\n"), O));
+
+        game.play();
+
+        assertThat(gamePrompt.getLastBoardThatWasPrinted(), is("XOOOXOOOX"));
     }
 
     private Prompt createCommandPromptToReadInput(String usersInputs) {
@@ -72,6 +92,4 @@ public class GameTest {
     private HumanPlayer createHumanPlayer(Prompt prompt, PlayerSymbol symbol) {
         return new HumanPlayer(prompt, symbol);
     }
-
-
 }

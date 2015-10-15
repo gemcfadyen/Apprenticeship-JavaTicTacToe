@@ -20,8 +20,7 @@ public class CommandPrompt implements Prompt {
     @Override
     public String read() {
         try {
-            String lineRead = reader.readLine();
-            return lineRead;
+            return reader.readLine();
         } catch (IOException e) {
             throw new ReadFromPromptException(e.getMessage(), e);
         }
@@ -54,12 +53,12 @@ public class CommandPrompt implements Prompt {
 
     @Override
     public void printWinningMessage() {
-        display("Congratulations - There is a winner");
+        display("Congratulations - There is a winner\n");
     }
 
     @Override
     public void printDrawMessage() {
-        display("No winner this time");
+        display("No winner this time\n");
     }
 
     private void display(String message) {
