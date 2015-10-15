@@ -23,10 +23,6 @@ public class Board {
         return hasWinningRow() || hasWinningColumn() || hasWinningDiagonal();
     }
 
-    public void updateAt(int index, PlayerSymbol symbol) {
-        grid[index] = symbol;
-    }
-
     public PlayerSymbol getSymbolAt(Integer index) {
         return grid[index];
     }
@@ -96,8 +92,7 @@ public class Board {
         if (grid[middleRowIndex].equals(symbol)
                 && grid[bottomRowIndex].equals(symbol)) {
             return true;
-        } else {
-            return false;
         }
+        return false;
     }
 }
