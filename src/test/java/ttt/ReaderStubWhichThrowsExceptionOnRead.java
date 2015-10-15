@@ -3,7 +3,7 @@ package ttt;
 import java.io.IOException;
 import java.io.Reader;
 
-public class ReaderWhichThrowsExceptionOnRead extends Reader {
+public class ReaderStubWhichThrowsExceptionOnRead extends Reader {
 
     @Override
     public int read(char[] cbuf, int off, int len) throws IOException {

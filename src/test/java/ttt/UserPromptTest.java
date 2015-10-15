@@ -69,7 +69,7 @@ public class UserPromptTest {
 
     @Test(expected = ReadFromPromptException.class)
     public void raiseInputExceptionWhenThereIsAProblemReadingFromPrompt() {
-        Reader readerWhichThrowsIOException = new ReaderWhichThrowsExceptionOnRead();
+        Reader readerWhichThrowsIOException = new ReaderStubWhichThrowsExceptionOnRead();
         Prompt promptWhichHasExceptionOnRead = new UserPrompt(readerWhichThrowsIOException, new StringWriter());
 
         promptWhichHasExceptionOnRead.read();
@@ -77,7 +77,7 @@ public class UserPromptTest {
 
     @Test(expected = WriteToPromptException.class)
     public void raiseOutputExceptionWhenThereIsAProblemWritingToPrompt() {
-        Writer writerWhichThrowsIOException = new WriterWhichThrowsExceptionOnWrite();
+        Writer writerWhichThrowsIOException = new WriterStubWhichThrowsExceptionOnWrite();
         Prompt promptWhichThrowsExceptionOnWrite = new UserPrompt(new StringReader(""), writerWhichThrowsIOException);
         promptWhichThrowsExceptionOnWrite.printWinningMessage();
     }

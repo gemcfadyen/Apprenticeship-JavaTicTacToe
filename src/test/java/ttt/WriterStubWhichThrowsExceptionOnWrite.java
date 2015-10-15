@@ -3,7 +3,7 @@ package ttt;
 import java.io.IOException;
 import java.io.Writer;
 
-public class WriterWhichThrowsExceptionOnWrite extends Writer {
+public class WriterStubWhichThrowsExceptionOnWrite extends Writer {
 
     @Override
     public void write(char[] cbuf, int off, int len) throws IOException {
