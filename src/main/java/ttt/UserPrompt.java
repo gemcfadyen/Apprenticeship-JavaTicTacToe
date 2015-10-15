@@ -28,9 +28,9 @@ public class UserPrompt implements Prompt {
 
     @Override
     public void askUserForTheirMove() {
-        String promptForUser = "\nPlease enter the index for your next move\n";
-        display(promptForUser);
+        display("\nPlease enter the index for your next move\n");
     }
+
 
     @Override
     public void print(Board board) {
