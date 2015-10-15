@@ -15,20 +15,31 @@ public class Game {
 
     public void play() {
         int index = PLAYER_ONE_INDEX;
-        while (board.hasFreeSpace()) {
-            int nextMove = players[index].chooseNextMoveFrom(board);
-            board.updateAt(nextMove, players[index].getSymbol());
 
+        while (board.hasFreeSpace()) {
+            updateBoardWithPlayersMove(players[index]);
             if (board.hasWinningCombination()) {
                 gamePrompt.printWinningMessage();
                 break;
             }
+            index = switchPlayer(index);
+        }
 
-            index = toggle(index);
+        printMessageIfGameHasDrawn();
+    }
+
+    private void updateBoardWithPlayersMove(Player player) {
+        int nextMove = player.chooseNextMoveFrom(board);
+        board.updateAt(nextMove, player.getSymbol());
+    }
+
+    private void printMessageIfGameHasDrawn() {
+        if (!board.hasWinningCombination()) {
+            gamePrompt.printDrawMessage();
         }
     }
 
-    private int toggle(int index) {
+    private int switchPlayer(int index) {
         return index == PLAYER_ONE_INDEX ? PLAYER_TWO_INDEX : PLAYER_ONE_INDEX;
     }
 }
