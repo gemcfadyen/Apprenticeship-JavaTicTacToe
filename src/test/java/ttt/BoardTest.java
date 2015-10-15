@@ -37,6 +37,12 @@ public class BoardTest {
     }
 
     @Test
+    public void noWinnerIdentifiedForBoardWithoutThreeMatchingSymbolsInWinningFormation() {
+        Board board = new Board(VACANT, VACANT, O, VACANT, O, VACANT, X, X, VACANT);
+        assertThat(board.hasWinningCombination(), is(false));
+    }
+
+    @Test
     public void winningRowIdentifiedInTopRow() {
         Board board = new Board(O, O, O, VACANT, VACANT, VACANT, VACANT, VACANT, VACANT);
         assertThat(board.hasWinningCombination(), is(true));
