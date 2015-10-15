@@ -2,15 +2,39 @@ package ttt;
 
 import org.junit.Test;
 
-import java.io.*;
+import java.io.Reader;
+import java.io.StringReader;
+import java.io.StringWriter;
+import java.io.Writer;
 
+import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
 
 
 public class UserPromptTest {
+
+
     @Test
-    public void displaysBoard() {
+    public void readsInput() {
+        StringReader reader = new StringReader("1\n");
+        Prompt prompt =  new UserPrompt(reader, new StringWriter());
+
+        assertThat(prompt.read(), equalTo("1"));
+    }
+
+    @Test
+    public void asksUserForTheirNextMove() {
+        StringWriter writer = new StringWriter();
+        Prompt prompt = new UserPrompt(new StringReader(""), writer);
+
+        prompt.askUserForTheirMove();
+
+        assertThat(writer.toString(), is("\nPlease enter the index for your next move\n"));
+    }
+
+    @Test
+    public void printsBoard() {
         Board board = new Board();
         StringWriter writer = new StringWriter();
         Prompt prompt = new UserPrompt(new StringReader(""), writer);
@@ -22,7 +46,7 @@ public class UserPromptTest {
     }
 
     @Test
-    public void displaysWinningMessage() {
+    public void printsWinningMessage() {
         Reader reader = new StringReader("");
         StringWriter writer = new StringWriter();
         UserPrompt prompt = new UserPrompt(reader, writer);
@@ -33,7 +57,7 @@ public class UserPromptTest {
     }
 
     @Test
-    public void displaysDrawMessage() {
+    public void printsDrawMessage() {
         Reader reader = new StringReader("");
         StringWriter writer = new StringWriter();
         UserPrompt prompt = new UserPrompt(reader, writer);
