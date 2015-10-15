@@ -8,11 +8,11 @@ import java.io.Writer;
 import static ttt.Board.BOARD_DIMENSION;
 import static ttt.Board.NUMBER_OF_SLOTS;
 
-public class UserPrompt implements Prompt {
+public class CommandPrompt implements Prompt {
     private BufferedReader reader;
     private Writer writer;
 
-    public UserPrompt(Reader reader, Writer writer) {
+    public CommandPrompt(Reader reader, Writer writer) {
         this.reader = new BufferedReader(reader);
         this.writer = writer;
     }

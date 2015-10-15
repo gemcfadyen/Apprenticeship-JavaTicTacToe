@@ -14,7 +14,7 @@ public class HumanPlayerTest {
 
     @Test
     public void getThePlayersSymbol() {
-        Prompt prompt = new UserPrompt(new StringReader("2\n"), new StringWriter());
+        Prompt prompt = new CommandPrompt(new StringReader("2\n"), new StringWriter());
         HumanPlayer player = new HumanPlayer(prompt, X);
 
         assertThat(player.getSymbol(), is(X));
@@ -22,7 +22,7 @@ public class HumanPlayerTest {
 
     @Test
     public void playerProvidesPromptWithNextMove() throws IOException {
-        UserPrompt prompt = new UserPrompt(new StringReader("1\n"), new StringWriter());
+        CommandPrompt prompt = new CommandPrompt(new StringReader("1\n"), new StringWriter());
         HumanPlayer player = new HumanPlayer(prompt, X);
         Board board = new Board(X, VACANT, X, O, X, O, X, O, VACANT);
 
@@ -31,7 +31,7 @@ public class HumanPlayerTest {
 
     @Test
     public void playerRepromptedUntilValidNumberIsEntered() throws IOException {
-        UserPrompt prompt = new UserPrompt(new StringReader("a\nb\n1\n"), new StringWriter());
+        CommandPrompt prompt = new CommandPrompt(new StringReader("a\nb\n1\n"), new StringWriter());
         HumanPlayer player = new HumanPlayer(prompt, X);
         Board board = new Board(X, VACANT, X, O, X, O, X, O, VACANT);
 
@@ -40,7 +40,7 @@ public class HumanPlayerTest {
 
     @Test
     public void playerRepromptedIfTheyChooseAnOccupiedSpaceOnTheBoard() throws IOException {
-        UserPrompt prompt = new UserPrompt(new StringReader("0\n0\n1\n"), new StringWriter());
+        CommandPrompt prompt = new CommandPrompt(new StringReader("0\n0\n1\n"), new StringWriter());
         HumanPlayer player = new HumanPlayer(prompt, X);
         Board board = new Board(X, VACANT, X, O, X, O, X, O, VACANT);
 
@@ -49,7 +49,7 @@ public class HumanPlayerTest {
 
     @Test
     public void playerRepromptedIfTheyChooseASpaceOutsideOfTheBoard() throws IOException {
-        UserPrompt prompt = new UserPrompt(new StringReader("10\n4\n"), new StringWriter());
+        CommandPrompt prompt = new CommandPrompt(new StringReader("10\n4\n"), new StringWriter());
         HumanPlayer player = new HumanPlayer(prompt, X);
         Board board = new Board(X, VACANT, X, O, VACANT, O, X, O, VACANT);
 
