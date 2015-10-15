@@ -7,9 +7,6 @@ import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 import static ttt.PlayerSymbol.*;
 
-/**
- * Created by Georgina on 09/10/15.
- */
 public class BoardTest {
 
     @Test
