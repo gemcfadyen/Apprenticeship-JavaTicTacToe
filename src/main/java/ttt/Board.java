@@ -18,7 +18,6 @@ public class Board {
         this.grid = grid;
     }
 
-
     public boolean hasWinningCombination() {
         return hasWinningRow() || hasWinningColumn() || hasWinningDiagonal();
     }
@@ -34,6 +33,14 @@ public class Board {
             }
         }
         return false;
+    }
+
+    public void updateAt(int move, PlayerSymbol symbol) {
+        grid[move] = symbol;
+    }
+
+    public boolean isValidPositionAt(int index) {
+        return isWithinGridBoundary(index) && isVacantAt(index);
     }
 
     private boolean hasWinningRow() {
@@ -96,15 +103,11 @@ public class Board {
         return false;
     }
 
-    public void updateAt(int move, PlayerSymbol symbol) {
-        grid[move] = symbol;
-    }
-
-    public boolean isVacantAt(int index) {
+    private boolean isVacantAt(int index) {
         return grid[index] == VACANT;
     }
 
-    public boolean isValidPosition(int index) {
+    private boolean isWithinGridBoundary(int index) {
         return index >= 0 && index < NUMBER_OF_SLOTS;
     }
 }

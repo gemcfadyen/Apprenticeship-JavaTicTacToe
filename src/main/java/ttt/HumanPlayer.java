@@ -11,13 +11,15 @@ public class HumanPlayer extends Player {
         prompt.print(board);
         String usersInput = getNextMoveFromPrompt();
 
-        while (!isNumber(usersInput)
-                || !board.isValidPosition(asInteger(usersInput))
-                || !board.isVacantAt(asInteger(usersInput))) {
+        while (!validInput(board, usersInput)) {
             usersInput = getNextMoveFromPrompt();
         }
 
         return asInteger(usersInput);
+    }
+
+    private boolean validInput(Board board, String usersInput) {
+        return isNumber(usersInput) && board.isValidPositionAt(asInteger(usersInput));
     }
 
     private boolean isNumber(String input) {

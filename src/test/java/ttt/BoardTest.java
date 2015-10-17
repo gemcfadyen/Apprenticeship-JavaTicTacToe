@@ -99,31 +99,31 @@ public class BoardTest {
     public void indicatesUnoccupiedPositionOnGridIsVacant() {
         Board board = new Board();
 
-        assertThat(board.isVacantAt(3), is(true));
+        assertThat(board.isValidPositionAt(3), is(true));
     }
 
     @Test
     public void indicatesOccupiedPositionIsNotVacant() {
         Board board = new Board(X, VACANT, VACANT, VACANT, VACANT, VACANT, VACANT, VACANT, VACANT);
-        assertThat(board.isVacantAt(0), is(false));
+        assertThat(board.isValidPositionAt(0), is(false));
     }
 
     @Test
     public void indicatesPositionLargerThanGridIsOutsideOfGrid() {
         Board board = new Board();
-        assertThat(board.isValidPosition(10), is(false));
+        assertThat(board.isValidPositionAt(10), is(false));
     }
 
     @Test
     public void indicatesPositionLessThanZeroIsOutsideOfGrid() {
         Board board = new Board();
-        assertThat(board.isValidPosition(-3), is(false));
+        assertThat(board.isValidPositionAt(-3), is(false));
     }
 
     @Test
     public void indicatesPositionIsWithinGridBoundary() {
         Board board = new Board();
-        assertThat(board.isValidPosition(2), is(true));
+        assertThat(board.isValidPositionAt(2), is(true));
     }
 }
 
