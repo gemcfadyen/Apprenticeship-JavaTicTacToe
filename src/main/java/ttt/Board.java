@@ -99,4 +99,12 @@ public class Board {
     public void updateAt(int move, PlayerSymbol symbol) {
         grid[move] = symbol;
     }
+
+    public boolean isVacantAt(int index) {
+        return grid[index] == VACANT;
+    }
+
+    public boolean isValidPosition(int index) {
+        return index >= 0 && index < NUMBER_OF_SLOTS;
+    }
 }
