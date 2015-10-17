@@ -1,13 +1,10 @@
 package ttt;
 
-public class PlayerSpy implements Player {
+public class PlayerSpy extends Player {
     private int numberOfTurnsTaken;
-    private Prompt prompt;
-    private PlayerSymbol symbol;
 
     public PlayerSpy(Prompt prompt, PlayerSymbol symbol) {
-        this.prompt = prompt;
-        this.symbol = symbol;
+        super(prompt, symbol);
         this.numberOfTurnsTaken = 0;
     }
 
@@ -15,11 +12,6 @@ public class PlayerSpy implements Player {
     public int chooseNextMoveFrom(Board board) {
         numberOfTurnsTaken++;
         return Integer.valueOf(prompt.read());
-    }
-
-    @Override
-    public PlayerSymbol getSymbol() {
-        return symbol;
     }
 
     public int numberOfTurnsTaken() {

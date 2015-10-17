@@ -3,13 +3,10 @@ package ttt;
 import static ttt.Board.NUMBER_OF_SLOTS;
 import static ttt.PlayerSymbol.VACANT;
 
-public class HumanPlayer implements Player {
-    private Prompt prompt;
-    private final PlayerSymbol symbol;
+public class HumanPlayer extends Player {
 
     public HumanPlayer(Prompt prompt, PlayerSymbol symbol) {
-        this.prompt = prompt;
-        this.symbol = symbol;
+        super(prompt, symbol);
     }
 
     @Override
@@ -22,11 +19,6 @@ public class HumanPlayer implements Player {
         }
 
         return asInteger(usersInput);
-    }
-
-    @Override
-    public PlayerSymbol getSymbol() {
-        return symbol;
     }
 
     private boolean isNumber(String input) {

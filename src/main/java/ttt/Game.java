@@ -34,16 +34,21 @@ public class Game {
     }
 
     public void play() {
-        int index = PLAYER_ONE_INDEX;
+        int currentPlayerIndex = PLAYER_ONE_INDEX;
+        boolean hasWinner = false;
 
-        while (board.hasFreeSpace()) {
-            updateBoardWithPlayersMove(players[index]);
-            if (board.hasWinningCombination()) {
-                break;
-            }
-            index = switchPlayer(index);
+        while (gameInProgress(hasWinner)) {
+            updateBoardWithPlayersMove(players[currentPlayerIndex]);
+            hasWinner = board.hasWinningCombination();
+            currentPlayerIndex = toggle(currentPlayerIndex);
         }
-        printBoardAndExitMessage();
+
+        printExitMessage(hasWinner);
+        gamePrompt.print(board);
+    }
+
+    private boolean gameInProgress(boolean hasWinner) {
+        return board.hasFreeSpace() && !hasWinner;
     }
 
     private void updateBoardWithPlayersMove(Player player) {
@@ -51,16 +56,16 @@ public class Game {
         board.updateAt(nextMove, player.getSymbol());
     }
 
-    private int switchPlayer(int index) {
-        return index == PLAYER_ONE_INDEX ? PLAYER_TWO_INDEX : PLAYER_ONE_INDEX;
+    private int toggle(int currentPlayerIndex) {
+        return currentPlayerIndex == PLAYER_ONE_INDEX ? PLAYER_TWO_INDEX : PLAYER_ONE_INDEX;
     }
 
-    private void printBoardAndExitMessage() {
-        if (board.hasWinningCombination()) {
-            gamePrompt.printWinningMessage();
-        } else {
+    private void printExitMessage(boolean hasWinner) {
+        if(!hasWinner) {
             gamePrompt.printDrawMessage();
+        } else {
+            gamePrompt.printWinningMessage();
         }
-        gamePrompt.print(board);
     }
+
 }

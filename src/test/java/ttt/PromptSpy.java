@@ -3,6 +3,8 @@ package ttt;
 public class PromptSpy implements Prompt {
     private Board lastBoardPrinted;
     private String lastMessagePrinted;
+    private int numberOfTimesWinningMessageHasBeenPrinted = 0;
+    private int numberOfTimesDrawMessageHasBeenPrinted = 0;
 
     @Override
     public String read() {
@@ -21,16 +23,20 @@ public class PromptSpy implements Prompt {
 
     @Override
     public void printWinningMessage() {
-        lastMessagePrinted = "Congratulatory message printed";
+        numberOfTimesWinningMessageHasBeenPrinted++;
     }
 
     @Override
     public void printDrawMessage() {
-        lastMessagePrinted = "Draw message printed";
+        numberOfTimesDrawMessageHasBeenPrinted++;
     }
 
-    public String getLastMessagePrinted() {
-        return lastMessagePrinted;
+    public int getNumberOfTimesWinningMessageHasBeenPrinted() {
+        return numberOfTimesWinningMessageHasBeenPrinted;
+    }
+
+    public int getNumberOfTimesDrawMessageHasBeenPrinted() {
+        return numberOfTimesDrawMessageHasBeenPrinted;
     }
 
     public String getLastBoardThatWasPrinted() {

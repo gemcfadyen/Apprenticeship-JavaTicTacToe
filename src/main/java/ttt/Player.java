@@ -1,7 +1,17 @@
 package ttt;
 
-public interface Player {
-    int chooseNextMoveFrom(Board board);
+public abstract class Player {
+    private PlayerSymbol symbol;
+    protected Prompt prompt;
 
-    PlayerSymbol getSymbol();
+    public Player(Prompt prompt, PlayerSymbol symbol) {
+        this.prompt = prompt;
+        this.symbol = symbol;
+    }
+
+    abstract int chooseNextMoveFrom(Board board);
+
+    public PlayerSymbol getSymbol() {
+        return symbol;
+    }
 }
