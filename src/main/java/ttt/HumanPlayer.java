@@ -1,8 +1,5 @@
 package ttt;
 
-import static ttt.Board.NUMBER_OF_SLOTS;
-import static ttt.PlayerSymbol.VACANT;
-
 public class HumanPlayer extends Player {
 
     public HumanPlayer(Prompt prompt, PlayerSymbol symbol) {
@@ -14,7 +11,9 @@ public class HumanPlayer extends Player {
         prompt.print(board);
         String usersInput = getNextMoveFromPrompt();
 
-        while (!isNumber(usersInput) || outsideBoard(asInteger(usersInput)) || !hasFreeSpace(asInteger(usersInput), board)) {
+        while (!isNumber(usersInput)
+                || !board.isValidPosition(asInteger(usersInput))
+                || !board.isVacantAt(asInteger(usersInput))) {
             usersInput = getNextMoveFromPrompt();
         }
 
@@ -29,14 +28,6 @@ public class HumanPlayer extends Player {
         }
 
         return true;
-    }
-
-    private boolean outsideBoard(int usersInput) {
-        return !(usersInput >= 0 && usersInput < NUMBER_OF_SLOTS);
-    }
-
-    private boolean hasFreeSpace(int index, Board board) {
-        return board.getSymbolAt(index) == VACANT;
     }
 
     private int asInteger(String usersInput) {
