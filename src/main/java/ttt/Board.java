@@ -23,7 +23,7 @@ public class Board {
         return hasWinningRow() || hasWinningColumn() || hasWinningDiagonal();
     }
 
-    public PlayerSymbol getSymbolAt(Integer index) {
+    public PlayerSymbol getSymbolAt(int index) {
         return grid[index];
     }
 
