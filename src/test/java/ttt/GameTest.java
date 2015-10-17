@@ -28,7 +28,7 @@ public class GameTest {
     }
 
     @Test
-    public void displaysCongratulatoryMessageWhenThereIsAWinningFormation() {
+    public void printsCongratulatoryMessageWhenThereIsAWinningFormation() {
         PromptSpy gamePrompt = new PromptSpy();
 
         Game game = new Game(new Board(),
@@ -43,7 +43,7 @@ public class GameTest {
     }
 
     @Test
-    public void displaysDrawMessageWhenThereAreNoMoreSpacesOnTheBoardAndNoWinner() {
+    public void printsDrawMessageWhenThereAreNoMoreSpacesOnTheBoardAndNoWinner() {
         Board board = new Board(X, O, O, O, X, X, VACANT, VACANT, O);
         PromptSpy gamePrompt = new PromptSpy();
 
@@ -59,7 +59,7 @@ public class GameTest {
     }
 
     @Test
-    public void displaysTheFinalWinningStateOfTheBoard() {
+    public void printsTheFinalStateOfTheBoard() {
         Board board = new Board(X, VACANT, X, O, X, O, O, O, X);
         PromptSpy gamePrompt = new PromptSpy();
 
@@ -70,21 +70,6 @@ public class GameTest {
         game.play();
 
         assertThat(gamePrompt.getLastBoardThatWasPrinted(), is("XXXOXOOOX"));
-    }
-
-    @Test
-    public void displaysTheFinalDrawnStateOfTheBoard() {
-        Board board = new Board(X, O, O, O, X, O, O, O, X);
-        PromptSpy gamePrompt = new PromptSpy();
-
-        Game game = new Game(board,
-                gamePrompt,
-                createHumanPlayer(createCommandPromptToReadInput("\n"), X),
-                createHumanPlayer(createCommandPromptToReadInput("\n"), O));
-
-        game.play();
-
-        assertThat(gamePrompt.getLastBoardThatWasPrinted(), is("XOOOXOOOX"));
     }
 
     private Prompt createCommandPromptToReadInput(String usersInputs) {
