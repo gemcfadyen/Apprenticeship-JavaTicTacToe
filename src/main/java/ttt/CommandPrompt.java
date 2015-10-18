@@ -6,7 +6,6 @@ import java.io.Reader;
 import java.io.Writer;
 
 import static ttt.Board.BOARD_DIMENSION;
-import static ttt.Board.NUMBER_OF_SLOTS;
 
 public class CommandPrompt implements Prompt {
     private BufferedReader reader;
@@ -36,14 +35,14 @@ public class CommandPrompt implements Prompt {
     public void print(Board board) {
         StringBuilder boardForDisplay = new StringBuilder();
 
-        for (int i = 0; i < NUMBER_OF_SLOTS; i++) {
+        for (int i = 0; i < BOARD_DIMENSION * BOARD_DIMENSION; i++) {
             boardForDisplay.append(" " + i + " ");
             boardForDisplay.append(optionallyAddNewLine(i));
         }
 
         boardForDisplay.append("\n");
 
-        for (int i = 0; i < NUMBER_OF_SLOTS; i++) {
+        for (int i = 0; i < BOARD_DIMENSION * BOARD_DIMENSION; i++) {
             boardForDisplay.append(" " + board.getSymbolAt(i).getSymbolForDisplay() + " ");
             boardForDisplay.append(optionallyAddNewLine(i));
         }

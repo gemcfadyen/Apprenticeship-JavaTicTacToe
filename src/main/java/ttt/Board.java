@@ -1,12 +1,15 @@
 package ttt;
 
+import java.util.Arrays;
+
+import static ttt.PlayerSymbol.*;
 import static ttt.PlayerSymbol.VACANT;
 
 public class Board {
     private PlayerSymbol[] grid = new PlayerSymbol[BOARD_DIMENSION * BOARD_DIMENSION];
 
     protected static final int BOARD_DIMENSION = 3;
-    protected static final int NUMBER_OF_SLOTS = BOARD_DIMENSION * BOARD_DIMENSION;
+    private static final int NUMBER_OF_SLOTS = BOARD_DIMENSION * BOARD_DIMENSION;
 
     public Board() {
         for (int i = 0; i < NUMBER_OF_SLOTS; i++) {
@@ -27,8 +30,8 @@ public class Board {
     }
 
     public boolean hasFreeSpace() {
-        for (PlayerSymbol symbol : grid) {
-            if (vacant(symbol)) {
+        for (int i = 0; i < NUMBER_OF_SLOTS; i++) {
+            if (isVacantAt(i)) {
                 return true;
             }
         }
@@ -44,63 +47,41 @@ public class Board {
     }
 
     private boolean hasWinningRow() {
-        for (int i = 0; i < NUMBER_OF_SLOTS; i = i + BOARD_DIMENSION) {
-            if (hasMatchingSymbolsBetween(i, i + BOARD_DIMENSION)) {
+        PlayerSymbol[] topRow = new PlayerSymbol[]{grid[0], grid[1], grid[2]};
+        PlayerSymbol[] middleRow = new PlayerSymbol[]{grid[3], grid[4], grid[5]};
+        PlayerSymbol[] bottomRow = new PlayerSymbol[]{grid[6], grid[7], grid[8]};
+
+        PlayerSymbol[][] horizontalRows = new PlayerSymbol[][]{topRow, middleRow, bottomRow};
+
+        return checkForWinIn(horizontalRows);
+    }
+
+    private boolean checkForWinIn(PlayerSymbol[][] rows) {
+        for (PlayerSymbol[] horizontalRow : rows) {
+            if (Arrays.equals(horizontalRow, new PlayerSymbol[]{X, X, X})
+                    || Arrays.equals(horizontalRow, new PlayerSymbol[]{O, O, O})) {
                 return true;
             }
         }
         return false;
-    }
-
-    private boolean hasMatchingSymbolsBetween(int startingIndex, int finishingIndex) {
-        boolean isSameSymbol = true;
-        PlayerSymbol symbol = grid[startingIndex];
-
-        if (vacant(symbol)) return false;
-
-        for (int i = startingIndex; i < finishingIndex; i++) {
-            isSameSymbol = isSameSymbol && grid[i].equals(symbol);
-        }
-
-        return isSameSymbol;
-    }
-
-    private boolean vacant(PlayerSymbol symbol) {
-        return symbol.equals(VACANT);
     }
 
     private boolean hasWinningColumn() {
-        for (int i = 0; i < BOARD_DIMENSION; i++) {
-            PlayerSymbol symbol = grid[i];
-            if (vacant(symbol)) {
-                continue;
-            }
+        PlayerSymbol[] leftColumn = new PlayerSymbol[]{grid[0], grid[3], grid[6]};
+        PlayerSymbol[] middleColumn = new PlayerSymbol[]{grid[1], grid[4], grid[7]};
+        PlayerSymbol[] rightColumn = new PlayerSymbol[]{grid[2], grid[5], grid[8]};
 
-            if (grid[i].equals(symbol)
-                    && grid[i + BOARD_DIMENSION].equals(symbol)
-                    && grid[i + (2 * BOARD_DIMENSION)].equals(symbol)) {
-                return true;
-            }
-        }
-        return false;
+        PlayerSymbol[][] columns = new PlayerSymbol[][]{leftColumn, middleColumn, rightColumn};
+
+        return checkForWinIn(columns);
     }
 
     private boolean hasWinningDiagonal() {
-        return checksDiagonalAt(0, BOARD_DIMENSION + 1, NUMBER_OF_SLOTS - 1) ||
-                checksDiagonalAt(BOARD_DIMENSION - 1, BOARD_DIMENSION + 1, 2 * BOARD_DIMENSION);
-    }
+        PlayerSymbol[] backslashDiagonal = new PlayerSymbol[]{grid[0], grid[4], grid[8]};
+        PlayerSymbol[] forwardslashDiagonal = new PlayerSymbol[]{grid[2], grid[4], grid[6]};
 
-    private boolean checksDiagonalAt(int topRowIndex, int middleRowIndex, int bottomRowIndex) {
-        PlayerSymbol symbol = grid[topRowIndex];
-        if (vacant(symbol)) {
-            return false;
-        }
-
-        if (grid[middleRowIndex].equals(symbol)
-                && grid[bottomRowIndex].equals(symbol)) {
-            return true;
-        }
-        return false;
+        PlayerSymbol[][] diagonalRows = new PlayerSymbol[][]{backslashDiagonal, forwardslashDiagonal};
+        return checkForWinIn(diagonalRows);
     }
 
     private boolean isVacantAt(int index) {
