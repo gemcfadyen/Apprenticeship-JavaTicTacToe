@@ -39,20 +39,12 @@ public class HumanPlayerTest {
     }
 
     @Test
-    public void playerRepromptedIfTheyChooseAnOccupiedSpaceOnTheBoard() throws IOException {
-        CommandPrompt prompt = new CommandPrompt(new StringReader("0\n0\n1\n"), new StringWriter());
+    public void playerRepromptedUntilBoardValidatesMoveAsValid() throws IOException {
+        CommandPrompt prompt = new CommandPrompt(new StringReader("0\n0\n10\n-1\n1\n"), new StringWriter());
         HumanPlayer player = new HumanPlayer(prompt, X);
         Board board = new Board(X, VACANT, X, O, X, O, X, O, VACANT);
 
         assertThat(player.chooseNextMoveFrom(board), is(1));
     }
 
-    @Test
-    public void playerRepromptedIfTheyChooseASpaceOutsideOfTheBoard() throws IOException {
-        CommandPrompt prompt = new CommandPrompt(new StringReader("10\n4\n"), new StringWriter());
-        HumanPlayer player = new HumanPlayer(prompt, X);
-        Board board = new Board(X, VACANT, X, O, VACANT, O, X, O, VACANT);
-
-        assertThat(player.chooseNextMoveFrom(board), is(4));
-    }
 }
