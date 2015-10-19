@@ -12,13 +12,13 @@ import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
 
 
-public class UserPromptTest {
+public class CommandPromptTest {
 
 
     @Test
     public void readsInput() {
         StringReader reader = new StringReader("1\n");
-        Prompt prompt =  new UserPrompt(reader, new StringWriter());
+        Prompt prompt =  new CommandPrompt(reader, new StringWriter());
 
         assertThat(prompt.read(), equalTo("1"));
     }
@@ -26,7 +26,7 @@ public class UserPromptTest {
     @Test
     public void asksUserForTheirNextMove() {
         StringWriter writer = new StringWriter();
-        Prompt prompt = new UserPrompt(new StringReader(""), writer);
+        Prompt prompt = new CommandPrompt(new StringReader(""), writer);
 
         prompt.askUserForTheirMove();
 
@@ -37,7 +37,7 @@ public class UserPromptTest {
     public void printsBoard() {
         Board board = new Board();
         StringWriter writer = new StringWriter();
-        Prompt prompt = new UserPrompt(new StringReader(""), writer);
+        Prompt prompt = new CommandPrompt(new StringReader(""), writer);
 
         prompt.print(board);
 
@@ -49,28 +49,28 @@ public class UserPromptTest {
     public void printsWinningMessage() {
         Reader reader = new StringReader("");
         StringWriter writer = new StringWriter();
-        UserPrompt prompt = new UserPrompt(reader, writer);
+        CommandPrompt prompt = new CommandPrompt(reader, writer);
 
         prompt.printWinningMessage();
 
-        assertThat(writer.toString(), is("Congratulations - There is a winner"));
+        assertThat(writer.toString(), is("Congratulations - There is a winner\n"));
     }
 
     @Test
     public void printsDrawMessage() {
         Reader reader = new StringReader("");
         StringWriter writer = new StringWriter();
-        UserPrompt prompt = new UserPrompt(reader, writer);
+        CommandPrompt prompt = new CommandPrompt(reader, writer);
 
         prompt.printDrawMessage();
 
-        assertThat(writer.toString(), is("No winner this time"));
+        assertThat(writer.toString(), is("No winner this time\n"));
     }
 
     @Test(expected = ReadFromPromptException.class)
     public void raiseInputExceptionWhenThereIsAProblemReadingFromPrompt() {
         Reader readerWhichThrowsIOException = new ReaderStubWhichThrowsExceptionOnRead();
-        Prompt promptWhichHasExceptionOnRead = new UserPrompt(readerWhichThrowsIOException, new StringWriter());
+        Prompt promptWhichHasExceptionOnRead = new CommandPrompt(readerWhichThrowsIOException, new StringWriter());
 
         promptWhichHasExceptionOnRead.read();
     }
@@ -78,7 +78,7 @@ public class UserPromptTest {
     @Test(expected = WriteToPromptException.class)
     public void raiseOutputExceptionWhenThereIsAProblemWritingToPrompt() {
         Writer writerWhichThrowsIOException = new WriterStubWhichThrowsExceptionOnWrite();
-        Prompt promptWhichThrowsExceptionOnWrite = new UserPrompt(new StringReader(""), writerWhichThrowsIOException);
+        Prompt promptWhichThrowsExceptionOnWrite = new CommandPrompt(new StringReader(""), writerWhichThrowsIOException);
         promptWhichThrowsExceptionOnWrite.printWinningMessage();
     }
 }

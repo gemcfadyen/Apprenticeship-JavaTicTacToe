@@ -86,4 +86,12 @@ public class BoardTest {
         Board board = new Board(VACANT, VACANT, O, VACANT, O, VACANT, O, VACANT, VACANT);
         assertThat(board.hasWinningCombination(), is(true));
     }
+
+    @Test
+    public void updateBoardWithSpecificSymbolAtGivenPosition() {
+        Board board = new Board();
+        board.updateAt(2, X);
+
+        assertThat(board.getSymbolAt(2), is(X));
+    }
 }
