@@ -34,12 +34,6 @@ public class CommandPrompt implements Prompt {
     @Override
     public void print(Board board) {
         StringBuilder boardForDisplay = new StringBuilder();
-
-        for (int i = 0; i < BOARD_DIMENSION * BOARD_DIMENSION; i++) {
-            boardForDisplay.append(" " + i + " ");
-            boardForDisplay.append(optionallyAddNewLine(i));
-        }
-
         boardForDisplay.append("\n");
 
         for (int i = 0; i < BOARD_DIMENSION * BOARD_DIMENSION; i++) {

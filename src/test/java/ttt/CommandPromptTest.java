@@ -41,7 +41,7 @@ public class CommandPromptTest {
 
         prompt.print(board);
 
-        String expectedDisplay = " 0  1  2 \n 3  4  5 \n 6  7  8 \n\n -  -  - \n -  -  - \n -  -  - \n";
+        String expectedDisplay = "\n -  -  - \n -  -  - \n -  -  - \n";
         assertThat(writer.toString(), is(expectedDisplay));
     }
 
