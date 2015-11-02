@@ -2,8 +2,6 @@ package ttt;
 
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
-import java.io.Reader;
-import java.io.Writer;
 
 import static ttt.PlayerSymbol.O;
 import static ttt.PlayerSymbol.X;
@@ -16,14 +14,14 @@ public class Game {
     private Player[] players;
 
     public static void main(String... args) {
-        Reader commandLineReader = new InputStreamReader(System.in);
-        Writer commandLineWriter = new OutputStreamWriter(System.out);
-        Prompt prompt = new CommandPrompt(commandLineReader, commandLineWriter);
+        Prompt prompt = buildPrompt();
 
-        HumanPlayer player1 = new HumanPlayer(prompt, X);
-        HumanPlayer player2 = new HumanPlayer(prompt, O);
-
-        Game game = new Game(new Board(), prompt, player1, player2);
+        Game game = new Game(
+                new Board(),
+                prompt,
+                new HumanPlayer(prompt, X),
+                new HumanPlayer(prompt, O)
+        );
         game.play();
     }
 
@@ -47,6 +45,13 @@ public class Game {
         gamePrompt.print(board);
     }
 
+    private static CommandPrompt buildPrompt() {
+        return new CommandPrompt(
+                new InputStreamReader(System.in),
+                new OutputStreamWriter(System.out)
+        );
+    }
+
     private boolean gameInProgress(boolean hasWinner) {
         return board.hasFreeSpace() && !hasWinner;
     }
@@ -67,5 +72,4 @@ public class Game {
             gamePrompt.printWinningMessage();
         }
     }
-
 }
