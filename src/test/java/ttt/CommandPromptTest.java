@@ -10,6 +10,7 @@ import java.io.Writer;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
+import static ttt.PlayerSymbol.*;
 
 
 public class CommandPromptTest {
@@ -34,16 +35,43 @@ public class CommandPromptTest {
     }
 
     @Test
-    public void printsBoard() {
+    public void printsNewBoard() {
         Board board = new Board();
         StringWriter writer = new StringWriter();
         Prompt prompt = new CommandPrompt(new StringReader(""), writer);
 
         prompt.print(board);
 
-        String expectedDisplay = "\n -  -  - \n -  -  - \n -  -  - \n";
+        String expectedDisplay =
+              "\n 1 | 2 | 3 \n"
+              + "-----------\n"
+              + " 4 | 5 | 6 \n"
+              + "-----------\n"
+              + " 7 | 8 | 9 \n";
+
         assertThat(writer.toString(), is(expectedDisplay));
     }
+
+    @Test
+    public void printsBoardWithMoves() {
+        Board board = new Board(VACANT, X, X, O, VACANT, VACANT, VACANT, VACANT, VACANT);
+
+        StringWriter writer = new StringWriter();
+        Prompt prompt = new CommandPrompt(new StringReader(""), writer);
+
+        prompt.print(board);
+
+        String expectedDisplay =
+                "\n 1 | X | X \n"
+                + "-----------\n"
+                + " O | 5 | 6 \n"
+                + "-----------\n"
+                + " 7 | 8 | 9 \n";
+
+        assertThat(writer.toString(), is(expectedDisplay));
+
+    }
+
 
     @Test
     public void printsWinningMessage() {

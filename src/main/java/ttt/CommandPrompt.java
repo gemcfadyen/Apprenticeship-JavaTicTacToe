@@ -33,15 +33,21 @@ public class CommandPrompt implements Prompt {
 
     @Override
     public void print(Board board) {
-        StringBuilder boardForDisplay = new StringBuilder();
-        boardForDisplay.append("\n");
+        String boardForDisplay = newLine();
 
-        for (int i = 0; i < BOARD_DIMENSION * BOARD_DIMENSION; i++) {
-            boardForDisplay.append(" " + board.getSymbolAt(i).getSymbolForDisplay() + " ");
-            boardForDisplay.append(optionallyAddNewLine(i));
+        for (int boardPosition = 0; boardPosition < BOARD_DIMENSION * BOARD_DIMENSION; boardPosition++) {
+            boardForDisplay += space() + getSymbol(board, boardPosition) + getBorderFor(boardPosition);
         }
 
-        display(boardForDisplay.toString());
+        display(boardForDisplay);
+    }
+
+    private String getSymbol(Board board, int position) {
+        if (board.getSymbolAt(position) == PlayerSymbol.VACANT) {
+            return String.valueOf(position + 1);
+        } else {
+            return board.getSymbolAt(position).getSymbolForDisplay();
+        }
     }
 
     @Override
@@ -63,11 +69,34 @@ public class CommandPrompt implements Prompt {
         }
     }
 
-    private String optionallyAddNewLine(int i) {
-        if (endOfRow(i)) {
-            return ("\n");
+    private String getBorderFor(int position) {
+        if (lastRow(position)) {
+            return space() + newLine();
         }
-        return "";
+        if (endOfRow(position)) {
+            return dividingHorizontalLine();
+        }
+        return space() + dividingVerticalLine();
+    }
+
+    private String dividingVerticalLine() {
+        return "|";
+    }
+
+    private String dividingHorizontalLine() {
+        return space() + newLine() + "-----------" + newLine();
+    }
+
+    private String newLine() {
+        return "\n";
+    }
+
+    private String space() {
+        return " ";
+    }
+
+    private boolean lastRow(int index) {
+        return index == BOARD_DIMENSION * BOARD_DIMENSION - 1;
     }
 
     private boolean endOfRow(int i) {
