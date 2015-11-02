@@ -4,8 +4,10 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.Reader;
 import java.io.Writer;
+import java.util.List;
 
 import static ttt.Board.BOARD_DIMENSION;
+import static ttt.PlayerSymbol.*;
 
 public class CommandPrompt implements Prompt {
     private BufferedReader reader;
@@ -30,23 +32,27 @@ public class CommandPrompt implements Prompt {
         display("\nPlease enter the index for your next move\n");
     }
 
-
     @Override
     public void print(Board board) {
         String boardForDisplay = newLine();
 
-        for (int boardPosition = 0; boardPosition < BOARD_DIMENSION * BOARD_DIMENSION; boardPosition++) {
-            boardForDisplay += space() + getSymbol(board, boardPosition) + getBorderFor(boardPosition);
+        Cell[][] rows = board.getRows();
+
+        for (Cell[] row : rows) {
+            for (int i = 0; i < row.length; i++) {
+                int cellOffset = row[i].getOffset();
+                boardForDisplay += space() + displayCell(board, cellOffset) + getBorderFor(cellOffset);
+            }
         }
 
         display(boardForDisplay);
     }
 
-    private String getSymbol(Board board, int position) {
-        if (board.getSymbolAt(position) == PlayerSymbol.VACANT) {
-            return String.valueOf(position + 1);
+    private String displayCell(Board board, int cellOffset) {
+        if(board.getSymbolAt(cellOffset) == VACANT) {
+            return String.valueOf(cellOffset);
         } else {
-            return board.getSymbolAt(position).getSymbolForDisplay();
+            return board.getSymbolAt(cellOffset).getSymbolForDisplay();
         }
     }
 
@@ -96,10 +102,10 @@ public class CommandPrompt implements Prompt {
     }
 
     private boolean lastRow(int index) {
-        return index == BOARD_DIMENSION * BOARD_DIMENSION - 1;
+        return index == BOARD_DIMENSION * BOARD_DIMENSION;
     }
 
     private boolean endOfRow(int i) {
-        return (i + 1) % BOARD_DIMENSION == 0;
+        return i % BOARD_DIMENSION == 0;
     }
 }

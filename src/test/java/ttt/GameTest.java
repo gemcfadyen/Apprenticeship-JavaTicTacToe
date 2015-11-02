@@ -13,8 +13,8 @@ public class GameTest {
 
     @Test
     public void playersTakeTurnsUntilTheBoardIsFull() {
-        PlayerSpy player1 = new PlayerSpy(createCommandPromptToReadInput("0\n4\n5\n6\n7\n"), X);
-        PlayerSpy player2 = new PlayerSpy(createCommandPromptToReadInput("1\n2\n3\n8\n"), O);
+        PlayerSpy player1 = new PlayerSpy(createCommandPromptToReadInput("1\n5\n6\n7\n8\n"), X);
+        PlayerSpy player2 = new PlayerSpy(createCommandPromptToReadInput("2\n3\n4\n9\n"), O);
 
         Game game = new Game(new Board(),
                 createCommandPromptToReadInput(""),
@@ -33,8 +33,8 @@ public class GameTest {
 
         Game game = new Game(new Board(),
                 gamePrompt,
-                createHumanPlayer(createCommandPromptToReadInput("0\n1\n2\n"), X),
-                createHumanPlayer(createCommandPromptToReadInput("4\n7\n"), O));
+                createHumanPlayer(createCommandPromptToReadInput("1\n2\n3\n"), X),
+                createHumanPlayer(createCommandPromptToReadInput("5\n8\n"), O));
 
         game.play();
 
@@ -49,8 +49,8 @@ public class GameTest {
 
         Game game = new Game(board,
                 gamePrompt,
-                createHumanPlayer(createCommandPromptToReadInput("7\n"), X),
-                createHumanPlayer(createCommandPromptToReadInput("6\n"), O));
+                createHumanPlayer(createCommandPromptToReadInput("8\n"), X),
+                createHumanPlayer(createCommandPromptToReadInput("7\n"), O));
 
         game.play();
 
@@ -64,7 +64,7 @@ public class GameTest {
         PromptSpy gamePrompt = new PromptSpy();
 
         Game game = new Game(board, gamePrompt,
-                createHumanPlayer(createCommandPromptToReadInput("1\n"), X),
+                createHumanPlayer(createCommandPromptToReadInput("2\n"), X),
                 createHumanPlayer(createCommandPromptToReadInput("\n"), O));
 
         game.play();

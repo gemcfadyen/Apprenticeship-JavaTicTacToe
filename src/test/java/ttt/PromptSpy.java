@@ -2,6 +2,8 @@ package ttt;
 
 import com.sun.jdi.connect.Connector;
 
+import java.util.List;
+
 import static ttt.Board.*;
 
 public class PromptSpy implements Prompt {
@@ -48,9 +50,14 @@ public class PromptSpy implements Prompt {
     public String getLastBoardThatWasPrinted() {
         StringBuilder gridFormation = new StringBuilder();
 
-        for (int i = 0; i < BOARD_DIMENSION * BOARD_DIMENSION; i++) {
-            gridFormation.append(lastBoardPrinted.getSymbolAt(i));
+        Cell[][] rows = lastBoardPrinted.getRows();
+
+        for(Cell[] cells: rows) {
+            for(int i = 0; i < cells.length; i++) {
+                gridFormation.append(lastBoardPrinted.getSymbolAt(cells[i].getOffset()));
+            }
         }
+
         return gridFormation.toString();
     }
 }

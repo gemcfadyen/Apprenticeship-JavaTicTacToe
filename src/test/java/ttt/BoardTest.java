@@ -2,6 +2,10 @@ package ttt;
 
 import org.junit.Test;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
@@ -11,7 +15,7 @@ public class BoardTest {
 
     @Test
     public void getsSymbolFromSpecifiedPosition() {
-        Board board = new Board();
+        Board board = new Board(X, X, O, X, VACANT, O, O, X, X);
         assertThat(board.getSymbolAt(5), is(VACANT));
     }
 
@@ -153,13 +157,25 @@ public class BoardTest {
     @Test
     public void indicatesOccupiedPositionIsNotVacant() {
         Board board = new Board(X, VACANT, VACANT, VACANT, VACANT, VACANT, VACANT, VACANT, VACANT);
-        assertThat(board.isValidPositionAt(0), is(false));
+        assertThat(board.isValidPositionAt(1), is(false));
     }
 
     @Test
     public void indicatesPositionLargerThanGridIsOutsideOfGrid() {
         Board board = new Board();
         assertThat(board.isValidPositionAt(10), is(false));
+    }
+
+    @Test
+    public void indicatesPositionAtZeroIsOutsideOfGrid() {
+        Board board = new Board();
+        assertThat(board.isValidPositionAt(0), is(false));
+    }
+
+    @Test
+    public void indicatesPositionNineIsValid() {
+        Board board = new Board();
+        assertThat(board.isValidPositionAt(9), is(true));
     }
 
     @Test
@@ -173,5 +189,19 @@ public class BoardTest {
         Board board = new Board();
         assertThat(board.isValidPositionAt(2), is(true));
     }
-}
 
+    @Test
+    public void returnsHorizontalRows() {
+        Board board = new Board(X, O, X, O, O, X, VACANT, VACANT, O);
+
+        Cell[][] rows = board.getRows();
+
+        Cell[] expectedTopRow = new Cell[]{new Cell(1, X), new Cell(2, O), new Cell(3, X)};
+        Cell[] expectedMiddleRow = new Cell[]{new Cell(4, O), new Cell(5, O), new Cell(6, X)};
+        Cell[] expectedBottomRow = new Cell[]{new Cell(7, VACANT), new Cell(8, VACANT), new Cell(9, O)};
+        assertThat(rows.length, is(3));
+        assertThat(rows[0], is(expectedTopRow));
+        assertThat(rows[1], is(expectedMiddleRow));
+        assertThat(rows[2], is(expectedBottomRow));
+    }
+}
