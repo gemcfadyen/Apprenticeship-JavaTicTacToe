@@ -11,14 +11,14 @@ public class Board {
     private Cell[] grid = new Cell[BOARD_DIMENSION * BOARD_DIMENSION];
 
     public Board() {
-        for (int i = 0; i < NUMBER_OF_SLOTS; i++) {
-            grid[i] = new Cell(i + 1, VACANT);
+        for (int cellIndex = 0; cellIndex < NUMBER_OF_SLOTS; cellIndex++) {
+            grid[cellIndex] = new Cell(calculateOffsetFor(cellIndex), VACANT);
         }
     }
 
     public Board(PlayerSymbol... grid) {
-        for (int i = 0; i < NUMBER_OF_SLOTS; i++) {
-            this.grid[i] = new Cell(i + 1, grid[i]);
+        for (int cellIndex = 0; cellIndex < NUMBER_OF_SLOTS; cellIndex++) {
+            this.grid[cellIndex] = new Cell(calculateOffsetFor(cellIndex), grid[cellIndex]);
         }
     }
 
@@ -27,12 +27,12 @@ public class Board {
     }
 
     public PlayerSymbol getSymbolAt(int offset) {
-        return grid[offset - 1].getSymbol();
+        return grid[calculateIndexFor(offset)].getSymbol();
     }
 
     public boolean hasFreeSpace() {
-        for (int i = 0; i < NUMBER_OF_SLOTS; i++) {
-            if (isVacantAt(i + 1)) {
+        for (int cellIndex = 0; cellIndex < NUMBER_OF_SLOTS; cellIndex++) {
+            if (isVacantAt(cellIndex)) {
                 return true;
             }
         }
@@ -40,11 +40,19 @@ public class Board {
     }
 
     public void updateAt(int offset, PlayerSymbol symbol) {
-        grid[offset - 1].setSymbol(symbol);
+        grid[calculateIndexFor(offset)].setSymbol(symbol);
     }
 
     public boolean isValidPositionAt(int offset) {
-        return isWithinGridBoundary(offset) && isVacantAt(offset);
+        return isWithinGridBoundary(calculateIndexFor(offset)) && isVacantAt(calculateIndexFor(offset));
+    }
+
+    private int calculateOffsetFor(int cellIndex) {
+        return cellIndex + 1;
+    }
+
+    private int calculateIndexFor(int offset) {
+        return offset - 1;
     }
 
     private boolean hasWinningRow() {
@@ -69,8 +77,8 @@ public class Board {
     private Function<Cell[], PlayerSymbol[]> getTheSymbolsFromCells() {
         return cells -> {
             PlayerSymbol[] symbols = new PlayerSymbol[cells.length];
-            for (int i = 0; i < cells.length; i++) {
-                symbols[i] = cells[i].getSymbol();
+            for (int cellIndex = 0; cellIndex < cells.length; cellIndex++) {
+                symbols[cellIndex] = cells[cellIndex].getSymbol();
             }
             return symbols;
         };
@@ -104,12 +112,11 @@ public class Board {
         return checkForWinIn(diagonalRows);
     }
 
-    private boolean isVacantAt(int offset) {
-        return grid[offset - 1].getSymbol() == VACANT;
+    private boolean isVacantAt(int cellIndex) {
+        return grid[cellIndex].getSymbol() == VACANT;
     }
 
     private boolean isWithinGridBoundary(int offset) {
-        return offset > 0 && offset <= NUMBER_OF_SLOTS;
+        return offset >= 0 && offset < NUMBER_OF_SLOTS;
     }
-
 }

@@ -1,14 +1,10 @@
 package ttt;
 
-import org.hamcrest.Matchers;
 import org.junit.Test;
 
-import static org.hamcrest.Matchers.*;
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
-import static ttt.PlayerSymbol.O;
-import static ttt.PlayerSymbol.VACANT;
-import static ttt.PlayerSymbol.X;
+import static ttt.PlayerSymbol.*;
 
 public class CellTest {
 

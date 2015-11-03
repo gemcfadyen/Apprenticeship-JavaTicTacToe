@@ -4,10 +4,9 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.Reader;
 import java.io.Writer;
-import java.util.List;
 
 import static ttt.Board.BOARD_DIMENSION;
-import static ttt.PlayerSymbol.*;
+import static ttt.PlayerSymbol.VACANT;
 
 public class CommandPrompt implements Prompt {
     private BufferedReader reader;
@@ -37,12 +36,12 @@ public class CommandPrompt implements Prompt {
         String boardForDisplay = newLine();
 
         Cell[][] rows = board.getRows();
-
         for (Cell[] row : rows) {
-            for (int i = 0; i < row.length; i++) {
-                int cellOffset = row[i].getOffset();
+           for (Cell cell: row) {
+                int cellOffset = cell.getOffset();
                 boardForDisplay += space() + displayCell(board, cellOffset) + getBorderFor(cellOffset);
             }
+
         }
 
         display(boardForDisplay);
@@ -105,7 +104,7 @@ public class CommandPrompt implements Prompt {
         return index == BOARD_DIMENSION * BOARD_DIMENSION;
     }
 
-    private boolean endOfRow(int i) {
-        return i % BOARD_DIMENSION == 0;
+    private boolean endOfRow(int index) {
+        return index % BOARD_DIMENSION == 0;
     }
 }

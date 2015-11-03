@@ -1,11 +1,5 @@
 package ttt;
 
-import com.sun.jdi.connect.Connector;
-
-import java.util.List;
-
-import static ttt.Board.*;
-
 public class PromptSpy implements Prompt {
     private Board lastBoardPrinted;
     private int numberOfTimesWinningMessageHasBeenPrinted = 0;
@@ -53,8 +47,8 @@ public class PromptSpy implements Prompt {
         Cell[][] rows = lastBoardPrinted.getRows();
 
         for(Cell[] cells: rows) {
-            for(int i = 0; i < cells.length; i++) {
-                gridFormation.append(lastBoardPrinted.getSymbolAt(cells[i].getOffset()));
+            for (Cell cell : cells) {
+                gridFormation.append(lastBoardPrinted.getSymbolAt(cell.getOffset()));
             }
         }
 
