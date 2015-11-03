@@ -6,4 +6,5 @@ public interface Prompt {
     void print(Board board);
     void printWinningMessage();
     void printDrawMessage();
+    void clear();
 }

@@ -36,4 +36,9 @@ public class Cell {
         return false;
     }
 
+    @Override
+    public int hashCode() {
+        int prime = 11;
+        return prime * offset;
+    }
 }

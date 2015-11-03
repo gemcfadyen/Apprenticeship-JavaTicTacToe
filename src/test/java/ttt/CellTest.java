@@ -3,6 +3,7 @@ package ttt;
 import org.junit.Test;
 
 import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.not;
 import static org.junit.Assert.assertThat;
 import static ttt.PlayerSymbol.*;
 
@@ -38,22 +39,6 @@ public class CellTest {
     }
 
     @Test
-    public void cellsEqualIfOfSameType() {
-        Cell one = new Cell(1, X);
-        Cell two = new Cell(1, X);
-
-        assertThat(one.equals(two), is(true));
-    }
-
-    @Test
-    public void cellsWithTheSameOffsetAreEqual() {
-        Cell one = new Cell(2, X);
-        Cell two = new Cell(2, X);
-
-        assertThat(one.equals(two), is(true));
-    }
-
-    @Test
     public void cellsWithDifferentOffsetAreNotEqual() {
         Cell one = new Cell(8, X);
         Cell two = new Cell(2, X);
@@ -62,7 +47,15 @@ public class CellTest {
     }
 
     @Test
-    public void cellsWithTheSameSymbolsAreEqual() {
+    public void cellsWithDifferentSymbolsAreNotEqual() {
+        Cell one = new Cell(2, VACANT);
+        Cell two = new Cell(2, X);
+
+        assertThat(one.equals(two), is(false));
+    }
+
+    @Test
+    public void cellsWithTheSameTypeAndSymbolAndOffsetAreEqual() {
         Cell one = new Cell(2, X);
         Cell two = new Cell(2, X);
 
@@ -70,10 +63,18 @@ public class CellTest {
     }
 
     @Test
-    public void cellsWithDifferentSymbolsAreNotEqual() {
-        Cell one = new Cell(2, VACANT);
+    public void equalCellsHaveTheSameHashCode() {
+        Cell one = new Cell(2, X);
         Cell two = new Cell(2, X);
 
-        assertThat(one.equals(two), is(false));
+        assertThat(one.hashCode(), is(two.hashCode()));
+    }
+
+    @Test
+    public void cellsThatHaveDifferentOffsetsHaveDifferentPrimes() {
+        Cell one = new Cell(2, X);
+        Cell two = new Cell(8, X);
+
+        assertThat(one.hashCode(), is(not(two.hashCode())));
     }
 }

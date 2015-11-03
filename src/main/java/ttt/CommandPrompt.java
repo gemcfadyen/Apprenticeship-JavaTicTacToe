@@ -9,12 +9,17 @@ import static ttt.Board.BOARD_DIMENSION;
 import static ttt.PlayerSymbol.VACANT;
 
 public class CommandPrompt implements Prompt {
+    private static final String CLEAR_SCREEN_ANSII_CHARACTERS = "\033[H\033[2J";
+    private static final String NUMBER_COLOUR_ANSII_CHARACTERS = "\033[1;30m";
+    private static final String BOARD_COLOUR_ANSII_CHARACTERS = "\033[1;36m";
+    private static final String FONT_COLOUR_ANSII_CHARACTERS = "\033[1;34m";
     private BufferedReader reader;
     private Writer writer;
 
     public CommandPrompt(Reader reader, Writer writer) {
         this.reader = new BufferedReader(reader);
         this.writer = writer;
+        clear();
     }
 
     @Override
@@ -28,31 +33,24 @@ public class CommandPrompt implements Prompt {
 
     @Override
     public void askUserForTheirMove() {
-        display("\nPlease enter the index for your next move\n");
+        display(FONT_COLOUR_ANSII_CHARACTERS
+                + "\nPlease enter the index for your next move\n");
     }
 
     @Override
     public void print(Board board) {
-        String boardForDisplay = newLine();
+        String boardForDisplay = BOARD_COLOUR_ANSII_CHARACTERS + newLine();
 
         Cell[][] rows = board.getRows();
         for (Cell[] row : rows) {
-           for (Cell cell: row) {
+            for (Cell cell : row) {
                 int cellOffset = cell.getOffset();
-                boardForDisplay += space() + displayCell(board, cellOffset) + getBorderFor(cellOffset);
+                boardForDisplay += space() + displayCell(board, cellOffset) + BOARD_COLOUR_ANSII_CHARACTERS + getBorderFor(cellOffset);
             }
 
         }
 
         display(boardForDisplay);
-    }
-
-    private String displayCell(Board board, int cellOffset) {
-        if(board.getSymbolAt(cellOffset) == VACANT) {
-            return String.valueOf(cellOffset);
-        } else {
-            return board.getSymbolAt(cellOffset).getSymbolForDisplay();
-        }
     }
 
     @Override
@@ -63,6 +61,19 @@ public class CommandPrompt implements Prompt {
     @Override
     public void printDrawMessage() {
         display("No winner this time\n");
+    }
+
+    @Override
+    public void clear() {
+        display(CLEAR_SCREEN_ANSII_CHARACTERS);
+    }
+
+    private String displayCell(Board board, int cellOffset) {
+        if (board.getSymbolAt(cellOffset) == VACANT) {
+            return NUMBER_COLOUR_ANSII_CHARACTERS + String.valueOf(cellOffset);
+        } else {
+            return board.getSymbolAt(cellOffset).getSymbolForDisplay();
+        }
     }
 
     private void display(String message) {

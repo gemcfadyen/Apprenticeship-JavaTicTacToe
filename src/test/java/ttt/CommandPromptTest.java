@@ -14,12 +14,15 @@ import static ttt.PlayerSymbol.*;
 
 
 public class CommandPromptTest {
-
+    private static final String CLEAR_SCREEN_ANSI_CHARACTERS = "\033[H\033[2J";
+    public static final String FONT_COLOUR_ANSII_CHARACTERS = "\033[1;34m";
+    private static final String BOARD_OUTLINE_COLOUR_ANSII_CHARACTERS = "\033[1;36m";
+    private static final String NUMBER_COLOUR_ANSII_CHARACTERS = "\033[1;30m";
 
     @Test
     public void readsInput() {
         StringReader reader = new StringReader("1\n");
-        Prompt prompt =  new CommandPrompt(reader, new StringWriter());
+        Prompt prompt = new CommandPrompt(reader, new StringWriter());
 
         assertThat(prompt.read(), equalTo("1"));
     }
@@ -31,7 +34,7 @@ public class CommandPromptTest {
 
         prompt.askUserForTheirMove();
 
-        assertThat(writer.toString(), is("\nPlease enter the index for your next move\n"));
+        assertThat(writer.toString().endsWith("\nPlease enter the index for your next move\n"), is(true));
     }
 
     @Test
@@ -42,14 +45,14 @@ public class CommandPromptTest {
 
         prompt.print(board);
 
-        String expectedDisplay =
-              "\n 1 | 2 | 3 \n"
-              + "-----------\n"
-              + " 4 | 5 | 6 \n"
-              + "-----------\n"
-              + " 7 | 8 | 9 \n";
+        String formattedGrid = CLEAR_SCREEN_ANSI_CHARACTERS + BOARD_OUTLINE_COLOUR_ANSII_CHARACTERS + "\n "
+                + NUMBER_COLOUR_ANSII_CHARACTERS + 1 + BOARD_OUTLINE_COLOUR_ANSII_CHARACTERS + " | " + NUMBER_COLOUR_ANSII_CHARACTERS + 2 + BOARD_OUTLINE_COLOUR_ANSII_CHARACTERS + " | " + NUMBER_COLOUR_ANSII_CHARACTERS + 3 + BOARD_OUTLINE_COLOUR_ANSII_CHARACTERS + " \n"
+                + "-----------\n "
+                + NUMBER_COLOUR_ANSII_CHARACTERS + 4 + BOARD_OUTLINE_COLOUR_ANSII_CHARACTERS + " | " + NUMBER_COLOUR_ANSII_CHARACTERS + 5 + BOARD_OUTLINE_COLOUR_ANSII_CHARACTERS + " | " + NUMBER_COLOUR_ANSII_CHARACTERS + 6 + BOARD_OUTLINE_COLOUR_ANSII_CHARACTERS + " \n"
+                + "-----------\n "
+                + NUMBER_COLOUR_ANSII_CHARACTERS + 7 + BOARD_OUTLINE_COLOUR_ANSII_CHARACTERS + " | " + NUMBER_COLOUR_ANSII_CHARACTERS + 8 + BOARD_OUTLINE_COLOUR_ANSII_CHARACTERS + " | " + NUMBER_COLOUR_ANSII_CHARACTERS + 9 + BOARD_OUTLINE_COLOUR_ANSII_CHARACTERS + " \n";
 
-        assertThat(writer.toString(), is(expectedDisplay));
+        assertThat(writer.toString(), is(formattedGrid));
     }
 
     @Test
@@ -61,17 +64,37 @@ public class CommandPromptTest {
 
         prompt.print(board);
 
-        String expectedDisplay =
-                "\n 1 | X | X \n"
-                + "-----------\n"
-                + " O | 5 | 6 \n"
-                + "-----------\n"
-                + " 7 | 8 | 9 \n";
-
-        assertThat(writer.toString(), is(expectedDisplay));
-
+        assertThat(writer.toString(), is(CLEAR_SCREEN_ANSI_CHARACTERS + BOARD_OUTLINE_COLOUR_ANSII_CHARACTERS + "\n "
+                + NUMBER_COLOUR_ANSII_CHARACTERS + 1 + BOARD_OUTLINE_COLOUR_ANSII_CHARACTERS + " | X" + BOARD_OUTLINE_COLOUR_ANSII_CHARACTERS + " | X" + BOARD_OUTLINE_COLOUR_ANSII_CHARACTERS + " \n"
+                + "-----------\n "
+                + "O" + BOARD_OUTLINE_COLOUR_ANSII_CHARACTERS + " | " + NUMBER_COLOUR_ANSII_CHARACTERS + 5 + BOARD_OUTLINE_COLOUR_ANSII_CHARACTERS + " | " + NUMBER_COLOUR_ANSII_CHARACTERS + 6 + BOARD_OUTLINE_COLOUR_ANSII_CHARACTERS + " \n"
+                + "-----------\n "
+                + NUMBER_COLOUR_ANSII_CHARACTERS + 7 + BOARD_OUTLINE_COLOUR_ANSII_CHARACTERS + " | " + NUMBER_COLOUR_ANSII_CHARACTERS + 8 + BOARD_OUTLINE_COLOUR_ANSII_CHARACTERS + " | " + NUMBER_COLOUR_ANSII_CHARACTERS + 9 + BOARD_OUTLINE_COLOUR_ANSII_CHARACTERS + " \n"));
     }
 
+    @Test
+    public void colourChangesForSymbolOnBoard() {
+        Board board = new Board(VACANT, VACANT, VACANT, O, VACANT, VACANT, VACANT, VACANT, VACANT);
+        StringWriter writer = new StringWriter();
+        Prompt prompt = new CommandPrompt(new StringReader(""), writer);
+
+        prompt.print(board);
+
+        assertThat(writer.toString().contains("3" + BOARD_OUTLINE_COLOUR_ANSII_CHARACTERS), is(true));
+    }
+
+    @Test
+    public void colourChangesForGrid() {
+        Board board = new Board(VACANT, VACANT, VACANT, O, VACANT, VACANT, VACANT, VACANT, VACANT);
+
+        StringWriter writer = new StringWriter();
+        Prompt prompt = new CommandPrompt(new StringReader(""), writer);
+
+        prompt.print(board);
+
+        assertThat(writer.toString().contains(NUMBER_COLOUR_ANSII_CHARACTERS), is(true));
+        assertThat(writer.toString().contains(BOARD_OUTLINE_COLOUR_ANSII_CHARACTERS), is(true));
+    }
 
     @Test
     public void printsWinningMessage() {
@@ -81,7 +104,7 @@ public class CommandPromptTest {
 
         prompt.printWinningMessage();
 
-        assertThat(writer.toString(), is("Congratulations - There is a winner\n"));
+        assertThat(writer.toString().endsWith("Congratulations - There is a winner\n"), is(true));
     }
 
     @Test
@@ -92,7 +115,43 @@ public class CommandPromptTest {
 
         prompt.printDrawMessage();
 
-        assertThat(writer.toString(), is("No winner this time\n"));
+        assertThat(writer.toString().endsWith("No winner this time\n"), is(true));
+    }
+
+    @Test
+    public void printsClearScreen() {
+        StringWriter writer = new StringWriter();
+        Prompt prompt = new CommandPrompt(new StringReader(""), writer);
+
+        prompt.clear();
+
+        assertThat(writer.toString().endsWith(CLEAR_SCREEN_ANSI_CHARACTERS), is(true));
+    }
+
+    @Test
+    public void clearScreenWhenNewConsoleCreated() {
+        Reader reader = new StringReader("");
+        StringWriter writer = new StringWriter();
+        new CommandPrompt(reader, writer);
+        assertThat(writer.toString().endsWith(CLEAR_SCREEN_ANSI_CHARACTERS), is(true));
+    }
+
+    @Test
+    public void setsFontColourWhenPromptingUser() {
+        Writer writer = new StringWriter();
+        Prompt commandPrompt = new CommandPrompt(new StringReader(""), writer);
+        commandPrompt.askUserForTheirMove();
+
+        assertThat(writer.toString().startsWith(CLEAR_SCREEN_ANSI_CHARACTERS + FONT_COLOUR_ANSII_CHARACTERS), is(true));
+    }
+
+    @Test
+    public void setsFontColourWhenPrintingGrid() {
+        Writer writer = new StringWriter();
+        Prompt commandPrompt = new CommandPrompt(new StringReader(""), writer);
+        commandPrompt.print(new Board());
+
+        assertThat(writer.toString().startsWith(CLEAR_SCREEN_ANSI_CHARACTERS + BOARD_OUTLINE_COLOUR_ANSII_CHARACTERS), is(true));
     }
 
     @Test(expected = ReadFromPromptException.class)

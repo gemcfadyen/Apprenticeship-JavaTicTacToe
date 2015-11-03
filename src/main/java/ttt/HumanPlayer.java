@@ -8,13 +8,13 @@ public class HumanPlayer extends Player {
 
     @Override
     public int chooseNextMoveFrom(Board board) {
-        prompt.print(board);
-        String usersInput = getNextMoveFromPrompt();
-
+        String usersInput = getPlayersNextMove(board);
         while (!validInput(board, usersInput)) {
-            usersInput = getNextMoveFromPrompt();
+            prompt.clear();
+            usersInput = getPlayersNextMove(board);
         }
 
+        prompt.clear();
         return asInteger(usersInput);
     }
 
@@ -36,7 +36,8 @@ public class HumanPlayer extends Player {
         return Integer.valueOf(usersInput);
     }
 
-    private String getNextMoveFromPrompt() {
+    private String getPlayersNextMove(Board board) {
+        prompt.print(board);
         prompt.askUserForTheirMove();
         return prompt.read();
     }
