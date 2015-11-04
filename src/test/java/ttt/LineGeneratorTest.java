@@ -34,29 +34,17 @@ public class LineGeneratorTest {
     }
 
     @Test
-    public void leftColumn() {
-        assertThat(lineGenerator.leftColumn(), is(new Cell[]{createCell(1, X), createCell(4, VACANT), createCell(7, X)}));
-    }
-
-
-    @Test
-    public void middleColumn() {
-        assertThat(lineGenerator.middleColumn(), is(new Cell[]{createCell(2, O), createCell(5, O), createCell(8, O)}));
-    }
-
-    @Test
-    public void rightColumn() {
-        assertThat(lineGenerator.rightColumn(), is(new Cell[]{createCell(3, X), createCell(6, VACANT), createCell(9, X)}));
-    }
-
-    @Test
-    public void backslashDiagonal() {
-        assertThat(lineGenerator.backslashDiagonal(), is(new Cell[]{createCell(1, X), createCell(5, O), createCell(9, X)}));
-    }
-
-    @Test
-    public void forwardslashDiagonal() {
-        assertThat(lineGenerator.forwardslashDiagonal(), is(new Cell[]{createCell(3, X), createCell(5, O), createCell(7, X)}));
+    public void linesForAllDirection() {
+        Cell[][] linesForAllDirections = lineGenerator.linesForAllDirections();
+        assertThat(linesForAllDirections.length, is(8));
+        assertThat(linesForAllDirections[0], is(new Cell[]{createCell(1, X), createCell(2, O), createCell(3, X)}));
+        assertThat(linesForAllDirections[1], is(new Cell[]{createCell(4, VACANT), createCell(5, O), createCell(6, VACANT)}));
+        assertThat(linesForAllDirections[2], is(new Cell[]{createCell(7, X), createCell(8, O), createCell(9, X)}));
+        assertThat(linesForAllDirections[3], is(new Cell[]{createCell(1, X), createCell(4, VACANT), createCell(7, X)}));
+        assertThat(linesForAllDirections[4], is(new Cell[]{createCell(2, O), createCell(5, O), createCell(8, O)}));
+        assertThat(linesForAllDirections[5], is(new Cell[]{createCell(3, X), createCell(6, VACANT), createCell(9, X)}));
+        assertThat(linesForAllDirections[6], is(new Cell[]{createCell(1, X), createCell(5, O), createCell(9, X)}));
+        assertThat(linesForAllDirections[7], is(new Cell[]{createCell(3, X), createCell(5, O), createCell(7, X)}));
     }
 
     private Cell[] initialGridSetup() {

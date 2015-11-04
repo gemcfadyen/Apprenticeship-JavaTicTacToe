@@ -7,6 +7,20 @@ public class LineGenerator {
         this.grid = grid;
     }
 
+    public Cell[][] linesForAllDirections() {
+        Cell[][] allLines = new Cell[8][];
+        allLines[0] = topRow();
+        allLines[1] = middleRow();
+        allLines[2] = bottomRow();
+        allLines[3] = leftColumn();
+        allLines[4] = middleColumn();
+        allLines[5] = rightColumn();
+        allLines[6] = backslashDiagonal();
+        allLines[7] = forwardslashDiagonal();
+
+        return allLines;
+    }
+
     public Cell[] topRow() {
         return new Cell[]{grid[0], grid[1], grid[2]};
     }
@@ -19,23 +33,23 @@ public class LineGenerator {
         return new Cell[]{grid[6], grid[7], grid[8]};
     }
 
-    public Cell[] leftColumn() {
+    private Cell[] leftColumn() {
         return new Cell[]{grid[0], grid[3], grid[6]};
     }
 
-    public Cell[] middleColumn() {
+    private Cell[] middleColumn() {
         return new Cell[]{grid[1], grid[4], grid[7]};
     }
 
-    public Cell[] rightColumn() {
+    private Cell[] rightColumn() {
         return new Cell[]{grid[2], grid[5], grid[8]};
     }
 
-    public Cell[] forwardslashDiagonal() {
+    private Cell[] forwardslashDiagonal() {
         return new Cell[]{grid[2], grid[4], grid[6]};
     }
 
-    public Cell[] backslashDiagonal() {
+    private Cell[] backslashDiagonal() {
         return new Cell[]{grid[0], grid[4], grid[8]};
     }
 }

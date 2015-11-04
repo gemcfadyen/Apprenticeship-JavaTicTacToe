@@ -58,13 +58,13 @@ public class CommandPrompt implements Prompt {
     }
 
     @Override
-    public void printWinningMessage() {
-        display("Congratulations - There is a winner\n");
+    public void printWinningMessageFor(PlayerSymbol symbol) {
+        display("Congratulations - " + symbol + " has won" + newLine());
     }
 
     @Override
     public void printDrawMessage() {
-        display("No winner this time\n");
+        display("No winner this time" + newLine());
     }
 
     @Override

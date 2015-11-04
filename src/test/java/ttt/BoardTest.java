@@ -136,6 +136,24 @@ public class BoardTest {
     }
 
     @Test
+    public void winningSymbolIdentifiedAsX() {
+        Board board = new Board(VACANT, VACANT, X, VACANT, X, VACANT, X, VACANT, VACANT);
+        assertThat(board.getWinningSymbol(), is(X));
+    }
+
+    @Test
+    public void winningSymbolIdentifiedAsO() {
+        Board board = new Board(VACANT, O, VACANT, VACANT, O, VACANT, VACANT, O, VACANT);
+        assertThat(board.getWinningSymbol(), is(O));
+    }
+
+    @Test
+    public void winningSymbolIdentifiedAsVacantIfNoWinsOnBoard() {
+        Board board = new Board();
+        assertThat(board.getWinningSymbol(), is(VACANT));
+    }
+
+    @Test
     public void updateBoardWithSpecificSymbolAtGivenPosition() {
         Board board = new Board();
         board.updateAt(2, X);
@@ -146,7 +164,6 @@ public class BoardTest {
     @Test
     public void indicatesUnoccupiedPositionOnGridIsVacant() {
         Board board = new Board();
-
         assertThat(board.isValidPositionAt(3), is(true));
     }
 

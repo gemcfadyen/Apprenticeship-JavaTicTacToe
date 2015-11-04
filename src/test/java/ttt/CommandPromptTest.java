@@ -97,14 +97,14 @@ public class CommandPromptTest {
     }
 
     @Test
-    public void printsWinningMessage() {
+    public void printsWinner() {
         Reader reader = new StringReader("");
         StringWriter writer = new StringWriter();
         CommandPrompt prompt = new CommandPrompt(reader, writer);
 
-        prompt.printWinningMessage();
+        prompt.printWinningMessageFor(X);
 
-        assertThat(writer.toString().endsWith("Congratulations - There is a winner\n"), is(true));
+        assertThat(writer.toString().endsWith("Congratulations - X has won\n"), is(true));
     }
 
     @Test
@@ -166,6 +166,6 @@ public class CommandPromptTest {
     public void raiseOutputExceptionWhenThereIsAProblemWritingToPrompt() {
         Writer writerWhichThrowsIOException = new WriterStubWhichThrowsExceptionOnWrite();
         Prompt promptWhichThrowsExceptionOnWrite = new CommandPrompt(new StringReader(""), writerWhichThrowsIOException);
-        promptWhichThrowsExceptionOnWrite.printWinningMessage();
+        promptWhichThrowsExceptionOnWrite.printWinningMessageFor(X);
     }
 }

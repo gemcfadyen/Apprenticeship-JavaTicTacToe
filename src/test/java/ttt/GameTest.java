@@ -38,7 +38,8 @@ public class GameTest {
 
         game.play();
 
-        assertThat(gamePrompt.getNumberOfTimesWinningMessageHasBeenPrinted(), is(1));
+        assertThat(gamePrompt.getNumberOfTimesXHasWon(), is(1));
+        assertThat(gamePrompt.getNumberOfTimesOHasWon(), is(0));
         assertThat(gamePrompt.getNumberOfTimesDrawMessageHasBeenPrinted(), is(0));
     }
 
@@ -55,7 +56,8 @@ public class GameTest {
         game.play();
 
         assertThat(gamePrompt.getNumberOfTimesDrawMessageHasBeenPrinted(), is(1));
-        assertThat(gamePrompt.getNumberOfTimesWinningMessageHasBeenPrinted(), is(0));
+        assertThat(gamePrompt.getNumberOfTimesXHasWon(), is(0));
+        assertThat(gamePrompt.getNumberOfTimesOHasWon(), is(0));
     }
 
     @Test

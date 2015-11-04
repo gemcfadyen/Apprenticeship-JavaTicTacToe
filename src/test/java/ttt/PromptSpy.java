@@ -5,14 +5,17 @@ import java.io.IOException;
 import java.io.Reader;
 import java.io.StringReader;
 
+import static ttt.PlayerSymbol.*;
+
 public class PromptSpy implements Prompt {
     private final BufferedReader reader;
     private Board lastBoardPrinted;
-    private int numberOfTimesWinningMessageHasBeenPrinted = 0;
     private int numberOfTimesDrawMessageHasBeenPrinted = 0;
     private int numberOfTimesPlayerIsPrompted = 0;
     private int numberOfTimesBoardIsPrinted = 0;
     private int numberOfTimesClearIsCalled = 0;
+    private int numberOfTimesXHasWon = 0;
+    private int numberOfTimesOHasWon = 0;
 
     public PromptSpy() {
         this.reader = new BufferedReader(new StringReader(""));
@@ -43,8 +46,14 @@ public class PromptSpy implements Prompt {
     }
 
     @Override
-    public void printWinningMessage() {
-        numberOfTimesWinningMessageHasBeenPrinted++;
+    public void printWinningMessageFor(PlayerSymbol symbol) {
+        if (symbol == X) {
+            numberOfTimesXHasWon++;
+        }
+
+        if (symbol == O) {
+            numberOfTimesOHasWon++;
+        }
     }
 
     @Override
@@ -57,8 +66,12 @@ public class PromptSpy implements Prompt {
         numberOfTimesClearIsCalled++;
     }
 
-    public int getNumberOfTimesWinningMessageHasBeenPrinted() {
-        return numberOfTimesWinningMessageHasBeenPrinted;
+    public int getNumberOfTimesXHasWon() {
+        return numberOfTimesXHasWon;
+    }
+
+    public int getNumberOfTimesOHasWon() {
+        return numberOfTimesOHasWon;
     }
 
     public int getNumberOfTimesDrawMessageHasBeenPrinted() {

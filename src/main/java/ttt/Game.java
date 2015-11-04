@@ -69,7 +69,7 @@ public class Game {
         if(!hasWinner) {
             gamePrompt.printDrawMessage();
         } else {
-            gamePrompt.printWinningMessage();
+            gamePrompt.printWinningMessageFor(board.getWinningSymbol());
         }
     }
 }
