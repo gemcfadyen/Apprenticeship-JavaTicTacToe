@@ -34,7 +34,8 @@ public class CommandPrompt implements Prompt {
     @Override
     public void askUserForTheirMove() {
         display(FONT_COLOUR_ANSII_CHARACTERS
-                + "\nPlease enter the index for your next move\n");
+                + newLine()
+                + "Please enter the index for your next move" + newLine());
     }
 
     @Override
@@ -45,7 +46,10 @@ public class CommandPrompt implements Prompt {
         for (Cell[] row : rows) {
             for (Cell cell : row) {
                 int cellOffset = cell.getOffset();
-                boardForDisplay += space() + displayCell(board, cellOffset) + BOARD_COLOUR_ANSII_CHARACTERS + getBorderFor(cellOffset);
+                boardForDisplay +=
+                          space()
+                        + displayCell(board, cellOffset)
+                        + getBorderFor(cellOffset);
             }
 
         }
@@ -68,14 +72,6 @@ public class CommandPrompt implements Prompt {
         display(CLEAR_SCREEN_ANSII_CHARACTERS);
     }
 
-    private String displayCell(Board board, int cellOffset) {
-        if (board.getSymbolAt(cellOffset) == VACANT) {
-            return NUMBER_COLOUR_ANSII_CHARACTERS + String.valueOf(cellOffset);
-        } else {
-            return board.getSymbolAt(cellOffset).getSymbolForDisplay();
-        }
-    }
-
     private void display(String message) {
         try {
             writer.write(message);
@@ -85,14 +81,28 @@ public class CommandPrompt implements Prompt {
         }
     }
 
+    private String displayCell(Board board, int cellOffset) {
+        if (board.getSymbolAt(cellOffset) == VACANT) {
+            return colour(cellOffset);
+        } else {
+            return board.getSymbolAt(cellOffset).getSymbolForDisplay();
+        }
+    }
+
+    private String colour(int cellOffset) {
+        return NUMBER_COLOUR_ANSII_CHARACTERS + String.valueOf(cellOffset);
+    }
+
     private String getBorderFor(int position) {
+        String border;
         if (lastRow(position)) {
-            return space() + newLine();
+            border = space() + newLine();
+        } else if (endOfRow(position)) {
+            border = dividingHorizontalLine();
+        } else {
+            border = space() + dividingVerticalLine();
         }
-        if (endOfRow(position)) {
-            return dividingHorizontalLine();
-        }
-        return space() + dividingVerticalLine();
+        return BOARD_COLOUR_ANSII_CHARACTERS + border;
     }
 
     private String dividingVerticalLine() {

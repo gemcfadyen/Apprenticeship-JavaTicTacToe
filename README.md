@@ -12,7 +12,7 @@ Using TDD write Human vs Human game of Tic Tac Toe in java
 
 # Running the application
 
-1. Clone the repo {code} git@github.com:gemcfadyen/Apprenticeship-JavaTicTacToe.git {code}
+1. Clone the repo `git@github.com:gemcfadyen/Apprenticeship-JavaTicTacToe.git`
 
 1. Ensure you have JUnit4 on your classpath (which should contain hamcrest-core-1.3.jar, hamcrest-library-1.3.jar).
 
@@ -20,12 +20,12 @@ Using TDD write Human vs Human game of Tic Tac Toe in java
 
 1. To compile the code outside of an IDE:
 
-   _cd Apprenticeship-JavaTicTacToe/src/main/java/ttt_
+   `cd Apprenticeship-JavaTicTacToe/src/main/java/ttt`
 
-   _javac PlayerSymbol.java Cell.java Board.java Prompt.java Player.javaReadFromPromptException.java WriteToPromptException.java HumanPlayer.java CommandPrompt.java Board.java Game.java_
+   `javac -d ../../../../out/production/Apprenticeship-JavaTicTacToe/ttt/ *`
 
 1. For the best user experience run from the command line
  
-   _cd Apprenticeship-JavaTicTacToe/out/production/Apprenticeship-JavaTicTacToe_
+   `cd Apprenticeship-JavaTicTacToe/out/production/Apprenticeship-JavaTicTacToe`
  
-   _java ttt/Game_
+   `java ttt/Game`
