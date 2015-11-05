@@ -6,14 +6,20 @@ import java.io.Reader;
 import java.io.Writer;
 
 import static ttt.Board.BOARD_DIMENSION;
+import static ttt.PlayerSymbol.VACANT;
 
 public class CommandPrompt implements Prompt {
+    private static final String CLEAR_SCREEN_ANSII_CHARACTERS = "\033[H\033[2J";
+    private static final String NUMBER_COLOUR_ANSII_CHARACTERS = "\033[1;30m";
+    private static final String BOARD_COLOUR_ANSII_CHARACTERS = "\033[1;36m";
+    private static final String FONT_COLOUR_ANSII_CHARACTERS = "\033[1;34m";
     private BufferedReader reader;
     private Writer writer;
 
     public CommandPrompt(Reader reader, Writer writer) {
         this.reader = new BufferedReader(reader);
         this.writer = writer;
+        clear();
     }
 
     @Override
@@ -27,37 +33,43 @@ public class CommandPrompt implements Prompt {
 
     @Override
     public void askUserForTheirMove() {
-        display("\nPlease enter the index for your next move\n");
+        display(FONT_COLOUR_ANSII_CHARACTERS
+                + newLine()
+                + "Please enter the index for your next move" + newLine());
     }
-
 
     @Override
     public void print(Board board) {
-        StringBuilder boardForDisplay = new StringBuilder();
+        String boardForDisplay = BOARD_COLOUR_ANSII_CHARACTERS + newLine();
 
-        for (int i = 0; i < BOARD_DIMENSION * BOARD_DIMENSION; i++) {
-            boardForDisplay.append(" " + i + " ");
-            boardForDisplay.append(optionallyAddNewLine(i));
+        Cell[][] rows = board.getRows();
+        for (Cell[] row : rows) {
+            for (Cell cell : row) {
+                int cellOffset = cell.getOffset();
+                boardForDisplay +=
+                          space()
+                        + displayCell(board, cellOffset)
+                        + getBorderFor(cellOffset);
+            }
+
         }
 
-        boardForDisplay.append("\n");
-
-        for (int i = 0; i < BOARD_DIMENSION * BOARD_DIMENSION; i++) {
-            boardForDisplay.append(" " + board.getSymbolAt(i).getSymbolForDisplay() + " ");
-            boardForDisplay.append(optionallyAddNewLine(i));
-        }
-
-        display(boardForDisplay.toString());
+        display(boardForDisplay);
     }
 
     @Override
-    public void printWinningMessage() {
-        display("Congratulations - There is a winner\n");
+    public void printWinningMessageFor(PlayerSymbol symbol) {
+        display("Congratulations - " + symbol + " has won" + newLine());
     }
 
     @Override
     public void printDrawMessage() {
-        display("No winner this time\n");
+        display("No winner this time" + newLine());
+    }
+
+    @Override
+    public void clear() {
+        display(CLEAR_SCREEN_ANSII_CHARACTERS);
     }
 
     private void display(String message) {
@@ -69,14 +81,51 @@ public class CommandPrompt implements Prompt {
         }
     }
 
-    private String optionallyAddNewLine(int i) {
-        if (endOfRow(i)) {
-            return ("\n");
+    private String displayCell(Board board, int cellOffset) {
+        if (board.getSymbolAt(cellOffset) == VACANT) {
+            return colour(cellOffset);
+        } else {
+            return board.getSymbolAt(cellOffset).getSymbolForDisplay();
         }
-        return "";
     }
 
-    private boolean endOfRow(int i) {
-        return (i + 1) % BOARD_DIMENSION == 0;
+    private String colour(int cellOffset) {
+        return NUMBER_COLOUR_ANSII_CHARACTERS + String.valueOf(cellOffset);
+    }
+
+    private String getBorderFor(int position) {
+        String border;
+        if (lastRow(position)) {
+            border = space() + newLine();
+        } else if (endOfRow(position)) {
+            border = dividingHorizontalLine();
+        } else {
+            border = space() + dividingVerticalLine();
+        }
+        return BOARD_COLOUR_ANSII_CHARACTERS + border;
+    }
+
+    private String dividingVerticalLine() {
+        return "|";
+    }
+
+    private String dividingHorizontalLine() {
+        return space() + newLine() + "-----------" + newLine();
+    }
+
+    private String newLine() {
+        return "\n";
+    }
+
+    private String space() {
+        return " ";
+    }
+
+    private boolean lastRow(int index) {
+        return index == BOARD_DIMENSION * BOARD_DIMENSION;
+    }
+
+    private boolean endOfRow(int index) {
+        return index % BOARD_DIMENSION == 0;
     }
 }

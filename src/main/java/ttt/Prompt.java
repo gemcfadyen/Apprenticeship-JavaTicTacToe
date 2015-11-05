@@ -4,6 +4,7 @@ public interface Prompt {
     String read();
     void askUserForTheirMove();
     void print(Board board);
-    void printWinningMessage();
+    void printWinningMessageFor(PlayerSymbol symbol);
     void printDrawMessage();
+    void clear();
 }
