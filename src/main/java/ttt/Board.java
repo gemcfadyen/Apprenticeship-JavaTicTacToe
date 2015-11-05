@@ -11,14 +11,12 @@ public class Board {
     private Cell[] grid = new Cell[BOARD_DIMENSION * BOARD_DIMENSION];
 
     public Board() {
-        for (int cellIndex = 0; cellIndex < NUMBER_OF_SLOTS; cellIndex++) {
-            grid[cellIndex] = new Cell(calculateOffsetFor(cellIndex), VACANT);
-        }
+        this(VACANT, VACANT, VACANT, VACANT, VACANT, VACANT, VACANT, VACANT, VACANT);
     }
 
     public Board(PlayerSymbol... initialGridLayout) {
         for (int cellIndex = 0; cellIndex < NUMBER_OF_SLOTS; cellIndex++) {
-            this.grid[cellIndex] = new Cell(calculateOffsetFor(cellIndex), initialGridLayout[cellIndex]);
+            grid[cellIndex] = new Cell(calculateOffsetFor(cellIndex), initialGridLayout[cellIndex]);
         }
     }
 
@@ -28,8 +26,7 @@ public class Board {
     }
 
     public boolean hasWinningCombination() {
-        LineGenerator lineGenerator = new LineGenerator(grid);
-        return checkForWinIn(lineGenerator.linesForAllDirections());
+        return checkForWinIn(new LineGenerator(grid).linesForAllDirections());
     }
 
     public PlayerSymbol getWinningSymbol() {

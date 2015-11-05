@@ -8,17 +8,9 @@ public class LineGenerator {
     }
 
     public Cell[][] linesForAllDirections() {
-        Cell[][] allLines = new Cell[8][];
-        allLines[0] = topRow();
-        allLines[1] = middleRow();
-        allLines[2] = bottomRow();
-        allLines[3] = leftColumn();
-        allLines[4] = middleColumn();
-        allLines[5] = rightColumn();
-        allLines[6] = backslashDiagonal();
-        allLines[7] = forwardslashDiagonal();
-
-        return allLines;
+        return new Cell[][] {topRow(), middleRow(), bottomRow(),
+                leftColumn(), middleColumn(), rightColumn(),
+                backslashDiagonal(), forwardslashDiagonal()};
     }
 
     public Cell[] topRow() {
