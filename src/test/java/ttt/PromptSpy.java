@@ -3,9 +3,9 @@ package ttt;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.Reader;
-import java.io.StringReader;
 
-import static ttt.PlayerSymbol.*;
+import static ttt.PlayerSymbol.O;
+import static ttt.PlayerSymbol.X;
 
 public class PromptSpy implements Prompt {
     private final BufferedReader reader;
@@ -16,10 +16,7 @@ public class PromptSpy implements Prompt {
     private int numberOfTimesClearIsCalled = 0;
     private int numberOfTimesXHasWon = 0;
     private int numberOfTimesOHasWon = 0;
-
-    public PromptSpy() {
-        this.reader = new BufferedReader(new StringReader(""));
-    }
+    private int numberOfTimesPlayerIsReprompted = 0;
 
     public PromptSpy(Reader reader) {
         this.reader = new BufferedReader(reader);
@@ -37,6 +34,11 @@ public class PromptSpy implements Prompt {
     @Override
     public void askUserForTheirMove() {
         numberOfTimesPlayerIsPrompted++;
+    }
+
+    @Override
+    public void askUserToPlayAgain() {
+        numberOfTimesPlayerIsReprompted++;
     }
 
     @Override
@@ -101,5 +103,9 @@ public class PromptSpy implements Prompt {
         }
 
         return gridFormation.toString();
+    }
+
+    public int getNumberOfTimesPlayerIsPromptedToPlayAgain() {
+        return numberOfTimesPlayerIsReprompted;
     }
 }

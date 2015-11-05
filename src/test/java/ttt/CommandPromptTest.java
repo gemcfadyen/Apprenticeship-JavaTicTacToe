@@ -38,6 +38,16 @@ public class CommandPromptTest {
     }
 
     @Test
+    public void askTheUserToPlayAgain() {
+        StringWriter writer = new StringWriter();
+        Prompt prompt = new CommandPrompt(new StringReader(""), writer);
+
+        prompt.askUserToPlayAgain();
+
+        assertThat(writer.toString().endsWith("\nPlay again? [Y/N]\n"), is(true));
+    }
+
+    @Test
     public void printsNewBoard() {
         Board board = new Board();
         StringWriter writer = new StringWriter();

@@ -39,6 +39,14 @@ public class CommandPrompt implements Prompt {
     }
 
     @Override
+    public void askUserToPlayAgain() {
+        display(FONT_COLOUR_ANSII_CHARACTERS
+                + newLine()
+                + "Play again? [Y/N]"
+                + newLine());
+    }
+
+    @Override
     public void print(Board board) {
         String boardForDisplay = BOARD_COLOUR_ANSII_CHARACTERS + newLine();
 
@@ -47,9 +55,9 @@ public class CommandPrompt implements Prompt {
             for (Cell cell : row) {
                 int cellOffset = cell.getOffset();
                 boardForDisplay +=
-                          space()
-                        + displayCell(board, cellOffset)
-                        + getBorderFor(cellOffset);
+                        space()
+                                + displayCell(board, cellOffset)
+                                + getBorderFor(cellOffset);
             }
 
         }

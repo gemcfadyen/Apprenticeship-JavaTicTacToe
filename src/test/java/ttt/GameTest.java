@@ -17,7 +17,7 @@ public class GameTest {
         PlayerSpy player2 = new PlayerSpy(createCommandPromptToReadInput("2\n3\n4\n9\n"), O);
 
         Game game = new Game(new Board(),
-                createCommandPromptToReadInput(""),
+                createCommandPromptToReadInput("N\n"),
                 player1,
                 player2);
 
@@ -29,7 +29,7 @@ public class GameTest {
 
     @Test
     public void printsCongratulatoryMessageWhenThereIsAWinningFormation() {
-        PromptSpy gamePrompt = new PromptSpy();
+        PromptSpy gamePrompt = new PromptSpy(new StringReader("N\n"));
 
         Game game = new Game(new Board(),
                 gamePrompt,
@@ -46,7 +46,7 @@ public class GameTest {
     @Test
     public void printsDrawMessageWhenThereAreNoMoreSpacesOnTheBoardAndNoWinner() {
         Board board = new Board(X, O, O, O, X, X, VACANT, VACANT, O);
-        PromptSpy gamePrompt = new PromptSpy();
+        PromptSpy gamePrompt = new PromptSpy(new StringReader("N\n"));
 
         Game game = new Game(board,
                 gamePrompt,
@@ -63,7 +63,7 @@ public class GameTest {
     @Test
     public void printsTheFinalStateOfTheBoard() {
         Board board = new Board(X, VACANT, X, O, X, O, O, O, X);
-        PromptSpy gamePrompt = new PromptSpy();
+        PromptSpy gamePrompt = new PromptSpy(new StringReader("N\n"));
 
         Game game = new Game(board, gamePrompt,
                 createHumanPlayer(createCommandPromptToReadInput("2\n"), X),
@@ -72,6 +72,40 @@ public class GameTest {
         game.play();
 
         assertThat(gamePrompt.getLastBoardThatWasPrinted(), is("XXXOXOOOX"));
+    }
+
+    @Test
+    public void promptsToPlayAgain() {
+        Board board = new Board(X, VACANT, X, O, X, O, O, O, X);
+        PromptSpy gamePrompt = new PromptSpy(new StringReader("Y\nN\n"));
+
+        Game game = new Game(board, gamePrompt,
+                createHumanPlayer(createCommandPromptToReadInput("2\n2\n3\n5\n"), X),
+                createHumanPlayer(createCommandPromptToReadInput("1\n4\n7\n"), O));
+
+        game.play();
+
+        assertThat(gamePrompt.getNumberOfTimesXHasWon(), is(1));
+        assertThat(gamePrompt.getNumberOfTimesOHasWon(), is(1));
+        assertThat(gamePrompt.getNumberOfTimesPlayerIsPromptedToPlayAgain(), is(2));
+        assertThat(gamePrompt.getNumberOfTimesClearIsCalled(), is(2));
+    }
+
+    @Test
+    public void repromptUserForValidReplayOption() {
+        Board board = new Board(X, VACANT, X, O, X, O, O, O, X);
+        PromptSpy gamePrompt = new PromptSpy(new StringReader("No\nN\n"));
+
+        Game game = new Game(board, gamePrompt,
+                createHumanPlayer(createCommandPromptToReadInput("2\n"), X),
+                createHumanPlayer(createCommandPromptToReadInput(""), O));
+
+        game.play();
+
+        assertThat(gamePrompt.getNumberOfTimesXHasWon(), is(1));
+        assertThat(gamePrompt.getNumberOfTimesOHasWon(), is(0));
+        assertThat(gamePrompt.getNumberOfTimesPlayerIsPromptedToPlayAgain(), is(2));
+        assertThat(gamePrompt.getNumberOfTimesClearIsCalled(), is(2));
     }
 
     private Prompt createCommandPromptToReadInput(String usersInputs) {
