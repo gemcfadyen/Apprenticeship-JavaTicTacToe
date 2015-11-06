@@ -91,23 +91,6 @@ public class GameTest {
         assertThat(gamePrompt.getNumberOfTimesClearIsCalled(), is(2));
     }
 
-    @Test
-    public void repromptUserForValidReplayOption() {
-        Board board = new Board(X, VACANT, X, O, X, O, O, O, X);
-        PromptSpy gamePrompt = new PromptSpy(new StringReader("No\nN\n"));
-
-        Game game = new Game(board, gamePrompt,
-                createHumanPlayer(createCommandPromptToReadInput("2\n"), X),
-                createHumanPlayer(createCommandPromptToReadInput(""), O));
-
-        game.play();
-
-        assertThat(gamePrompt.getNumberOfTimesXHasWon(), is(1));
-        assertThat(gamePrompt.getNumberOfTimesOHasWon(), is(0));
-        assertThat(gamePrompt.getNumberOfTimesPlayerIsPromptedToPlayAgain(), is(2));
-        assertThat(gamePrompt.getNumberOfTimesClearIsCalled(), is(2));
-    }
-
     private Prompt createCommandPromptToReadInput(String usersInputs) {
         return new CommandPrompt(new StringReader(usersInputs), new StringWriter());
     }

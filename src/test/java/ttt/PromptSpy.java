@@ -11,8 +11,6 @@ public class PromptSpy implements Prompt {
     private final BufferedReader reader;
     private Board lastBoardPrinted;
     private int numberOfTimesDrawMessageHasBeenPrinted = 0;
-    private int numberOfTimesPlayerIsPrompted = 0;
-    private int numberOfTimesBoardIsPrinted = 0;
     private int numberOfTimesClearIsCalled = 0;
     private int numberOfTimesXHasWon = 0;
     private int numberOfTimesOHasWon = 0;
@@ -32,8 +30,9 @@ public class PromptSpy implements Prompt {
     }
 
     @Override
-    public String readReplayOption() {
+    public String getReplayOption() {
         try {
+            numberOfTimesPlayerIsReprompted++;
             return reader.readLine();
         } catch (IOException e) {
             throw new RuntimeException("Error reading in PromptSpy");
@@ -41,18 +40,7 @@ public class PromptSpy implements Prompt {
     }
 
     @Override
-    public void askUserForTheirMove() {
-        numberOfTimesPlayerIsPrompted++;
-    }
-
-    @Override
-    public void askUserToPlayAgain() {
-        numberOfTimesPlayerIsReprompted++;
-    }
-
-    @Override
     public void print(Board board) {
-        numberOfTimesBoardIsPrinted++;
         this.lastBoardPrinted = board;
     }
 
@@ -87,14 +75,6 @@ public class PromptSpy implements Prompt {
 
     public int getNumberOfTimesDrawMessageHasBeenPrinted() {
         return numberOfTimesDrawMessageHasBeenPrinted;
-    }
-
-    public int getNumberOfTimesPlayerIsPromptedForTheirMove() {
-        return numberOfTimesPlayerIsPrompted;
-    }
-
-    public int getNumberOfTimesBoardIsPrinted() {
-        return numberOfTimesBoardIsPrinted;
     }
 
     public int getNumberOfTimesClearIsCalled() {

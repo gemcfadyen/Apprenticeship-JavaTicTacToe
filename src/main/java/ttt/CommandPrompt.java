@@ -26,35 +26,16 @@ public class CommandPrompt implements Prompt {
     public int getNextMove(Board board) {
         print(board);
         askUserForTheirMove();
-        int move = readNextMove(board);
+        int move = getValidMove(board);
         clear();
         return move;
     }
 
-
-    public int readNextMove(Board board) {
-        return validateMove(input(), board);
-    }
-
     @Override
-    public String readReplayOption() {
-        try {
-            return reader.readLine();
-        } catch (IOException e) {
-            throw new ReadFromPromptException(e.getMessage(), e);
-        }
-    }
-
-    @Override
-    public void askUserForTheirMove() {
-        display(FONT_COLOUR_ANSII_CHARACTERS
-                + "Please enter the index for your next move");
-    }
-
-    @Override
-    public void askUserToPlayAgain() {
-        display(FONT_COLOUR_ANSII_CHARACTERS
-                + "Play again? [Y/N]");
+    public String getReplayOption() {
+        clear();
+        askUserToPlayAgain();
+        return validateReplay(input());
     }
 
     @Override
@@ -66,7 +47,7 @@ public class CommandPrompt implements Prompt {
             for (Cell cell : row) {
                 int cellOffset = cell.getOffset();
                 boardForDisplay +=
-                        space()
+                                  space()
                                 + displayCell(board, cellOffset)
                                 + getBorderFor(cellOffset);
             }
@@ -95,6 +76,10 @@ public class CommandPrompt implements Prompt {
         display(CLEAR_SCREEN_ANSII_CHARACTERS);
     }
 
+    private int getValidMove(Board board) {
+        return validateMove(input(), board);
+    }
+
     public String input() {
         try {
             return reader.readLine();
@@ -106,9 +91,19 @@ public class CommandPrompt implements Prompt {
     private int validateMove(String value, Board board) {
         String input = value;
         //pass in through constructor as long as board is passed in isValid method - composite patter?
-        //return aResult object contiaing boolean and reason and maybe zero index?
+        //return aResult object contain boolean and reason and maybe zero index?
         //   allValid = obj[numberValidaor, grid boundar, isvacane];
         //   allValid = obj[numberValidaor, grid boundar, isvacane];
+
+//        UberValidator uber = new UberValidator(number, withingrid, unoccupied);
+//        Result r = uber.isValid(input, board);
+//        while(!r.isValid()) {
+//            clear();
+//            print(board);
+//            display(r.invalidReason());
+//            input = input();
+//            r = uber.isValid(input, board);
+//        }
         while (!isValid(input, board)) {
             input = input();
         }
@@ -116,8 +111,25 @@ public class CommandPrompt implements Prompt {
         return zeroIndexed(input);
     }
 
+    private void askUserForTheirMove() {
+        display(FONT_COLOUR_ANSII_CHARACTERS
+                + "Please enter the index for your next move");
+    }
+
+    private void askUserToPlayAgain() {
+        display(FONT_COLOUR_ANSII_CHARACTERS
+                + "Play again? [Y/N]");
+    }
+
+    private String validateReplay(String input) {
+        while(!isValid(input)) {
+            input = input();
+        }
+        return input;
+    }
+
     private boolean isValid(String input, Board board) {
-        for (InputValidator moveValidator : orderedListOfValidation(board)) {
+        for (InputValidator moveValidator : orderedListOfMoveValidators(board)) {
             if (!moveValidator.isValid(input)) {
                 clear();
                 print(board);
@@ -128,11 +140,26 @@ public class CommandPrompt implements Prompt {
         return true;
     }
 
-    private List<InputValidator> orderedListOfValidation(Board board) {
+    private List<InputValidator> orderedListOfMoveValidators(Board board) {
         return Arrays.asList(
                 new NumericValidator(),
                 new WithinGridBoundaryValidator(board),
                 new FreeSpaceOnBoardValidator(board));
+    }
+
+    private boolean isValid(String input) {
+        for(InputValidator replayValidator : replayValidators()) {
+            if(!replayValidator.isValid(input)) {
+                clear();
+                display(replayValidator.invalidReason(input));
+                return false;
+            }
+        }
+        return true;
+    }
+
+    private List<InputValidator> replayValidators() {
+        return Arrays.asList(new ReplayOptionValidator());
     }
 
     private int zeroIndexed(String input) {

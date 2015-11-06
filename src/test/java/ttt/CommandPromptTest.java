@@ -20,16 +20,6 @@ public class CommandPromptTest {
     private static final String NUMBER_COLOUR_ANSII_CHARACTERS = "\033[1;30m";
 
     @Test
-    public void asksUserForTheirNextMove() {
-        StringWriter writer = new StringWriter();
-        Prompt prompt = new CommandPrompt(new StringReader(""), writer);
-
-        prompt.askUserForTheirMove();
-
-        assertThat(writer.toString(), is("\n" + CLEAR_SCREEN_ANSI_CHARACTERS + "\n\n" + FONT_COLOUR_ANSII_CHARACTERS + "Please enter the index for your next move\n"));
-    }
-
-    @Test
     public void displaysBoardWhenPromptingForNextMove() {
         StringWriter writer = new StringWriter();
         Prompt prompt = new CommandPrompt(new StringReader("1\n"), writer);
@@ -67,7 +57,6 @@ public class CommandPromptTest {
         assertThat(prompt.getNextMove(new Board()), equalTo(0));
     }
 
-
     @Test
     public void repromptsWhenAlphaCharacterEnteredAsNextMove() {
         StringReader reader = new StringReader("a\nz\n1\n");
@@ -103,19 +92,49 @@ public class CommandPromptTest {
     }
 
     @Test
-    public void askTheUserToPlayAgain() {
+    public void clearsScreenBeforePromptingForReplay() {
         StringWriter writer = new StringWriter();
-        Prompt prompt = new CommandPrompt(new StringReader(""), writer);
+        Prompt prompt = new CommandPrompt(new StringReader("N\n"), writer);
 
-        prompt.askUserToPlayAgain();
+        prompt.getReplayOption();
 
-        assertThat(writer.toString(), is("\n" + CLEAR_SCREEN_ANSI_CHARACTERS + "\n\n" + FONT_COLOUR_ANSII_CHARACTERS + "Play again? [Y/N]\n"));
+        assertThat(writer.toString().contains("\n" + CLEAR_SCREEN_ANSI_CHARACTERS + "\n"), is(true));
     }
 
     @Test
     public void readsUsersReplayOption() {
         Prompt prompt = new CommandPrompt(new StringReader("Y"), new StringWriter());
-        assertThat(prompt.readReplayOption(), is("Y"));
+        assertThat(prompt.getReplayOption(), is("Y"));
+    }
+
+    @Test
+    public void promptsUserForReplayOption() {
+        StringWriter writer = new StringWriter();
+        Prompt prompt = new CommandPrompt(new StringReader("N\n"), writer);
+
+        prompt.getReplayOption();
+
+        assertThat(writer.toString().contains("Play again? [Y/N]"), is(true));
+    }
+
+    @Test
+    public void readsReplayOption() {
+        StringWriter writer = new StringWriter();
+        Prompt prompt = new CommandPrompt(new StringReader("Y\n"), writer);
+
+        String replayOption = prompt.getReplayOption();
+
+        assertThat(replayOption, is("Y"));
+    }
+
+    @Test
+    public void clearsScreenAndRepromptsWhenReplayOptionIsInvalid() {
+        StringWriter writer = new StringWriter();
+        Prompt prompt = new CommandPrompt(new StringReader("A\nN\n"), writer);
+
+        prompt.getReplayOption();
+
+        assertThat(writer.toString().contains(CLEAR_SCREEN_ANSI_CHARACTERS + "\n\n[A] is not a valid replay option. Please re-enter Y/N"), is(true));
     }
 
     @Test
@@ -225,11 +244,11 @@ public class CommandPromptTest {
     @Test
     public void setsFontColourWhenPromptingUser() {
         Writer writer = new StringWriter();
-        Prompt commandPrompt = new CommandPrompt(new StringReader(""), writer);
+        Prompt commandPrompt = new CommandPrompt(new StringReader("1\n"), writer);
 
-        commandPrompt.askUserForTheirMove();
+        commandPrompt.getNextMove(new Board());
 
-        assertThat(writer.toString(), is("\n" + CLEAR_SCREEN_ANSI_CHARACTERS + "\n\n" + FONT_COLOUR_ANSII_CHARACTERS + "Please enter the index for your next move\n"));
+        assertThat(writer.toString().contains(FONT_COLOUR_ANSII_CHARACTERS + "Please enter the index for your next move\n"), is(true));
     }
 
     @Test
@@ -261,6 +280,6 @@ public class CommandPromptTest {
         Reader readerWhichThrowsIOException = new ReaderStubWhichThrowsExceptionOnRead();
         Prompt promptWhichHasExceptionOnRead = new CommandPrompt(readerWhichThrowsIOException, new StringWriter());
 
-        promptWhichHasExceptionOnRead.readReplayOption();
+        promptWhichHasExceptionOnRead.getReplayOption();
     }
 }

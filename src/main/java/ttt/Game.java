@@ -51,7 +51,7 @@ public class Game {
         }
 
         displayResultsOfGame(hasWinner);
-        return getReplayOption();
+        return gamePrompt.getReplayOption();
     }
 
     private boolean gameInProgress(boolean hasWinner) {
@@ -67,26 +67,9 @@ public class Game {
         return currentPlayerIndex == PLAYER_ONE_INDEX ? PLAYER_TWO_INDEX : PLAYER_ONE_INDEX;
     }
 
-    private String getReplayOption() {
-        return validated(promptToPlayAgain());
-    }
-
-    private String validated(String userInput) {
-        while (invalid(userInput)) {
-            gamePrompt.clear();
-            userInput = promptToPlayAgain();
-        }
-        return userInput;
-    }
-
     private void reinitialiseBoard() {
         gamePrompt.clear();
         board = new Board();
-    }
-
-    private String promptToPlayAgain() {
-        gamePrompt.askUserToPlayAgain();
-        return gamePrompt.readReplayOption();
     }
 
     private void displayResultsOfGame(boolean hasWinner) {
@@ -100,11 +83,6 @@ public class Game {
         } else {
             gamePrompt.printWinningMessageFor(board.getWinningSymbol());
         }
-    }
-
-    private boolean invalid(String userInput) {
-        return !userInput.equals(Y.name())
-                && !userInput.equals(N.name());
     }
 
     private static CommandPrompt buildPrompt() {

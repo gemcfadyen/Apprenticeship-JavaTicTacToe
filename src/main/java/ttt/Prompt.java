@@ -2,9 +2,7 @@ package ttt;
 
 public interface Prompt {
     int getNextMove(Board board);
-    String readReplayOption();
-    void askUserForTheirMove();
-    void askUserToPlayAgain();
+    String getReplayOption();
     void print(Board board);
     void printWinningMessageFor(PlayerSymbol symbol);
     void printDrawMessage();
