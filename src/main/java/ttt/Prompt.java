@@ -1,7 +1,8 @@
 package ttt;
 
 public interface Prompt {
-    String read();
+    int getNextMove(Board board);
+    String readReplayOption();
     void askUserForTheirMove();
     void askUserToPlayAgain();
     void print(Board board);

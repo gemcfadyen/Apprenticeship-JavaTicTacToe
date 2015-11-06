@@ -23,7 +23,16 @@ public class PromptSpy implements Prompt {
     }
 
     @Override
-    public String read() {
+    public int getNextMove(Board board) {
+        try {
+            return Integer.valueOf(reader.readLine());
+        } catch (IOException e) {
+            throw new RuntimeException("Error reading in PromptSpy");
+        }
+    }
+
+    @Override
+    public String readReplayOption() {
         try {
             return reader.readLine();
         } catch (IOException e) {

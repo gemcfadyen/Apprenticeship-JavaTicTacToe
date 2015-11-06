@@ -1,9 +1,8 @@
 package ttt;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.Reader;
-import java.io.Writer;
+import java.io.*;
+import java.util.Arrays;
+import java.util.List;
 
 import static ttt.Board.BOARD_DIMENSION;
 import static ttt.PlayerSymbol.VACANT;
@@ -19,11 +18,26 @@ public class CommandPrompt implements Prompt {
     public CommandPrompt(Reader reader, Writer writer) {
         this.reader = new BufferedReader(reader);
         this.writer = writer;
+
         clear();
     }
 
     @Override
-    public String read() {
+    public int getNextMove(Board board) {
+        print(board);
+        askUserForTheirMove();
+        int move = readNextMove(board);
+        clear();
+        return move;
+    }
+
+
+    public int readNextMove(Board board) {
+        return validateMove(input(), board);
+    }
+
+    @Override
+    public String readReplayOption() {
         try {
             return reader.readLine();
         } catch (IOException e) {
@@ -34,16 +48,13 @@ public class CommandPrompt implements Prompt {
     @Override
     public void askUserForTheirMove() {
         display(FONT_COLOUR_ANSII_CHARACTERS
-                + newLine()
-                + "Please enter the index for your next move" + newLine());
+                + "Please enter the index for your next move");
     }
 
     @Override
     public void askUserToPlayAgain() {
         display(FONT_COLOUR_ANSII_CHARACTERS
-                + newLine()
-                + "Play again? [Y/N]"
-                + newLine());
+                + "Play again? [Y/N]");
     }
 
     @Override
@@ -67,12 +78,16 @@ public class CommandPrompt implements Prompt {
 
     @Override
     public void printWinningMessageFor(PlayerSymbol symbol) {
-        display("Congratulations - " + symbol + " has won" + newLine());
+        display(FONT_COLOUR_ANSII_CHARACTERS
+                + "Congratulations - "
+                + symbol
+                + " has won");
     }
 
     @Override
     public void printDrawMessage() {
-        display("No winner this time" + newLine());
+        display(FONT_COLOUR_ANSII_CHARACTERS
+                + "No winner this time");
     }
 
     @Override
@@ -80,9 +95,53 @@ public class CommandPrompt implements Prompt {
         display(CLEAR_SCREEN_ANSII_CHARACTERS);
     }
 
+    public String input() {
+        try {
+            return reader.readLine();
+        } catch (IOException e) {
+            throw new ReadFromPromptException(e.getMessage(), e);
+        }
+    }
+
+    private int validateMove(String value, Board board) {
+        String input = value;
+        //pass in through constructor as long as board is passed in isValid method - composite patter?
+        //return aResult object contiaing boolean and reason and maybe zero index?
+        //   allValid = obj[numberValidaor, grid boundar, isvacane];
+        //   allValid = obj[numberValidaor, grid boundar, isvacane];
+        while (!isValid(input, board)) {
+            input = input();
+        }
+
+        return zeroIndexed(input);
+    }
+
+    private boolean isValid(String input, Board board) {
+        for (InputValidator moveValidator : orderedListOfValidation(board)) {
+            if (!moveValidator.isValid(input)) {
+                clear();
+                print(board);
+                display(moveValidator.invalidReason(input));
+                return false;
+            }
+        }
+        return true;
+    }
+
+    private List<InputValidator> orderedListOfValidation(Board board) {
+        return Arrays.asList(
+                new NumericValidator(),
+                new WithinGridBoundaryValidator(board),
+                new FreeSpaceOnBoardValidator(board));
+    }
+
+    private int zeroIndexed(String input) {
+        return Integer.valueOf(input) - 1;
+    }
+
     private void display(String message) {
         try {
-            writer.write(message);
+            writer.write(newLine() + message + newLine());
             writer.flush();
         } catch (IOException e) {
             throw new WriteToPromptException("An exception occurred when writing", e);
@@ -98,13 +157,13 @@ public class CommandPrompt implements Prompt {
     }
 
     private String colour(int cellOffset) {
-        return NUMBER_COLOUR_ANSII_CHARACTERS + String.valueOf(cellOffset);
+        return NUMBER_COLOUR_ANSII_CHARACTERS + String.valueOf(cellOffset + 1);
     }
 
     private String getBorderFor(int position) {
         String border;
         if (lastRow(position)) {
-            border = space() + newLine();
+            border = space();
         } else if (endOfRow(position)) {
             border = dividingHorizontalLine();
         } else {
@@ -130,10 +189,10 @@ public class CommandPrompt implements Prompt {
     }
 
     private boolean lastRow(int index) {
-        return index == BOARD_DIMENSION * BOARD_DIMENSION;
+        return index == (BOARD_DIMENSION * BOARD_DIMENSION - 1);
     }
 
     private boolean endOfRow(int index) {
-        return index % BOARD_DIMENSION == 0;
+        return (index + 1) % BOARD_DIMENSION == 0;
     }
 }

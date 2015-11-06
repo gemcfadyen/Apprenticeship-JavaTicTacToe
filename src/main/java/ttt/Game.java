@@ -86,12 +86,12 @@ public class Game {
 
     private String promptToPlayAgain() {
         gamePrompt.askUserToPlayAgain();
-        return gamePrompt.read();
+        return gamePrompt.readReplayOption();
     }
 
     private void displayResultsOfGame(boolean hasWinner) {
-        printExitMessage(hasWinner);
         gamePrompt.print(board);
+        printExitMessage(hasWinner);
     }
 
     private void printExitMessage(boolean hasWinner) {

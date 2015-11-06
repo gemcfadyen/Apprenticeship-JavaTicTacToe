@@ -11,7 +11,7 @@ public class PlayerSpy extends Player {
     @Override
     public int chooseNextMoveFrom(Board board) {
         numberOfTurnsTaken++;
-        return Integer.valueOf(prompt.read());
+        return Integer.valueOf(prompt.getNextMove(board));
     }
 
     public int numberOfTurnsTaken() {
