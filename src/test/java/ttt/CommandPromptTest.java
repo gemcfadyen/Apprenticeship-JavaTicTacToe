@@ -15,9 +15,11 @@ import static ttt.PlayerSymbol.*;
 
 public class CommandPromptTest {
     private static final String CLEAR_SCREEN_ANSI_CHARACTERS = "\033[H\033[2J";
-    public static final String FONT_COLOUR_ANSII_CHARACTERS = "\033[1;34m";
+    public static final String FONT_COLOUR_ANSII_CHARACTERS = "\033[1;37m";
     private static final String BOARD_OUTLINE_COLOUR_ANSII_CHARACTERS = "\033[1;36m";
     private static final String NUMBER_COLOUR_ANSII_CHARACTERS = "\033[1;30m";
+    private static final String X_COLOUR = "\033[1;33m";
+    private static final String O_COLOUR = "\033[1;31m";
 
     @Test
     public void displaysBoardWhenPromptingForNextMove() {
@@ -169,9 +171,9 @@ public class CommandPromptTest {
         prompt.print(board);
 
         assertThat(writer.toString(), is("\n" + CLEAR_SCREEN_ANSI_CHARACTERS + "\n\n" + BOARD_OUTLINE_COLOUR_ANSII_CHARACTERS + "\n "
-                + NUMBER_COLOUR_ANSII_CHARACTERS + 1 + BOARD_OUTLINE_COLOUR_ANSII_CHARACTERS + " | X" + BOARD_OUTLINE_COLOUR_ANSII_CHARACTERS + " | X" + BOARD_OUTLINE_COLOUR_ANSII_CHARACTERS + " \n"
+                + NUMBER_COLOUR_ANSII_CHARACTERS + 1 + BOARD_OUTLINE_COLOUR_ANSII_CHARACTERS + " | " + X_COLOUR + X.name() + BOARD_OUTLINE_COLOUR_ANSII_CHARACTERS + " | " + X_COLOUR + X.name() + BOARD_OUTLINE_COLOUR_ANSII_CHARACTERS + " \n"
                 + "-----------\n "
-                + "O" + BOARD_OUTLINE_COLOUR_ANSII_CHARACTERS + " | " + NUMBER_COLOUR_ANSII_CHARACTERS + 5 + BOARD_OUTLINE_COLOUR_ANSII_CHARACTERS + " | " + NUMBER_COLOUR_ANSII_CHARACTERS + 6 + BOARD_OUTLINE_COLOUR_ANSII_CHARACTERS + " \n"
+                + O_COLOUR + O.name() + BOARD_OUTLINE_COLOUR_ANSII_CHARACTERS + " | " + NUMBER_COLOUR_ANSII_CHARACTERS + 5 + BOARD_OUTLINE_COLOUR_ANSII_CHARACTERS + " | " + NUMBER_COLOUR_ANSII_CHARACTERS + 6 + BOARD_OUTLINE_COLOUR_ANSII_CHARACTERS + " \n"
                 + "-----------\n "
                 + NUMBER_COLOUR_ANSII_CHARACTERS + 7 + BOARD_OUTLINE_COLOUR_ANSII_CHARACTERS + " | " + NUMBER_COLOUR_ANSII_CHARACTERS + 8 + BOARD_OUTLINE_COLOUR_ANSII_CHARACTERS + " | " + NUMBER_COLOUR_ANSII_CHARACTERS + 9 + BOARD_OUTLINE_COLOUR_ANSII_CHARACTERS + " \n"));
     }
@@ -208,7 +210,7 @@ public class CommandPromptTest {
 
         prompt.printWinningMessageFor(X);
 
-        assertThat(writer.toString(), is("\n" + CLEAR_SCREEN_ANSI_CHARACTERS + "\n\n" + FONT_COLOUR_ANSII_CHARACTERS + "Congratulations - X has won\n"));
+        assertThat(writer.toString(), is("\n" + CLEAR_SCREEN_ANSI_CHARACTERS + "\n\n" + FONT_COLOUR_ANSII_CHARACTERS + "Congratulations - " + X_COLOUR + X.name() + FONT_COLOUR_ANSII_CHARACTERS + " has won\n"));
     }
 
     @Test

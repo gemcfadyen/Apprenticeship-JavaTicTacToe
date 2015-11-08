@@ -5,13 +5,16 @@ import java.util.Arrays;
 import java.util.List;
 
 import static ttt.Board.BOARD_DIMENSION;
+import static ttt.PlayerSymbol.*;
 import static ttt.PlayerSymbol.VACANT;
 
 public class CommandPrompt implements Prompt {
     private static final String CLEAR_SCREEN_ANSII_CHARACTERS = "\033[H\033[2J";
     private static final String NUMBER_COLOUR_ANSII_CHARACTERS = "\033[1;30m";
     private static final String BOARD_COLOUR_ANSII_CHARACTERS = "\033[1;36m";
-    private static final String FONT_COLOUR_ANSII_CHARACTERS = "\033[1;34m";
+    private static final String FONT_COLOUR_ANSII_CHARACTERS = "\033[1;37m";
+    private static final String X_COLOUR_ANSII_CHARACTERS = "\033[1;33m";
+    private static final String O_COLOUR_ANSII_CHARACTERS = "\033[1;31m";
     private BufferedReader reader;
     private Writer writer;
 
@@ -33,7 +36,6 @@ public class CommandPrompt implements Prompt {
 
     @Override
     public String getReplayOption() {
-        clear();
         askUserToPlayAgain();
         return validateReplay(input());
     }
@@ -61,7 +63,8 @@ public class CommandPrompt implements Prompt {
     public void printWinningMessageFor(PlayerSymbol symbol) {
         display(FONT_COLOUR_ANSII_CHARACTERS
                 + "Congratulations - "
-                + symbol
+                + colour(symbol)
+                + FONT_COLOUR_ANSII_CHARACTERS
                 + " has won");
     }
 
@@ -179,8 +182,16 @@ public class CommandPrompt implements Prompt {
         if (symbol == VACANT) {
             return colour(cellOffset);
         } else {
-            return symbol.getSymbolForDisplay();
+            return colour(symbol);
         }
+    }
+
+    private String colour(PlayerSymbol symbol) {
+
+        if(symbol.equals(X)) {
+            return X_COLOUR_ANSII_CHARACTERS + symbol.getSymbolForDisplay();
+        }
+        return O_COLOUR_ANSII_CHARACTERS + symbol.getSymbolForDisplay();
     }
 
     private String colour(int cellOffset) {
