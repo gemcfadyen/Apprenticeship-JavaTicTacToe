@@ -11,13 +11,17 @@ public class PromptSpy implements Prompt {
     private final BufferedReader reader;
     private Board lastBoardPrinted;
     private int numberOfTimesDrawMessageHasBeenPrinted = 0;
-    private int numberOfTimesClearIsCalled = 0;
     private int numberOfTimesXHasWon = 0;
     private int numberOfTimesOHasWon = 0;
     private int numberOfTimesPlayerIsReprompted = 0;
 
     public PromptSpy(Reader reader) {
         this.reader = new BufferedReader(reader);
+    }
+
+    @Override
+    public int getPlayerOption() {
+        return 0;
     }
 
     @Override

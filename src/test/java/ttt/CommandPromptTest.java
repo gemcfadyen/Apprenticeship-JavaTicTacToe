@@ -15,11 +15,21 @@ import static ttt.PlayerSymbol.*;
 
 public class CommandPromptTest {
     private static final String CLEAR_SCREEN_ANSI_CHARACTERS = "\033[H\033[2J";
-    public static final String FONT_COLOUR_ANSII_CHARACTERS = "\033[1;37m";
+    private static final String FONT_COLOUR_ANSII_CHARACTERS = "\033[1;37m";
     private static final String BOARD_OUTLINE_COLOUR_ANSII_CHARACTERS = "\033[1;36m";
     private static final String NUMBER_COLOUR_ANSII_CHARACTERS = "\033[1;30m";
     private static final String X_COLOUR = "\033[1;33m";
     private static final String O_COLOUR = "\033[1;31m";
+
+    private static final String A_IS_NOT_A_NUMBER = "[a] is not a valid number. Please re-enter a numeric value";
+    private static final String Z_IS_NOT_A_NUMBER = "[z] is not a valid number. Please re-enter a numeric value";
+    private static final String PLAY_AGAIN_PROMPT = "Play again? [Y/N]";
+    private static final String NEXT_MOVE_PROMPT = "Please enter the index for your next move";
+    private static final String DRAW_MESSAGE = "No winner this time";
+    private static final String A_IS_NOT_REPLAY_OPTION = "[A] is not a valid replay option. Please re-enter Y/N";
+    private static final String ALREADY_OCCUPIED_CELL_MESSAGE = "[1] is already occupied. Please re-enter a valid number within the grid boundary";
+    private static final String LARGER_THAN_GRID_BOUNDARY_MESSAGE = "[100] is outside of the grid boundary. Please re-enter a valid number within the grid boundary";
+    private static final String SMALLER_THAN_GRID_BOUNDARY_MESSAGE = "[-100] is outside of the grid boundary. Please re-enter a valid number within the grid boundary";
 
     @Test
     public void displaysBoardWhenPromptingForNextMove() {
@@ -38,7 +48,7 @@ public class CommandPromptTest {
 
         prompt.getNextMove(new Board());
 
-        assertThat(writer.toString().endsWith("\n" + CLEAR_SCREEN_ANSI_CHARACTERS + vacantBoard() + "\n[a] is not a valid number. Please re-enter a numeric value\n\n" + CLEAR_SCREEN_ANSI_CHARACTERS + "\n"), is(true));
+        assertThat(writer.toString().endsWith("\n" + CLEAR_SCREEN_ANSI_CHARACTERS + vacantBoard() + "\n" + A_IS_NOT_A_NUMBER + "\n\n" + CLEAR_SCREEN_ANSI_CHARACTERS + "\n"), is(true));
     }
 
     @Test
@@ -66,8 +76,8 @@ public class CommandPromptTest {
         Prompt prompt = new CommandPrompt(reader, writer);
 
         assertThat(prompt.getNextMove(new Board()), equalTo(0));
-        assertThat(writer.toString().contains("[a] is not a valid number. Please re-enter a numeric value"), is(true));
-        assertThat(writer.toString().contains("[z] is not a valid number. Please re-enter a numeric value"), is(true));
+        assertThat(writer.toString().contains(A_IS_NOT_A_NUMBER), is(true));
+        assertThat(writer.toString().contains(Z_IS_NOT_A_NUMBER), is(true));
     }
 
     @Test
@@ -78,8 +88,8 @@ public class CommandPromptTest {
 
         assertThat(prompt.getNextMove(new Board()), equalTo(0));
 
-        assertThat(writer.toString().contains("[100] is outside of the grid boundary. Please re-enter a valid number within the grid boundary"), is(true));
-        assertThat(writer.toString().contains("[-100] is outside of the grid boundary. Please re-enter a valid number within the grid boundary"), is(true));
+        assertThat(writer.toString().contains(LARGER_THAN_GRID_BOUNDARY_MESSAGE), is(true));
+        assertThat(writer.toString().contains(SMALLER_THAN_GRID_BOUNDARY_MESSAGE), is(true));
     }
 
     @Test
@@ -90,7 +100,7 @@ public class CommandPromptTest {
 
         assertThat(prompt.getNextMove(new Board(X, VACANT, VACANT, VACANT, VACANT, VACANT, VACANT, VACANT, VACANT)), equalTo(1));
 
-        assertThat(writer.toString().contains("[1] is already occupied. Please re-enter a valid number within the grid boundary"), is(true));
+        assertThat(writer.toString().contains(ALREADY_OCCUPIED_CELL_MESSAGE), is(true));
     }
 
     @Test
@@ -110,7 +120,7 @@ public class CommandPromptTest {
 
         prompt.getReplayOption();
 
-        assertThat(writer.toString().contains("Play again? [Y/N]"), is(true));
+        assertThat(writer.toString().contains(PLAY_AGAIN_PROMPT), is(true));
     }
 
     @Test
@@ -139,8 +149,44 @@ public class CommandPromptTest {
 
         prompt.getReplayOption();
 
-        assertThat(writer.toString().contains(CLEAR_SCREEN_ANSI_CHARACTERS + "\n\n[A] is not a valid replay option. Please re-enter Y/N"), is(true));
+        assertThat(writer.toString().contains(CLEAR_SCREEN_ANSI_CHARACTERS + "\n\n" + A_IS_NOT_REPLAY_OPTION), is(true));
     }
+
+    @Test
+    public void promptsForPlayerSelection() {
+        StringWriter writer = new StringWriter();
+        Prompt prompt = new CommandPrompt(new StringReader("1\n"), writer);
+
+        prompt.getPlayerOption();
+
+        assertThat(writer.toString().contains(CLEAR_SCREEN_ANSI_CHARACTERS + "\n\n" + CLEAR_SCREEN_ANSI_CHARACTERS + "\n\n" + FONT_COLOUR_ANSII_CHARACTERS
+                + "Choose opponent:\nEnter 1 to play Human vs Human"), is(true));
+    }
+
+    @Test
+    public void readsPlayerChoice() {
+        StringWriter writer = new StringWriter();
+        Prompt prompt = new CommandPrompt(new StringReader("1\n"), writer);
+
+        int playerChoice = prompt.getPlayerOption();
+
+        assertThat(playerChoice, is(1));
+    }
+
+    @Test
+    public void repromptsPlayerChoiceWhenAlphaCharacterEntered() {
+        StringWriter writer = new StringWriter();
+        Prompt prompt = new CommandPrompt(new StringReader("A\n1\n"), writer);
+
+        int playerChoice = prompt.getPlayerOption();
+
+        assertThat(playerChoice, is(1));
+        String s = writer.toString();
+        assertThat(s.contains("[A] is not a valid number. Please re-enter a numeric value\n\n"
+                + FONT_COLOUR_ANSII_CHARACTERS
+                + "Choose opponent:\nEnter 1 to play Human vs Human"), is(true));
+    }
+
 
     @Test
     public void printsNewBoard() {
@@ -191,7 +237,7 @@ public class CommandPromptTest {
 
         prompt.printDrawMessage();
 
-        assertThat(writer.toString(), is("\n" + CLEAR_SCREEN_ANSI_CHARACTERS + "\n\n" + FONT_COLOUR_ANSII_CHARACTERS + "No winner this time\n"));
+        assertThat(writer.toString(), is("\n" + CLEAR_SCREEN_ANSI_CHARACTERS + "\n\n" + FONT_COLOUR_ANSII_CHARACTERS + DRAW_MESSAGE + "\n"));
     }
 
     @Test
@@ -209,7 +255,7 @@ public class CommandPromptTest {
 
         commandPrompt.getNextMove(new Board());
 
-        assertThat(writer.toString().contains(FONT_COLOUR_ANSII_CHARACTERS + "Please enter the index for your next move\n"), is(true));
+        assertThat(writer.toString().contains(FONT_COLOUR_ANSII_CHARACTERS + NEXT_MOVE_PROMPT + "\n"), is(true));
     }
 
     @Test

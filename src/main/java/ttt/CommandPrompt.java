@@ -2,7 +2,9 @@ package ttt;
 
 import java.io.*;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
+import java.util.function.Function;
 
 import static ttt.Board.BOARD_DIMENSION;
 import static ttt.PlayerSymbol.*;
@@ -26,12 +28,87 @@ public class CommandPrompt implements Prompt {
     }
 
     @Override
+    public int getPlayerOption() {
+        clear();
+        askUserForPlayerChoice();
+        TempInputValidator compoundValidator = new CompoundValidator(Collections.singletonList(new NumericValidator()));
+        Function<Void, Void> doNothing = o -> null;
+
+        Function<Void, Void> reprompt = aVoid -> {
+            askUserForPlayerChoice();
+            return null;
+        };
+
+        return asInteger(getValidInput(compoundValidator, input(), null, doNothing, reprompt));
+    }
+
+    @Override
     public int getNextMove(Board board) {
         print(board);
         askUserForTheirMove();
-        int move = getValidMove(board);
+        TempInputValidator compoundValidator = new CompoundValidator(orderedListOfMoveValidators(board));
+
+        Function<Board, Void> displayBeforeReprompt = currentBoard -> {
+            clear();
+            print(currentBoard);
+            return null;
+        };
+
+        Function<Void, Void> doNothing = o -> null;
+
+
+        String validInput = getValidInput(compoundValidator, input(), board, displayBeforeReprompt, doNothing);
         clear();
-        return move;
+        return zeroIndexed(validInput);
+
+//        int move = getValidMove(board);
+//        clear();
+//        return zeroIndexed(input);
+    }
+
+    //TODO move these two methods down
+    private int asInteger(String input) {
+        return Integer.valueOf(input);
+    }
+
+    private String getValidInput(TempInputValidator compoundValidator,
+                                 String input,
+                                 Board board,
+                                 Function beforeValidationMessage,
+                                 Function afterValidationMessage) {
+
+        ValidationResult validationResult = compoundValidator.isValid(input);
+        while (!validationResult.isValid()) {
+            beforeValidationMessage.apply(board);
+
+            display(validationResult.reason());
+
+            afterValidationMessage.apply(null);
+            validationResult = compoundValidator.isValid(input());
+        }
+        return validationResult.userInput();
+    }
+
+    //TODO below is legacy
+    private int getValidMove(Board board) {
+        String input = input(); //done
+        while (!isValidLocal(input, board)) {
+            input = input();
+        }
+
+        return zeroIndexed(input);
+    }
+
+    private boolean isValidLocal(String input, Board board) {
+        for (InputValidator moveValidator : orderedListOfMoveValidators(board)) {
+            if (!moveValidator.isValid(input)) {
+                clear();
+                print(board);
+                display(moveValidator.invalidReason(input));
+                return false;
+            }
+        }
+        return true;
     }
 
     @Override
@@ -49,11 +126,11 @@ public class CommandPrompt implements Prompt {
         Line[] rows = board.getRows();
         int offset = 0;
         for (Line row : rows) {
-            for(PlayerSymbol symbol : row.getSymbols()) {
+            for (PlayerSymbol symbol : row.getSymbols()) {
                 boardForDisplay +=
-                          space()
-                        + displayCell(symbol, offset)
-                        + getBorderFor(offset);
+                        space()
+                                + displayCell(symbol, offset)
+                                + getBorderFor(offset);
                 offset++;
             }
         }
@@ -76,6 +153,14 @@ public class CommandPrompt implements Prompt {
                 + "No winner this time");
     }
 
+    private void askUserForPlayerChoice() {
+        display(FONT_COLOUR_ANSII_CHARACTERS
+                        + "Choose opponent:"
+                        + newLine()
+                        + "Enter 1 to play Human vs Human"
+        );
+    }
+
     private void askUserForTheirMove() {
         display(FONT_COLOUR_ANSII_CHARACTERS
                 + "Please enter the index for your next move");
@@ -90,33 +175,6 @@ public class CommandPrompt implements Prompt {
         }
     }
 
-    private int getValidMove(Board board) {
-        return validateMove(input(), board);
-    }
-
-    private int validateMove(String value, Board board) {
-        String input = value;
-        //pass in through constructor as long as board is passed in isValid method - composite patter?
-        //return aResult object contain boolean and reason and maybe zero index?
-        //   allValid = obj[numberValidaor, grid boundar, isvacane];
-        //   allValid = obj[numberValidaor, grid boundar, isvacane];
-
-//        UberValidator uber = new UberValidator(number, withingrid, unoccupied);
-//        Result r = uber.isValid(input, board);
-//        while(!r.isValid()) {
-//            clear();
-//            print(board);
-//            display(r.invalidReason());
-//            input = input();
-//            r = uber.isValid(input, board);
-//        }
-        while (!isValid(input, board)) {
-            input = input();
-        }
-
-        return zeroIndexed(input);
-    }
-
     private void clear() {
         display(CLEAR_SCREEN_ANSII_CHARACTERS);
     }
@@ -124,18 +182,6 @@ public class CommandPrompt implements Prompt {
     private void askUserToPlayAgain() {
         display(FONT_COLOUR_ANSII_CHARACTERS
                 + "Play again? [Y/N]");
-    }
-
-    private boolean isValid(String input, Board board) {
-        for (InputValidator moveValidator : orderedListOfMoveValidators(board)) {
-            if (!moveValidator.isValid(input)) {
-                clear();
-                print(board);
-                display(moveValidator.invalidReason(input));
-                return false;
-            }
-        }
-        return true;
     }
 
     private String validateReplay(String input) {
@@ -189,7 +235,7 @@ public class CommandPrompt implements Prompt {
 
     private String colour(PlayerSymbol symbol) {
 
-        if(symbol.equals(X)) {
+        if (symbol.equals(X)) {
             return X_COLOUR_ANSII_CHARACTERS + symbol.getSymbolForDisplay();
         }
         return O_COLOUR_ANSII_CHARACTERS + symbol.getSymbolForDisplay();
