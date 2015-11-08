@@ -83,11 +83,11 @@ public class PromptSpy implements Prompt {
 
     public String getLastBoardThatWasPrinted() {
         StringBuilder gridFormation = new StringBuilder();
-        Cell[][] rows = lastBoardPrinted.getRows();
+        Line[] rows = lastBoardPrinted.getRows();
 
-        for (Cell[] cells : rows) {
-            for (Cell cell : cells) {
-                gridFormation.append(lastBoardPrinted.getSymbolAt(cell.getOffset()));
+        for (Line row : rows) {
+            for (PlayerSymbol symbol : row.getSymbols()) {
+                gridFormation.append(symbol);
             }
         }
 

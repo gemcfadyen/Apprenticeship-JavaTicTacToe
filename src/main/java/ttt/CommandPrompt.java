@@ -42,16 +42,16 @@ public class CommandPrompt implements Prompt {
     public void print(Board board) {
         String boardForDisplay = BOARD_COLOUR_ANSII_CHARACTERS + newLine();
 
-        Cell[][] rows = board.getRows();
-        for (Cell[] row : rows) {
-            for (Cell cell : row) {
-                int cellOffset = cell.getOffset();
+        Line[] rows = board.getRows();
+        int offset = 0;
+        for (Line row : rows) {
+            for(PlayerSymbol symbol : row.getSymbols()) {
                 boardForDisplay +=
-                                  space()
-                                + displayCell(board, cellOffset)
-                                + getBorderFor(cellOffset);
+                          space()
+                        + displayCell(symbol, offset)
+                        + getBorderFor(offset);
+                offset++;
             }
-
         }
 
         display(boardForDisplay);
@@ -122,7 +122,7 @@ public class CommandPrompt implements Prompt {
     }
 
     private String validateReplay(String input) {
-        while(!isValid(input)) {
+        while (!isValid(input)) {
             input = input();
         }
         return input;
@@ -148,8 +148,8 @@ public class CommandPrompt implements Prompt {
     }
 
     private boolean isValid(String input) {
-        for(InputValidator replayValidator : replayValidators()) {
-            if(!replayValidator.isValid(input)) {
+        for (InputValidator replayValidator : replayValidators()) {
+            if (!replayValidator.isValid(input)) {
                 clear();
                 display(replayValidator.invalidReason(input));
                 return false;
@@ -175,11 +175,11 @@ public class CommandPrompt implements Prompt {
         }
     }
 
-    private String displayCell(Board board, int cellOffset) {
-        if (board.getSymbolAt(cellOffset) == VACANT) {
+    private String displayCell(PlayerSymbol symbol, int cellOffset) {
+        if (symbol == VACANT) {
             return colour(cellOffset);
         } else {
-            return board.getSymbolAt(cellOffset).getSymbolForDisplay();
+            return symbol.getSymbolForDisplay();
         }
     }
 

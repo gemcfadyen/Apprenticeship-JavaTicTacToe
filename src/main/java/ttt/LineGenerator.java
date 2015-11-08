@@ -1,47 +1,73 @@
 package ttt;
 
-public class LineGenerator {
-    private final Cell[] grid;
+import java.util.Arrays;
 
-    public LineGenerator(Cell[] grid) {
+import static ttt.PlayerSymbol.O;
+import static ttt.PlayerSymbol.X;
+
+public class LineGenerator {
+    private final PlayerSymbol[] grid;
+
+    public LineGenerator(PlayerSymbol... grid) {
         this.grid = grid;
     }
 
-    public Cell[][] linesForAllDirections() {
-        return new Cell[][] {topRow(), middleRow(), bottomRow(),
+    public Line[] linesForAllDirections() {
+        return new Line[] {topRow(), middleRow(), bottomRow(),
                 leftColumn(), middleColumn(), rightColumn(),
                 backslashDiagonal(), forwardslashDiagonal()};
     }
 
-    public Cell[] topRow() {
-        return new Cell[]{grid[0], grid[1], grid[2]};
+    public Line topRow() {
+        return new Line(grid[0], grid[1], grid[2]);
     }
 
-    public Cell[] middleRow() {
-        return new Cell[]{grid[3], grid[4], grid[5]};
+    public Line middleRow() {
+        return new Line(grid[3], grid[4], grid[5]);
     }
 
-    public Cell[] bottomRow() {
-        return new Cell[]{grid[6], grid[7], grid[8]};
+    public Line bottomRow() {
+        return new Line(grid[6], grid[7], grid[8]);
     }
 
-    private Cell[] leftColumn() {
-        return new Cell[]{grid[0], grid[3], grid[6]};
+    private Line leftColumn() {
+        return new Line(grid[0], grid[3], grid[6]);
     }
 
-    private Cell[] middleColumn() {
-        return new Cell[]{grid[1], grid[4], grid[7]};
+    private Line middleColumn() {
+        return new Line(grid[1], grid[4], grid[7]);
     }
 
-    private Cell[] rightColumn() {
-        return new Cell[]{grid[2], grid[5], grid[8]};
+    private Line rightColumn() {
+        return new Line(grid[2], grid[5], grid[8]);
     }
 
-    private Cell[] forwardslashDiagonal() {
-        return new Cell[]{grid[2], grid[4], grid[6]};
+    private Line forwardslashDiagonal() {
+        return new Line(grid[2], grid[4], grid[6]);
     }
 
-    private Cell[] backslashDiagonal() {
-        return new Cell[]{grid[0], grid[4], grid[8]};
+    private Line backslashDiagonal() {
+        return new Line(grid[0], grid[4], grid[8]);
+    }
+}
+
+
+class Line {
+    private PlayerSymbol[] line;
+
+    public Line(PlayerSymbol... symbols) {
+        line = symbols;
+    }
+
+    public boolean isWinning() {
+        return containsOnly(X) || containsOnly(O);
+    }
+
+    private boolean containsOnly(PlayerSymbol symbol) {
+        return Arrays.equals(line, new PlayerSymbol[]{symbol, symbol, symbol});
+    }
+
+    public PlayerSymbol[] getSymbols() {
+        return line;
     }
 }

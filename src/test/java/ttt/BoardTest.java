@@ -206,14 +206,15 @@ public class BoardTest {
     public void returnsHorizontalRows() {
         Board board = new Board(X, O, X, O, O, X, VACANT, VACANT, O);
 
-        Cell[][] rows = board.getRows();
+        Line[] rows = board.getRows();
 
-        Cell[] expectedTopRow = new Cell[]{new Cell(0, X), new Cell(1, O), new Cell(2, X)};
-        Cell[] expectedMiddleRow = new Cell[]{new Cell(3, O), new Cell(4, O), new Cell(5, X)};
-        Cell[] expectedBottomRow = new Cell[]{new Cell(6, VACANT), new Cell(7, VACANT), new Cell(8, O)};
+        PlayerSymbol[] expectedTopRow = new PlayerSymbol[]{ X, O, X};
+        PlayerSymbol[] expectedMiddleRow = new PlayerSymbol[]{ O, O, X};
+        PlayerSymbol[] expectedBottomRow = new PlayerSymbol[]{VACANT, VACANT, O};
+
         assertThat(rows.length, is(3));
-        assertThat(rows[0], is(expectedTopRow));
-        assertThat(rows[1], is(expectedMiddleRow));
-        assertThat(rows[2], is(expectedBottomRow));
+        assertThat(rows[0].getSymbols(), is(expectedTopRow));
+        assertThat(rows[1].getSymbols(), is(expectedMiddleRow));
+        assertThat(rows[2].getSymbols(), is(expectedBottomRow));
     }
 }
