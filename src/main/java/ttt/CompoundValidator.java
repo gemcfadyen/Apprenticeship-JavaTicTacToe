@@ -1,6 +1,5 @@
 package ttt;
 
-import java.util.Arrays;
 import java.util.List;
 
 public class CompoundValidator implements TempInputValidator {
@@ -13,6 +12,7 @@ public class CompoundValidator implements TempInputValidator {
 
     @Override
     public ValidationResult isValid(String input) {
+        
         for (InputValidator inputValidator : inputValidators) {
             if(!inputValidator.isValid(input)) {
                 invalidReason = inputValidator.invalidReason(input);

@@ -4,7 +4,6 @@ import java.io.*;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-import java.util.function.Function;
 
 import static ttt.Board.BOARD_DIMENSION;
 import static ttt.PlayerSymbol.*;
@@ -31,15 +30,10 @@ public class CommandPrompt implements Prompt {
     public int getPlayerOption() {
         clear();
         askUserForPlayerChoice();
+        //TODO inject into constructor
         TempInputValidator compoundValidator = new CompoundValidator(Collections.singletonList(new NumericValidator()));
-        Function<Void, Void> doNothing = o -> null;
 
-        Function<Void, Void> reprompt = aVoid -> {
-            askUserForPlayerChoice();
-            return null;
-        };
-
-        return asInteger(getValidInput(compoundValidator, input(), null, doNothing, reprompt));
+        return asInteger(getValidInputForPlayerChoice(compoundValidator, input()));
     }
 
     @Override
@@ -48,73 +42,17 @@ public class CommandPrompt implements Prompt {
         askUserForTheirMove();
         TempInputValidator compoundValidator = new CompoundValidator(orderedListOfMoveValidators(board));
 
-        Function<Board, Void> displayBeforeReprompt = currentBoard -> {
-            clear();
-            print(currentBoard);
-            return null;
-        };
-
-        Function<Void, Void> doNothing = o -> null;
-
-
-        String validInput = getValidInput(compoundValidator, input(), board, displayBeforeReprompt, doNothing);
+        String validInput = getValidMove(compoundValidator, input(), board);
         clear();
         return zeroIndexed(validInput);
-
-//        int move = getValidMove(board);
-//        clear();
-//        return zeroIndexed(input);
-    }
-
-    //TODO move these two methods down
-    private int asInteger(String input) {
-        return Integer.valueOf(input);
-    }
-
-    private String getValidInput(TempInputValidator compoundValidator,
-                                 String input,
-                                 Board board,
-                                 Function beforeValidationMessage,
-                                 Function afterValidationMessage) {
-
-        ValidationResult validationResult = compoundValidator.isValid(input);
-        while (!validationResult.isValid()) {
-            beforeValidationMessage.apply(board);
-
-            display(validationResult.reason());
-
-            afterValidationMessage.apply(null);
-            validationResult = compoundValidator.isValid(input());
-        }
-        return validationResult.userInput();
-    }
-
-    //TODO below is legacy
-    private int getValidMove(Board board) {
-        String input = input(); //done
-        while (!isValidLocal(input, board)) {
-            input = input();
-        }
-
-        return zeroIndexed(input);
-    }
-
-    private boolean isValidLocal(String input, Board board) {
-        for (InputValidator moveValidator : orderedListOfMoveValidators(board)) {
-            if (!moveValidator.isValid(input)) {
-                clear();
-                print(board);
-                display(moveValidator.invalidReason(input));
-                return false;
-            }
-        }
-        return true;
     }
 
     @Override
     public String getReplayOption() {
         askUserToPlayAgain();
-        String replayOption = validateReplay(input());
+
+        TempInputValidator compoundValidator = new CompoundValidator(Collections.singletonList(new ReplayOptionValidator()));
+        String replayOption = getValidReplayOption(compoundValidator, input());
         clear();
         return replayOption;
     }
@@ -153,6 +91,43 @@ public class CommandPrompt implements Prompt {
                 + "No winner this time");
     }
 
+    private int asInteger(String input) {
+        return Integer.valueOf(input);
+    }
+
+    private String getValidInputForPlayerChoice(TempInputValidator compoundValidator, String input) {
+        ValidationResult validationResult = compoundValidator.isValid(input);
+        while (!validationResult.isValid()) {
+            display(validationResult.reason());
+            askUserForPlayerChoice();
+            validationResult = compoundValidator.isValid(input());
+        }
+        return validationResult.userInput();
+    }
+
+    private String getValidMove(TempInputValidator compoundValidator,
+                                String input, Board currentBoard) {
+        ValidationResult validationResult = compoundValidator.isValid(input);
+        while (!validationResult.isValid()) {
+            clear();
+            print(currentBoard);
+            display(validationResult.reason());
+            validationResult = compoundValidator.isValid(input());
+        }
+        return validationResult.userInput();
+    }
+
+    private String getValidReplayOption(TempInputValidator compoundValidator,
+                                        String input) {
+        ValidationResult validationResult = compoundValidator.isValid(input);
+        while (!validationResult.isValid()) {
+            clear();
+            display(validationResult.reason());
+            validationResult = compoundValidator.isValid(input());
+        }
+        return validationResult.userInput();
+    }
+
     private void askUserForPlayerChoice() {
         display(FONT_COLOUR_ANSII_CHARACTERS
                         + "Choose opponent:"
@@ -184,13 +159,6 @@ public class CommandPrompt implements Prompt {
                 + "Play again? [Y/N]");
     }
 
-    private String validateReplay(String input) {
-        while (!isValid(input)) {
-            input = input();
-        }
-        return input;
-    }
-
     public String input() {
         try {
             return reader.readLine();
@@ -204,21 +172,6 @@ public class CommandPrompt implements Prompt {
                 new NumericValidator(),
                 new WithinGridBoundaryValidator(board),
                 new FreeSpaceOnBoardValidator(board));
-    }
-
-    private boolean isValid(String input) {
-        for (InputValidator replayValidator : replayValidators()) {
-            if (!replayValidator.isValid(input)) {
-                clear();
-                display(replayValidator.invalidReason(input));
-                return false;
-            }
-        }
-        return true;
-    }
-
-    private List<InputValidator> replayValidators() {
-        return Arrays.asList(new ReplayOptionValidator());
     }
 
     private int zeroIndexed(String input) {
