@@ -4,6 +4,7 @@ import java.io.*;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.function.Function;
 
 import static ttt.Board.BOARD_DIMENSION;
 import static ttt.PlayerSymbol.*;
@@ -33,7 +34,7 @@ public class CommandPrompt implements Prompt {
         InputValidator compoundValidator = new CompoundValidator(gameTypeValidators());
         askUserForGameType();
 
-        return asInteger(getValidInputForGameType(compoundValidator, input()));
+        return asInteger(getValidInput(compoundValidator, input(), functionToRepromptGameType()));
     }
 
     @Override
@@ -48,9 +49,8 @@ public class CommandPrompt implements Prompt {
     @Override
     public String getReplayOption() {
         askUserToPlayAgain();
-
         InputValidator compoundValidator = new CompoundValidator(Collections.singletonList(new ReplayOptionValidator()));
-        return getValidReplayOption(compoundValidator, input());
+        return getValidInput(compoundValidator, input(), functionToRepromptReplay());
     }
 
     @Override
@@ -87,6 +87,24 @@ public class CommandPrompt implements Prompt {
                 + "No winner this time");
     }
 
+    private Function<ValidationResult, Void> functionToRepromptGameType() {
+        return validationResult -> {
+            clear();
+            display(BOARD_COLOUR_ANSII_CHARACTERS + validationResult.reason());
+            askUserForGameType();
+            return null;
+        };
+    }
+
+    private Function<ValidationResult, Void> functionToRepromptReplay() {
+        return validationResult -> {
+            clear();
+            display(BOARD_COLOUR_ANSII_CHARACTERS + validationResult.reason());
+            askUserToPlayAgain();
+            return null;
+        };
+    }
+
     private int asInteger(String input) {
         return Integer.valueOf(input);
     }
@@ -95,12 +113,10 @@ public class CommandPrompt implements Prompt {
         return Arrays.asList(new NumericValidator(), new GameTypeValidator());
     }
 
-    private String getValidInputForGameType(InputValidator compoundValidator, String input) {
+    private String getValidInput(InputValidator compoundValidator, String input, Function reprompt) {
         ValidationResult validationResult = compoundValidator.isValid(input);
         while (!validationResult.isValid()) {
-            clear();
-            display(BOARD_COLOUR_ANSII_CHARACTERS + validationResult.reason());
-            askUserForGameType();
+            reprompt.apply(validationResult);
             validationResult = compoundValidator.isValid(input());
         }
         clear();
@@ -115,19 +131,6 @@ public class CommandPrompt implements Prompt {
             print(currentBoard);
             display(validationResult.reason());
             askUserForTheirMove();
-            validationResult = compoundValidator.isValid(input());
-        }
-        clear();
-        return validationResult.userInput();
-    }
-
-    private String getValidReplayOption(InputValidator compoundValidator,
-                                        String input) {
-        ValidationResult validationResult = compoundValidator.isValid(input);
-        while (!validationResult.isValid()) {
-            clear();
-            display(BOARD_COLOUR_ANSII_CHARACTERS + validationResult.reason());
-            askUserToPlayAgain();
             validationResult = compoundValidator.isValid(input());
         }
         clear();
