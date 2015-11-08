@@ -31,6 +31,6 @@ public class NumericValidatorTest {
 
         ValidationResult validationResult = validator.isValid("a");
 
-        assertThat(validationResult.reason(), is("[a] is not a valid number. Please re-enter a numeric value"));
+        assertThat(validationResult.reason(), is("[a] is not a valid number"));
     }
 }

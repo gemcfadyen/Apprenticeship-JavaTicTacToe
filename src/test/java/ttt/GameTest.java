@@ -12,29 +12,50 @@ import static ttt.PlayerSymbol.*;
 public class GameTest {
 
     @Test
-    public void playersTakeTurnsUntilTheBoardIsFull() {
-        PlayerSpy player1 = new PlayerSpy(createCommandPromptToReadInput("1\n5\n6\n7\n8\n"), X);
-        PlayerSpy player2 = new PlayerSpy(createCommandPromptToReadInput("2\n3\n4\n9\n"), O);
+    public void printsChoiceOfPlayers() {
+        PromptSpy gamePrompt = new PromptSpy(new StringReader("1\nN\n"));
 
-        Game game = new Game(new Board(),
-                createCommandPromptToReadInput("N\n"),
-                player1,
-                player2);
+        Game game = new Game(new Board(), gamePrompt, new PlayerFactorySpy(
+                new PlayerSpy(createCommandPromptToReadInput("1\n5\n6\n7\n8\n"), X),
+                new PlayerSpy(createCommandPromptToReadInput("2\n3\n4\n9\n"), O))
+        );
 
         game.play();
 
-        assertThat(player1.numberOfTurnsTaken(), is(5));
-        assertThat(player2.numberOfTurnsTaken(), is(4));
+        assertThat(gamePrompt.getNumberOfTimesPromptedForPlayerOption(), is(1));
+    }
+
+    @Test
+    public void playersTakeTurnsUntilTheBoardIsFull() {
+        PlayerSpy player1Spy = new PlayerSpy(createCommandPromptToReadInput("1\n5\n6\n7\n8\n"), X);
+        PlayerSpy player2Spy = new PlayerSpy(createCommandPromptToReadInput("2\n3\n4\n9\n"), O);
+        PlayerFactorySpy playerFactorySpy = new PlayerFactorySpy(
+                player1Spy,
+                player2Spy
+        );
+
+        Game game = new Game(new Board(),
+                createCommandPromptToReadInput("1\nN\n"),
+                playerFactorySpy);
+
+        game.play();
+
+        assertThat(player1Spy.numberOfTurnsTaken(), is(5));
+        assertThat(player2Spy.numberOfTurnsTaken(), is(4));
     }
 
     @Test
     public void printsCongratulatoryMessageWhenThereIsAWinningFormation() {
-        PromptSpy gamePrompt = new PromptSpy(new StringReader("N\n"));
+        PromptSpy gamePrompt = new PromptSpy(new StringReader("1\nN\n"));
+
+        PlayerFactorySpy playerFactorySpy = new PlayerFactorySpy(
+                createHumanPlayer(createCommandPromptToReadInput("1\n2\n3\n"), X),
+                createHumanPlayer(createCommandPromptToReadInput("5\n8\n"), O)
+        );
 
         Game game = new Game(new Board(),
                 gamePrompt,
-                createHumanPlayer(createCommandPromptToReadInput("1\n2\n3\n"), X),
-                createHumanPlayer(createCommandPromptToReadInput("5\n8\n"), O));
+                playerFactorySpy);
 
         game.play();
 
@@ -46,12 +67,16 @@ public class GameTest {
     @Test
     public void printsDrawMessageWhenThereAreNoMoreSpacesOnTheBoardAndNoWinner() {
         Board board = new Board(X, O, O, O, X, X, VACANT, VACANT, O);
-        PromptSpy gamePrompt = new PromptSpy(new StringReader("N\n"));
+        PromptSpy gamePrompt = new PromptSpy(new StringReader("1\nN\n"));
+
+        PlayerFactorySpy playerFactorySpy = new PlayerFactorySpy(
+                createHumanPlayer(createCommandPromptToReadInput("8\n"), X),
+                createHumanPlayer(createCommandPromptToReadInput("7\n"), O)
+        );
 
         Game game = new Game(board,
                 gamePrompt,
-                createHumanPlayer(createCommandPromptToReadInput("8\n"), X),
-                createHumanPlayer(createCommandPromptToReadInput("7\n"), O));
+                playerFactorySpy);
 
         game.play();
 
@@ -63,11 +88,14 @@ public class GameTest {
     @Test
     public void printsTheFinalStateOfTheBoard() {
         Board board = new Board(X, VACANT, X, O, X, O, O, O, X);
-        PromptSpy gamePrompt = new PromptSpy(new StringReader("N\n"));
+        PromptSpy gamePrompt = new PromptSpy(new StringReader("1\nN\n"));
 
-        Game game = new Game(board, gamePrompt,
+        PlayerFactorySpy playerFactorySpy = new PlayerFactorySpy(
                 createHumanPlayer(createCommandPromptToReadInput("2\n"), X),
-                createHumanPlayer(createCommandPromptToReadInput("\n"), O));
+                createHumanPlayer(createCommandPromptToReadInput("\n"), O)
+        );
+
+        Game game = new Game(board, gamePrompt, playerFactorySpy);
 
         game.play();
 
@@ -77,17 +105,21 @@ public class GameTest {
     @Test
     public void promptsToPlayAgain() {
         Board board = new Board(X, VACANT, X, O, X, O, O, O, X);
-        PromptSpy gamePrompt = new PromptSpy(new StringReader("Y\nN\n"));
+        PromptSpy gamePrompt = new PromptSpy(new StringReader("1\nY\n1\nN\n"));
 
-        Game game = new Game(board, gamePrompt,
+        PlayerFactorySpy playerFactorySpy = new PlayerFactorySpy(
                 createHumanPlayer(createCommandPromptToReadInput("2\n2\n3\n5\n"), X),
-                createHumanPlayer(createCommandPromptToReadInput("1\n4\n7\n"), O));
+                createHumanPlayer(createCommandPromptToReadInput("1\n4\n7\n"), O)
+        );
+
+        Game game = new Game(board, gamePrompt, playerFactorySpy);
 
         game.play();
 
         assertThat(gamePrompt.getNumberOfTimesXHasWon(), is(1));
         assertThat(gamePrompt.getNumberOfTimesOHasWon(), is(1));
         assertThat(gamePrompt.getNumberOfTimesPlayerIsPromptedToPlayAgain(), is(2));
+        assertThat(gamePrompt.getNumberOfTimesPromptedForPlayerOption(), is(2));
     }
 
     private Prompt createCommandPromptToReadInput(String usersInputs) {

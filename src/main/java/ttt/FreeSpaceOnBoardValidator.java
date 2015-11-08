@@ -16,7 +16,7 @@ public class FreeSpaceOnBoardValidator implements InputValidator {
     }
 
     private String invalidReason(String input) {
-        return "[" + input + "] is already occupied. Please re-enter a valid number within the grid boundary";
+        return "[" + input + "] is already occupied";
     }
 
     private int zeroIndexed(String input) {

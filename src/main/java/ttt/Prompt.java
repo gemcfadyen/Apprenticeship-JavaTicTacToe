@@ -1,7 +1,7 @@
 package ttt;
 
 public interface Prompt {
-    int getPlayerOption();
+    int getGameType();
     int getNextMove(Board board);
     String getReplayOption();
 

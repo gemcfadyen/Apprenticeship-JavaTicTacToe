@@ -1,10 +1,10 @@
 package ttt;
 
-public class ReplayOptionValidator implements InputValidator {
+public class GameTypeValidator implements InputValidator {
     @Override
     public ValidationResult isValid(String input) {
-        for (ReplayOptions replayOptions : ReplayOptions.values()) {
-            if (replayOptions.name().equals(input)) {
+        for(GameType type : GameType.values()) {
+            if(type.numericRepresentation() == Integer.valueOf(input)) {
                 return new ValidationResult(input, true, "");
             }
         }
@@ -12,6 +12,6 @@ public class ReplayOptionValidator implements InputValidator {
     }
 
     private String invalidReason(String input) {
-        return "[" + input + "] is not a valid replay option";
+        return "[" + input + "] is not a valid game type";
     }
 }

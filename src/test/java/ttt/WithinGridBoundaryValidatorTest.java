@@ -31,6 +31,6 @@ public class WithinGridBoundaryValidatorTest {
 
         ValidationResult validationResult = gridBoundaryValidator.isValid("-1");
 
-        assertThat(validationResult.reason(), is("[-1] is outside of the grid boundary. Please re-enter a valid number within the grid boundary"));
+        assertThat(validationResult.reason(), is("[-1] is outside of the grid boundary"));
     }
 }

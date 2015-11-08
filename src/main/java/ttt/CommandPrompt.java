@@ -27,13 +27,13 @@ public class CommandPrompt implements Prompt {
     }
 
     @Override
-    public int getPlayerOption() {
+    public int getGameType() {
         clear();
 
-        InputValidator compoundValidator = new CompoundValidator(Collections.singletonList(new NumericValidator()));
-        askUserForPlayerChoice();
+        InputValidator compoundValidator = new CompoundValidator(gameTypeValidators());
+        askUserForGameType();
 
-        return asInteger(getValidInputForPlayerChoice(compoundValidator, input()));
+        return asInteger(getValidInputForGameType(compoundValidator, input()));
     }
 
     @Override
@@ -42,9 +42,7 @@ public class CommandPrompt implements Prompt {
         askUserForTheirMove();
         InputValidator compoundValidator = new CompoundValidator(orderedListOfMoveValidators(board));
 
-        String validInput = getValidMove(compoundValidator, input(), board);
-        clear();
-        return zeroIndexed(validInput);
+        return zeroIndexed(getValidMove(compoundValidator, input(), board));
     }
 
     @Override
@@ -52,9 +50,7 @@ public class CommandPrompt implements Prompt {
         askUserToPlayAgain();
 
         InputValidator compoundValidator = new CompoundValidator(Collections.singletonList(new ReplayOptionValidator()));
-        String replayOption = getValidReplayOption(compoundValidator, input());
-        clear();
-        return replayOption;
+        return getValidReplayOption(compoundValidator, input());
     }
 
     @Override
@@ -95,13 +91,19 @@ public class CommandPrompt implements Prompt {
         return Integer.valueOf(input);
     }
 
-    private String getValidInputForPlayerChoice(InputValidator compoundValidator, String input) {
+    private List<InputValidator> gameTypeValidators() {
+        return Arrays.asList(new NumericValidator(), new GameTypeValidator());
+    }
+
+    private String getValidInputForGameType(InputValidator compoundValidator, String input) {
         ValidationResult validationResult = compoundValidator.isValid(input);
         while (!validationResult.isValid()) {
-            display(validationResult.reason());
-            askUserForPlayerChoice();
+            clear();
+            display(BOARD_COLOUR_ANSII_CHARACTERS + validationResult.reason());
+            askUserForGameType();
             validationResult = compoundValidator.isValid(input());
         }
+        clear();
         return validationResult.userInput();
     }
 
@@ -112,8 +114,10 @@ public class CommandPrompt implements Prompt {
             clear();
             print(currentBoard);
             display(validationResult.reason());
+            askUserForTheirMove();
             validationResult = compoundValidator.isValid(input());
         }
+        clear();
         return validationResult.userInput();
     }
 
@@ -122,16 +126,16 @@ public class CommandPrompt implements Prompt {
         ValidationResult validationResult = compoundValidator.isValid(input);
         while (!validationResult.isValid()) {
             clear();
-            display(validationResult.reason());
+            display(BOARD_COLOUR_ANSII_CHARACTERS + validationResult.reason());
+            askUserToPlayAgain();
             validationResult = compoundValidator.isValid(input());
         }
+        clear();
         return validationResult.userInput();
     }
 
-    private void askUserForPlayerChoice() {
+    private void askUserForGameType() {
         display(FONT_COLOUR_ANSII_CHARACTERS
-                        + "Choose opponent:"
-                        + newLine()
                         + "Enter 1 to play Human vs Human"
         );
     }

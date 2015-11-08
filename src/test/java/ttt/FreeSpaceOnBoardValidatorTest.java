@@ -36,6 +36,6 @@ public class FreeSpaceOnBoardValidatorTest {
 
         ValidationResult validationResult = freeSpaceOnBoardValidator.isValid("1");
 
-        assertThat(validationResult.reason(), is("[1] is already occupied. Please re-enter a valid number within the grid boundary"));
+        assertThat(validationResult.reason(), is("[1] is already occupied"));
     }
 }

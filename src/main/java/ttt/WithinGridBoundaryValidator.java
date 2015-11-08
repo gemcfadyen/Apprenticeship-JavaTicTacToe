@@ -20,6 +20,6 @@ public class WithinGridBoundaryValidator implements InputValidator {
     }
 
     private String invalidReason(String input) {
-        return "[" + input + "] is outside of the grid boundary. Please re-enter a valid number within the grid boundary";
+        return "[" + input + "] is outside of the grid boundary";
     }
 }

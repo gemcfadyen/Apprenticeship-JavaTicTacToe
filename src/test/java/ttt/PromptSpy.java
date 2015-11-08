@@ -14,33 +14,27 @@ public class PromptSpy implements Prompt {
     private int numberOfTimesXHasWon = 0;
     private int numberOfTimesOHasWon = 0;
     private int numberOfTimesPlayerIsReprompted = 0;
+    private int numberOfTimesPlayerOptionsHaveBeenPrinted;
 
     public PromptSpy(Reader reader) {
         this.reader = new BufferedReader(reader);
     }
 
     @Override
-    public int getPlayerOption() {
-        return 0;
+    public int getGameType() {
+        numberOfTimesPlayerOptionsHaveBeenPrinted++;
+        return Integer.valueOf(readInput());
     }
 
     @Override
     public int getNextMove(Board board) {
-        try {
-            return Integer.valueOf(reader.readLine());
-        } catch (IOException e) {
-            throw new RuntimeException("Error reading in PromptSpy");
-        }
+        return Integer.valueOf(readInput());
     }
 
     @Override
     public String getReplayOption() {
-        try {
-            numberOfTimesPlayerIsReprompted++;
-            return reader.readLine();
-        } catch (IOException e) {
-            throw new RuntimeException("Error reading in PromptSpy");
-        }
+        numberOfTimesPlayerIsReprompted++;
+        return readInput();
     }
 
     @Override
@@ -62,6 +56,14 @@ public class PromptSpy implements Prompt {
     @Override
     public void printDrawMessage() {
         numberOfTimesDrawMessageHasBeenPrinted++;
+    }
+
+    private String readInput() {
+        try {
+            return reader.readLine();
+        } catch (IOException e) {
+            throw new RuntimeException("Error reading in PromptSpy");
+        }
     }
 
     public int getNumberOfTimesXHasWon() {
@@ -91,5 +93,9 @@ public class PromptSpy implements Prompt {
 
     public int getNumberOfTimesPlayerIsPromptedToPlayAgain() {
         return numberOfTimesPlayerIsReprompted;
+    }
+
+    public int getNumberOfTimesPromptedForPlayerOption() {
+        return numberOfTimesPlayerOptionsHaveBeenPrinted;
     }
 }

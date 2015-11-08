@@ -17,6 +17,6 @@ public class NumericValidator implements InputValidator {
     }
 
     private String invalidReason(String input) {
-        return "[" + input + "] is not a valid number. Please re-enter a numeric value";
+        return "[" + input + "] is not a valid number";
     }
 }

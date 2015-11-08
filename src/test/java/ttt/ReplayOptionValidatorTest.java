@@ -32,7 +32,7 @@ public class ReplayOptionValidatorTest {
     public void informativeMessage() {
         InputValidator validator = new ReplayOptionValidator();
 
-        assertThat(validator.isValid("P").reason(), is("[P] is not a valid replay option. Please re-enter Y/N"));
+        assertThat(validator.isValid("P").reason(), is("[P] is not a valid replay option"));
     }
 
 }
