@@ -2,9 +2,8 @@ package ttt;
 
 import java.util.List;
 
-public class CompoundValidator implements TempInputValidator {
+public class CompoundValidator implements InputValidator {
     private final List<InputValidator> inputValidators;
-    private String invalidReason = "";
 
     public CompoundValidator(List<InputValidator> validators) {
         this.inputValidators = validators;
@@ -14,16 +13,11 @@ public class CompoundValidator implements TempInputValidator {
     public ValidationResult isValid(String input) {
         
         for (InputValidator inputValidator : inputValidators) {
-            if(!inputValidator.isValid(input)) {
-                invalidReason = inputValidator.invalidReason(input);
-                return new ValidationResult(input, false, invalidReason);
+            ValidationResult validationResult = inputValidator.isValid(input);
+            if(!validationResult.isValid()) {
+                return validationResult;
             }
         }
-        return new ValidationResult(input, true, invalidReason);
-    }
-
-    @Override
-    public String invalidReason(String input) {
-        return invalidReason;
+        return new ValidationResult(input, true, "");
     }
 }

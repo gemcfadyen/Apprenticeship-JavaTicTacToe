@@ -8,12 +8,18 @@ public class WithinGridBoundaryValidator implements InputValidator {
     }
 
     @Override
-    public boolean isValid(String input) {
-        return board.isWithinGridBoundary(Integer.valueOf(input) - 1);
+    public ValidationResult isValid(String input) {
+        if (board.isWithinGridBoundary(zeroIndexed(input))) {
+            return new ValidationResult(input, true, "");
+        }
+        return new ValidationResult(input, false, invalidReason(input));
     }
 
-    @Override
-    public String invalidReason(String input) {
+    private int zeroIndexed(String input) {
+        return Integer.valueOf(input) - 1;
+    }
+
+    private String invalidReason(String input) {
         return "[" + input + "] is outside of the grid boundary. Please re-enter a valid number within the grid boundary";
     }
 }

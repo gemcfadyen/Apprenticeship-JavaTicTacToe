@@ -29,9 +29,9 @@ public class CommandPrompt implements Prompt {
     @Override
     public int getPlayerOption() {
         clear();
+
+        InputValidator compoundValidator = new CompoundValidator(Collections.singletonList(new NumericValidator()));
         askUserForPlayerChoice();
-        //TODO inject into constructor
-        TempInputValidator compoundValidator = new CompoundValidator(Collections.singletonList(new NumericValidator()));
 
         return asInteger(getValidInputForPlayerChoice(compoundValidator, input()));
     }
@@ -40,7 +40,7 @@ public class CommandPrompt implements Prompt {
     public int getNextMove(Board board) {
         print(board);
         askUserForTheirMove();
-        TempInputValidator compoundValidator = new CompoundValidator(orderedListOfMoveValidators(board));
+        InputValidator compoundValidator = new CompoundValidator(orderedListOfMoveValidators(board));
 
         String validInput = getValidMove(compoundValidator, input(), board);
         clear();
@@ -51,7 +51,7 @@ public class CommandPrompt implements Prompt {
     public String getReplayOption() {
         askUserToPlayAgain();
 
-        TempInputValidator compoundValidator = new CompoundValidator(Collections.singletonList(new ReplayOptionValidator()));
+        InputValidator compoundValidator = new CompoundValidator(Collections.singletonList(new ReplayOptionValidator()));
         String replayOption = getValidReplayOption(compoundValidator, input());
         clear();
         return replayOption;
@@ -95,7 +95,7 @@ public class CommandPrompt implements Prompt {
         return Integer.valueOf(input);
     }
 
-    private String getValidInputForPlayerChoice(TempInputValidator compoundValidator, String input) {
+    private String getValidInputForPlayerChoice(InputValidator compoundValidator, String input) {
         ValidationResult validationResult = compoundValidator.isValid(input);
         while (!validationResult.isValid()) {
             display(validationResult.reason());
@@ -105,7 +105,7 @@ public class CommandPrompt implements Prompt {
         return validationResult.userInput();
     }
 
-    private String getValidMove(TempInputValidator compoundValidator,
+    private String getValidMove(InputValidator compoundValidator,
                                 String input, Board currentBoard) {
         ValidationResult validationResult = compoundValidator.isValid(input);
         while (!validationResult.isValid()) {
@@ -117,7 +117,7 @@ public class CommandPrompt implements Prompt {
         return validationResult.userInput();
     }
 
-    private String getValidReplayOption(TempInputValidator compoundValidator,
+    private String getValidReplayOption(InputValidator compoundValidator,
                                         String input) {
         ValidationResult validationResult = compoundValidator.isValid(input);
         while (!validationResult.isValid()) {

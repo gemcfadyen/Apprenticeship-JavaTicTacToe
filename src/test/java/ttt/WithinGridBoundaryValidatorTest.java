@@ -10,21 +10,27 @@ public class WithinGridBoundaryValidatorTest {
     @Test
     public void evaluatesFalseIfInputIsWithinGridBoundary() {
         WithinGridBoundaryValidator gridBoundaryValidator = new WithinGridBoundaryValidator(new Board());
-        assertThat(gridBoundaryValidator.isValid("100"), is(false));
+
+        ValidationResult validationResult = gridBoundaryValidator.isValid("100");
+
+        assertThat(validationResult.isValid(), is(false));
     }
 
     @Test
     public void evaluatesTrueIfInputIsWithinGridBoundary() {
         WithinGridBoundaryValidator gridBoundaryValidator = new WithinGridBoundaryValidator(new Board());
-        assertThat(gridBoundaryValidator.isValid("1"), is(true));
+
+        ValidationResult validationResult = gridBoundaryValidator.isValid("1");
+
+        assertThat(validationResult.isValid(), is(true));
     }
 
     @Test
     public void informativeMethodReturnedWhenInputIsValid() {
         WithinGridBoundaryValidator gridBoundaryValidator = new WithinGridBoundaryValidator(new Board());
 
-        assertThat(gridBoundaryValidator.invalidReason("-1"), is("[-1] is outside of the grid boundary. Please re-enter a valid number within the grid boundary"));
+        ValidationResult validationResult = gridBoundaryValidator.isValid("-1");
+
+        assertThat(validationResult.reason(), is("[-1] is outside of the grid boundary. Please re-enter a valid number within the grid boundary"));
     }
-
-
 }

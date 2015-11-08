@@ -2,14 +2,9 @@ package ttt;
 
 public class NumericValidator implements InputValidator {
     @Override
-    public boolean isValid(String input) {
-        return isNumber(input);
+    public ValidationResult isValid(String input) {
+        return new ValidationResult(input, isNumber(input), invalidReason(input));
 
-    }
-
-    @Override
-    public String invalidReason(String input) {
-        return "[" + input + "] is not a valid number. Please re-enter a numeric value";
     }
 
     private boolean isNumber(String input) {
@@ -19,5 +14,9 @@ public class NumericValidator implements InputValidator {
         } catch (NumberFormatException e) {
             return false;
         }
+    }
+
+    private String invalidReason(String input) {
+        return "[" + input + "] is not a valid number. Please re-enter a numeric value";
     }
 }

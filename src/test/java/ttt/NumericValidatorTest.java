@@ -10,18 +10,27 @@ public class NumericValidatorTest {
     @Test
     public void returnsTrueWhenInputIsNumeric() {
         InputValidator validator = new NumericValidator();
-        assertThat(validator.isValid("3"), is(true));
+
+        ValidationResult validationResult = validator.isValid("3");
+
+        assertThat(validationResult.isValid(), is(true));
     }
 
     @Test
     public void returnsFalseWhenInputIsNotNumeric() {
         InputValidator validator = new NumericValidator();
-        assertThat(validator.isValid("a"), is(false));
+
+        ValidationResult validationResult = validator.isValid("a");
+
+        assertThat(validationResult.isValid(), is(false));
     }
 
     @Test
     public void reasonForNumberBeingInvalid() {
         InputValidator validator = new NumericValidator();
-        assertThat(validator.invalidReason("a"), is("[a] is not a valid number. Please re-enter a numeric value"));
+
+        ValidationResult validationResult = validator.isValid("a");
+
+        assertThat(validationResult.reason(), is("[a] is not a valid number. Please re-enter a numeric value"));
     }
 }

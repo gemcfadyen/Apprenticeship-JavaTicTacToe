@@ -2,17 +2,16 @@ package ttt;
 
 public class ReplayOptionValidator implements InputValidator {
     @Override
-    public boolean isValid(String input) {
+    public ValidationResult isValid(String input) {
         for (ReplayOptions replayOptions : ReplayOptions.values()) {
-            if(replayOptions.name().equals(input)) {
-                return true;
+            if (replayOptions.name().equals(input)) {
+                return new ValidationResult(input, true, "");
             }
         }
-        return false;
+        return new ValidationResult(input, false, invalidReason(input));
     }
 
-    @Override
-    public String invalidReason(String input) {
+    private String invalidReason(String input) {
         return "[" + input + "] is not a valid replay option. Please re-enter Y/N";
     }
 }

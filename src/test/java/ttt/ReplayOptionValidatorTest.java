@@ -11,28 +11,28 @@ public class ReplayOptionValidatorTest {
     public void replayOptionNReturnsTrue() {
         InputValidator validator = new ReplayOptionValidator();
 
-        assertTrue(validator.isValid("N"));
+        assertTrue(validator.isValid("N").isValid());
     }
 
     @Test
     public void replayOptionYReturnsTrue() {
         InputValidator validator = new ReplayOptionValidator();
 
-        assertTrue(validator.isValid("Y"));
+        assertTrue(validator.isValid("Y").isValid());
     }
 
     @Test
     public void invalidOptionReturnsFalse() {
         InputValidator validator = new ReplayOptionValidator();
 
-        assertFalse(validator.isValid("A"));
+        assertFalse(validator.isValid("A").isValid());
     }
 
     @Test
     public void informativeMessage() {
         InputValidator validator = new ReplayOptionValidator();
 
-        assertThat(validator.invalidReason("P"), is("[P] is not a valid replay option. Please re-enter Y/N"));
+        assertThat(validator.isValid("P").reason(), is("[P] is not a valid replay option. Please re-enter Y/N"));
     }
 
 }

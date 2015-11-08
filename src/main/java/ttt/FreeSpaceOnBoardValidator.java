@@ -8,12 +8,18 @@ public class FreeSpaceOnBoardValidator implements InputValidator {
     }
 
     @Override
-    public boolean isValid(String input) {
-        return board.isVacantAt(Integer.valueOf(input) - 1);
+    public ValidationResult isValid(String input) {
+        if (board.isVacantAt(zeroIndexed(input))) {
+            return new ValidationResult(input, true, "");
+        }
+        return new ValidationResult(input, false, invalidReason(input));
     }
 
-    @Override
-    public String invalidReason(String input) {
+    private String invalidReason(String input) {
         return "[" + input + "] is already occupied. Please re-enter a valid number within the grid boundary";
+    }
+
+    private int zeroIndexed(String input) {
+        return Integer.valueOf(input) - 1;
     }
 }

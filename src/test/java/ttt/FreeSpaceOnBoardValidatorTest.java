@@ -14,7 +14,9 @@ public class FreeSpaceOnBoardValidatorTest {
         Board board = new Board(X, VACANT, VACANT, VACANT, VACANT, VACANT, VACANT, VACANT, VACANT);
         FreeSpaceOnBoardValidator freeSpaceOnBoardValidator = new FreeSpaceOnBoardValidator(board);
 
-        assertThat(freeSpaceOnBoardValidator.isValid("1"), is(false));
+        ValidationResult validationResult = freeSpaceOnBoardValidator.isValid("1");
+
+        assertThat(validationResult.isValid(), is(false));
     }
 
     @Test
@@ -22,7 +24,9 @@ public class FreeSpaceOnBoardValidatorTest {
         Board board = new Board();
         FreeSpaceOnBoardValidator freeSpaceOnBoardValidator = new FreeSpaceOnBoardValidator(board);
 
-        assertThat(freeSpaceOnBoardValidator.isValid("1"), is(true));
+        ValidationResult validationResult = freeSpaceOnBoardValidator.isValid("1");
+
+        assertThat(validationResult.isValid(), is(true));
     }
 
     @Test
@@ -30,6 +34,8 @@ public class FreeSpaceOnBoardValidatorTest {
         Board board = new Board(X, VACANT, VACANT, VACANT, VACANT, VACANT, VACANT, VACANT, VACANT);
         FreeSpaceOnBoardValidator freeSpaceOnBoardValidator = new FreeSpaceOnBoardValidator(board);
 
-        assertThat(freeSpaceOnBoardValidator.invalidReason("1"), is("[1] is already occupied. Please re-enter a valid number within the grid boundary"));
+        ValidationResult validationResult = freeSpaceOnBoardValidator.isValid("1");
+
+        assertThat(validationResult.reason(), is("[1] is already occupied. Please re-enter a valid number within the grid boundary"));
     }
 }
