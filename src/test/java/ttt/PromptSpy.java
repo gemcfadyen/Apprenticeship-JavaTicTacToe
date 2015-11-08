@@ -60,11 +60,6 @@ public class PromptSpy implements Prompt {
         numberOfTimesDrawMessageHasBeenPrinted++;
     }
 
-    @Override
-    public void clear() {
-        numberOfTimesClearIsCalled++;
-    }
-
     public int getNumberOfTimesXHasWon() {
         return numberOfTimesXHasWon;
     }
@@ -75,10 +70,6 @@ public class PromptSpy implements Prompt {
 
     public int getNumberOfTimesDrawMessageHasBeenPrinted() {
         return numberOfTimesDrawMessageHasBeenPrinted;
-    }
-
-    public int getNumberOfTimesClearIsCalled() {
-        return numberOfTimesClearIsCalled;
     }
 
     public String getLastBoardThatWasPrinted() {

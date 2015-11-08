@@ -37,7 +37,9 @@ public class CommandPrompt implements Prompt {
     @Override
     public String getReplayOption() {
         askUserToPlayAgain();
-        return validateReplay(input());
+        String replayOption = validateReplay(input());
+        clear();
+        return replayOption;
     }
 
     @Override
@@ -74,21 +76,22 @@ public class CommandPrompt implements Prompt {
                 + "No winner this time");
     }
 
-    @Override
-    public void clear() {
-        display(CLEAR_SCREEN_ANSII_CHARACTERS);
+    private void askUserForTheirMove() {
+        display(FONT_COLOUR_ANSII_CHARACTERS
+                + "Please enter the index for your next move");
+    }
+
+    private void display(String message) {
+        try {
+            writer.write(newLine() + message + newLine());
+            writer.flush();
+        } catch (IOException e) {
+            throw new WriteToPromptException("An exception occurred when writing", e);
+        }
     }
 
     private int getValidMove(Board board) {
         return validateMove(input(), board);
-    }
-
-    public String input() {
-        try {
-            return reader.readLine();
-        } catch (IOException e) {
-            throw new ReadFromPromptException(e.getMessage(), e);
-        }
     }
 
     private int validateMove(String value, Board board) {
@@ -114,21 +117,13 @@ public class CommandPrompt implements Prompt {
         return zeroIndexed(input);
     }
 
-    private void askUserForTheirMove() {
-        display(FONT_COLOUR_ANSII_CHARACTERS
-                + "Please enter the index for your next move");
+    private void clear() {
+        display(CLEAR_SCREEN_ANSII_CHARACTERS);
     }
 
     private void askUserToPlayAgain() {
         display(FONT_COLOUR_ANSII_CHARACTERS
                 + "Play again? [Y/N]");
-    }
-
-    private String validateReplay(String input) {
-        while (!isValid(input)) {
-            input = input();
-        }
-        return input;
     }
 
     private boolean isValid(String input, Board board) {
@@ -141,6 +136,21 @@ public class CommandPrompt implements Prompt {
             }
         }
         return true;
+    }
+
+    private String validateReplay(String input) {
+        while (!isValid(input)) {
+            input = input();
+        }
+        return input;
+    }
+
+    public String input() {
+        try {
+            return reader.readLine();
+        } catch (IOException e) {
+            throw new ReadFromPromptException(e.getMessage(), e);
+        }
     }
 
     private List<InputValidator> orderedListOfMoveValidators(Board board) {
@@ -167,15 +177,6 @@ public class CommandPrompt implements Prompt {
 
     private int zeroIndexed(String input) {
         return Integer.valueOf(input) - 1;
-    }
-
-    private void display(String message) {
-        try {
-            writer.write(newLine() + message + newLine());
-            writer.flush();
-        } catch (IOException e) {
-            throw new WriteToPromptException("An exception occurred when writing", e);
-        }
     }
 
     private String displayCell(PlayerSymbol symbol, int cellOffset) {

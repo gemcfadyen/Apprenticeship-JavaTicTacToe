@@ -88,7 +88,6 @@ public class GameTest {
         assertThat(gamePrompt.getNumberOfTimesXHasWon(), is(1));
         assertThat(gamePrompt.getNumberOfTimesOHasWon(), is(1));
         assertThat(gamePrompt.getNumberOfTimesPlayerIsPromptedToPlayAgain(), is(2));
-        assertThat(gamePrompt.getNumberOfTimesClearIsCalled(), is(2));
     }
 
     private Prompt createCommandPromptToReadInput(String usersInputs) {

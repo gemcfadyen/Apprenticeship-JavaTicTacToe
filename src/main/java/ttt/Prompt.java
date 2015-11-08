@@ -6,5 +6,4 @@ public interface Prompt {
     void print(Board board);
     void printWinningMessageFor(PlayerSymbol symbol);
     void printDrawMessage();
-    void clear();
 }

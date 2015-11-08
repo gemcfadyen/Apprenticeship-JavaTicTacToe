@@ -68,7 +68,6 @@ public class Game {
     }
 
     private void reinitialiseBoard() {
-        gamePrompt.clear();
         board = new Board();
     }
 
