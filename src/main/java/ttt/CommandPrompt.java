@@ -43,7 +43,8 @@ public class CommandPrompt implements Prompt {
         askUserForTheirMove();
         InputValidator compoundValidator = new CompoundValidator(orderedListOfMoveValidators(board));
 
-        return zeroIndexed(getValidMove(compoundValidator, input(), board));
+        String validInput = getValidInput(compoundValidator, input(), functionToRepromptForValidMove(board));
+        return zeroIndexed(validInput);
     }
 
     @Override
@@ -109,6 +110,16 @@ public class CommandPrompt implements Prompt {
         return Integer.valueOf(input);
     }
 
+    private Function<ValidationResult, Void> functionToRepromptForValidMove(Board currentBoard) {
+        return validationResult -> {
+            clear();
+            print(currentBoard);
+            display(validationResult.reason());
+            askUserForTheirMove();
+            return null;
+        };
+    }
+
     private List<InputValidator> gameTypeValidators() {
         return Arrays.asList(new NumericValidator(), new GameTypeValidator());
     }
@@ -117,20 +128,6 @@ public class CommandPrompt implements Prompt {
         ValidationResult validationResult = compoundValidator.isValid(input);
         while (!validationResult.isValid()) {
             reprompt.apply(validationResult);
-            validationResult = compoundValidator.isValid(input());
-        }
-        clear();
-        return validationResult.userInput();
-    }
-
-    private String getValidMove(InputValidator compoundValidator,
-                                String input, Board currentBoard) {
-        ValidationResult validationResult = compoundValidator.isValid(input);
-        while (!validationResult.isValid()) {
-            clear();
-            print(currentBoard);
-            display(validationResult.reason());
-            askUserForTheirMove();
             validationResult = compoundValidator.isValid(input());
         }
         clear();
