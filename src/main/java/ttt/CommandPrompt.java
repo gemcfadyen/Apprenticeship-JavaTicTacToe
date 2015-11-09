@@ -112,10 +112,10 @@ public class CommandPrompt implements Prompt {
 
     private Function<ValidationResult, Void> functionToRepromptForValidMove(Board currentBoard) {
         return validationResult -> {
-            clear();
-            print(currentBoard);
-            display(validationResult.reason());
-            askUserForTheirMove();
+            CommandPrompt.this.clear();
+            CommandPrompt.this.print(currentBoard);
+            CommandPrompt.this.display(validationResult.reason());
+            CommandPrompt.this.askUserForTheirMove();
             return null;
         };
     }
@@ -124,7 +124,7 @@ public class CommandPrompt implements Prompt {
         return Arrays.asList(new NumericValidator(), new GameTypeValidator());
     }
 
-    private String getValidInput(InputValidator compoundValidator, String input, Function reprompt) {
+    private String getValidInput(InputValidator compoundValidator, String input, Function<ValidationResult, Void> reprompt) {
         ValidationResult validationResult = compoundValidator.isValid(input);
         while (!validationResult.isValid()) {
             reprompt.apply(validationResult);
