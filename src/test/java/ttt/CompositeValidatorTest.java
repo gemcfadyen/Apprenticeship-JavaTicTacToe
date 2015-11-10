@@ -9,49 +9,49 @@ import java.util.List;
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
 
-public class CompoundValidatorTest {
+public class CompositeValidatorTest {
 
     @Test
-    public void inputSuccesfullyValidated() {
-        CompoundValidator compoundValidator = new CompoundValidator(Collections.singletonList(new NumericValidator()));
+    public void inputSuccessfullyValidated() {
+        CompositeValidator compositeValidator = new CompositeValidator(Collections.singletonList(new NumericValidator()));
 
-        ValidationResult validationResult = compoundValidator.isValid("1");
+        ValidationResult validationResult = compositeValidator.isValid("1");
 
         assertThat(validationResult.isValid(), is(true));
     }
 
     @Test
     public void inputNotValidated() {
-        CompoundValidator compoundValidator = new CompoundValidator(Collections.singletonList(new NumericValidator()));
+        CompositeValidator compositeValidator = new CompositeValidator(Collections.singletonList(new NumericValidator()));
 
-        ValidationResult validationResult = compoundValidator.isValid("A");
+        ValidationResult validationResult = compositeValidator.isValid("A");
 
         assertThat(validationResult.isValid(), is(false));
     }
 
     @Test
     public void reasonInputIsNotValid() {
-        CompoundValidator compoundValidator = new CompoundValidator(Collections.singletonList(new NumericValidator()));
+        CompositeValidator compositeValidator = new CompositeValidator(Collections.singletonList(new NumericValidator()));
 
-        ValidationResult validationResult = compoundValidator.isValid("A");
+        ValidationResult validationResult = compositeValidator.isValid("A");
 
-        assertThat(validationResult.reason(), is("[A] is not a valid number"));
+        assertThat(validationResult.reason(), is("[A] is not a valid integer"));
     }
 
     @Test
     public void validatedInputHasNoReason() {
-        CompoundValidator compoundValidator = new CompoundValidator(Collections.singletonList(new NumericValidator()));
+        CompositeValidator compositeValidator = new CompositeValidator(Collections.singletonList(new NumericValidator()));
 
-        ValidationResult validationResult = compoundValidator.isValid("1");
+        ValidationResult validationResult = compositeValidator.isValid("1");
 
         assertThat(validationResult.reason(), is(""));
     }
 
     @Test
     public void returnsUserInput() {
-        CompoundValidator compoundValidator = new CompoundValidator(Collections.singletonList(new NumericValidator()));
+        CompositeValidator compositeValidator = new CompositeValidator(Collections.singletonList(new NumericValidator()));
 
-        ValidationResult validationResult = compoundValidator.isValid("1");
+        ValidationResult validationResult = compositeValidator.isValid("1");
 
         assertThat(validationResult.userInput(), is("1"));
     }
@@ -61,9 +61,9 @@ public class CompoundValidatorTest {
         List<InputValidator> validators = new ArrayList<>();
         validators.add(new NumericValidator());
         validators.add(new WithinGridBoundaryValidator(new Board()));
-        CompoundValidator compoundValidator = new CompoundValidator(validators);
+        CompositeValidator compositeValidator = new CompositeValidator(validators);
 
-        ValidationResult validationResult = compoundValidator.isValid("100");
+        ValidationResult validationResult = compositeValidator.isValid("100");
 
         assertThat(validationResult.isValid(), is(false));
     }
@@ -73,9 +73,9 @@ public class CompoundValidatorTest {
         List<InputValidator> validators = new ArrayList<>();
         validators.add(new NumericValidator());
         validators.add(new WithinGridBoundaryValidator(new Board()));
-        CompoundValidator compoundValidator = new CompoundValidator(validators);
+        CompositeValidator compositeValidator = new CompositeValidator(validators);
 
-        ValidationResult validationResult = compoundValidator.isValid("100");
+        ValidationResult validationResult = compositeValidator.isValid("100");
 
         assertThat(validationResult.reason(), is("[100] is outside of the grid boundary"));
     }
@@ -85,9 +85,9 @@ public class CompoundValidatorTest {
         List<InputValidator> validators = new ArrayList<>();
         validators.add(new NumericValidator());
         validators.add(new WithinGridBoundaryValidator(new Board()));
-        CompoundValidator compoundValidator = new CompoundValidator(validators);
+        CompositeValidator compositeValidator = new CompositeValidator(validators);
 
-        ValidationResult validationResult = compoundValidator.isValid("7");
+        ValidationResult validationResult = compositeValidator.isValid("7");
 
         assertThat(validationResult.isValid(), is(true));
     }

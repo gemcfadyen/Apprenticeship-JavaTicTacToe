@@ -23,9 +23,9 @@ public class CommandPromptTest {
 
     private static final String PLAY_AGAIN_PROMPT = "Play again? [Y/N]";
     private static final String NEXT_MOVE_PROMPT = "Please enter the index for your next move";
-    private static final String A_IS_NOT_A_VALID_NUMBER = "[a] is not a valid number\n\n";
+    private static final String A_IS_NOT_A_VALID_NUMBER = "[a] is not a valid integer\n\n";
     private static final String A_IS_NOT_A_NUMBER_REPROMPT = A_IS_NOT_A_VALID_NUMBER + FONT_COLOUR_ANSII_CHARACTERS + NEXT_MOVE_PROMPT;
-    private static final String Z_IS_NOT_A_NUMBER = "[z] is not a valid number\n\n" + FONT_COLOUR_ANSII_CHARACTERS + NEXT_MOVE_PROMPT;
+    private static final String Z_IS_NOT_A_NUMBER = "[z] is not a valid integer\n\n" + FONT_COLOUR_ANSII_CHARACTERS + NEXT_MOVE_PROMPT;
     private static final String DRAW_MESSAGE = "No winner this time";
     private static final String A_IS_NOT_REPLAY_OPTION = "[A] is not a valid replay option\n\n" + FONT_COLOUR_ANSII_CHARACTERS + PLAY_AGAIN_PROMPT;
     private static final String ALREADY_OCCUPIED_CELL_MESSAGE = "[1] is already occupied\n\n" + FONT_COLOUR_ANSII_CHARACTERS + NEXT_MOVE_PROMPT;

@@ -19,9 +19,7 @@ public class Game {
     }
 
     public static void main(String... args) {
-        Prompt prompt = buildPrompt();
-
-        Game game = new Game(new Board(), prompt, new PlayerFactory());
+        Game game = new Game(new Board(), buildPrompt(), new PlayerFactory());
 
         game.play();
     }

@@ -2,10 +2,10 @@ package ttt;
 
 import java.util.List;
 
-public class CompoundValidator implements InputValidator {
+public class CompositeValidator implements InputValidator {
     private final List<InputValidator> inputValidators;
 
-    public CompoundValidator(List<InputValidator> validators) {
+    public CompositeValidator(List<InputValidator> validators) {
         this.inputValidators = validators;
     }
 

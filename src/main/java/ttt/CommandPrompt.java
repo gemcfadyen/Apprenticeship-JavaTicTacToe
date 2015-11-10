@@ -29,8 +29,8 @@ public class CommandPrompt implements Prompt {
 
     @Override
     public int getGameType() {
-        InputValidator compoundValidator = new CompoundValidator(gameTypeValidators());
         askUserForGameType();
+        InputValidator compoundValidator = compositeFor(gameTypeValidators());
         return asInteger(getValidInput(compoundValidator, input(), functionToRepromptGameType()));
     }
 
@@ -38,16 +38,15 @@ public class CommandPrompt implements Prompt {
     public int getNextMove(Board board) {
         print(board);
         askUserForTheirMove();
-        InputValidator compoundValidator = new CompoundValidator(orderedListOfMoveValidators(board));
 
-        String validInput = getValidInput(compoundValidator, input(), functionToRepromptForValidMove(board));
+        String validInput = getValidInput(compositeFor(orderedListOfMoveValidators(board)), input(), functionToRepromptForValidMove(board));
         return zeroIndexed(validInput);
     }
 
     @Override
     public String getReplayOption() {
         askUserToPlayAgain();
-        InputValidator compoundValidator = new CompoundValidator(Collections.singletonList(new ReplayOptionValidator()));
+        InputValidator compoundValidator = compositeFor(Collections.singletonList(new ReplayOptionValidator()));
         return getValidInput(compoundValidator, input(), functionToRepromptReplay());
     }
 
@@ -60,9 +59,9 @@ public class CommandPrompt implements Prompt {
         for (Line row : rows) {
             for (PlayerSymbol symbol : row.getSymbols()) {
                 boardForDisplay +=
-                        space()
-                                + displayCell(symbol, offset)
-                                + getBorderFor(offset);
+                          space()
+                        + displayCell(symbol, offset)
+                        + getBorderFor(offset);
                 offset++;
             }
         }
@@ -102,6 +101,10 @@ public class CommandPrompt implements Prompt {
         display(FONT_COLOUR_ANSII_CHARACTERS
                         + "Enter 1 to play Human vs Human"
         );
+    }
+
+    private CompositeValidator compositeFor(List<InputValidator> validators) {
+        return new CompositeValidator(validators);
     }
 
     private int asInteger(String input) {
