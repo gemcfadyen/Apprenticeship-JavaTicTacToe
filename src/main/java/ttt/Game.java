@@ -11,7 +11,6 @@ public class Game {
     private final PlayerFactory playerFactory;
     private Board board;
     private Prompt gamePrompt;
-    private Player[] players;
 
     public Game(Board board, Prompt gamePrompt, PlayerFactory playerFactory) {
         this.board = board;
@@ -39,7 +38,7 @@ public class Game {
         int currentPlayerIndex = PLAYER_ONE_INDEX;
         boolean hasWinner = false;
 
-        players = createPlayers();
+        Player[] players = createPlayers();
 
         while (gameInProgress(hasWinner)) {
             updateBoardWithPlayersMove(players[currentPlayerIndex]);
