@@ -1,9 +1,6 @@
 package ttt.player;
 
 import org.junit.Test;
-import ttt.player.HumanPlayer;
-import ttt.player.Player;
-import ttt.player.PlayerFactory;
 import ttt.ui.CommandPrompt;
 import ttt.ui.Prompt;
 

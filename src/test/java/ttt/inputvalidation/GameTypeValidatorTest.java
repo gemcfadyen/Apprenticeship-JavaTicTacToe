@@ -1,8 +1,6 @@
 package ttt.inputvalidation;
 
 import org.junit.Test;
-import ttt.inputvalidation.GameTypeValidator;
-import ttt.inputvalidation.ValidationResult;
 
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;

@@ -2,7 +2,6 @@ package ttt.ui;
 
 import org.junit.Before;
 import org.junit.Test;
-import ttt.ui.WriteToPromptException;
 
 import java.io.IOException;
 

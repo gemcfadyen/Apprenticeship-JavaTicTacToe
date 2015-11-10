@@ -2,8 +2,6 @@ package ttt.inputvalidation;
 
 import org.junit.Test;
 import ttt.board.Board;
-import ttt.inputvalidation.ValidationResult;
-import ttt.inputvalidation.WithinGridBoundaryValidator;
 
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;

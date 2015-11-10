@@ -2,11 +2,6 @@ package ttt.board;
 
 import ttt.player.PlayerSymbol;
 
-import java.util.Arrays;
-
-import static ttt.player.PlayerSymbol.O;
-import static ttt.player.PlayerSymbol.X;
-
 public class LineGenerator {
     private final PlayerSymbol[] grid;
 

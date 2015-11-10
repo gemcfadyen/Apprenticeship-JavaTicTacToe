@@ -4,10 +4,6 @@ import org.junit.Test;
 import ttt.ReaderStubWhichThrowsExceptionOnRead;
 import ttt.WriterStubWhichThrowsExceptionOnWrite;
 import ttt.board.Board;
-import ttt.ui.CommandPrompt;
-import ttt.ui.Prompt;
-import ttt.ui.ReadFromPromptException;
-import ttt.ui.WriteToPromptException;
 
 import java.io.Reader;
 import java.io.StringReader;

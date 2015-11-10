@@ -1,7 +1,6 @@
 package ttt.board;
 
 import org.junit.Test;
-import ttt.board.LineGenerator;
 import ttt.player.PlayerSymbol;
 
 import java.util.Arrays;

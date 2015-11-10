@@ -2,7 +2,7 @@ package ttt.player;
 
 import ttt.ui.Prompt;
 
-import static ttt.GameType.*;
+import static ttt.GameType.HUMAN_VS_HUMAN;
 
 public class PlayerFactory {
 

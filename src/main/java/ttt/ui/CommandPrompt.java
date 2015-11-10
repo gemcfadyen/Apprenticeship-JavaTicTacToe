@@ -5,15 +5,18 @@ import ttt.board.Line;
 import ttt.inputvalidation.*;
 import ttt.player.PlayerSymbol;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.Reader;
+import java.io.Writer;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.function.Function;
 
 import static ttt.board.Board.BOARD_DIMENSION;
-import static ttt.player.PlayerSymbol.*;
 import static ttt.player.PlayerSymbol.VACANT;
+import static ttt.player.PlayerSymbol.X;
 
 public class CommandPrompt implements Prompt {
     private static final String CLEAR_SCREEN_ANSII_CHARACTERS = "\033[H\033[2J";

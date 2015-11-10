@@ -3,7 +3,6 @@ package ttt.player;
 import org.junit.Test;
 import ttt.PromptSpy;
 import ttt.board.Board;
-import ttt.player.HumanPlayer;
 
 import java.io.IOException;
 import java.io.StringReader;

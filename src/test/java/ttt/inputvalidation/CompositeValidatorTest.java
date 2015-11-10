@@ -2,7 +2,6 @@ package ttt.inputvalidation;
 
 import org.junit.Test;
 import ttt.board.Board;
-import ttt.inputvalidation.*;
 
 import java.util.ArrayList;
 import java.util.Collections;

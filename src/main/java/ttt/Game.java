@@ -9,7 +9,7 @@ import ttt.ui.Prompt;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 
-import static ttt.ReplayOptions.*;
+import static ttt.ReplayOptions.Y;
 
 public class Game {
     private static final int PLAYER_ONE_INDEX = 0;

@@ -1,8 +1,6 @@
 package ttt.board;
 
 import org.junit.Test;
-import ttt.board.Board;
-import ttt.board.Line;
 import ttt.player.PlayerSymbol;
 
 import static org.hamcrest.Matchers.is;
