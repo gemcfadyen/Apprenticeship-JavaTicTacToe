@@ -29,11 +29,8 @@ public class CommandPrompt implements Prompt {
 
     @Override
     public int getGameType() {
-        clear();
-
         InputValidator compoundValidator = new CompoundValidator(gameTypeValidators());
         askUserForGameType();
-
         return asInteger(getValidInput(compoundValidator, input(), functionToRepromptGameType()));
     }
 
@@ -88,61 +85,8 @@ public class CommandPrompt implements Prompt {
                 + "No winner this time");
     }
 
-    private Function<ValidationResult, Void> functionToRepromptGameType() {
-        return validationResult -> {
-            clear();
-            display(BOARD_COLOUR_ANSII_CHARACTERS + validationResult.reason());
-            askUserForGameType();
-            return null;
-        };
-    }
-
-    private Function<ValidationResult, Void> functionToRepromptReplay() {
-        return validationResult -> {
-            clear();
-            display(BOARD_COLOUR_ANSII_CHARACTERS + validationResult.reason());
-            askUserToPlayAgain();
-            return null;
-        };
-    }
-
-    private int asInteger(String input) {
-        return Integer.valueOf(input);
-    }
-
-    private Function<ValidationResult, Void> functionToRepromptForValidMove(Board currentBoard) {
-        return validationResult -> {
-            CommandPrompt.this.clear();
-            CommandPrompt.this.print(currentBoard);
-            CommandPrompt.this.display(validationResult.reason());
-            CommandPrompt.this.askUserForTheirMove();
-            return null;
-        };
-    }
-
-    private List<InputValidator> gameTypeValidators() {
-        return Arrays.asList(new NumericValidator(), new GameTypeValidator());
-    }
-
-    private String getValidInput(InputValidator compoundValidator, String input, Function<ValidationResult, Void> reprompt) {
-        ValidationResult validationResult = compoundValidator.isValid(input);
-        while (!validationResult.isValid()) {
-            reprompt.apply(validationResult);
-            validationResult = compoundValidator.isValid(input());
-        }
-        clear();
-        return validationResult.userInput();
-    }
-
-    private void askUserForGameType() {
-        display(FONT_COLOUR_ANSII_CHARACTERS
-                        + "Enter 1 to play Human vs Human"
-        );
-    }
-
-    private void askUserForTheirMove() {
-        display(FONT_COLOUR_ANSII_CHARACTERS
-                + "Please enter the index for your next move");
+    private void clear() {
+        display(CLEAR_SCREEN_ANSII_CHARACTERS);
     }
 
     private void display(String message) {
@@ -154,13 +98,50 @@ public class CommandPrompt implements Prompt {
         }
     }
 
-    private void clear() {
-        display(CLEAR_SCREEN_ANSII_CHARACTERS);
+    private void askUserForGameType() {
+        display(FONT_COLOUR_ANSII_CHARACTERS
+                        + "Enter 1 to play Human vs Human"
+        );
     }
 
-    private void askUserToPlayAgain() {
-        display(FONT_COLOUR_ANSII_CHARACTERS
-                + "Play again? [Y/N]");
+    private int asInteger(String input) {
+        return Integer.valueOf(input);
+    }
+
+    private String getValidInput(InputValidator compoundValidator, String input, Function<ValidationResult, Void> reprompt) {
+        ValidationResult validationResult = compoundValidator.isValid(input);
+        while (!validationResult.isValid()) {
+            clear();
+            reprompt.apply(validationResult);
+            validationResult = compoundValidator.isValid(input());
+        }
+        clear();
+        return validationResult.userInput();
+    }
+
+    private Function<ValidationResult, Void> functionToRepromptGameType() {
+        return validationResult -> {
+            display(BOARD_COLOUR_ANSII_CHARACTERS + validationResult.reason());
+            askUserForGameType();
+            return null;
+        };
+    }
+
+    private Function<ValidationResult, Void> functionToRepromptForValidMove(Board currentBoard) {
+        return validationResult -> {
+            print(currentBoard);
+            display(validationResult.reason());
+            askUserForTheirMove();
+            return null;
+        };
+    }
+
+    private Function<ValidationResult, Void> functionToRepromptReplay() {
+        return validationResult -> {
+            display(BOARD_COLOUR_ANSII_CHARACTERS + validationResult.reason());
+            askUserToPlayAgain();
+            return null;
+        };
     }
 
     public String input() {
@@ -169,6 +150,20 @@ public class CommandPrompt implements Prompt {
         } catch (IOException e) {
             throw new ReadFromPromptException(e.getMessage(), e);
         }
+    }
+
+    private void askUserToPlayAgain() {
+        display(FONT_COLOUR_ANSII_CHARACTERS
+                + "Play again? [Y/N]");
+    }
+
+    private void askUserForTheirMove() {
+        display(FONT_COLOUR_ANSII_CHARACTERS
+                + "Please enter the index for your next move");
+    }
+
+    private List<InputValidator> gameTypeValidators() {
+        return Arrays.asList(new NumericValidator(), new GameTypeValidator());
     }
 
     private List<InputValidator> orderedListOfMoveValidators(Board board) {
