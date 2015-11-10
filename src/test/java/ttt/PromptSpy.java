@@ -1,11 +1,16 @@
 package ttt;
 
+import ttt.board.Board;
+import ttt.board.Line;
+import ttt.player.PlayerSymbol;
+import ttt.ui.Prompt;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.Reader;
 
-import static ttt.PlayerSymbol.O;
-import static ttt.PlayerSymbol.X;
+import static ttt.player.PlayerSymbol.O;
+import static ttt.player.PlayerSymbol.X;
 
 public class PromptSpy implements Prompt {
     private final BufferedReader reader;

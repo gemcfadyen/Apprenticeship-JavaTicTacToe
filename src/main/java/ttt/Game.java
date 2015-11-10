@@ -1,5 +1,11 @@
 package ttt;
 
+import ttt.board.Board;
+import ttt.player.Player;
+import ttt.player.PlayerFactory;
+import ttt.ui.CommandPrompt;
+import ttt.ui.Prompt;
+
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 

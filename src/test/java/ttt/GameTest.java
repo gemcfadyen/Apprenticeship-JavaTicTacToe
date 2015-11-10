@@ -1,13 +1,18 @@
 package ttt;
 
 import org.junit.Test;
+import ttt.board.Board;
+import ttt.player.HumanPlayer;
+import ttt.player.PlayerSymbol;
+import ttt.ui.CommandPrompt;
+import ttt.ui.Prompt;
 
 import java.io.StringReader;
 import java.io.StringWriter;
 
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
-import static ttt.PlayerSymbol.*;
+import static ttt.player.PlayerSymbol.*;
 
 public class GameTest {
 

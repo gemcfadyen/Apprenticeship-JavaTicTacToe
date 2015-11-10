@@ -1,5 +1,9 @@
 package ttt;
 
+import ttt.player.Player;
+import ttt.player.PlayerFactory;
+import ttt.ui.Prompt;
+
 public class PlayerFactorySpy extends PlayerFactory {
     private Player[] players;
 
