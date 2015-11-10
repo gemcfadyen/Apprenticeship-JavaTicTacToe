@@ -1,5 +1,7 @@
 package ttt.ui;
 
+import ttt.GameType;
+import ttt.ReplayOption;
 import ttt.board.Board;
 import ttt.board.Line;
 import ttt.inputvalidation.*;
@@ -14,6 +16,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.function.Function;
 
+import static ttt.GameType.*;
 import static ttt.board.Board.BOARD_DIMENSION;
 import static ttt.player.PlayerSymbol.VACANT;
 import static ttt.player.PlayerSymbol.X;
@@ -36,10 +39,10 @@ public class CommandPrompt implements Prompt {
     }
 
     @Override
-    public int getGameType() {
+    public GameType getGameType() {
         askUserForGameType();
         InputValidator compoundValidator = compositeFor(gameTypeValidators());
-        return asInteger(getValidInput(compoundValidator, input(), functionToRepromptGameType()));
+        return GameType.of(asInteger(getValidInput(compoundValidator, input(), functionToRepromptGameType())));
     }
 
     @Override
@@ -52,10 +55,11 @@ public class CommandPrompt implements Prompt {
     }
 
     @Override
-    public String getReplayOption() {
+    public ReplayOption getReplayOption() {
         askUserToPlayAgain();
         InputValidator compoundValidator = compositeFor(Collections.singletonList(new ReplayOptionValidator()));
-        return getValidInput(compoundValidator, input(), functionToRepromptReplay());
+
+        return ReplayOption.of(getValidInput(compoundValidator, input(), functionToRepromptReplay()));
     }
 
     @Override
@@ -106,9 +110,13 @@ public class CommandPrompt implements Prompt {
     }
 
     private void askUserForGameType() {
-        display(FONT_COLOUR_ANSII_CHARACTERS
-                        + "Enter 1 to play Human vs Human"
-        );
+        String gameTypeMessage = FONT_COLOUR_ANSII_CHARACTERS + "Enter ";
+
+        for (GameType gameType : values()) {
+            gameTypeMessage += gameType.numericRepresentation() + " to play " + gameType.gameNameForDisplay() + newLine();
+        }
+
+        display(gameTypeMessage);
     }
 
     private CompositeValidator compositeFor(List<InputValidator> validators) {

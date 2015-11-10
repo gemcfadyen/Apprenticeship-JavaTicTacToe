@@ -1,7 +1,9 @@
 package ttt.ui;
 
 import org.junit.Test;
+import ttt.GameType;
 import ttt.ReaderStubWhichThrowsExceptionOnRead;
+import ttt.ReplayOption;
 import ttt.WriterStubWhichThrowsExceptionOnWrite;
 import ttt.board.Board;
 
@@ -13,6 +15,8 @@ import java.io.Writer;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
+import static ttt.GameType.HUMAN_VS_HUMAN;
+import static ttt.ReplayOption.Y;
 import static ttt.player.PlayerSymbol.*;
 
 
@@ -130,9 +134,9 @@ public class CommandPromptTest {
     public void readsReplayOption() {
         Prompt prompt = new CommandPrompt(new StringReader("Y\n"), new StringWriter());
 
-        String replayOption = prompt.getReplayOption();
+        ReplayOption replayOption = prompt.getReplayOption();
 
-        assertThat(replayOption, is("Y"));
+        assertThat(replayOption, is(Y));
     }
 
     @Test
@@ -163,7 +167,7 @@ public class CommandPromptTest {
         prompt.getGameType();
 
         assertThat(writer.toString().contains(FONT_COLOUR_ANSII_CHARACTERS
-                + "Enter 1 to play Human vs Human\n"), is(true));
+                + "Enter 1 to play Human vs Human\n\n\n"), is(true));
     }
 
     @Test
@@ -171,9 +175,9 @@ public class CommandPromptTest {
         StringWriter writer = new StringWriter();
         Prompt prompt = new CommandPrompt(new StringReader("1\n"), writer);
 
-        int gameType = prompt.getGameType();
+        GameType gameType = prompt.getGameType();
 
-        assertThat(gameType, is(1));
+        assertThat(gameType, is(HUMAN_VS_HUMAN));
     }
 
     @Test
@@ -191,9 +195,9 @@ public class CommandPromptTest {
         StringWriter writer = new StringWriter();
         Prompt prompt = new CommandPrompt(new StringReader("a\n1\n"), writer);
 
-        int gameType = prompt.getGameType();
+        GameType gameType = prompt.getGameType();
 
-        assertThat(gameType, is(1));
+        assertThat(gameType, is(HUMAN_VS_HUMAN));
         assertThat(writer.toString().contains(CLEAR_SCREEN_ANSI_CHARACTERS + "\n\n"
                 + BOARD_OUTLINE_COLOUR_ANSII_CHARACTERS
                 + A_IS_NOT_A_VALID_NUMBER
@@ -206,9 +210,9 @@ public class CommandPromptTest {
         StringWriter writer = new StringWriter();
         Prompt prompt = new CommandPrompt(new StringReader("7\n1\n"), writer);
 
-        int gameType = prompt.getGameType();
+        GameType gameType = prompt.getGameType();
 
-        assertThat(gameType, is(1));
+        assertThat(gameType, is(HUMAN_VS_HUMAN));
 
         assertThat(writer.toString().contains("[7] is not a valid game type\n\n"
                 + FONT_COLOUR_ANSII_CHARACTERS

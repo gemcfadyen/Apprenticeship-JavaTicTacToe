@@ -9,7 +9,7 @@ import ttt.ui.Prompt;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 
-import static ttt.ReplayOptions.Y;
+import static ttt.ReplayOption.Y;
 
 public class Game {
     private static final int PLAYER_ONE_INDEX = 0;
@@ -31,14 +31,14 @@ public class Game {
     }
 
     public void play() {
-        String replayOption = Y.name();
-        while (replayOption.equals(Y.name())) {
+        ReplayOption replayOption = Y;
+        while (replayOption.equals(Y)) {
             replayOption = playSingleGame();
             reinitialiseBoard();
         }
     }
 
-    private String playSingleGame() {
+    private ReplayOption playSingleGame() {
         int currentPlayerIndex = PLAYER_ONE_INDEX;
         boolean hasWinner = false;
 
@@ -55,7 +55,7 @@ public class Game {
     }
 
     private Player[] createPlayers() {
-        int playerOption = gamePrompt.getGameType();
+        GameType playerOption = gamePrompt.getGameType();
         return playerFactory.createPlayers(playerOption, gamePrompt);
     }
 

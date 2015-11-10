@@ -26,20 +26,20 @@ public class PromptSpy implements Prompt {
     }
 
     @Override
-    public int getGameType() {
+    public GameType getGameType() {
         numberOfTimesPlayerOptionsHaveBeenPrinted++;
-        return Integer.valueOf(readInput());
+        return GameType.of(Integer.valueOf(readInput()));
+    }
+
+    @Override
+    public ReplayOption getReplayOption() {
+        numberOfTimesPlayerIsReprompted++;
+        return ReplayOption.of(readInput());
     }
 
     @Override
     public int getNextMove(Board board) {
         return Integer.valueOf(readInput());
-    }
-
-    @Override
-    public String getReplayOption() {
-        numberOfTimesPlayerIsReprompted++;
-        return readInput();
     }
 
     @Override

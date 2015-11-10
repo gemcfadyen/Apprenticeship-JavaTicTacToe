@@ -1,12 +1,12 @@
 package ttt.inputvalidation;
 
-import ttt.ReplayOptions;
+import ttt.ReplayOption;
 
 public class ReplayOptionValidator implements InputValidator {
     @Override
     public ValidationResult isValid(String input) {
-        for (ReplayOptions replayOptions : ReplayOptions.values()) {
-            if (replayOptions.name().equals(input)) {
+        for (ReplayOption replayOption : ReplayOption.values()) {
+            if (replayOption.name().equals(input)) {
                 return new ValidationResult(input, true, "");
             }
         }

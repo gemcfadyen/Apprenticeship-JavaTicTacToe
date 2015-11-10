@@ -12,7 +12,7 @@ public class PlayerFactorySpy extends PlayerFactory {
     }
 
     @Override
-    public Player[] createPlayers(int playerOption, Prompt prompt) {
+    public Player[] createPlayers(GameType playerOption, Prompt prompt) {
         return players;
     }
 }

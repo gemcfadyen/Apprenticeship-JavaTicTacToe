@@ -1,12 +1,14 @@
 package ttt.ui;
 
+import ttt.GameType;
+import ttt.ReplayOption;
 import ttt.board.Board;
 import ttt.player.PlayerSymbol;
 
 public interface Prompt {
-    int getGameType();
+    GameType getGameType();
+    ReplayOption getReplayOption();
     int getNextMove(Board board);
-    String getReplayOption();
 
     void print(Board board);
     void printWinningMessageFor(PlayerSymbol symbol);
