@@ -3,8 +3,7 @@ package ttt;
 import org.junit.Test;
 
 import static org.hamcrest.Matchers.is;
-import static org.junit.Assert.assertThat;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 import static ttt.PlayerSymbol.*;
 
 public class BoardTest {
@@ -12,13 +11,25 @@ public class BoardTest {
     @Test
     public void getsSymbolFromSpecifiedPosition() {
         Board board = new Board(X, X, O, X, VACANT, O, O, X, X);
-        assertThat(board.getSymbolAt(5), is(VACANT));
+        assertThat(board.getSymbolAt(4), is(VACANT));
     }
 
     @Test
     public void identifiesThatThereIsAFreeSpaceOnTheBoard() {
         Board board = new Board();
         assertTrue(board.hasFreeSpace());
+    }
+
+    @Test
+    public void identifiesThatGivenSlotOnBoardIsVacant() {
+        Board board = new Board();
+        assertTrue(board.isVacantAt(1));
+    }
+
+    @Test
+    public void identifiesThatGivenSlotOnBoardIsOccupied() {
+        Board board = new Board(X, VACANT, VACANT, VACANT, VACANT, VACANT, VACANT, VACANT, VACANT);
+        assertFalse(board.isVacantAt(0));
     }
 
     @Test
@@ -162,59 +173,48 @@ public class BoardTest {
     }
 
     @Test
-    public void indicatesUnoccupiedPositionOnGridIsVacant() {
-        Board board = new Board();
-        assertThat(board.isValidPositionAt(3), is(true));
-    }
-
-    @Test
-    public void indicatesOccupiedPositionIsNotVacant() {
-        Board board = new Board(X, VACANT, VACANT, VACANT, VACANT, VACANT, VACANT, VACANT, VACANT);
-        assertThat(board.isValidPositionAt(1), is(false));
-    }
-
-    @Test
     public void indicatesPositionLargerThanGridIsOutsideOfGrid() {
         Board board = new Board();
-        assertThat(board.isValidPositionAt(10), is(false));
+        assertThat(board.isWithinGridBoundary(9), is(false));
     }
 
     @Test
-    public void indicatesPositionAtZeroIsOutsideOfGrid() {
+    public void indicatesPositionAtZeroIsInsideOfGrid() {
         Board board = new Board();
-        assertThat(board.isValidPositionAt(0), is(false));
+        assertThat(board.isWithinGridBoundary(0), is(true));
     }
 
     @Test
-    public void indicatesPositionNineIsValid() {
+    public void indicatesPositionEightIsValid() {
         Board board = new Board();
-        assertThat(board.isValidPositionAt(9), is(true));
+        assertThat(board.isWithinGridBoundary(8), is(true));
     }
 
     @Test
     public void indicatesPositionLessThanZeroIsOutsideOfGrid() {
         Board board = new Board();
-        assertThat(board.isValidPositionAt(-3), is(false));
+        assertThat(board.isWithinGridBoundary(-3), is(false));
     }
 
     @Test
     public void indicatesPositionIsWithinGridBoundary() {
         Board board = new Board();
-        assertThat(board.isValidPositionAt(2), is(true));
+        assertThat(board.isWithinGridBoundary(2), is(true));
     }
 
     @Test
     public void returnsHorizontalRows() {
         Board board = new Board(X, O, X, O, O, X, VACANT, VACANT, O);
 
-        Cell[][] rows = board.getRows();
+        Line[] rows = board.getRows();
 
-        Cell[] expectedTopRow = new Cell[]{new Cell(1, X), new Cell(2, O), new Cell(3, X)};
-        Cell[] expectedMiddleRow = new Cell[]{new Cell(4, O), new Cell(5, O), new Cell(6, X)};
-        Cell[] expectedBottomRow = new Cell[]{new Cell(7, VACANT), new Cell(8, VACANT), new Cell(9, O)};
+        PlayerSymbol[] expectedTopRow = new PlayerSymbol[]{ X, O, X};
+        PlayerSymbol[] expectedMiddleRow = new PlayerSymbol[]{ O, O, X};
+        PlayerSymbol[] expectedBottomRow = new PlayerSymbol[]{VACANT, VACANT, O};
+
         assertThat(rows.length, is(3));
-        assertThat(rows[0], is(expectedTopRow));
-        assertThat(rows[1], is(expectedMiddleRow));
-        assertThat(rows[2], is(expectedBottomRow));
+        assertThat(rows[0].getSymbols(), is(expectedTopRow));
+        assertThat(rows[1].getSymbols(), is(expectedMiddleRow));
+        assertThat(rows[2].getSymbols(), is(expectedBottomRow));
     }
 }

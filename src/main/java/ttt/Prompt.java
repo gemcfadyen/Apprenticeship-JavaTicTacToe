@@ -1,11 +1,11 @@
 package ttt;
 
 public interface Prompt {
-    String read();
-    void askUserForTheirMove();
-    void askUserToPlayAgain();
+    int getGameType();
+    int getNextMove(Board board);
+    String getReplayOption();
+
     void print(Board board);
     void printWinningMessageFor(PlayerSymbol symbol);
     void printDrawMessage();
-    void clear();
 }

@@ -1,56 +1,44 @@
 package ttt;
 
-import java.util.Arrays;
-import java.util.function.Function;
-
-import static ttt.PlayerSymbol.*;
+import static ttt.PlayerSymbol.VACANT;
 
 public class Board {
     protected static final int BOARD_DIMENSION = 3;
     private static final int NUMBER_OF_SLOTS = BOARD_DIMENSION * BOARD_DIMENSION;
-    private Cell[] grid = new Cell[BOARD_DIMENSION * BOARD_DIMENSION];
+    private PlayerSymbol[] grid = new PlayerSymbol[BOARD_DIMENSION * BOARD_DIMENSION];
 
     public Board() {
         this(VACANT, VACANT, VACANT, VACANT, VACANT, VACANT, VACANT, VACANT, VACANT);
     }
 
     public Board(PlayerSymbol... initialGridLayout) {
-        for (int cellIndex = 0; cellIndex < NUMBER_OF_SLOTS; cellIndex++) {
-            grid[cellIndex] = new Cell(calculateOffsetFor(cellIndex), initialGridLayout[cellIndex]);
-        }
+        this.grid = initialGridLayout;
     }
 
-    public Cell[][] getRows() {
+    public Line[] getRows() {
         LineGenerator lines = new LineGenerator(grid);
-        return new Cell[][]{lines.topRow(), lines.middleRow(), lines.bottomRow()};
+        return new Line[]{lines.topRow(), lines.middleRow(), lines.bottomRow()};
     }
 
     public boolean hasWinningCombination() {
-        return checkForWinIn(new LineGenerator(grid).linesForAllDirections());
+        LineGenerator lineGenerator = new LineGenerator(grid);
+        return checkForWinIn(lineGenerator.linesForAllDirections());
     }
 
     public PlayerSymbol getWinningSymbol() {
         if (hasWinningCombination()) {
 
-            for (Cell[] row : getLinesFromGrid()) {
-                if (containsOnly(X, row)) {
-                    return X;
-                }
-                if (containsOnly(O, row)) {
-                    return O;
+            for (Line line : new LineGenerator(grid).linesForAllDirections()) {
+                if (line.isWinning()) {
+                    return getFirstSymbol(line);
                 }
             }
         }
         return VACANT;
-
     }
 
-    public PlayerSymbol getSymbolAt(int offset) {
-        return grid[calculateIndexFor(offset)].getSymbol();
-    }
-
-    public boolean isValidPositionAt(int offset) {
-        return isWithinGridBoundary(calculateIndexFor(offset)) && isVacantAt(calculateIndexFor(offset));
+    public PlayerSymbol getSymbolAt(int index) {
+        return grid[index];
     }
 
     public boolean hasFreeSpace() {
@@ -62,52 +50,28 @@ public class Board {
         return false;
     }
 
-    public void updateAt(int offset, PlayerSymbol symbol) {
-        grid[calculateIndexFor(offset)].setSymbol(symbol);
+    public void updateAt(int index, PlayerSymbol symbol) {
+        grid[index] = symbol;
     }
 
-    private int calculateOffsetFor(int cellIndex) {
-        return cellIndex + 1;
+    public boolean isWithinGridBoundary(int index) {
+        return index >= 0 && index < NUMBER_OF_SLOTS;
     }
 
-    private int calculateIndexFor(int offset) {
-        return offset - 1;
+    public boolean isVacantAt(int cellIndex) {
+        return grid[cellIndex] == VACANT;
     }
 
-    private boolean checkForWinIn(Cell[][] rows) {
-        for (Cell[] row : rows) {
-            if (containsOnly(X, row)
-                    || containsOnly(O, row)) {
-                return true;
-            }
+    private boolean checkForWinIn(Line[] lines) {
+        for (Line line : lines) {
+           if(line.isWinning()) {
+               return true;
+           }
         }
         return false;
     }
 
-    private boolean containsOnly(PlayerSymbol symbol, Cell[] row) {
-        return Arrays.equals(getTheSymbolsFromCells().apply(row), new PlayerSymbol[]{symbol, symbol, symbol});
-    }
-
-    private Function<Cell[], PlayerSymbol[]> getTheSymbolsFromCells() {
-        return cells -> {
-            PlayerSymbol[] symbols = new PlayerSymbol[cells.length];
-            for (int cellIndex = 0; cellIndex < cells.length; cellIndex++) {
-                symbols[cellIndex] = cells[cellIndex].getSymbol();
-            }
-            return symbols;
-        };
-    }
-
-    private Cell[][] getLinesFromGrid() {
-        LineGenerator lineGenerator = new LineGenerator(grid);
-        return lineGenerator.linesForAllDirections();
-    }
-
-    private boolean isWithinGridBoundary(int offset) {
-        return offset >= 0 && offset < NUMBER_OF_SLOTS;
-    }
-
-    private boolean isVacantAt(int cellIndex) {
-        return grid[cellIndex].getSymbol() == VACANT;
+    private PlayerSymbol getFirstSymbol(Line row) {
+        return row.getSymbols()[0];
     }
 }

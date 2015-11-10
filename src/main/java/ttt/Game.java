@@ -3,32 +3,27 @@ package ttt;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 
-import static ttt.PlayerSymbol.O;
-import static ttt.PlayerSymbol.X;
 import static ttt.ReplayOptions.*;
 
 public class Game {
     private static final int PLAYER_ONE_INDEX = 0;
     private static final int PLAYER_TWO_INDEX = 1;
+    private final PlayerFactory playerFactory;
     private Board board;
     private Prompt gamePrompt;
     private Player[] players;
 
-    public Game(Board board, Prompt gamePrompt, Player player1, Player player2) {
+    public Game(Board board, Prompt gamePrompt, PlayerFactory playerFactory) {
         this.board = board;
         this.gamePrompt = gamePrompt;
-        this.players = new Player[]{player1, player2};
+        this.playerFactory = playerFactory;
     }
 
     public static void main(String... args) {
         Prompt prompt = buildPrompt();
 
-        Game game = new Game(
-                new Board(),
-                prompt,
-                new HumanPlayer(prompt, X),
-                new HumanPlayer(prompt, O)
-        );
+        Game game = new Game(new Board(), prompt, new PlayerFactory());
+
         game.play();
     }
 
@@ -44,6 +39,8 @@ public class Game {
         int currentPlayerIndex = PLAYER_ONE_INDEX;
         boolean hasWinner = false;
 
+        players = createPlayers();
+
         while (gameInProgress(hasWinner)) {
             updateBoardWithPlayersMove(players[currentPlayerIndex]);
             hasWinner = board.hasWinningCombination();
@@ -51,7 +48,12 @@ public class Game {
         }
 
         displayResultsOfGame(hasWinner);
-        return getReplayOption();
+        return gamePrompt.getReplayOption();
+    }
+
+    private Player[] createPlayers() {
+        int playerOption = gamePrompt.getGameType();
+        return playerFactory.createPlayers(playerOption, gamePrompt);
     }
 
     private boolean gameInProgress(boolean hasWinner) {
@@ -67,31 +69,13 @@ public class Game {
         return currentPlayerIndex == PLAYER_ONE_INDEX ? PLAYER_TWO_INDEX : PLAYER_ONE_INDEX;
     }
 
-    private String getReplayOption() {
-        return validated(promptToPlayAgain());
-    }
-
-    private String validated(String userInput) {
-        while (invalid(userInput)) {
-            gamePrompt.clear();
-            userInput = promptToPlayAgain();
-        }
-        return userInput;
-    }
-
     private void reinitialiseBoard() {
-        gamePrompt.clear();
         board = new Board();
     }
 
-    private String promptToPlayAgain() {
-        gamePrompt.askUserToPlayAgain();
-        return gamePrompt.read();
-    }
-
     private void displayResultsOfGame(boolean hasWinner) {
-        printExitMessage(hasWinner);
         gamePrompt.print(board);
+        printExitMessage(hasWinner);
     }
 
     private void printExitMessage(boolean hasWinner) {
@@ -100,11 +84,6 @@ public class Game {
         } else {
             gamePrompt.printWinningMessageFor(board.getWinningSymbol());
         }
-    }
-
-    private boolean invalid(String userInput) {
-        return !userInput.equals(Y.name())
-                && !userInput.equals(N.name());
     }
 
     private static CommandPrompt buildPrompt() {

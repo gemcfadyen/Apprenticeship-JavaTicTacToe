@@ -1,65 +1,73 @@
 package ttt;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.Reader;
-import java.io.Writer;
+import java.io.*;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+import java.util.function.Function;
 
 import static ttt.Board.BOARD_DIMENSION;
+import static ttt.PlayerSymbol.*;
 import static ttt.PlayerSymbol.VACANT;
 
 public class CommandPrompt implements Prompt {
     private static final String CLEAR_SCREEN_ANSII_CHARACTERS = "\033[H\033[2J";
     private static final String NUMBER_COLOUR_ANSII_CHARACTERS = "\033[1;30m";
     private static final String BOARD_COLOUR_ANSII_CHARACTERS = "\033[1;36m";
-    private static final String FONT_COLOUR_ANSII_CHARACTERS = "\033[1;34m";
+    private static final String FONT_COLOUR_ANSII_CHARACTERS = "\033[1;37m";
+    private static final String X_COLOUR_ANSII_CHARACTERS = "\033[1;33m";
+    private static final String O_COLOUR_ANSII_CHARACTERS = "\033[1;31m";
     private BufferedReader reader;
     private Writer writer;
 
     public CommandPrompt(Reader reader, Writer writer) {
         this.reader = new BufferedReader(reader);
         this.writer = writer;
+
         clear();
     }
 
     @Override
-    public String read() {
-        try {
-            return reader.readLine();
-        } catch (IOException e) {
-            throw new ReadFromPromptException(e.getMessage(), e);
-        }
+    public int getGameType() {
+        clear();
+
+        InputValidator compoundValidator = new CompoundValidator(gameTypeValidators());
+        askUserForGameType();
+
+        return asInteger(getValidInput(compoundValidator, input(), functionToRepromptGameType()));
     }
 
     @Override
-    public void askUserForTheirMove() {
-        display(FONT_COLOUR_ANSII_CHARACTERS
-                + newLine()
-                + "Please enter the index for your next move" + newLine());
+    public int getNextMove(Board board) {
+        print(board);
+        askUserForTheirMove();
+        InputValidator compoundValidator = new CompoundValidator(orderedListOfMoveValidators(board));
+
+        String validInput = getValidInput(compoundValidator, input(), functionToRepromptForValidMove(board));
+        return zeroIndexed(validInput);
     }
 
     @Override
-    public void askUserToPlayAgain() {
-        display(FONT_COLOUR_ANSII_CHARACTERS
-                + newLine()
-                + "Play again? [Y/N]"
-                + newLine());
+    public String getReplayOption() {
+        askUserToPlayAgain();
+        InputValidator compoundValidator = new CompoundValidator(Collections.singletonList(new ReplayOptionValidator()));
+        return getValidInput(compoundValidator, input(), functionToRepromptReplay());
     }
 
     @Override
     public void print(Board board) {
         String boardForDisplay = BOARD_COLOUR_ANSII_CHARACTERS + newLine();
 
-        Cell[][] rows = board.getRows();
-        for (Cell[] row : rows) {
-            for (Cell cell : row) {
-                int cellOffset = cell.getOffset();
+        Line[] rows = board.getRows();
+        int offset = 0;
+        for (Line row : rows) {
+            for (PlayerSymbol symbol : row.getSymbols()) {
                 boardForDisplay +=
                         space()
-                                + displayCell(board, cellOffset)
-                                + getBorderFor(cellOffset);
+                                + displayCell(symbol, offset)
+                                + getBorderFor(offset);
+                offset++;
             }
-
         }
 
         display(boardForDisplay);
@@ -67,44 +75,137 @@ public class CommandPrompt implements Prompt {
 
     @Override
     public void printWinningMessageFor(PlayerSymbol symbol) {
-        display("Congratulations - " + symbol + " has won" + newLine());
+        display(FONT_COLOUR_ANSII_CHARACTERS
+                + "Congratulations - "
+                + colour(symbol)
+                + FONT_COLOUR_ANSII_CHARACTERS
+                + " has won");
     }
 
     @Override
     public void printDrawMessage() {
-        display("No winner this time" + newLine());
+        display(FONT_COLOUR_ANSII_CHARACTERS
+                + "No winner this time");
     }
 
-    @Override
-    public void clear() {
-        display(CLEAR_SCREEN_ANSII_CHARACTERS);
+    private Function<ValidationResult, Void> functionToRepromptGameType() {
+        return validationResult -> {
+            clear();
+            display(BOARD_COLOUR_ANSII_CHARACTERS + validationResult.reason());
+            askUserForGameType();
+            return null;
+        };
+    }
+
+    private Function<ValidationResult, Void> functionToRepromptReplay() {
+        return validationResult -> {
+            clear();
+            display(BOARD_COLOUR_ANSII_CHARACTERS + validationResult.reason());
+            askUserToPlayAgain();
+            return null;
+        };
+    }
+
+    private int asInteger(String input) {
+        return Integer.valueOf(input);
+    }
+
+    private Function<ValidationResult, Void> functionToRepromptForValidMove(Board currentBoard) {
+        return validationResult -> {
+            CommandPrompt.this.clear();
+            CommandPrompt.this.print(currentBoard);
+            CommandPrompt.this.display(validationResult.reason());
+            CommandPrompt.this.askUserForTheirMove();
+            return null;
+        };
+    }
+
+    private List<InputValidator> gameTypeValidators() {
+        return Arrays.asList(new NumericValidator(), new GameTypeValidator());
+    }
+
+    private String getValidInput(InputValidator compoundValidator, String input, Function<ValidationResult, Void> reprompt) {
+        ValidationResult validationResult = compoundValidator.isValid(input);
+        while (!validationResult.isValid()) {
+            reprompt.apply(validationResult);
+            validationResult = compoundValidator.isValid(input());
+        }
+        clear();
+        return validationResult.userInput();
+    }
+
+    private void askUserForGameType() {
+        display(FONT_COLOUR_ANSII_CHARACTERS
+                        + "Enter 1 to play Human vs Human"
+        );
+    }
+
+    private void askUserForTheirMove() {
+        display(FONT_COLOUR_ANSII_CHARACTERS
+                + "Please enter the index for your next move");
     }
 
     private void display(String message) {
         try {
-            writer.write(message);
+            writer.write(newLine() + message + newLine());
             writer.flush();
         } catch (IOException e) {
             throw new WriteToPromptException("An exception occurred when writing", e);
         }
     }
 
-    private String displayCell(Board board, int cellOffset) {
-        if (board.getSymbolAt(cellOffset) == VACANT) {
-            return colour(cellOffset);
-        } else {
-            return board.getSymbolAt(cellOffset).getSymbolForDisplay();
+    private void clear() {
+        display(CLEAR_SCREEN_ANSII_CHARACTERS);
+    }
+
+    private void askUserToPlayAgain() {
+        display(FONT_COLOUR_ANSII_CHARACTERS
+                + "Play again? [Y/N]");
+    }
+
+    public String input() {
+        try {
+            return reader.readLine();
+        } catch (IOException e) {
+            throw new ReadFromPromptException(e.getMessage(), e);
         }
     }
 
+    private List<InputValidator> orderedListOfMoveValidators(Board board) {
+        return Arrays.asList(
+                new NumericValidator(),
+                new WithinGridBoundaryValidator(board),
+                new FreeSpaceOnBoardValidator(board));
+    }
+
+    private int zeroIndexed(String input) {
+        return Integer.valueOf(input) - 1;
+    }
+
+    private String displayCell(PlayerSymbol symbol, int cellOffset) {
+        if (symbol == VACANT) {
+            return colour(cellOffset);
+        } else {
+            return colour(symbol);
+        }
+    }
+
+    private String colour(PlayerSymbol symbol) {
+
+        if (symbol.equals(X)) {
+            return X_COLOUR_ANSII_CHARACTERS + symbol.getSymbolForDisplay();
+        }
+        return O_COLOUR_ANSII_CHARACTERS + symbol.getSymbolForDisplay();
+    }
+
     private String colour(int cellOffset) {
-        return NUMBER_COLOUR_ANSII_CHARACTERS + String.valueOf(cellOffset);
+        return NUMBER_COLOUR_ANSII_CHARACTERS + String.valueOf(cellOffset + 1);
     }
 
     private String getBorderFor(int position) {
         String border;
         if (lastRow(position)) {
-            border = space() + newLine();
+            border = space();
         } else if (endOfRow(position)) {
             border = dividingHorizontalLine();
         } else {
@@ -130,10 +231,10 @@ public class CommandPrompt implements Prompt {
     }
 
     private boolean lastRow(int index) {
-        return index == BOARD_DIMENSION * BOARD_DIMENSION;
+        return index == (BOARD_DIMENSION * BOARD_DIMENSION - 1);
     }
 
     private boolean endOfRow(int index) {
-        return index % BOARD_DIMENSION == 0;
+        return (index + 1) % BOARD_DIMENSION == 0;
     }
 }
