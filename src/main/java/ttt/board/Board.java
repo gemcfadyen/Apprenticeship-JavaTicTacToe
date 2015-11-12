@@ -2,6 +2,9 @@ package ttt.board;
 
 import ttt.player.PlayerSymbol;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import static ttt.player.PlayerSymbol.VACANT;
 
 public class Board {
@@ -66,14 +69,25 @@ public class Board {
 
     private boolean checkForWinIn(Line[] lines) {
         for (Line line : lines) {
-           if(line.isWinning()) {
-               return true;
-           }
+            if (line.isWinning()) {
+                return true;
+            }
         }
         return false;
     }
 
     private PlayerSymbol getFirstSymbol(Line row) {
         return row.getSymbols()[0];
+    }
+
+    public List<Integer> getVacantPositions() {
+        List<Integer> freePositions = new ArrayList<>();
+        for (int i = 0; i < NUMBER_OF_SLOTS; i++) {
+            if (isVacantAt(i)) {
+                freePositions.add(i);
+            }
+        }
+
+        return freePositions;
     }
 }
