@@ -10,6 +10,19 @@ import static ttt.player.PlayerSymbol.*;
 public class MinimaxGamePlanTest {
 
     @Test
+    public void experiment() {
+        MinimaxGamePlan gamePlan = new MinimaxGamePlan();
+        Board boardWithWinForX = new Board(
+                O, O, X,
+                X, X, VACANT,
+                O, VACANT, VACANT);
+
+        ValuedPosition valuedPosition = gamePlan.minimax(boardWithWinForX, X, X, 3, true);
+
+        assertThat(valuedPosition.getMove(), is(5));
+    }
+
+    @Test
     public void winForMaxPlayerScores10() {
         MinimaxGamePlan gamePlan = new MinimaxGamePlan();
         Board boardWithWinForX = new Board(

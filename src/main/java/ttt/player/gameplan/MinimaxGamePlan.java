@@ -12,7 +12,7 @@ import static ttt.player.PlayerSymbol.*;
 
 public class MinimaxGamePlan {
 
-    public ValuedPosition minimax(Board board, PlayerSymbol maximisingSymbol, PlayerSymbol playerSymbol, int depth, boolean isMaxPlayer) {
+    public ValuedPosition working(Board board, PlayerSymbol maximisingSymbol, PlayerSymbol playerSymbol, int depth, boolean isMaxPlayer) {
         List<ValuedPosition> valuedPositions = new ArrayList<>();
         if (!board.hasFreeSpace() || board.hasWinningCombination()) {
             return score(board, maximisingSymbol, depth);
@@ -31,6 +31,27 @@ public class MinimaxGamePlan {
         } else {
             return min(valuedPositions);
         }
+    }
+
+    public ValuedPosition minimax(Board board, PlayerSymbol maximisingSymbol, PlayerSymbol playerSymbol, int depth, boolean isMaxPlayer) {
+        ValuedPosition bestPosition = isMaxPlayer ? new ValuedPosition(-100) : new ValuedPosition(100);
+
+        if (!board.hasFreeSpace() || board.hasWinningCombination()) {
+            return score(board, maximisingSymbol, depth);
+        }
+
+        List<Integer> vacantPositions = board.getVacantPositions();
+        for (int vacantPosition : vacantPositions) {
+            board.updateAt(vacantPosition, playerSymbol);
+            ValuedPosition position = minimax(board, maximisingSymbol, opponent(playerSymbol), depth - 1, !isMaxPlayer);
+            board.updateAt(vacantPosition, VACANT);
+            if (isMaxPlayer) {
+                bestPosition = max(bestPosition, position, vacantPosition);
+            } else {
+                bestPosition = min(bestPosition, position, vacantPosition);
+            }
+        }
+        return bestPosition;
 
     }
 
@@ -69,45 +90,37 @@ public class MinimaxGamePlan {
         return new ValuedPosition(maxValue, bestPosition);
     }
 
-    public ValuedPosition execute2(Board board, PlayerSymbol playerSymbol, int depth, boolean isMaxPlayer) {
-        if (board.hasWinningCombination()) {
-            return scoreForWinningBoard(board, playerSymbol, depth);
-        }
+    public ValuedPosition minimax_notworking(Board board, PlayerSymbol unused, PlayerSymbol playerSymbol, int depth, boolean isMaxPlayer) {
 
-        if (!board.hasFreeSpace()) {
-            return new ValuedPosition(0);
-        }
+        ValuedPosition bestValuedPosition = isMaxPlayer ?  new ValuedPosition(-100) : new ValuedPosition(100);;
+        List<Integer> freeSpaces = board.getVacantPositions();
 
-        ValuedPosition bestValuedPosition;
-        if (isMaxPlayer) {
-            bestValuedPosition = new ValuedPosition(-10);
-            List<Integer> freeSpaces = board.getVacantPositions();
+        for (int freeSpace : freeSpaces) {
+            board.updateAt(freeSpace, playerSymbol);
 
-            for (int freeSpace : freeSpaces) {
-                board.updateAt(freeSpace, playerSymbol);
-
-                System.out.println(freeSpace + " MAX: \n" + print(board));
-
-                ValuedPosition valuedPosition = execute2(board, opponent(playerSymbol), depth - 1, !isMaxPlayer);
-                board.updateAt(freeSpace, VACANT);
-                bestValuedPosition = max(bestValuedPosition, valuedPosition, freeSpace);
+            System.out.println(freeSpace + "\n" + print(board));
+            ValuedPosition valuedPosition;
+            if (notFinished(board)) {
+                valuedPosition = minimax(board, VACANT, opponent(playerSymbol), depth - 1, !isMaxPlayer);
+            } else {
+                valuedPosition = scoreForWinningBoard(board, playerSymbol, depth, freeSpace);
             }
-        } else {
-            bestValuedPosition = new ValuedPosition(10);
-            List<Integer> freeSpaces = board.getVacantPositions();
-
-            for (int freeSpace : freeSpaces) {
-                board.updateAt(freeSpace, playerSymbol);
-                System.out.println(freeSpace + " MIN: \n" + print(board));
 
 
-                ValuedPosition valuedPosition = execute2(board, opponent(playerSymbol), depth - 1, !isMaxPlayer);
-                board.updateAt(freeSpace, VACANT);
+            if (isMaxPlayer) {
+                bestValuedPosition = max(bestValuedPosition, valuedPosition, freeSpace);
+            } else {
                 bestValuedPosition = min(bestValuedPosition, valuedPosition, freeSpace);
             }
+            board.updateAt(freeSpace, VACANT);
 
         }
+
         return bestValuedPosition;
+    }
+
+    private boolean notFinished(Board board) {
+        return board.hasFreeSpace() && !board.hasWinningCombination();
     }
 
     private String print(Board board) {
@@ -139,7 +152,7 @@ public class MinimaxGamePlan {
     }
 
     private ValuedPosition max(ValuedPosition bestValuedPosition, ValuedPosition valuedPosition, int indexOfMove) {
-        if (bestValuedPosition.getScore() <= valuedPosition.getScore()) {
+        if (bestValuedPosition.getScore() < valuedPosition.getScore()) {
             return new ValuedPosition(valuedPosition.getScore(), indexOfMove);
         }
 
@@ -147,7 +160,7 @@ public class MinimaxGamePlan {
     }
 
     private ValuedPosition min(ValuedPosition bestValuedPosition, ValuedPosition valuedPosition, int freeSpace) {
-        if (bestValuedPosition.getScore() >= valuedPosition.getScore()) {
+        if (bestValuedPosition.getScore() > valuedPosition.getScore()) {
             return new ValuedPosition(valuedPosition.getScore(), freeSpace);
         }
 
@@ -162,11 +175,13 @@ public class MinimaxGamePlan {
         }
     }
 
-    private ValuedPosition scoreForWinningBoard(Board board, PlayerSymbol playerSymbol, int depth) {
-        if (board.getWinningSymbol() == opponent(playerSymbol)) {
-            return new ValuedPosition(10 + depth);
+    private ValuedPosition scoreForWinningBoard(Board board, PlayerSymbol playerSymbol, int depth, int position) {
+        if (board.getWinningSymbol() == playerSymbol) {
+            return new ValuedPosition(10 + depth, position);
+        } else if (board.getWinningSymbol() == opponent(playerSymbol)) {
+            return new ValuedPosition(-10 - depth, position);
         } else {
-            return new ValuedPosition(-10 + depth);
+            return new ValuedPosition(0, position);
         }
     }
 
