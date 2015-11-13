@@ -12,4 +12,11 @@ public enum PlayerSymbol {
     public String getSymbolForDisplay() {
         return symbolForDisplay;
     }
+
+    public static PlayerSymbol opponent(PlayerSymbol playerSymbol) {
+        if(X.equals(playerSymbol)) {
+            return O;
+        }
+        return X;
+    }
 }

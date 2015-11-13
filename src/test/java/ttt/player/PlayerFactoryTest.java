@@ -27,7 +27,7 @@ public class PlayerFactoryTest {
     }
 
     @Test
-    public void createsHumanAndUnbeatablePlayers() {
+    public void createsHumanAndUnbeatablePlayer() {
         PlayerFactory playerFactory = new PlayerFactory();
         Prompt commandPrompt = new CommandPrompt(new StringReader(""), new StringWriter());
 
@@ -39,7 +39,7 @@ public class PlayerFactoryTest {
     }
 
     @Test
-    public void createsUnbeatableAndHumanPlayers() {
+    public void createsUnbeatableAndHumanPlayer() {
         PlayerFactory playerFactory = new PlayerFactory();
         Prompt commandPrompt = new CommandPrompt(new StringReader(""), new StringWriter());
 
@@ -49,17 +49,4 @@ public class PlayerFactoryTest {
         assertThat(player[0], instanceOf(UnbeatablePlayer.class));
         assertThat(player[1], instanceOf(HumanPlayer.class));
     }
-
-    @Test
-    public void createsUnbeatablePlayers() {
-        PlayerFactory playerFactory = new PlayerFactory();
-        Prompt commandPrompt = new CommandPrompt(new StringReader(""), new StringWriter());
-
-        Player[] player = playerFactory.createPlayers(UNBEATABLE_VS_UNBEATABLE, commandPrompt);
-
-        assertThat(player.length, is(2));
-        assertThat(player[0], instanceOf(UnbeatablePlayer.class));
-        assertThat(player[1], instanceOf(UnbeatablePlayer.class));
-    }
-
 }

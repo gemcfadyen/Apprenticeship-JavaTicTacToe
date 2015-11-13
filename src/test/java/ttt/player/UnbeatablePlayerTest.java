@@ -191,4 +191,26 @@ public class UnbeatablePlayerTest {
 
         assertThat(player.chooseNextMoveFrom(board), is(2));
     }
+
+    @Test
+    public void blocksFork() {
+        Board board = new Board(
+                O, VACANT, VACANT,
+                VACANT, X, VACANT,
+                VACANT, VACANT, O);
+        UnbeatablePlayer player = new UnbeatablePlayer(new CommandPrompt(new StringReader(""), new StringWriter()), X);
+
+        assertThat(player.chooseNextMoveFrom(board), is(1));
+    }
+
+    @Test
+    public void blocksCornerTrap() {
+        Board board = new Board(
+                X, O, VACANT,
+                VACANT, VACANT, O,
+                VACANT, VACANT, VACANT);
+        UnbeatablePlayer player = new UnbeatablePlayer(new CommandPrompt(new StringReader(""), new StringWriter()), X);
+
+        assertThat(player.chooseNextMoveFrom(board), is(6));
+    }
 }

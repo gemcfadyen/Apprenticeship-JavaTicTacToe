@@ -16,8 +16,6 @@ public class PlayerFactory {
             return humanVsUnbeatable(prompt);
         } else if (UNBEATABLE_VS_HUMAN == playerOption) {
             return unbeatableVsHuman(prompt);
-        } else if (UNBEATABLE_VS_UNBEATABLE == playerOption) {
-            return unbeatableVsUnbeatable(prompt);
         }
         return humanVsHuman(prompt);
     }
@@ -32,9 +30,5 @@ public class PlayerFactory {
 
     private Player[] unbeatableVsHuman(Prompt prompt) {
         return new Player[]{new UnbeatablePlayer(prompt, X), new HumanPlayer(prompt, O)};
-    }
-
-    private Player[] unbeatableVsUnbeatable(Prompt prompt) {
-        return new Player[]{new UnbeatablePlayer(prompt, X), new UnbeatablePlayer(prompt, O)};
     }
 }

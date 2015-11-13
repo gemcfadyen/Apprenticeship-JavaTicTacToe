@@ -8,6 +8,8 @@ import ttt.ui.Prompt;
 import java.util.Random;
 
 public class RandomPlayer extends Player {
+    private static final int UPPER_BOUND = 9;
+    private static final int LOWER_BOUND = 0;
 
     public RandomPlayer(Prompt prompt, PlayerSymbol playerSymbol) {
         super(prompt, playerSymbol);
@@ -16,7 +18,8 @@ public class RandomPlayer extends Player {
     @Override
     public int chooseNextMoveFrom(Board board) {
         int randomMove = generateRandomNumberFrom0To8();
-        while(!(board.isWithinGridBoundary(randomMove) && board.isVacantAt(randomMove))) {
+        while (!(board.isWithinGridBoundary(randomMove) && board.isVacantAt(randomMove))) {
+            System.out.println("Reprompting as " + randomMove + " is invalid");
             randomMove = generateRandomNumberFrom0To8();
         }
         System.out.println("Random number generated " + randomMove);
@@ -24,6 +27,6 @@ public class RandomPlayer extends Player {
     }
 
     private int generateRandomNumberFrom0To8() {
-        return new Random().nextInt(8) + 1;
+        return new Random().nextInt(UPPER_BOUND - LOWER_BOUND) + LOWER_BOUND;
     }
 }
