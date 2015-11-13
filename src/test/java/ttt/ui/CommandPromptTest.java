@@ -167,7 +167,10 @@ public class CommandPromptTest {
         prompt.getGameType();
 
         assertThat(writer.toString().contains(FONT_COLOUR_ANSII_CHARACTERS
-                + "Enter 1 to play Human vs Human\n\n\n"), is(true));
+                + "Enter 1 to play Human vs Human\n"
+                + "Enter 2 to play Human vs Unbeatable\n"
+                + "Enter 3 to play Unbeatable vs Human\n"
+                + "Enter 4 to play Unbeatable vs Unbeatable\n\n"), is(true));
     }
 
     @Test

@@ -110,10 +110,10 @@ public class CommandPrompt implements Prompt {
     }
 
     private void askUserForGameType() {
-        String gameTypeMessage = FONT_COLOUR_ANSII_CHARACTERS + "Enter ";
+        String gameTypeMessage = FONT_COLOUR_ANSII_CHARACTERS;
 
         for (GameType gameType : values()) {
-            gameTypeMessage += gameType.numericRepresentation() + " to play " + gameType.gameNameForDisplay() + newLine();
+            gameTypeMessage += "Enter " + gameType.numericRepresentation() + " to play " + gameType.gameNameForDisplay() + newLine();
         }
 
         display(gameTypeMessage);
