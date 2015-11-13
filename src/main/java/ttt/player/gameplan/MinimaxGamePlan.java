@@ -36,14 +36,17 @@ public class MinimaxGamePlan {
     public ValuedPosition minimax(Board board, PlayerSymbol maximisingSymbol, PlayerSymbol playerSymbol, int depth, boolean isMaxPlayer) {
         ValuedPosition bestPosition = isMaxPlayer ? new ValuedPosition(-100) : new ValuedPosition(100);
 
-        if (!board.hasFreeSpace() || board.hasWinningCombination()) {
-            return score(board, maximisingSymbol, depth);
-        }
-
         List<Integer> vacantPositions = board.getVacantPositions();
         for (int vacantPosition : vacantPositions) {
             board.updateAt(vacantPosition, playerSymbol);
-            ValuedPosition position = minimax(board, maximisingSymbol, opponent(playerSymbol), depth - 1, !isMaxPlayer);
+
+            ValuedPosition position;
+            if (board.hasFreeSpace() && !board.hasWinningCombination()) {
+                position = minimax(board, maximisingSymbol, opponent(playerSymbol), depth - 1, !isMaxPlayer);
+            } else {
+                position = score(board, maximisingSymbol, depth);
+
+            }
             board.updateAt(vacantPosition, VACANT);
             if (isMaxPlayer) {
                 bestPosition = max(bestPosition, position, vacantPosition);
@@ -56,12 +59,10 @@ public class MinimaxGamePlan {
     }
 
     private ValuedPosition score(Board board, PlayerSymbol maximisingSymbol, int depth) {
-        if (board.hasWinningCombination()) {
-            if (board.getWinningSymbol() == maximisingSymbol) {
-                return new ValuedPosition(10 + depth);
-            } else {
-                return new ValuedPosition(-10 - depth);
-            }
+        if (board.getWinningSymbol() == maximisingSymbol) {
+            return new ValuedPosition(10 + depth);
+        } else if (board.getWinningSymbol() == opponent(maximisingSymbol)) {
+            return new ValuedPosition(-10 - depth);
         }
         return new ValuedPosition(0);
     }
@@ -92,7 +93,8 @@ public class MinimaxGamePlan {
 
     public ValuedPosition minimax_notworking(Board board, PlayerSymbol unused, PlayerSymbol playerSymbol, int depth, boolean isMaxPlayer) {
 
-        ValuedPosition bestValuedPosition = isMaxPlayer ?  new ValuedPosition(-100) : new ValuedPosition(100);;
+        ValuedPosition bestValuedPosition = isMaxPlayer ? new ValuedPosition(-100) : new ValuedPosition(100);
+        ;
         List<Integer> freeSpaces = board.getVacantPositions();
 
         for (int freeSpace : freeSpaces) {

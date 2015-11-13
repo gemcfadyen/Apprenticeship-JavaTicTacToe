@@ -48,7 +48,7 @@ public class MinimaxGamePlanTest {
     @Test
     public void drawScores0() {
         MinimaxGamePlan gamePlan = new MinimaxGamePlan();
-        Board board = new Board(X, O, X, X, X, O, O, X, O);
+        Board board = new Board(X, O, X, X, X, O, O, VACANT, O);
         ValuedPosition valuedPosition = gamePlan.minimax(board, X, X, 0, true);
 
         assertThat(valuedPosition.getScore(), is(0));
