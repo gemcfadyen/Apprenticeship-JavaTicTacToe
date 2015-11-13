@@ -5,22 +5,39 @@ import ttt.ui.Prompt;
 
 import java.util.List;
 
-import static ttt.player.PlayerSymbol.*;
+import static ttt.player.PlayerSymbol.VACANT;
+import static ttt.player.PlayerSymbol.opponent;
 
 public class UnbeatablePlayer extends Player {
+    private static final int ALPHA = -100;
+    private static final int BETA = 100;
+    private static final int MAX_PLAYER_INITIAL_SCORE = -100;
+    private static final int MIN_PLAYER_INITIAL_SCORE = 100;
+    private static final int MAX_PLAYER_WIN_SCORE = 10;
+    private static final int MIN_PLAYER_WIN_SCORE = -10;
+    private static final int DRAW_SCORE = 0;
+
     public UnbeatablePlayer(Prompt prompt, PlayerSymbol symbol) {
         super(prompt, symbol);
     }
 
     @Override
     public int chooseNextMoveFrom(Board board) {
-        int remainingDepthToExplore = board.getVacantPositions().size();
-        ValuedPosition bestMove = minimax(board, remainingDepthToExplore, getSymbol(), true);
+        ValuedPosition bestMove = alphaBetaMinimax(
+                board,
+                board.getVacantPositions().size(),
+                getSymbol(),
+                true,
+                ALPHA,
+                BETA);
+
         return bestMove.getMove();
     }
 
-    private ValuedPosition minimax(Board board, int remainingDepth, PlayerSymbol currentPlayer, boolean isMaxPlayer) {
-        ValuedPosition bestPosition = isMaxPlayer ? new ValuedPosition(-100) : new ValuedPosition(100);
+    private ValuedPosition alphaBetaMinimax(Board board, int remainingDepth, PlayerSymbol currentPlayer, boolean isMaxPlayer, int alpha, int beta) {
+        ValuedPosition bestPosition = isMaxPlayer
+                ? new ValuedPosition(MAX_PLAYER_INITIAL_SCORE)
+                : new ValuedPosition(MIN_PLAYER_INITIAL_SCORE);
 
         List<Integer> vacantPositions = board.getVacantPositions();
         for (int vacantPosition : vacantPositions) {
@@ -28,13 +45,19 @@ public class UnbeatablePlayer extends Player {
 
             ValuedPosition position;
             if (gameIsInProgress(board)) {
-                position = minimax(board, remainingDepth - 1, PlayerSymbol.opponent(currentPlayer), !isMaxPlayer);
+                position = alphaBetaMinimax(board, remainingDepth - 1, opponent(currentPlayer), !isMaxPlayer, alpha, beta);
             } else {
                 position = score(board, remainingDepth);
             }
-            board.updateAt(vacantPosition, VACANT);
+            
+            revertMove(board, vacantPosition);
+            bestPosition = getPlayersBestPosition(isMaxPlayer, bestPosition, position, vacantPosition);
+            alpha = recalculateAlpha(isMaxPlayer, bestPosition, alpha);
+            beta = recalculateBeta(isMaxPlayer, bestPosition, beta);
 
-            bestPosition = getBestPositionFor(isMaxPlayer, bestPosition, position, vacantPosition);
+            if (pruneBranches(alpha, beta)) {
+                break;
+            }
         }
         return bestPosition;
     }
@@ -45,14 +68,18 @@ public class UnbeatablePlayer extends Player {
 
     private ValuedPosition score(Board board, int remainingDepth) {
         if (board.getWinningSymbol() == getSymbol()) {
-            return new ValuedPosition(10 + remainingDepth);
-        } else if (board.getWinningSymbol() == PlayerSymbol.opponent(getSymbol())) {
-            return new ValuedPosition(-10 - remainingDepth);
+            return new ValuedPosition(MAX_PLAYER_WIN_SCORE + remainingDepth);
+        } else if (board.getWinningSymbol() == opponent(getSymbol())) {
+            return new ValuedPosition(MIN_PLAYER_WIN_SCORE - remainingDepth);
         }
-        return new ValuedPosition(0);
+        return new ValuedPosition(DRAW_SCORE);
     }
 
-    private ValuedPosition getBestPositionFor(boolean isMaxPlayer, ValuedPosition bestPosition, ValuedPosition position, int vacantPosition) {
+    private void revertMove(Board board, int vacantPosition) {
+        board.updateAt(vacantPosition, VACANT);
+    }
+
+    private ValuedPosition getPlayersBestPosition(boolean isMaxPlayer, ValuedPosition bestPosition, ValuedPosition position, int vacantPosition) {
         if (isMaxPlayer) {
             return max(bestPosition, position, vacantPosition);
         } else {
@@ -74,6 +101,28 @@ public class UnbeatablePlayer extends Player {
         }
 
         return bestValuedPosition;
+    }
+
+    private int recalculateAlpha(boolean isMaxPlayer, ValuedPosition bestPosition, int alpha) {
+        if (isMaxPlayer) {
+            if (bestPosition.getScore() > alpha) {
+                return bestPosition.getScore();
+            }
+        }
+        return alpha;
+    }
+
+    private int recalculateBeta(boolean isMaxPlayer, ValuedPosition bestPosition, int beta) {
+        if (!isMaxPlayer) {
+            if (bestPosition.getScore() < beta) {
+                return bestPosition.getScore();
+            }
+        }
+        return beta;
+    }
+
+    private boolean pruneBranches(int alpha, int beta) {
+        return alpha >= beta;
     }
 }
 
