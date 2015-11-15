@@ -39,17 +39,16 @@ public class UnbeatablePlayer extends Player {
                 ? new ValuedPosition(MAX_PLAYER_INITIAL_SCORE)
                 : new ValuedPosition(MIN_PLAYER_INITIAL_SCORE);
 
+        if (gameOver(board)) {
+            return score(board, remainingDepth);
+        }
+
         List<Integer> vacantPositions = board.getVacantPositions();
         for (int vacantPosition : vacantPositions) {
             board.updateAt(vacantPosition, currentPlayer);
 
-            ValuedPosition position;
-            if (gameIsInProgress(board)) {
-                position = alphaBetaMinimax(board, remainingDepth - 1, opponent(currentPlayer), !isMaxPlayer, alpha, beta);
-            } else {
-                position = score(board, remainingDepth);
-            }
-            
+            ValuedPosition position = alphaBetaMinimax(board, remainingDepth - 1, opponent(currentPlayer), !isMaxPlayer, alpha, beta);
+
             revertMove(board, vacantPosition);
             bestPosition = getPlayersBestPosition(isMaxPlayer, bestPosition, position, vacantPosition);
             alpha = recalculateAlpha(isMaxPlayer, bestPosition, alpha);
@@ -62,8 +61,8 @@ public class UnbeatablePlayer extends Player {
         return bestPosition;
     }
 
-    private boolean gameIsInProgress(Board board) {
-        return board.hasFreeSpace() && !board.hasWinningCombination();
+    private boolean gameOver(Board board) {
+        return !board.hasFreeSpace() || board.hasWinningCombination();
     }
 
     private ValuedPosition score(Board board, int remainingDepth) {

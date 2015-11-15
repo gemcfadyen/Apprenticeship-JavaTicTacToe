@@ -213,4 +213,15 @@ public class UnbeatablePlayerTest {
 
         assertThat(player.chooseNextMoveFrom(board), is(6));
     }
+
+    @Test
+    public void walkThrough() {
+        Board board = new Board(
+                X, O, X,
+                O, O, VACANT,
+                VACANT, X, VACANT);
+        UnbeatablePlayer player = new UnbeatablePlayer(new CommandPrompt(new StringReader(""), new StringWriter()), X);
+
+        assertThat(player.chooseNextMoveFrom(board), is(5));
+    }
 }
