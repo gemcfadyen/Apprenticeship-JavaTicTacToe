@@ -25,10 +25,10 @@ public class PlayerFactory {
     }
 
     private Player[] humanVsUnbeatable(Prompt prompt) {
-        return new Player[]{new HumanPlayer(prompt, X), new UnbeatablePlayer(prompt, O)};
+        return new Player[]{new HumanPlayer(prompt, X), new UnbeatablePlayer(O)};
     }
 
     private Player[] unbeatableVsHuman(Prompt prompt) {
-        return new Player[]{new UnbeatablePlayer(prompt, X), new HumanPlayer(prompt, O)};
+        return new Player[]{new UnbeatablePlayer(X), new HumanPlayer(prompt, O)};
     }
 }

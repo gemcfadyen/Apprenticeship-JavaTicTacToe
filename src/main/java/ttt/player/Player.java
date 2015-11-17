@@ -12,6 +12,10 @@ public abstract class Player {
         this.symbol = symbol;
     }
 
+    public Player(PlayerSymbol symbol) {
+        this.symbol = symbol;
+    }
+
     public abstract int chooseNextMoveFrom(Board board);
 
     public PlayerSymbol getSymbol() {

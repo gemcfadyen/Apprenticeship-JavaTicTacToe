@@ -1,7 +1,6 @@
 package ttt.player;
 
 import ttt.board.Board;
-import ttt.ui.Prompt;
 
 import java.util.List;
 
@@ -17,8 +16,8 @@ public class UnbeatablePlayer extends Player {
     private static final int MIN_PLAYER_WIN_SCORE = -10;
     private static final int DRAW_SCORE = 0;
 
-    public UnbeatablePlayer(Prompt prompt, PlayerSymbol symbol) {
-        super(prompt, symbol);
+    public UnbeatablePlayer(PlayerSymbol symbol) {
+        super(symbol);
     }
 
     @Override

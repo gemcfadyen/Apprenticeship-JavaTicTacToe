@@ -2,10 +2,6 @@ package ttt.player;
 
 import org.junit.Test;
 import ttt.board.Board;
-import ttt.ui.CommandPrompt;
-
-import java.io.StringReader;
-import java.io.StringWriter;
 
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
@@ -20,7 +16,7 @@ public class UnbeatablePlayerTest {
                 VACANT, O, VACANT,
                 O, VACANT, VACANT);
 
-        UnbeatablePlayer player = new UnbeatablePlayer(new CommandPrompt(new StringReader(""), new StringWriter()), X);
+        UnbeatablePlayer player = new UnbeatablePlayer(X);
 
         assertThat(player.chooseNextMoveFrom(board), is(0));
     }
@@ -32,7 +28,7 @@ public class UnbeatablePlayerTest {
                 X, X, VACANT,
                 O, VACANT, O);
 
-        UnbeatablePlayer player = new UnbeatablePlayer(new CommandPrompt(new StringReader(""), new StringWriter()), X);
+        UnbeatablePlayer player = new UnbeatablePlayer(X);
 
         assertThat(player.chooseNextMoveFrom(board), is(5));
     }
@@ -43,7 +39,7 @@ public class UnbeatablePlayerTest {
                 VACANT, O, VACANT,
                 VACANT, O, VACANT,
                 X, VACANT, X);
-        UnbeatablePlayer player = new UnbeatablePlayer(new CommandPrompt(new StringReader(""), new StringWriter()), X);
+        UnbeatablePlayer player = new UnbeatablePlayer(X);
 
         assertThat(player.chooseNextMoveFrom(board), is(7));
     }
@@ -54,7 +50,7 @@ public class UnbeatablePlayerTest {
                 X, VACANT, O,
                 X, VACANT, O,
                 VACANT, VACANT, VACANT);
-        UnbeatablePlayer player = new UnbeatablePlayer(new CommandPrompt(new StringReader(""), new StringWriter()), X);
+        UnbeatablePlayer player = new UnbeatablePlayer(X);
 
         assertThat(player.chooseNextMoveFrom(board), is(6));
     }
@@ -65,7 +61,7 @@ public class UnbeatablePlayerTest {
                 VACANT, X, VACANT,
                 O, VACANT, O,
                 VACANT, X, VACANT);
-        UnbeatablePlayer player = new UnbeatablePlayer(new CommandPrompt(new StringReader(""), new StringWriter()), X);
+        UnbeatablePlayer player = new UnbeatablePlayer(X);
 
         assertThat(player.chooseNextMoveFrom(board), is(4));
     }
@@ -76,7 +72,7 @@ public class UnbeatablePlayerTest {
                 VACANT, VACANT, X,
                 O, VACANT, X,
                 VACANT, O, VACANT);
-        UnbeatablePlayer player = new UnbeatablePlayer(new CommandPrompt(new StringReader(""), new StringWriter()), X);
+        UnbeatablePlayer player = new UnbeatablePlayer(X);
 
         assertThat(player.chooseNextMoveFrom(board), is(8));
     }
@@ -88,7 +84,7 @@ public class UnbeatablePlayerTest {
                 VACANT, VACANT, X,
                 O, VACANT, O,
                 X, VACANT, VACANT);
-        UnbeatablePlayer player = new UnbeatablePlayer(new CommandPrompt(new StringReader(""), new StringWriter()), X);
+        UnbeatablePlayer player = new UnbeatablePlayer(X);
 
         assertThat(player.chooseNextMoveFrom(board), is(4));
     }
@@ -99,7 +95,7 @@ public class UnbeatablePlayerTest {
                 X, VACANT, VACANT,
                 O, X, O,
                 VACANT, VACANT, VACANT);
-        UnbeatablePlayer player = new UnbeatablePlayer(new CommandPrompt(new StringReader(""), new StringWriter()), X);
+        UnbeatablePlayer player = new UnbeatablePlayer(X);
 
         assertThat(player.chooseNextMoveFrom(board), is(8));
     }
@@ -110,7 +106,7 @@ public class UnbeatablePlayerTest {
                 X, X, O,
                 VACANT, VACANT, O,
                 VACANT, VACANT, VACANT);
-        UnbeatablePlayer player = new UnbeatablePlayer(new CommandPrompt(new StringReader(""), new StringWriter()), X);
+        UnbeatablePlayer player = new UnbeatablePlayer(X);
 
         assertThat(player.chooseNextMoveFrom(board), is(8));
     }
@@ -121,7 +117,7 @@ public class UnbeatablePlayerTest {
                 X, VACANT, VACANT,
                 VACANT, O, X,
                 VACANT, O, VACANT);
-        UnbeatablePlayer player = new UnbeatablePlayer(new CommandPrompt(new StringReader(""), new StringWriter()), X);
+        UnbeatablePlayer player = new UnbeatablePlayer(X);
 
         assertThat(player.chooseNextMoveFrom(board), is(1));
     }
@@ -132,7 +128,7 @@ public class UnbeatablePlayerTest {
                 O, VACANT, VACANT,
                 VACANT, VACANT, X,
                 O, X, VACANT);
-        UnbeatablePlayer player = new UnbeatablePlayer(new CommandPrompt(new StringReader(""), new StringWriter()), X);
+        UnbeatablePlayer player = new UnbeatablePlayer(X);
 
         assertThat(player.chooseNextMoveFrom(board), is(3));
     }
@@ -143,7 +139,7 @@ public class UnbeatablePlayerTest {
                 O, VACANT, O,
                 X, VACANT, VACANT,
                 VACANT, X, VACANT);
-        UnbeatablePlayer player = new UnbeatablePlayer(new CommandPrompt(new StringReader(""), new StringWriter()), X);
+        UnbeatablePlayer player = new UnbeatablePlayer(X);
 
         assertThat(player.chooseNextMoveFrom(board), is(1));
     }
@@ -154,7 +150,7 @@ public class UnbeatablePlayerTest {
                 VACANT, VACANT, X,
                 VACANT, VACANT, X,
                 O, VACANT, O);
-        UnbeatablePlayer player = new UnbeatablePlayer(new CommandPrompt(new StringReader(""), new StringWriter()), X);
+        UnbeatablePlayer player = new UnbeatablePlayer(X);
 
         assertThat(player.chooseNextMoveFrom(board), is(7));
     }
@@ -165,7 +161,7 @@ public class UnbeatablePlayerTest {
                 X, VACANT, VACANT,
                 O, O, VACANT,
                 X, VACANT, VACANT);
-        UnbeatablePlayer player = new UnbeatablePlayer(new CommandPrompt(new StringReader(""), new StringWriter()), X);
+        UnbeatablePlayer player = new UnbeatablePlayer(X);
 
         assertThat(player.chooseNextMoveFrom(board), is(5));
     }
@@ -176,7 +172,7 @@ public class UnbeatablePlayerTest {
                 O, X, X,
                 VACANT, VACANT, VACANT,
                 VACANT, VACANT, O);
-        UnbeatablePlayer player = new UnbeatablePlayer(new CommandPrompt(new StringReader(""), new StringWriter()), X);
+        UnbeatablePlayer player = new UnbeatablePlayer(X);
 
         assertThat(player.chooseNextMoveFrom(board), is(4));
     }
@@ -187,7 +183,7 @@ public class UnbeatablePlayerTest {
                 X, VACANT, VACANT,
                 VACANT, O, VACANT,
                 O, X, VACANT);
-        UnbeatablePlayer player = new UnbeatablePlayer(new CommandPrompt(new StringReader(""), new StringWriter()), X);
+        UnbeatablePlayer player = new UnbeatablePlayer(X);
 
         assertThat(player.chooseNextMoveFrom(board), is(2));
     }
@@ -198,7 +194,7 @@ public class UnbeatablePlayerTest {
                 O, VACANT, VACANT,
                 VACANT, X, VACANT,
                 VACANT, VACANT, O);
-        UnbeatablePlayer player = new UnbeatablePlayer(new CommandPrompt(new StringReader(""), new StringWriter()), X);
+        UnbeatablePlayer player = new UnbeatablePlayer(X);
 
         assertThat(player.chooseNextMoveFrom(board), is(1));
     }
@@ -209,7 +205,7 @@ public class UnbeatablePlayerTest {
                 X, O, VACANT,
                 VACANT, VACANT, O,
                 VACANT, VACANT, VACANT);
-        UnbeatablePlayer player = new UnbeatablePlayer(new CommandPrompt(new StringReader(""), new StringWriter()), X);
+        UnbeatablePlayer player = new UnbeatablePlayer(X);
 
         assertThat(player.chooseNextMoveFrom(board), is(6));
     }
@@ -220,7 +216,7 @@ public class UnbeatablePlayerTest {
                 X, O, X,
                 O, O, VACANT,
                 VACANT, X, VACANT);
-        UnbeatablePlayer player = new UnbeatablePlayer(new CommandPrompt(new StringReader(""), new StringWriter()), X);
+        UnbeatablePlayer player = new UnbeatablePlayer(X);
 
         assertThat(player.chooseNextMoveFrom(board), is(5));
     }
