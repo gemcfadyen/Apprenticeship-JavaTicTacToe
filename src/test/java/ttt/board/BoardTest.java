@@ -3,6 +3,9 @@ package ttt.board;
 import org.junit.Test;
 import ttt.player.PlayerSymbol;
 
+import java.util.Arrays;
+import java.util.List;
+
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.*;
 import static ttt.player.PlayerSymbol.*;
@@ -202,6 +205,36 @@ public class BoardTest {
         Board board = new Board();
         assertThat(board.isWithinGridBoundary(2), is(true));
     }
+
+    @Test
+    public void allPositionsReturnedForEmptyBoard() {
+        Board board = new Board();
+
+        List<Integer> freePositions = board.getVacantPositions();
+
+        assertThat(freePositions.size(), is(9));
+        assertThat(freePositions.containsAll(Arrays.asList(0, 1, 2, 3, 4, 5, 6, 7, 8)), is(true));
+    }
+
+    @Test
+    public void noFreePositionsOnFullyOccupiedBoard() {
+        Board board = new Board(X, O, X, O, X, O, X, O, X);
+
+        List<Integer> freePositions = board.getVacantPositions();
+
+        assertThat(freePositions.size(), is(0));
+    }
+
+    @Test
+    public void getsFreePositions() {
+        Board board = new Board(X, VACANT, VACANT, VACANT, VACANT, O, VACANT, VACANT, VACANT);
+
+        List<Integer> freePositions = board.getVacantPositions();
+
+        assertThat(freePositions.size(), is(7));
+        assertThat(freePositions.containsAll(Arrays.asList(1, 2, 3, 4, 6, 7, 8)), is(true));
+    }
+
 
     @Test
     public void returnsHorizontalRows() {

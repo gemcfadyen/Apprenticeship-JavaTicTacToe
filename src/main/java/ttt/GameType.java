@@ -1,7 +1,9 @@
 package ttt;
 
 public enum GameType {
-    HUMAN_VS_HUMAN(1, "Human vs Human");
+    HUMAN_VS_HUMAN(1, "Human vs Human"),
+    HUMAN_VS_UNBEATABLE(2, "Human vs Unbeatable"),
+    UNBEATABLE_VS_HUMAN(3, "Unbeatable vs Human");
 
 
     private final int gameType;
@@ -22,6 +24,11 @@ public enum GameType {
 
 
     public static GameType of(int numericRepresentation) {
+        for(GameType gameType : GameType.values()) {
+            if(gameType.numericRepresentation() == numericRepresentation) {
+                return gameType;
+            }
+        }
         return HUMAN_VS_HUMAN;
     }
 }
