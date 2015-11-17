@@ -11,8 +11,8 @@ public class RandomPlayer extends Player {
     private static final int UPPER_BOUND = 9;
     private static final int LOWER_BOUND = 0;
 
-    public RandomPlayer(Prompt prompt, PlayerSymbol playerSymbol) {
-        super(prompt, playerSymbol);
+    public RandomPlayer(PlayerSymbol playerSymbol, Prompt prompt) {
+        super(playerSymbol, prompt);
     }
 
     @Override

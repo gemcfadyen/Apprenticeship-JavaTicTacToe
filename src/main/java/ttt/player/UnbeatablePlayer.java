@@ -122,27 +122,27 @@ public class UnbeatablePlayer extends Player {
     private boolean pruneBranches(int alpha, int beta) {
         return alpha >= beta;
     }
-}
 
-class ValuedPosition {
-    private int score;
-    private int move;
+    private static class ValuedPosition {
+        private int score;
+        private int move;
 
-    public ValuedPosition(int score) {
-        this.score = score;
-        this.move = -1;
-    }
+        public ValuedPosition(int score) {
+            this.score = score;
+            this.move = -1;
+        }
 
-    public ValuedPosition(int score, int indexOfMove) {
-        this.score = score;
-        this.move = indexOfMove;
-    }
+        public ValuedPosition(int score, int indexOfMove) {
+            this.score = score;
+            this.move = indexOfMove;
+        }
 
-    public int getScore() {
-        return score;
-    }
+        public int getScore() {
+            return score;
+        }
 
-    public int getMove() {
-        return move;
+        public int getMove() {
+            return move;
+        }
     }
 }

@@ -7,13 +7,13 @@ public abstract class Player {
     private PlayerSymbol symbol;
     protected Prompt prompt;
 
-    public Player(Prompt prompt, PlayerSymbol symbol) {
-        this.prompt = prompt;
+    public Player(PlayerSymbol symbol) {
         this.symbol = symbol;
     }
 
-    public Player(PlayerSymbol symbol) {
-        this.symbol = symbol;
+    public Player(PlayerSymbol symbol, Prompt prompt) {
+        this(symbol);
+        this.prompt = prompt;
     }
 
     public abstract int chooseNextMoveFrom(Board board);

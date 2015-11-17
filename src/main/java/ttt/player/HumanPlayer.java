@@ -4,9 +4,11 @@ import ttt.board.Board;
 import ttt.ui.Prompt;
 
 public class HumanPlayer extends Player {
+    private Prompt prompt;
 
-    public HumanPlayer(Prompt prompt, PlayerSymbol symbol) {
-        super(prompt, symbol);
+    public HumanPlayer(PlayerSymbol symbol, Prompt prompt) {
+        super(symbol);
+        this.prompt = prompt;
     }
 
     @Override

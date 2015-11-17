@@ -19,7 +19,7 @@ public class UnbeatablePlayerIsUnbeatableTest {
     @Test
     public void unbeatablePlayerNeverLoosesWhenTheyOpenTheGame() {
         PromptSpy promptSpy = new PromptSpy(new StringReader(replayAndGameTypeInputForGame()));
-        PlayerFactory playerFactory = new PlayerFactorySpy(new UnbeatablePlayer(X), new RandomPlayer(promptSpy, O));
+        PlayerFactory playerFactory = new PlayerFactorySpy(new UnbeatablePlayer(X), new RandomPlayer(O, promptSpy));
         Game gameWithManyRounds = new Game(new Board(), promptSpy, playerFactory);
 
         gameWithManyRounds.play();
@@ -31,7 +31,7 @@ public class UnbeatablePlayerIsUnbeatableTest {
     @Test
     public void unbeatablePlayerNeverLoosesWhenTheyDoNotOpenTheGame() {
         PromptSpy promptSpy = new PromptSpy(new StringReader(replayAndGameTypeInputForGame()));
-        PlayerFactory playerFactory = new PlayerFactorySpy(new RandomPlayer(promptSpy, O), new UnbeatablePlayer(X));
+        PlayerFactory playerFactory = new PlayerFactorySpy(new RandomPlayer(O, promptSpy), new UnbeatablePlayer(X));
         Game gameWithManyRounds = new Game(new Board(), promptSpy, playerFactory);
 
         gameWithManyRounds.play();

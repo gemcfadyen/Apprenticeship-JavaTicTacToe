@@ -21,14 +21,14 @@ public class PlayerFactory {
     }
 
     private Player[] humanVsHuman(Prompt prompt) {
-        return new Player[]{new HumanPlayer(prompt, X), new HumanPlayer(prompt, O)};
+        return new Player[]{new HumanPlayer(X, prompt), new HumanPlayer(O, prompt)};
     }
 
     private Player[] humanVsUnbeatable(Prompt prompt) {
-        return new Player[]{new HumanPlayer(prompt, X), new UnbeatablePlayer(O)};
+        return new Player[]{new HumanPlayer(X, prompt), new UnbeatablePlayer(O)};
     }
 
     private Player[] unbeatableVsHuman(Prompt prompt) {
-        return new Player[]{new UnbeatablePlayer(X), new HumanPlayer(prompt, O)};
+        return new Player[]{new UnbeatablePlayer(X), new HumanPlayer(O, prompt)};
     }
 }

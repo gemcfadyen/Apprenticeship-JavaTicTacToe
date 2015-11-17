@@ -21,8 +21,8 @@ public class GameTest {
         PromptSpy gamePrompt = new PromptSpy(new StringReader("1\nN\n"));
 
         Game game = new Game(new Board(), gamePrompt, new PlayerFactorySpy(
-                new PlayerSpy(createCommandPromptToReadInput("1\n5\n6\n7\n8\n"), X),
-                new PlayerSpy(createCommandPromptToReadInput("2\n3\n4\n9\n"), O))
+                new PlayerSpy(X, createCommandPromptToReadInput("1\n5\n6\n7\n8\n")),
+                new PlayerSpy(O, createCommandPromptToReadInput("2\n3\n4\n9\n")))
         );
 
         game.play();
@@ -32,8 +32,8 @@ public class GameTest {
 
     @Test
     public void playersTakeTurnsUntilTheBoardIsFull() {
-        PlayerSpy player1Spy = new PlayerSpy(createCommandPromptToReadInput("1\n5\n6\n7\n8\n"), X);
-        PlayerSpy player2Spy = new PlayerSpy(createCommandPromptToReadInput("2\n3\n4\n9\n"), O);
+        PlayerSpy player1Spy = new PlayerSpy(X, createCommandPromptToReadInput("1\n5\n6\n7\n8\n"));
+        PlayerSpy player2Spy = new PlayerSpy(O, createCommandPromptToReadInput("2\n3\n4\n9\n"));
         PlayerFactorySpy playerFactorySpy = new PlayerFactorySpy(
                 player1Spy,
                 player2Spy
@@ -132,6 +132,6 @@ public class GameTest {
     }
 
     private HumanPlayer createHumanPlayer(Prompt prompt, PlayerSymbol symbol) {
-        return new HumanPlayer(prompt, symbol);
+        return new HumanPlayer(symbol, prompt);
     }
 }
