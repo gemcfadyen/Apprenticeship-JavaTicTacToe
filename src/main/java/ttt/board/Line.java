@@ -19,10 +19,18 @@ public class Line {
     }
 
     private boolean containsOnly(PlayerSymbol symbol) {
-        return Arrays.equals(line, new PlayerSymbol[]{symbol, symbol, symbol});
+        return Arrays.equals(line, matching(symbol));
     }
 
     public PlayerSymbol[] getSymbols() {
         return line;
+    }
+
+    private PlayerSymbol[] matching(PlayerSymbol symbol) {
+        PlayerSymbol[] lineOfMatchingSymbols = new PlayerSymbol[line.length];
+        for(int i=0; i<line.length; i++) {
+            lineOfMatchingSymbols[i] = symbol;
+        }
+        return lineOfMatchingSymbols;
     }
 }

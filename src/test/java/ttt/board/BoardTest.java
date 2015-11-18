@@ -13,6 +13,18 @@ import static ttt.player.PlayerSymbol.*;
 public class BoardTest {
 
     @Test
+    public void creates3x3Board() {
+        Board board = new Board(3);
+        assertThat(board.getVacantPositions(), is(Arrays.asList(0, 1, 2, 3, 4, 5, 6, 7, 8)));
+    }
+
+    @Test
+    public void creates4x4Board() {
+        Board board = new Board(4);
+        assertThat(board.getVacantPositions(), is(Arrays.asList(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15)));
+    }
+
+    @Test
     public void getsSymbolFromSpecifiedPosition() {
         Board board = new Board(X, X, O, X, VACANT, O, O, X, X);
         assertThat(board.getSymbolAt(4), is(VACANT));
@@ -20,13 +32,13 @@ public class BoardTest {
 
     @Test
     public void identifiesThatThereIsAFreeSpaceOnTheBoard() {
-        Board board = new Board();
+        Board board = new Board(3);
         assertTrue(board.hasFreeSpace());
     }
 
     @Test
     public void identifiesThatGivenSlotOnBoardIsVacant() {
-        Board board = new Board();
+        Board board = new Board(3);
         assertTrue(board.isVacantAt(1));
     }
 
@@ -44,7 +56,7 @@ public class BoardTest {
 
     @Test
     public void noWinningRowWhenBoardIsAllVacant() {
-        Board board = new Board();
+        Board board = new Board(3);
         assertThat(board.hasWinningCombination(), is(false));
     }
 
@@ -164,13 +176,13 @@ public class BoardTest {
 
     @Test
     public void winningSymbolIdentifiedAsVacantIfNoWinsOnBoard() {
-        Board board = new Board();
+        Board board = new Board(3);
         assertThat(board.getWinningSymbol(), is(VACANT));
     }
 
     @Test
     public void updateBoardWithSpecificSymbolAtGivenPosition() {
-        Board board = new Board();
+        Board board = new Board(3);
         board.updateAt(2, X);
 
         assertThat(board.getSymbolAt(2), is(X));
@@ -178,37 +190,37 @@ public class BoardTest {
 
     @Test
     public void indicatesPositionLargerThanGridIsOutsideOfGrid() {
-        Board board = new Board();
+        Board board = new Board(3);
         assertThat(board.isWithinGridBoundary(9), is(false));
     }
 
     @Test
     public void indicatesPositionAtZeroIsInsideOfGrid() {
-        Board board = new Board();
+        Board board = new Board(3);
         assertThat(board.isWithinGridBoundary(0), is(true));
     }
 
     @Test
     public void indicatesPositionEightIsValid() {
-        Board board = new Board();
+        Board board = new Board(3);
         assertThat(board.isWithinGridBoundary(8), is(true));
     }
 
     @Test
     public void indicatesPositionLessThanZeroIsOutsideOfGrid() {
-        Board board = new Board();
+        Board board = new Board(3);
         assertThat(board.isWithinGridBoundary(-3), is(false));
     }
 
     @Test
     public void indicatesPositionIsWithinGridBoundary() {
-        Board board = new Board();
+        Board board = new Board(3);
         assertThat(board.isWithinGridBoundary(2), is(true));
     }
 
     @Test
     public void allPositionsReturnedForEmptyBoard() {
-        Board board = new Board();
+        Board board = new Board(3);
 
         List<Integer> freePositions = board.getVacantPositions();
 
@@ -242,8 +254,8 @@ public class BoardTest {
 
         Line[] rows = board.getRows();
 
-        PlayerSymbol[] expectedTopRow = new PlayerSymbol[]{ X, O, X};
-        PlayerSymbol[] expectedMiddleRow = new PlayerSymbol[]{ O, O, X};
+        PlayerSymbol[] expectedTopRow = new PlayerSymbol[]{X, O, X};
+        PlayerSymbol[] expectedMiddleRow = new PlayerSymbol[]{O, O, X};
         PlayerSymbol[] expectedBottomRow = new PlayerSymbol[]{VACANT, VACANT, O};
 
         assertThat(rows.length, is(3));

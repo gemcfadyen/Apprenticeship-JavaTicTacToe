@@ -22,7 +22,7 @@ public class FreeSpaceOnBoardValidatorTest {
 
     @Test
     public void returnsTrueIfSpaceOnBoardIsVacant() {
-        Board board = new Board();
+        Board board = new Board(3);
         FreeSpaceOnBoardValidator freeSpaceOnBoardValidator = new FreeSpaceOnBoardValidator(board);
 
         ValidationResult validationResult = freeSpaceOnBoardValidator.isValid("1");

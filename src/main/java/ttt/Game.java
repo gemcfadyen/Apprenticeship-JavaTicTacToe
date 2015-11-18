@@ -1,6 +1,7 @@
 package ttt;
 
 import ttt.board.Board;
+import ttt.board.BoardFactory;
 import ttt.player.Player;
 import ttt.player.PlayerFactory;
 import ttt.ui.CommandPrompt;
@@ -15,17 +16,18 @@ public class Game {
     private static final int PLAYER_ONE_INDEX = 0;
     private static final int PLAYER_TWO_INDEX = 1;
     private final PlayerFactory playerFactory;
+    private final BoardFactory boardFactory;
     private Board board;
     private Prompt gamePrompt;
 
-    public Game(Board board, Prompt gamePrompt, PlayerFactory playerFactory) {
-        this.board = board;
+    public Game(BoardFactory boardFactory, Prompt gamePrompt, PlayerFactory playerFactory) {
+        this.boardFactory = boardFactory;
         this.gamePrompt = gamePrompt;
         this.playerFactory = playerFactory;
     }
 
     public static void main(String... args) {
-        Game game = new Game(new Board(), buildPrompt(), new PlayerFactory());
+        Game game = new Game(new BoardFactory(), buildPrompt(), new PlayerFactory());
 
         game.play();
     }
@@ -34,7 +36,6 @@ public class Game {
         ReplayOption replayOption = Y;
         while (replayOption.equals(Y)) {
             replayOption = playSingleGame();
-            reinitialiseBoard();
         }
     }
 
@@ -42,6 +43,8 @@ public class Game {
         int currentPlayerIndex = PLAYER_ONE_INDEX;
         boolean hasWinner = false;
 
+        int dimension = gamePrompt.getBoardDimension();
+        board = boardFactory.createBoardWithSize(dimension);
         Player[] players = createPlayers();
 
         while (gameInProgress(hasWinner)) {
@@ -70,10 +73,6 @@ public class Game {
 
     private int toggle(int currentPlayerIndex) {
         return currentPlayerIndex == PLAYER_ONE_INDEX ? PLAYER_TWO_INDEX : PLAYER_ONE_INDEX;
-    }
-
-    private void reinitialiseBoard() {
-        board = new Board();
     }
 
     private void displayResultsOfGame(boolean hasWinner) {

@@ -16,8 +16,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.function.Function;
 
-import static ttt.GameType.*;
-import static ttt.board.Board.BOARD_DIMENSION;
+import static ttt.GameType.values;
 import static ttt.player.PlayerSymbol.VACANT;
 import static ttt.player.PlayerSymbol.X;
 
@@ -39,10 +38,18 @@ public class CommandPrompt implements Prompt {
     }
 
     @Override
+    public int getBoardDimension() {
+        askUserForBoardDimension();
+        InputValidator compositeValidator = compositeFor(Collections.singletonList(new NumericValidator()));
+
+        return asInteger(getValidInput(compositeValidator, input(), functionToRepromptForValidBoardDimension()));
+    }
+
+    @Override
     public GameType getGameType() {
         askUserForGameType();
-        InputValidator compoundValidator = compositeFor(gameTypeValidators());
-        return GameType.of(asInteger(getValidInput(compoundValidator, input(), functionToRepromptGameType())));
+        InputValidator compositeValidator = compositeFor(gameTypeValidators());
+        return GameType.of(asInteger(getValidInput(compositeValidator, input(), functionToRepromptGameType())));
     }
 
     @Override
@@ -67,13 +74,14 @@ public class CommandPrompt implements Prompt {
         String boardForDisplay = BOARD_COLOUR_ANSII_CHARACTERS + newLine();
 
         Line[] rows = board.getRows();
+        int dimension = rows.length;
         int offset = 0;
         for (Line row : rows) {
             for (PlayerSymbol symbol : row.getSymbols()) {
                 boardForDisplay +=
                           space()
                         + displayCell(symbol, offset)
-                        + getBorderFor(offset);
+                        + getBorderFor(offset, dimension);
                 offset++;
             }
         }
@@ -98,6 +106,11 @@ public class CommandPrompt implements Prompt {
 
     private void clear() {
         display(CLEAR_SCREEN_ANSII_CHARACTERS);
+    }
+
+    private void askUserForBoardDimension() {
+        display(FONT_COLOUR_ANSII_CHARACTERS
+                + "Please enter the dimension of the board you would like to use");
     }
 
     private void display(String message) {
@@ -127,6 +140,14 @@ public class CommandPrompt implements Prompt {
         return Integer.valueOf(input);
     }
 
+    public String input() {
+        try {
+            return reader.readLine();
+        } catch (IOException e) {
+            throw new ReadFromPromptException(e.getMessage(), e);
+        }
+    }
+
     private String getValidInput(InputValidator compoundValidator, String input, Function<ValidationResult, Void> reprompt) {
         ValidationResult validationResult = compoundValidator.isValid(input);
         while (!validationResult.isValid()) {
@@ -136,6 +157,14 @@ public class CommandPrompt implements Prompt {
         }
         clear();
         return validationResult.userInput();
+    }
+
+    private Function<ValidationResult, Void> functionToRepromptForValidBoardDimension() {
+        return validationResult -> {
+            display(BOARD_COLOUR_ANSII_CHARACTERS + validationResult.reason());
+            askUserForBoardDimension();
+            return null;
+        };
     }
 
     private Function<ValidationResult, Void> functionToRepromptGameType() {
@@ -161,14 +190,6 @@ public class CommandPrompt implements Prompt {
             askUserToPlayAgain();
             return null;
         };
-    }
-
-    public String input() {
-        try {
-            return reader.readLine();
-        } catch (IOException e) {
-            throw new ReadFromPromptException(e.getMessage(), e);
-        }
     }
 
     private void askUserToPlayAgain() {
@@ -216,11 +237,11 @@ public class CommandPrompt implements Prompt {
         return NUMBER_COLOUR_ANSII_CHARACTERS + String.valueOf(cellOffset + 1);
     }
 
-    private String getBorderFor(int position) {
+    private String getBorderFor(int position, int dimension) {
         String border;
-        if (lastRow(position)) {
+        if (lastRow(position, dimension)) {
             border = space();
-        } else if (endOfRow(position)) {
+        } else if (endOfRow(position, dimension)) {
             border = dividingHorizontalLine();
         } else {
             border = space() + dividingVerticalLine();
@@ -244,11 +265,11 @@ public class CommandPrompt implements Prompt {
         return " ";
     }
 
-    private boolean lastRow(int index) {
-        return index == (BOARD_DIMENSION * BOARD_DIMENSION - 1);
+    private boolean lastRow(int index, int dimension) {
+        return index == (dimension * dimension - 1);
     }
 
-    private boolean endOfRow(int index) {
-        return (index + 1) % BOARD_DIMENSION == 0;
+    private boolean endOfRow(int index, int dimension) {
+        return (index + 1) % dimension == 0;
     }
 }

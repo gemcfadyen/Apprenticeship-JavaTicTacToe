@@ -20,6 +20,13 @@ public class PromptSpy implements Prompt {
     private int numberOfTimesOHasWon = 0;
     private int numberOfTimesPlayerIsReprompted = 0;
     private int numberOfTimesPlayerOptionsHaveBeenPrinted;
+    private int numberOfTimesBoardDimensionPrompted = 0;
+
+    @Override
+    public int getBoardDimension() {
+        numberOfTimesBoardDimensionPrompted++;
+        return Integer.valueOf(readInput());
+    }
 
     public PromptSpy(Reader reader) {
         this.reader = new BufferedReader(reader);
@@ -102,5 +109,9 @@ public class PromptSpy implements Prompt {
 
     public int getNumberOfTimesPromptedForPlayerOption() {
         return numberOfTimesPlayerOptionsHaveBeenPrinted;
+    }
+
+    public int getNumberOfTimesBoardDimensionPrompted() {
+        return numberOfTimesBoardDimensionPrompted;
     }
 }
