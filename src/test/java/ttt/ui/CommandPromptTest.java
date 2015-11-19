@@ -15,6 +15,7 @@ import java.io.Writer;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
+import static ttt.GameType.*;
 import static ttt.GameType.HUMAN_VS_HUMAN;
 import static ttt.ReplayOption.Y;
 import static ttt.player.PlayerSymbol.*;
@@ -45,9 +46,9 @@ public class CommandPromptTest {
         StringWriter writer = new StringWriter();
         Prompt prompt = new CommandPrompt(new StringReader("1\n"), writer);
 
-        prompt.getBoardDimension();
+        prompt.getBoardDimension(HUMAN_VS_HUMAN);
 
-        assertThat(writer.toString().contains("Please enter the dimension of the board you would like to use\n"), is(true));
+        assertThat(writer.toString().contains("Please enter the dimension of the board you would like to use [1 to 10]\n"), is(true));
     }
 
     @Test
@@ -55,7 +56,7 @@ public class CommandPromptTest {
         StringReader reader = new StringReader("3\n");
         Prompt prompt = new CommandPrompt(reader, new StringWriter());
 
-        int dimension = prompt.getBoardDimension();
+        int dimension = prompt.getBoardDimension(HUMAN_VS_HUMAN);
 
         assertThat(dimension, is(3));
     }
@@ -66,15 +67,33 @@ public class CommandPromptTest {
         StringWriter writer = new StringWriter();
         Prompt prompt = new CommandPrompt(reader, writer);
 
-        int dimension = prompt.getBoardDimension();
+        int dimension = prompt.getBoardDimension(HUMAN_VS_HUMAN);
 
         assertThat(dimension, is(4));
         assertThat(writer.toString().contains(
                           BOARD_OUTLINE_COLOUR_ANSII_CHARACTERS
                         + Z_IS_NOT_A_VALID_INTEGER
                         + FONT_COLOUR_ANSII_CHARACTERS
-                        + "Please enter the dimension of the board you would like to use\n\n"
+                        + "Please enter the dimension of the board you would like to use [1 to 10]\n\n"
                                   + CLEAR_SCREEN_ANSI_CHARACTERS + "\n"), is(true));
+    }
+
+
+    @Test
+    public void repromptsUserWhenInvalidDimensionEnteredForGameType() {
+        StringReader reader = new StringReader("100\n4\n");
+        StringWriter writer = new StringWriter();
+        Prompt prompt = new CommandPrompt(reader, writer);
+
+        int dimension = prompt.getBoardDimension(HUMAN_VS_UNBEATABLE);
+
+        assertThat(dimension, is(4));
+        assertThat(writer.toString().contains(
+                BOARD_OUTLINE_COLOUR_ANSII_CHARACTERS
+                        + "[100] is outside of the range 1 to 4\n\n"
+                        + FONT_COLOUR_ANSII_CHARACTERS
+                        + "Please enter the dimension of the board you would like to use [1 to 4]\n\n"
+                        + CLEAR_SCREEN_ANSI_CHARACTERS + "\n"), is(true));
     }
 
     @Test
@@ -84,7 +103,7 @@ public class CommandPromptTest {
 
         prompt.getNextMove(new Board(3));
 
-        assertThat(writer.toString().contains(vacantBoard()), is(true));
+        assertThat(writer.toString().contains(vacant3x3Board()), is(true));
     }
 
     @Test
@@ -94,7 +113,7 @@ public class CommandPromptTest {
 
         prompt.getNextMove(new Board(3));
 
-        assertThat(writer.toString().endsWith("\n" + CLEAR_SCREEN_ANSI_CHARACTERS + vacantBoard() + "\n" + A_IS_NOT_A_NUMBER_REPROMPT + "\n\n" + CLEAR_SCREEN_ANSI_CHARACTERS + "\n"), is(true));
+        assertThat(writer.toString().endsWith("\n" + CLEAR_SCREEN_ANSI_CHARACTERS + vacant3x3Board() + "\n" + A_IS_NOT_A_NUMBER_REPROMPT + "\n\n" + CLEAR_SCREEN_ANSI_CHARACTERS + "\n"), is(true));
     }
 
     @Test
@@ -261,20 +280,33 @@ public class CommandPromptTest {
 
 
     @Test
-    public void printsNewBoard() {
+    public void printsNew3x3Board() {
         Board board = new Board(3);
         StringWriter writer = new StringWriter();
         Prompt prompt = new CommandPrompt(new StringReader(""), writer);
 
         prompt.print(board);
 
-        String formattedGrid = vacantBoard();
+        String formattedGrid = vacant3x3Board();
 
         assertThat(writer.toString(), is("\n" + CLEAR_SCREEN_ANSI_CHARACTERS + formattedGrid));
     }
 
     @Test
-    public void printsBoardWithMoves() {
+    public void printsNew4x4Board() {
+        Board board = new Board(4);
+        StringWriter writer = new StringWriter();
+        Prompt prompt = new CommandPrompt(new StringReader(""), writer);
+
+        prompt.print(board);
+
+        String formattedGrid = vacant4x4Board();
+
+        assertThat(writer.toString(), is("\n" + CLEAR_SCREEN_ANSI_CHARACTERS + formattedGrid));
+    }
+
+    @Test
+    public void prints3x3BoardWithMoves() {
         Board board = new Board(VACANT, X, X, O, VACANT, VACANT, VACANT, VACANT, VACANT);
 
         StringWriter writer = new StringWriter();
@@ -282,12 +314,37 @@ public class CommandPromptTest {
 
         prompt.print(board);
 
-        assertThat(writer.toString(), is("\n" + CLEAR_SCREEN_ANSI_CHARACTERS + "\n\n" + BOARD_OUTLINE_COLOUR_ANSII_CHARACTERS + "\n "
-                + NUMBER_COLOUR_ANSII_CHARACTERS + 1 + BOARD_OUTLINE_COLOUR_ANSII_CHARACTERS + " | " + X_COLOUR + X.name() + BOARD_OUTLINE_COLOUR_ANSII_CHARACTERS + " | " + X_COLOUR + X.name() + BOARD_OUTLINE_COLOUR_ANSII_CHARACTERS + " \n"
-                + "-----------\n "
-                + O_COLOUR + O.name() + BOARD_OUTLINE_COLOUR_ANSII_CHARACTERS + " | " + NUMBER_COLOUR_ANSII_CHARACTERS + 5 + BOARD_OUTLINE_COLOUR_ANSII_CHARACTERS + " | " + NUMBER_COLOUR_ANSII_CHARACTERS + 6 + BOARD_OUTLINE_COLOUR_ANSII_CHARACTERS + " \n"
-                + "-----------\n "
-                + NUMBER_COLOUR_ANSII_CHARACTERS + 7 + BOARD_OUTLINE_COLOUR_ANSII_CHARACTERS + " | " + NUMBER_COLOUR_ANSII_CHARACTERS + 8 + BOARD_OUTLINE_COLOUR_ANSII_CHARACTERS + " | " + NUMBER_COLOUR_ANSII_CHARACTERS + 9 + BOARD_OUTLINE_COLOUR_ANSII_CHARACTERS + " \n"));
+        assertThat(writer.toString(), is("\n" + CLEAR_SCREEN_ANSI_CHARACTERS + "\n\n" + BOARD_OUTLINE_COLOUR_ANSII_CHARACTERS + "\n  "
+                + NUMBER_COLOUR_ANSII_CHARACTERS + 1 + BOARD_OUTLINE_COLOUR_ANSII_CHARACTERS + " |  " + X_COLOUR + X.name() + BOARD_OUTLINE_COLOUR_ANSII_CHARACTERS + " |  " + X_COLOUR + X.name() + BOARD_OUTLINE_COLOUR_ANSII_CHARACTERS + " \n"
+                + "---------------\n  "
+                + O_COLOUR + O.name() + BOARD_OUTLINE_COLOUR_ANSII_CHARACTERS + " |  " + NUMBER_COLOUR_ANSII_CHARACTERS + 5 + BOARD_OUTLINE_COLOUR_ANSII_CHARACTERS + " |  " + NUMBER_COLOUR_ANSII_CHARACTERS + 6 + BOARD_OUTLINE_COLOUR_ANSII_CHARACTERS + " \n"
+                + "---------------\n  "
+                + NUMBER_COLOUR_ANSII_CHARACTERS + 7 + BOARD_OUTLINE_COLOUR_ANSII_CHARACTERS + " |  " + NUMBER_COLOUR_ANSII_CHARACTERS + 8 + BOARD_OUTLINE_COLOUR_ANSII_CHARACTERS + " |  " + NUMBER_COLOUR_ANSII_CHARACTERS + 9 + BOARD_OUTLINE_COLOUR_ANSII_CHARACTERS + " \n"));
+    }
+
+    @Test
+    public void prints4x4BoardWithMoves() {
+        Board board = new Board(
+                VACANT, VACANT, VACANT, VACANT,
+                O, VACANT, VACANT, VACANT,
+                VACANT, VACANT, VACANT, X,
+                VACANT, VACANT, VACANT, VACANT);
+
+        StringWriter writer = new StringWriter();
+        Prompt prompt = new CommandPrompt(new StringReader(""), writer);
+
+        prompt.print(board);
+
+        String expectedFormattedBoard =
+                 "  " + NUMBER_COLOUR_ANSII_CHARACTERS + 1 + BOARD_OUTLINE_COLOUR_ANSII_CHARACTERS + " |  " + NUMBER_COLOUR_ANSII_CHARACTERS + 2 + BOARD_OUTLINE_COLOUR_ANSII_CHARACTERS + " |  " + NUMBER_COLOUR_ANSII_CHARACTERS + 3 + BOARD_OUTLINE_COLOUR_ANSII_CHARACTERS + " |  " + NUMBER_COLOUR_ANSII_CHARACTERS + 4 + BOARD_OUTLINE_COLOUR_ANSII_CHARACTERS + " \n"
+                + "--------------------\n  "
+                + O_COLOUR + O.name() + BOARD_OUTLINE_COLOUR_ANSII_CHARACTERS + " |  " + NUMBER_COLOUR_ANSII_CHARACTERS + 6 + BOARD_OUTLINE_COLOUR_ANSII_CHARACTERS + " |  " + NUMBER_COLOUR_ANSII_CHARACTERS + 7 + BOARD_OUTLINE_COLOUR_ANSII_CHARACTERS + " |  " + NUMBER_COLOUR_ANSII_CHARACTERS + 8 + BOARD_OUTLINE_COLOUR_ANSII_CHARACTERS + " \n"
+                + "--------------------\n  "
+                + NUMBER_COLOUR_ANSII_CHARACTERS + 9 + BOARD_OUTLINE_COLOUR_ANSII_CHARACTERS + " | " + NUMBER_COLOUR_ANSII_CHARACTERS + 10 + BOARD_OUTLINE_COLOUR_ANSII_CHARACTERS + " | " + NUMBER_COLOUR_ANSII_CHARACTERS + 11 + BOARD_OUTLINE_COLOUR_ANSII_CHARACTERS + " |  " + X_COLOUR + X.name() + BOARD_OUTLINE_COLOUR_ANSII_CHARACTERS + " \n"
+                + "--------------------\n "
+                + NUMBER_COLOUR_ANSII_CHARACTERS + 13 + BOARD_OUTLINE_COLOUR_ANSII_CHARACTERS + " | " + NUMBER_COLOUR_ANSII_CHARACTERS + 14 + BOARD_OUTLINE_COLOUR_ANSII_CHARACTERS + " | " + NUMBER_COLOUR_ANSII_CHARACTERS + 15 + BOARD_OUTLINE_COLOUR_ANSII_CHARACTERS + " | " + NUMBER_COLOUR_ANSII_CHARACTERS + 16 + BOARD_OUTLINE_COLOUR_ANSII_CHARACTERS + " \n";
+
+        assertThat(writer.toString(), is("\n" + CLEAR_SCREEN_ANSI_CHARACTERS + "\n\n" + BOARD_OUTLINE_COLOUR_ANSII_CHARACTERS + "\n"  + expectedFormattedBoard));
     }
 
     @Test
@@ -378,12 +435,23 @@ public class CommandPromptTest {
         promptWhichHasExceptionOnRead.getReplayOption();
     }
 
-    private String vacantBoard() {
-        return "\n\n" + BOARD_OUTLINE_COLOUR_ANSII_CHARACTERS + "\n "
-                + NUMBER_COLOUR_ANSII_CHARACTERS + 1 + BOARD_OUTLINE_COLOUR_ANSII_CHARACTERS + " | " + NUMBER_COLOUR_ANSII_CHARACTERS + 2 + BOARD_OUTLINE_COLOUR_ANSII_CHARACTERS + " | " + NUMBER_COLOUR_ANSII_CHARACTERS + 3 + BOARD_OUTLINE_COLOUR_ANSII_CHARACTERS + " \n"
-                + "-----------\n "
-                + NUMBER_COLOUR_ANSII_CHARACTERS + 4 + BOARD_OUTLINE_COLOUR_ANSII_CHARACTERS + " | " + NUMBER_COLOUR_ANSII_CHARACTERS + 5 + BOARD_OUTLINE_COLOUR_ANSII_CHARACTERS + " | " + NUMBER_COLOUR_ANSII_CHARACTERS + 6 + BOARD_OUTLINE_COLOUR_ANSII_CHARACTERS + " \n"
-                + "-----------\n "
-                + NUMBER_COLOUR_ANSII_CHARACTERS + 7 + BOARD_OUTLINE_COLOUR_ANSII_CHARACTERS + " | " + NUMBER_COLOUR_ANSII_CHARACTERS + 8 + BOARD_OUTLINE_COLOUR_ANSII_CHARACTERS + " | " + NUMBER_COLOUR_ANSII_CHARACTERS + 9 + BOARD_OUTLINE_COLOUR_ANSII_CHARACTERS + " \n";
+    private String vacant3x3Board() {
+        return "\n\n" + BOARD_OUTLINE_COLOUR_ANSII_CHARACTERS + "\n  "
+                + NUMBER_COLOUR_ANSII_CHARACTERS + 1 + BOARD_OUTLINE_COLOUR_ANSII_CHARACTERS + " |  " + NUMBER_COLOUR_ANSII_CHARACTERS + 2 + BOARD_OUTLINE_COLOUR_ANSII_CHARACTERS + " |  " + NUMBER_COLOUR_ANSII_CHARACTERS + 3 + BOARD_OUTLINE_COLOUR_ANSII_CHARACTERS + " \n"
+                + "---------------\n "
+                + " " + NUMBER_COLOUR_ANSII_CHARACTERS + 4 + BOARD_OUTLINE_COLOUR_ANSII_CHARACTERS + " |  " + NUMBER_COLOUR_ANSII_CHARACTERS + 5 + BOARD_OUTLINE_COLOUR_ANSII_CHARACTERS + " |  " + NUMBER_COLOUR_ANSII_CHARACTERS + 6 + BOARD_OUTLINE_COLOUR_ANSII_CHARACTERS + " \n"
+                + "---------------\n "
+                + " " + NUMBER_COLOUR_ANSII_CHARACTERS + 7 + BOARD_OUTLINE_COLOUR_ANSII_CHARACTERS + " |  " + NUMBER_COLOUR_ANSII_CHARACTERS + 8 + BOARD_OUTLINE_COLOUR_ANSII_CHARACTERS + " |  " + NUMBER_COLOUR_ANSII_CHARACTERS + 9 + BOARD_OUTLINE_COLOUR_ANSII_CHARACTERS + " \n";
+    }
+
+    private String vacant4x4Board() {
+        return "\n\n" + BOARD_OUTLINE_COLOUR_ANSII_CHARACTERS + "\n  "
+                + NUMBER_COLOUR_ANSII_CHARACTERS + 1 + BOARD_OUTLINE_COLOUR_ANSII_CHARACTERS + " |  " + NUMBER_COLOUR_ANSII_CHARACTERS + 2 + BOARD_OUTLINE_COLOUR_ANSII_CHARACTERS + " |  " + NUMBER_COLOUR_ANSII_CHARACTERS + 3 + BOARD_OUTLINE_COLOUR_ANSII_CHARACTERS + " |  " + NUMBER_COLOUR_ANSII_CHARACTERS + 4 + BOARD_OUTLINE_COLOUR_ANSII_CHARACTERS + " \n"
+                + "--------------------\n  "
+                + NUMBER_COLOUR_ANSII_CHARACTERS + 5 + BOARD_OUTLINE_COLOUR_ANSII_CHARACTERS + " |  " + NUMBER_COLOUR_ANSII_CHARACTERS + 6 + BOARD_OUTLINE_COLOUR_ANSII_CHARACTERS + " |  " + NUMBER_COLOUR_ANSII_CHARACTERS + 7 + BOARD_OUTLINE_COLOUR_ANSII_CHARACTERS + " |  " + NUMBER_COLOUR_ANSII_CHARACTERS + 8 + BOARD_OUTLINE_COLOUR_ANSII_CHARACTERS + " \n"
+                + "--------------------\n  "
+                + NUMBER_COLOUR_ANSII_CHARACTERS + 9 + BOARD_OUTLINE_COLOUR_ANSII_CHARACTERS + " | " + NUMBER_COLOUR_ANSII_CHARACTERS + 10 + BOARD_OUTLINE_COLOUR_ANSII_CHARACTERS + " | " + NUMBER_COLOUR_ANSII_CHARACTERS + 11 + BOARD_OUTLINE_COLOUR_ANSII_CHARACTERS + " | " + NUMBER_COLOUR_ANSII_CHARACTERS + 12 + BOARD_OUTLINE_COLOUR_ANSII_CHARACTERS + " \n"
+                + "--------------------\n "
+                + NUMBER_COLOUR_ANSII_CHARACTERS + 13 + BOARD_OUTLINE_COLOUR_ANSII_CHARACTERS + " | " + NUMBER_COLOUR_ANSII_CHARACTERS + 14 + BOARD_OUTLINE_COLOUR_ANSII_CHARACTERS + " | " + NUMBER_COLOUR_ANSII_CHARACTERS + 15 + BOARD_OUTLINE_COLOUR_ANSII_CHARACTERS + " | " + NUMBER_COLOUR_ANSII_CHARACTERS + 16 + BOARD_OUTLINE_COLOUR_ANSII_CHARACTERS + " \n";
     }
 }

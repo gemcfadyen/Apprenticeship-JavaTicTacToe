@@ -12,9 +12,6 @@ public class UnbeatablePlayer extends Player {
     private static final int BETA = 100;
     private static final int MAX_PLAYER_INITIAL_SCORE = -100;
     private static final int MIN_PLAYER_INITIAL_SCORE = 100;
-    private static final int MAX_PLAYER_WIN_SCORE = 10;
-    private static final int MIN_PLAYER_WIN_SCORE = -10;
-    private static final int DRAW_SCORE = 0;
 
     public UnbeatablePlayer(PlayerSymbol symbol) {
         super(symbol);
@@ -29,7 +26,6 @@ public class UnbeatablePlayer extends Player {
                 true,
                 ALPHA,
                 BETA);
-
         return bestMove.getMove();
     }
 
@@ -66,11 +62,11 @@ public class UnbeatablePlayer extends Player {
 
     private ValuedPosition score(Board board, int remainingDepth) {
         if (board.getWinningSymbol() == getSymbol()) {
-            return new ValuedPosition(MAX_PLAYER_WIN_SCORE + remainingDepth);
+            return new MaxPlayerWin(remainingDepth);
         } else if (board.getWinningSymbol() == opponent(getSymbol())) {
-            return new ValuedPosition(MIN_PLAYER_WIN_SCORE - remainingDepth);
+            return new MinPlayerWin(remainingDepth);
         }
-        return new ValuedPosition(DRAW_SCORE);
+        return new Draw();
     }
 
     private void revertMove(Board board, int vacantPosition) {
@@ -143,6 +139,30 @@ public class UnbeatablePlayer extends Player {
 
         public int getMove() {
             return move;
+        }
+    }
+
+    private static class Draw extends ValuedPosition {
+        private static final int DRAW_SCORE = 0;
+
+        public Draw() {
+            super(DRAW_SCORE);
+        }
+    }
+
+    private static class MaxPlayerWin extends ValuedPosition {
+        private static final int MAX_PLAYER_WIN_SCORE = 10;
+
+        public MaxPlayerWin(int depth) {
+            super(MAX_PLAYER_WIN_SCORE + depth);
+        }
+    }
+
+    private static class MinPlayerWin extends ValuedPosition {
+        private static final int MIN_PLAYER_WIN_SCORE = -10;
+
+        public MinPlayerWin(int depth) {
+            super(MIN_PLAYER_WIN_SCORE - depth);
         }
     }
 }

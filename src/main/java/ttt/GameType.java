@@ -1,17 +1,18 @@
 package ttt;
 
 public enum GameType {
-    HUMAN_VS_HUMAN(1, "Human vs Human"),
-    HUMAN_VS_UNBEATABLE(2, "Human vs Unbeatable"),
-    UNBEATABLE_VS_HUMAN(3, "Unbeatable vs Human");
-
+    HUMAN_VS_HUMAN("Human vs Human", 1, 10),
+    HUMAN_VS_UNBEATABLE("Human vs Unbeatable", 2, 4),
+    UNBEATABLE_VS_HUMAN("Unbeatable vs Human", 3, 4);
 
     private final int gameType;
+    private final int maximumDimension;
     private final String gameName;
 
-    GameType(int gameType, String gameName) {
-        this.gameType = gameType;
+    GameType(String gameName, int gameType, int maximumDimension) {
         this.gameName = gameName;
+        this.gameType = gameType;
+        this.maximumDimension = maximumDimension;
     }
 
     public int numericRepresentation() {
@@ -22,6 +23,14 @@ public enum GameType {
         return gameName;
     }
 
+
+    public int dimensionLowerBoundary() {
+        return 1;
+    }
+
+    public int dimensionUpperBoundary() {
+        return maximumDimension;
+    }
 
     public static GameType of(int numericRepresentation) {
         for(GameType gameType : GameType.values()) {

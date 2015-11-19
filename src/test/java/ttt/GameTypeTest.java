@@ -30,4 +30,29 @@ public class GameTypeTest {
         GameType gameType = GameType.of(100);
         assertThat(gameType, is(GameType.HUMAN_VS_HUMAN));
     }
+
+    @Test
+    public void getPossibleDimensionForHumanVsHuman() {
+        GameType gameType = GameType.of(1);
+        assertThat(gameType.dimensionUpperBoundary(), is(10));
+    }
+
+    @Test
+    public void getPossibleDimensionForHumanVsUnbeatable() {
+        GameType gameType = GameType.of(2);
+        assertThat(gameType.dimensionUpperBoundary(), is(4));
+    }
+
+    @Test
+    public void getPossibleDimensionForUnbeatableVsHuman() {
+        GameType gameType = GameType.of(3);
+        assertThat(gameType.dimensionUpperBoundary(), is(4));
+    }
+
+    @Test
+    public void getsLowerBoundaryForDimension() {
+        GameType gameType = GameType.of(3);
+        assertThat(gameType.dimensionLowerBoundary(), is(1));
+    }
+
 }

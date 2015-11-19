@@ -43,9 +43,10 @@ public class Game {
         int currentPlayerIndex = PLAYER_ONE_INDEX;
         boolean hasWinner = false;
 
-        int dimension = gamePrompt.getBoardDimension();
+        GameType gameType = gamePrompt.getGameType();
+        int dimension = gamePrompt.getBoardDimension(gameType);
         board = boardFactory.createBoardWithSize(dimension);
-        Player[] players = createPlayers();
+        Player[] players = createPlayersFor(gameType, dimension);
 
         while (gameInProgress(hasWinner)) {
             updateBoardWithPlayersMove(players[currentPlayerIndex]);
@@ -57,9 +58,8 @@ public class Game {
         return gamePrompt.getReplayOption();
     }
 
-    private Player[] createPlayers() {
-        GameType playerOption = gamePrompt.getGameType();
-        return playerFactory.createPlayers(playerOption, gamePrompt);
+    private Player[] createPlayersFor(GameType gameType, int dimension) {
+        return playerFactory.createPlayers(gameType, gamePrompt, dimension);
     }
 
     private boolean gameInProgress(boolean hasWinner) {

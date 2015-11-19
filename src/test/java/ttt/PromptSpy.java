@@ -23,7 +23,7 @@ public class PromptSpy implements Prompt {
     private int numberOfTimesBoardDimensionPrompted = 0;
 
     @Override
-    public int getBoardDimension() {
+    public int getBoardDimension(GameType gameType) {
         numberOfTimesBoardDimensionPrompted++;
         return Integer.valueOf(readInput());
     }

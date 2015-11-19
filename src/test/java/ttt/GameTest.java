@@ -23,7 +23,7 @@ public class GameTest {
 
     @Test
     public void promptsForBoardDimension() {
-        PromptSpy gamePrompt = new PromptSpy(new StringReader(DIMENSION + HUMAN_VS_HUMAN + DO_NOT_REPLAY));
+        PromptSpy gamePrompt = new PromptSpy(new StringReader(HUMAN_VS_HUMAN + DIMENSION + DO_NOT_REPLAY));
         BoardFactoryStub boardFactoryStub = new BoardFactoryStub(new Board(3));
 
         Game game = new Game(boardFactoryStub, gamePrompt, new PlayerFactoryStub(
@@ -61,7 +61,7 @@ public class GameTest {
         );
 
         Game game = new Game(new BoardFactoryStub(new Board(3)),
-                createCommandPromptToReadInput(DIMENSION + HUMAN_VS_HUMAN + DO_NOT_REPLAY),
+                createCommandPromptToReadInput(HUMAN_VS_HUMAN + DIMENSION + DO_NOT_REPLAY),
                 playerFactoryStub);
 
         game.play();
@@ -72,7 +72,7 @@ public class GameTest {
 
     @Test
     public void printsCongratulatoryMessageWhenThereIsAWinningFormation() {
-        PromptSpy gamePrompt = new PromptSpy(new StringReader(DIMENSION + HUMAN_VS_HUMAN + DO_NOT_REPLAY));
+        PromptSpy gamePrompt = new PromptSpy(new StringReader(HUMAN_VS_HUMAN + DIMENSION + DO_NOT_REPLAY));
 
         PlayerFactoryStub playerFactorySpy = new PlayerFactoryStub(
                 createHumanPlayer(X, createCommandPromptToReadInput("1\n2\n3\n")),
@@ -93,7 +93,7 @@ public class GameTest {
     @Test
     public void printsDrawMessageWhenThereAreNoMoreSpacesOnTheBoardAndNoWinner() {
         Board board = new Board(X, O, O, O, X, X, VACANT, VACANT, O);
-        PromptSpy gamePrompt = new PromptSpy(new StringReader(DIMENSION + HUMAN_VS_HUMAN + DO_NOT_REPLAY));
+        PromptSpy gamePrompt = new PromptSpy(new StringReader(HUMAN_VS_HUMAN + DIMENSION + DO_NOT_REPLAY));
 
         PlayerFactoryStub playerFactoryStub = new PlayerFactoryStub(
                 createHumanPlayer(X, createCommandPromptToReadInput("8\n")),
@@ -114,7 +114,7 @@ public class GameTest {
     @Test
     public void printsTheFinalStateOfTheBoard() {
         Board board = new Board(X, VACANT, X, O, X, O, O, O, X);
-        PromptSpy gamePrompt = new PromptSpy(new StringReader(DIMENSION + HUMAN_VS_HUMAN + DO_NOT_REPLAY));
+        PromptSpy gamePrompt = new PromptSpy(new StringReader(HUMAN_VS_HUMAN + DIMENSION + DO_NOT_REPLAY));
 
         PlayerFactoryStub playerFactoryStub = new PlayerFactoryStub(
                 createHumanPlayer(X, createCommandPromptToReadInput("2\n")),
@@ -131,7 +131,7 @@ public class GameTest {
     @Test
     public void promptsToPlayAgain() {
         Board board = new Board(X, VACANT, X, O, X, O, O, O, X);
-        PromptSpy gamePrompt = new PromptSpy(new StringReader(DIMENSION + HUMAN_VS_HUMAN + REPLAY + DIMENSION + HUMAN_VS_HUMAN + DO_NOT_REPLAY));
+        PromptSpy gamePrompt = new PromptSpy(new StringReader(HUMAN_VS_HUMAN + DIMENSION + REPLAY +  HUMAN_VS_HUMAN + DIMENSION + DO_NOT_REPLAY));
 
         PlayerFactoryStub playerFactoryStub = new PlayerFactoryStub(
                 createHumanPlayer(X, createCommandPromptToReadInput("2\n2\n3\n5\n")),

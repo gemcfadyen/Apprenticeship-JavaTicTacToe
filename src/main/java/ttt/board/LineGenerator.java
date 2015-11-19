@@ -13,22 +13,13 @@ public class LineGenerator {
 
     public Line[] linesForAllDirections() {
         Line[] allLines = new Line[(dimension * 2) + 2];
-
         Line[] rows = getRows();
-        for (int i = 0; i < rows.length; i++) {
-            allLines[i] = rows[i];
-        }
-
         Line[] columns = getColumns();
 
-        for (int i = 0; i < columns.length; i++) {
-            allLines[i + rows.length] = columns[i];
-        }
+        copyRows(allLines, rows);
+        copyColumns(allLines, rows.length, columns);
+        copyDiagonals(allLines, rows.length + columns.length);
 
-        int index = rows.length + columns.length;
-
-        allLines[index] = backslashDiagonal();
-        allLines[index + 1] = forwardslashDiagonal();
         return allLines;
     }
 
@@ -83,5 +74,22 @@ public class LineGenerator {
             offset += dimension + 1;
         }
         return new Line(symbols);
+    }
+
+    private void copyDiagonals(Line[] allLines, int startingIndex) {
+        allLines[startingIndex] = backslashDiagonal();
+        allLines[startingIndex + 1] = forwardslashDiagonal();
+    }
+
+    private void copyColumns(Line[] allLines, int startingIndex, Line[] columns) {
+        for (int i = 0; i < columns.length; i++) {
+            allLines[i + startingIndex] = columns[i];
+        }
+    }
+
+    private void copyRows(Line[] allLines, Line[] rows) {
+        for (int i = 0; i < rows.length; i++) {
+            allLines[i] = rows[i];
+        }
     }
 }

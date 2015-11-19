@@ -12,7 +12,7 @@ public class PlayerFactoryStub extends PlayerFactory {
     }
 
     @Override
-    public Player[] createPlayers(GameType playerOption, Prompt prompt) {
+    public Player[] createPlayers(GameType playerOption, Prompt prompt, int dimension) {
         return players;
     }
 }

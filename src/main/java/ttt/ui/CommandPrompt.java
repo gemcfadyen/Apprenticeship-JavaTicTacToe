@@ -38,11 +38,11 @@ public class CommandPrompt implements Prompt {
     }
 
     @Override
-    public int getBoardDimension() {
-        askUserForBoardDimension();
-        InputValidator compositeValidator = compositeFor(Collections.singletonList(new NumericValidator()));
+    public int getBoardDimension(GameType gameType) {
+        askUserForBoardDimension(gameType);
+        InputValidator compositeValidator = compositeFor(dimensionValidatorsFor(gameType));
 
-        return asInteger(getValidInput(compositeValidator, input(), functionToRepromptForValidBoardDimension()));
+        return asInteger(getValidInput(compositeValidator, input(), functionToRepromptForValidBoardDimension(gameType)));
     }
 
     @Override
@@ -108,9 +108,9 @@ public class CommandPrompt implements Prompt {
         display(CLEAR_SCREEN_ANSII_CHARACTERS);
     }
 
-    private void askUserForBoardDimension() {
+    private void askUserForBoardDimension(GameType gameType) {
         display(FONT_COLOUR_ANSII_CHARACTERS
-                + "Please enter the dimension of the board you would like to use");
+                + "Please enter the dimension of the board you would like to use [" + gameType.dimensionLowerBoundary() + " to " + gameType.dimensionUpperBoundary() + "]");
     }
 
     private void display(String message) {
@@ -159,10 +159,10 @@ public class CommandPrompt implements Prompt {
         return validationResult.userInput();
     }
 
-    private Function<ValidationResult, Void> functionToRepromptForValidBoardDimension() {
+    private Function<ValidationResult, Void> functionToRepromptForValidBoardDimension(GameType gameType) {
         return validationResult -> {
             display(BOARD_COLOUR_ANSII_CHARACTERS + validationResult.reason());
-            askUserForBoardDimension();
+            askUserForBoardDimension(gameType);
             return null;
         };
     }
@@ -206,6 +206,13 @@ public class CommandPrompt implements Prompt {
         return Arrays.asList(new NumericValidator(), new GameTypeValidator());
     }
 
+    private List<InputValidator> dimensionValidatorsFor(GameType gameType) {
+        return Arrays.asList(
+                new NumericValidator(),
+                new WithinGivenRangeValidator(gameType.dimensionUpperBoundary())
+        );
+    }
+
     private List<InputValidator> orderedListOfMoveValidators(Board board) {
         return Arrays.asList(
                 new NumericValidator(),
@@ -219,14 +226,13 @@ public class CommandPrompt implements Prompt {
 
     private String displayCell(PlayerSymbol symbol, int cellOffset) {
         if (symbol == VACANT) {
-            return colour(cellOffset);
+            return optionallyPad(cellOffset) + colour(cellOffset);
         } else {
-            return colour(symbol);
+            return space() + colour(symbol);
         }
     }
 
     private String colour(PlayerSymbol symbol) {
-
         if (symbol.equals(X)) {
             return X_COLOUR_ANSII_CHARACTERS + symbol.getSymbolForDisplay();
         }
@@ -242,23 +248,39 @@ public class CommandPrompt implements Prompt {
         if (lastRow(position, dimension)) {
             border = space();
         } else if (endOfRow(position, dimension)) {
-            border = dividingHorizontalLine();
+            border = dividingHorizontalLine(dimension);
         } else {
             border = space() + dividingVerticalLine();
         }
         return BOARD_COLOUR_ANSII_CHARACTERS + border;
     }
 
+    private String optionallyPad(int position) {
+        if (singleDigit(position)) {
+            return space();
+        }
+        return "";
+    }
+
     private String dividingVerticalLine() {
         return "|";
     }
 
-    private String dividingHorizontalLine() {
-        return space() + newLine() + "-----------" + newLine();
+    private String dividingHorizontalLine(int dimension) {
+        String dividingLine = space() + newLine();
+        for (int i = 0; i < dimension; i++) {
+            dividingLine += "-----";
+        }
+        dividingLine += newLine();
+        return dividingLine;
     }
 
     private String newLine() {
         return "\n";
+    }
+
+    private boolean singleDigit(int position) {
+        return position < 9;
     }
 
     private String space() {

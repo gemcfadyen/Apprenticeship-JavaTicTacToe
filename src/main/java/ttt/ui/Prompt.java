@@ -6,7 +6,7 @@ import ttt.board.Board;
 import ttt.player.PlayerSymbol;
 
 public interface Prompt {
-    int getBoardDimension();
+    int getBoardDimension(GameType gameType);
     GameType getGameType();
     ReplayOption getReplayOption();
     int getNextMove(Board board);
