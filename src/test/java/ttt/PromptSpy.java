@@ -8,6 +8,7 @@ import ttt.ui.Prompt;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.Reader;
+import java.util.List;
 
 import static ttt.player.PlayerSymbol.O;
 import static ttt.player.PlayerSymbol.X;
@@ -92,7 +93,7 @@ public class PromptSpy implements Prompt {
 
     public String getLastBoardThatWasPrinted() {
         StringBuilder gridFormation = new StringBuilder();
-        Line[] rows = lastBoardPrinted.getRows();
+        List<Line> rows = lastBoardPrinted.getRows();
 
         for (Line row : rows) {
             for (PlayerSymbol symbol : row.getSymbols()) {

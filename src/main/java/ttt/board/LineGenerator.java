@@ -2,6 +2,9 @@ package ttt.board;
 
 import ttt.player.PlayerSymbol;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class LineGenerator {
     private final PlayerSymbol[] grid;
     private int dimension;
@@ -11,20 +14,17 @@ public class LineGenerator {
         this.dimension = (int) Math.sqrt(grid.length);
     }
 
-    public Line[] linesForAllDirections() {
-        Line[] allLines = new Line[(dimension * 2) + 2];
-        Line[] rows = getRows();
-        Line[] columns = getColumns();
-
-        copyRows(allLines, rows);
-        copyColumns(allLines, rows.length, columns);
-        copyDiagonals(allLines, rows.length + columns.length);
+    public List<Line> linesForAllDirections() {
+        List<Line> allLines = new ArrayList<>();
+        allLines.addAll(getRows());
+        allLines.addAll(getColumns());
+        allLines.addAll(getDiagonals());
 
         return allLines;
     }
 
-    public Line[] getRows() {
-        Line[] horizontals = new Line[dimension];
+    public List<Line> getRows() {
+        List<Line> horizontals = new ArrayList<>();
 
         int startingIndex = 0;
         for (int rowNumber = 0; rowNumber < dimension; rowNumber++) {
@@ -34,13 +34,13 @@ public class LineGenerator {
             }
             startingIndex += dimension;
 
-            horizontals[rowNumber] = new Line(symbols);
+            horizontals.add(new Line(symbols));
         }
         return horizontals;
     }
 
-    private Line[] getColumns() {
-        Line[] columns = new Line[dimension];
+    private List<Line> getColumns() {
+        List<Line> columns = new ArrayList<>();
 
         for (int rowNumber = 0; rowNumber < dimension; rowNumber++) {
             PlayerSymbol[] symbols = new PlayerSymbol[dimension];
@@ -50,7 +50,7 @@ public class LineGenerator {
                 offset += dimension;
             }
 
-            columns[rowNumber] = new Line(symbols);
+            columns.add(new Line(symbols));
         }
 
         return columns;
@@ -76,20 +76,11 @@ public class LineGenerator {
         return new Line(symbols);
     }
 
-    private void copyDiagonals(Line[] allLines, int startingIndex) {
-        allLines[startingIndex] = backslashDiagonal();
-        allLines[startingIndex + 1] = forwardslashDiagonal();
-    }
+    private List<Line> getDiagonals() {
+        List<Line> diagonals = new ArrayList<>();
+        diagonals.add(backslashDiagonal());
+        diagonals.add(forwardslashDiagonal());
 
-    private void copyColumns(Line[] allLines, int startingIndex, Line[] columns) {
-        for (int i = 0; i < columns.length; i++) {
-            allLines[i + startingIndex] = columns[i];
-        }
-    }
-
-    private void copyRows(Line[] allLines, Line[] rows) {
-        for (int i = 0; i < rows.length; i++) {
-            allLines[i] = rows[i];
-        }
+        return diagonals;
     }
 }

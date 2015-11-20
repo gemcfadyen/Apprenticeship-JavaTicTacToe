@@ -12,7 +12,7 @@ public class BoardFactoryTest {
         BoardFactory boardFactory = new BoardFactory();
         Board board = boardFactory.createBoardWithSize(3);
 
-        assertThat(board.getRows().length, is(3));
+        assertThat(board.getRows().size(), is(3));
     }
 
     @Test
@@ -20,6 +20,6 @@ public class BoardFactoryTest {
         BoardFactory boardFactory = new BoardFactory();
         Board board = boardFactory.createBoardWithSize(4);
 
-        assertThat(board.getRows().length, is(4));
+        assertThat(board.getRows().size(), is(4));
     }
 }

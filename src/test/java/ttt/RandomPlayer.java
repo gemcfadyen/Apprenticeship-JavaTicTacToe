@@ -14,7 +14,7 @@ public class RandomPlayer extends Player {
 
     @Override
     public int chooseNextMoveFrom(Board board) {
-        int dimension = board.getRows().length;
+        int dimension = board.getRows().size();
         int randomMove = generateRandomNumber(dimension);
         while (!(board.isWithinGridBoundary(randomMove) && board.isVacantAt(randomMove))) {
             System.out.println("Reprompting as " + randomMove + " is invalid");

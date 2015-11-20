@@ -252,15 +252,15 @@ public class BoardTest {
     public void returnsHorizontalRows() {
         Board board = new Board(X, O, X, O, O, X, VACANT, VACANT, O);
 
-        Line[] rows = board.getRows();
+        List<Line> rows = board.getRows();
 
         PlayerSymbol[] expectedTopRow = new PlayerSymbol[]{X, O, X};
         PlayerSymbol[] expectedMiddleRow = new PlayerSymbol[]{O, O, X};
         PlayerSymbol[] expectedBottomRow = new PlayerSymbol[]{VACANT, VACANT, O};
 
-        assertThat(rows.length, is(3));
-        assertThat(rows[0].getSymbols(), is(expectedTopRow));
-        assertThat(rows[1].getSymbols(), is(expectedMiddleRow));
-        assertThat(rows[2].getSymbols(), is(expectedBottomRow));
+        assertThat(rows.size(), is(3));
+        assertThat(rows.get(0).getSymbols(), is(expectedTopRow));
+        assertThat(rows.get(1).getSymbols(), is(expectedMiddleRow));
+        assertThat(rows.get(2).getSymbols(), is(expectedBottomRow));
     }
 }

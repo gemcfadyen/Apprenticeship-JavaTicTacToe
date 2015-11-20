@@ -73,8 +73,8 @@ public class CommandPrompt implements Prompt {
     public void print(Board board) {
         String boardForDisplay = BOARD_COLOUR_ANSII_CHARACTERS + newLine();
 
-        Line[] rows = board.getRows();
-        int dimension = rows.length;
+        List<Line> rows = board.getRows();
+        int dimension = rows.size();
         int offset = 0;
         for (Line row : rows) {
             for (PlayerSymbol symbol : row.getSymbols()) {

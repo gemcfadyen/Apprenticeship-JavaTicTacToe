@@ -1,15 +1,13 @@
 package ttt.board;
 
-import org.junit.Assert;
 import org.junit.Test;
 import ttt.player.PlayerSymbol;
 
 import java.util.Arrays;
+import java.util.List;
 
-import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 import static ttt.player.PlayerSymbol.*;
 
 public class LineGeneratorTest {
@@ -22,8 +20,8 @@ public class LineGeneratorTest {
                 VACANT, VACANT, VACANT
         );
 
-        Line[] horizontalRows = lineGenerator.getRows();
-        assertTrue(horizontalRows[0].isWinning());
+        List<Line> horizontalRows = lineGenerator.getRows();
+        assertTrue(horizontalRows.get(0).isWinning());
     }
 
     @Test
@@ -34,8 +32,8 @@ public class LineGeneratorTest {
                 VACANT, VACANT, VACANT
         );
 
-        Line[] horizontalRows = lineGenerator.getRows();
-        assertTrue(horizontalRows[1].isWinning());
+        List<Line> horizontalRows = lineGenerator.getRows();
+        assertTrue(horizontalRows.get(1).isWinning());
     }
 
     @Test
@@ -46,8 +44,8 @@ public class LineGeneratorTest {
                 VACANT, VACANT, VACANT
         );
 
-        Line[] horizontalRows = lineGenerator.getRows();
-        assertFalse(horizontalRows[2].isWinning());
+        List<Line> horizontalRows = lineGenerator.getRows();
+        assertFalse(horizontalRows.get(2).isWinning());
     }
 
     @Test
@@ -57,8 +55,8 @@ public class LineGeneratorTest {
                 VACANT, VACANT, VACANT,
                 VACANT, VACANT, VACANT
         );
-        Line[] horizontalRows = lineGenerator.getRows();
-        assertTrue(Arrays.equals(horizontalRows[0].getSymbols(), new PlayerSymbol[]{X, X, X}));
+        List<Line> horizontalRows = lineGenerator.getRows();
+        assertTrue(Arrays.equals(horizontalRows.get(0).getSymbols(), new PlayerSymbol[]{X, X, X}));
     }
 
     @Test
@@ -68,17 +66,17 @@ public class LineGeneratorTest {
                 VACANT, VACANT, VACANT,
                 O, VACANT, VACANT
         );
-        Line[] lines = lineGenerator.linesForAllDirections();
-        assertThat(lines.length, is(8));
+        List<Line> lines = lineGenerator.linesForAllDirections();
+        assertThat(lines.size(), is(8));
 
-        Assert.assertThat(lines[0].getSymbols(), is(new PlayerSymbol[]{X, X, X}));
-        Assert.assertThat(lines[1].getSymbols(), is(new PlayerSymbol[]{VACANT, VACANT, VACANT}));
-        Assert.assertThat(lines[2].getSymbols(), is(new PlayerSymbol[]{O, VACANT, VACANT}));
-        Assert.assertThat(lines[3].getSymbols(), is(new PlayerSymbol[]{X, VACANT, O}));
-        Assert.assertThat(lines[4].getSymbols(), is(new PlayerSymbol[]{X, VACANT, VACANT}));
-        Assert.assertThat(lines[5].getSymbols(), is(new PlayerSymbol[]{X, VACANT, VACANT}));
-        Assert.assertThat(lines[6].getSymbols(), is(new PlayerSymbol[]{X, VACANT, VACANT}));
-        Assert.assertThat(lines[7].getSymbols(), is(new PlayerSymbol[]{X, VACANT, O}));
+        assertThat(lines.get(0).getSymbols(), is(new PlayerSymbol[]{X, X, X}));
+        assertThat(lines.get(1).getSymbols(), is(new PlayerSymbol[]{VACANT, VACANT, VACANT}));
+        assertThat(lines.get(2).getSymbols(), is(new PlayerSymbol[]{O, VACANT, VACANT}));
+        assertThat(lines.get(3).getSymbols(), is(new PlayerSymbol[]{X, VACANT, O}));
+        assertThat(lines.get(4).getSymbols(), is(new PlayerSymbol[]{X, VACANT, VACANT}));
+        assertThat(lines.get(5).getSymbols(), is(new PlayerSymbol[]{X, VACANT, VACANT}));
+        assertThat(lines.get(6).getSymbols(), is(new PlayerSymbol[]{X, VACANT, VACANT}));
+        assertThat(lines.get(7).getSymbols(), is(new PlayerSymbol[]{X, VACANT, O}));
     }
 
     @Test
@@ -90,8 +88,8 @@ public class LineGeneratorTest {
                 VACANT, VACANT, VACANT, VACANT
         );
 
-        Line[] horizontalRows = lineGenerator.getRows();
-        assertFalse(horizontalRows[0].isWinning());
+        List<Line> horizontalRows = lineGenerator.getRows();
+        assertFalse(horizontalRows.get(0).isWinning());
     }
 
     @Test
@@ -103,8 +101,8 @@ public class LineGeneratorTest {
                 VACANT, VACANT, VACANT, VACANT
         );
 
-        Line[] horizontalRows = lineGenerator.getRows();
-        assertTrue(horizontalRows[0].isWinning());
+        List<Line> horizontalRows = lineGenerator.getRows();
+        assertTrue(horizontalRows.get(0).isWinning());
     }
 
     @Test
@@ -116,8 +114,8 @@ public class LineGeneratorTest {
                 X, VACANT, VACANT, VACANT
         );
 
-        Line[] rows = lineGenerator.linesForAllDirections();
-        assertTrue(rows[4].isWinning());
+        List<Line> rows = lineGenerator.linesForAllDirections();
+        assertTrue(rows.get(4).isWinning());
     }
 
     @Test
@@ -129,8 +127,8 @@ public class LineGeneratorTest {
                 VACANT, VACANT, VACANT, X
         );
 
-        Line[] rows = lineGenerator.linesForAllDirections();
-        assertTrue(rows[8].isWinning());
+        List<Line> rows = lineGenerator.linesForAllDirections();
+        assertTrue(rows.get(8).isWinning());
     }
 
     @Test
@@ -142,8 +140,8 @@ public class LineGeneratorTest {
                 X, VACANT, VACANT, VACANT
         );
 
-        Line[] rows = lineGenerator.linesForAllDirections();
-        assertTrue(rows[9].isWinning());
+        List<Line> rows = lineGenerator.linesForAllDirections();
+        assertTrue(rows.get(9).isWinning());
     }
 
     @Test
@@ -154,8 +152,8 @@ public class LineGeneratorTest {
                 VACANT, VACANT, VACANT, O,
                 VACANT, VACANT, O, VACANT
         );
-        Line[] horizontalRows = lineGenerator.getRows();
-        PlayerSymbol[] symbols = horizontalRows[0].getSymbols();
+        List<Line> horizontalRows = lineGenerator.getRows();
+        PlayerSymbol[] symbols = horizontalRows.get(0).getSymbols();
         assertTrue(Arrays.equals(symbols, new PlayerSymbol[]{X, X, X, X}));
     }
 
@@ -167,12 +165,12 @@ public class LineGeneratorTest {
                 VACANT, VACANT, VACANT, VACANT,
                 VACANT, O, VACANT, VACANT
         );
-        Line[] rows = lineGenerator.getRows();
-        assertThat(rows.length, is(4));
-        Assert.assertThat(rows[0].getSymbols(), is(new PlayerSymbol[]{X, X, X, VACANT}));
-        Assert.assertThat(rows[1].getSymbols(), is(new PlayerSymbol[]{VACANT, VACANT, VACANT, VACANT}));
-        Assert.assertThat(rows[2].getSymbols(), is(new PlayerSymbol[]{VACANT, VACANT, VACANT, VACANT}));
-        Assert.assertThat(rows[3].getSymbols(), is(new PlayerSymbol[]{VACANT, O, VACANT, VACANT}));
+        List<Line> rows = lineGenerator.getRows();
+        assertThat(rows.size(), is(4));
+        assertThat(rows.get(0).getSymbols(), is(new PlayerSymbol[]{X, X, X, VACANT}));
+        assertThat(rows.get(1).getSymbols(), is(new PlayerSymbol[]{VACANT, VACANT, VACANT, VACANT}));
+        assertThat(rows.get(2).getSymbols(), is(new PlayerSymbol[]{VACANT, VACANT, VACANT, VACANT}));
+        assertThat(rows.get(3).getSymbols(), is(new PlayerSymbol[]{VACANT, O, VACANT, VACANT}));
     }
 
     @Test
@@ -183,18 +181,18 @@ public class LineGeneratorTest {
                 VACANT, VACANT, VACANT, O,
                 VACANT, O, VACANT, VACANT
         );
-        Line[] lines = lineGenerator.linesForAllDirections();
-        assertThat(lines.length, is(10));
+        List<Line> lines = lineGenerator.linesForAllDirections();
+        assertThat(lines.size(), is(10));
 
-        Assert.assertThat(lines[0].getSymbols(), is(new PlayerSymbol[]{X, X, X, VACANT}));
-        Assert.assertThat(lines[1].getSymbols(), is(new PlayerSymbol[]{VACANT, VACANT, VACANT, VACANT}));
-        Assert.assertThat(lines[2].getSymbols(), is(new PlayerSymbol[]{VACANT, VACANT, VACANT, O}));
-        Assert.assertThat(lines[3].getSymbols(), is(new PlayerSymbol[]{VACANT, O, VACANT, VACANT}));
-        Assert.assertThat(lines[4].getSymbols(), is(new PlayerSymbol[]{X, VACANT, VACANT, VACANT}));
-        Assert.assertThat(lines[5].getSymbols(), is(new PlayerSymbol[]{X, VACANT, VACANT, O}));
-        Assert.assertThat(lines[6].getSymbols(), is(new PlayerSymbol[]{X, VACANT, VACANT, VACANT}));
-        Assert.assertThat(lines[7].getSymbols(), is(new PlayerSymbol[]{VACANT, VACANT, O, VACANT}));
-        Assert.assertThat(lines[8].getSymbols(), is(new PlayerSymbol[]{X, VACANT, VACANT, VACANT}));
-        Assert.assertThat(lines[9].getSymbols(), is(new PlayerSymbol[]{VACANT, VACANT, VACANT, VACANT}));
+        assertThat(lines.get(0).getSymbols(), is(new PlayerSymbol[]{X, X, X, VACANT}));
+        assertThat(lines.get(1).getSymbols(), is(new PlayerSymbol[]{VACANT, VACANT, VACANT, VACANT}));
+        assertThat(lines.get(2).getSymbols(), is(new PlayerSymbol[]{VACANT, VACANT, VACANT, O}));
+        assertThat(lines.get(3).getSymbols(), is(new PlayerSymbol[]{VACANT, O, VACANT, VACANT}));
+        assertThat(lines.get(4).getSymbols(), is(new PlayerSymbol[]{X, VACANT, VACANT, VACANT}));
+        assertThat(lines.get(5).getSymbols(), is(new PlayerSymbol[]{X, VACANT, VACANT, O}));
+        assertThat(lines.get(6).getSymbols(), is(new PlayerSymbol[]{X, VACANT, VACANT, VACANT}));
+        assertThat(lines.get(7).getSymbols(), is(new PlayerSymbol[]{VACANT, VACANT, O, VACANT}));
+        assertThat(lines.get(8).getSymbols(), is(new PlayerSymbol[]{X, VACANT, VACANT, VACANT}));
+        assertThat(lines.get(9).getSymbols(), is(new PlayerSymbol[]{VACANT, VACANT, VACANT, VACANT}));
     }
 }

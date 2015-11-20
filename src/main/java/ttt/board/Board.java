@@ -30,7 +30,7 @@ public class Board {
         this.grid = initialisation;
     }
 
-    public Line[] getRows() {
+    public List<Line> getRows() {
         LineGenerator lines = new LineGenerator(grid);
         return lines.getRows();
     }
@@ -77,7 +77,7 @@ public class Board {
         return grid[cellIndex] == VACANT;
     }
 
-    private boolean checkForWinIn(Line[] lines) {
+    private boolean checkForWinIn(List<Line> lines) {
         for (Line line : lines) {
             if (line.isWinning()) {
                 return true;
