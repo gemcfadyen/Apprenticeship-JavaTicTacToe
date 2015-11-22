@@ -2,8 +2,6 @@ package ttt.board;
 
 import ttt.player.PlayerSymbol;
 
-import java.util.Arrays;
-
 import static ttt.player.PlayerSymbol.O;
 import static ttt.player.PlayerSymbol.X;
 
@@ -18,8 +16,14 @@ public class Line {
         return containsOnly(X) || containsOnly(O);
     }
 
-    private boolean containsOnly(PlayerSymbol symbol) {
-        return Arrays.equals(line, new PlayerSymbol[]{symbol, symbol, symbol});
+    private boolean containsOnly(PlayerSymbol playerSymbol) {
+        boolean allMatching = true;
+        for(PlayerSymbol symbol : line) {
+            allMatching = allMatching && (symbol == playerSymbol);
+        }
+
+        return allMatching;
+
     }
 
     public PlayerSymbol[] getSymbols() {

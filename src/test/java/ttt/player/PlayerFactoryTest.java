@@ -13,13 +13,12 @@ import static org.junit.Assert.assertThat;
 import static ttt.GameType.*;
 
 public class PlayerFactoryTest {
-
     @Test
     public void createsHumanPlayers() {
         PlayerFactory playerFactory = new PlayerFactory();
         Prompt commandPrompt = new CommandPrompt(new StringReader(""), new StringWriter());
 
-        Player[] player = playerFactory.createPlayers(HUMAN_VS_HUMAN, commandPrompt);
+        Player[] player = playerFactory.createPlayers(HUMAN_VS_HUMAN, commandPrompt, 3);
 
         assertThat(player.length, is(2));
         assertThat(player[0], instanceOf(HumanPlayer.class));
@@ -27,11 +26,11 @@ public class PlayerFactoryTest {
     }
 
     @Test
-    public void createsHumanAndUnbeatablePlayer() {
+    public void createsHumanAndUnbeatablePlayerFor3x3() {
         PlayerFactory playerFactory = new PlayerFactory();
         Prompt commandPrompt = new CommandPrompt(new StringReader(""), new StringWriter());
 
-        Player[] player = playerFactory.createPlayers(HUMAN_VS_UNBEATABLE, commandPrompt);
+        Player[] player = playerFactory.createPlayers(HUMAN_VS_UNBEATABLE, commandPrompt, 3);
 
         assertThat(player.length, is(2));
         assertThat(player[0], instanceOf(HumanPlayer.class));
@@ -39,14 +38,26 @@ public class PlayerFactoryTest {
     }
 
     @Test
-    public void createsUnbeatableAndHumanPlayer() {
+    public void createsUnbeatableAndHumanPlayerFor3x3() {
         PlayerFactory playerFactory = new PlayerFactory();
         Prompt commandPrompt = new CommandPrompt(new StringReader(""), new StringWriter());
 
-        Player[] player = playerFactory.createPlayers(UNBEATABLE_VS_HUMAN, commandPrompt);
+        Player[] player = playerFactory.createPlayers(UNBEATABLE_VS_HUMAN, commandPrompt, 3);
 
         assertThat(player.length, is(2));
         assertThat(player[0], instanceOf(UnbeatablePlayer.class));
+        assertThat(player[1], instanceOf(HumanPlayer.class));
+    }
+
+    @Test
+    public void createsUnbeatableAndHumanFor4x4() {
+        PlayerFactory playerFactory = new PlayerFactory();
+        Prompt commandPrompt = new CommandPrompt(new StringReader(""), new StringWriter());
+
+        Player[] player = playerFactory.createPlayers(UNBEATABLE_VS_HUMAN, commandPrompt, 4);
+
+        assertThat(player.length, is(2));
+        assertThat(player[0], instanceOf(DelayedUnbeatablePlayer.class));
         assertThat(player[1], instanceOf(HumanPlayer.class));
     }
 }

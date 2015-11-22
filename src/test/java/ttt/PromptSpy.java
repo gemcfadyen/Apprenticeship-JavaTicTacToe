@@ -8,6 +8,7 @@ import ttt.ui.Prompt;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.Reader;
+import java.util.List;
 
 import static ttt.player.PlayerSymbol.O;
 import static ttt.player.PlayerSymbol.X;
@@ -20,6 +21,13 @@ public class PromptSpy implements Prompt {
     private int numberOfTimesOHasWon = 0;
     private int numberOfTimesPlayerIsReprompted = 0;
     private int numberOfTimesPlayerOptionsHaveBeenPrinted;
+    private int numberOfTimesBoardDimensionPrompted = 0;
+
+    @Override
+    public int getBoardDimension(GameType gameType) {
+        numberOfTimesBoardDimensionPrompted++;
+        return Integer.valueOf(readInput());
+    }
 
     public PromptSpy(Reader reader) {
         this.reader = new BufferedReader(reader);
@@ -85,7 +93,7 @@ public class PromptSpy implements Prompt {
 
     public String getLastBoardThatWasPrinted() {
         StringBuilder gridFormation = new StringBuilder();
-        Line[] rows = lastBoardPrinted.getRows();
+        List<Line> rows = lastBoardPrinted.getRows();
 
         for (Line row : rows) {
             for (PlayerSymbol symbol : row.getSymbols()) {
@@ -102,5 +110,9 @@ public class PromptSpy implements Prompt {
 
     public int getNumberOfTimesPromptedForPlayerOption() {
         return numberOfTimesPlayerOptionsHaveBeenPrinted;
+    }
+
+    public int getNumberOfTimesBoardDimensionPrompted() {
+        return numberOfTimesBoardDimensionPrompted;
     }
 }

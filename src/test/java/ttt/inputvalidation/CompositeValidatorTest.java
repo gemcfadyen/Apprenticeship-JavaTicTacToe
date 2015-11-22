@@ -61,7 +61,7 @@ public class CompositeValidatorTest {
     public void inputNotValidatedIfOneOfSeveralValidationsFail() {
         List<InputValidator> validators = new ArrayList<>();
         validators.add(new NumericValidator());
-        validators.add(new WithinGridBoundaryValidator(new Board()));
+        validators.add(new WithinGridBoundaryValidator(new Board(3)));
         CompositeValidator compositeValidator = new CompositeValidator(validators);
 
         ValidationResult validationResult = compositeValidator.isValid("100");
@@ -73,7 +73,7 @@ public class CompositeValidatorTest {
     public void reasonForFailureReturnedWhenOneOfSeveralValidationsFails() {
         List<InputValidator> validators = new ArrayList<>();
         validators.add(new NumericValidator());
-        validators.add(new WithinGridBoundaryValidator(new Board()));
+        validators.add(new WithinGridBoundaryValidator(new Board(3)));
         CompositeValidator compositeValidator = new CompositeValidator(validators);
 
         ValidationResult validationResult = compositeValidator.isValid("100");
@@ -85,7 +85,7 @@ public class CompositeValidatorTest {
     public void inputValidatedIfAllValidationsAreSuccessfull() {
         List<InputValidator> validators = new ArrayList<>();
         validators.add(new NumericValidator());
-        validators.add(new WithinGridBoundaryValidator(new Board()));
+        validators.add(new WithinGridBoundaryValidator(new Board(3)));
         CompositeValidator compositeValidator = new CompositeValidator(validators);
 
         ValidationResult validationResult = compositeValidator.isValid("7");

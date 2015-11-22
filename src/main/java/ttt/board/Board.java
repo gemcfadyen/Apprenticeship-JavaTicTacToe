@@ -8,21 +8,31 @@ import java.util.List;
 import static ttt.player.PlayerSymbol.VACANT;
 
 public class Board {
-    public static final int BOARD_DIMENSION = 3;
-    private static final int NUMBER_OF_SLOTS = BOARD_DIMENSION * BOARD_DIMENSION;
-    private PlayerSymbol[] grid = new PlayerSymbol[BOARD_DIMENSION * BOARD_DIMENSION];
-
-    public Board() {
-        this(VACANT, VACANT, VACANT, VACANT, VACANT, VACANT, VACANT, VACANT, VACANT);
-    }
+    public int dimension;
+    private int numberOfSlots;
+    private PlayerSymbol[] grid;
 
     public Board(PlayerSymbol... initialGridLayout) {
+        this.dimension = (int) Math.sqrt(initialGridLayout.length);
+        this.numberOfSlots = dimension * dimension;
         this.grid = initialGridLayout;
     }
 
-    public Line[] getRows() {
+    public Board(int dimension) {
+        this.dimension = dimension;
+        this.numberOfSlots = dimension * dimension;
+
+        PlayerSymbol[] initialisation = new PlayerSymbol[numberOfSlots];
+        for (int i = 0; i < numberOfSlots; i++) {
+            initialisation[i] = VACANT;
+        }
+
+        this.grid = initialisation;
+    }
+
+    public List<Line> getRows() {
         LineGenerator lines = new LineGenerator(grid);
-        return new Line[]{lines.topRow(), lines.middleRow(), lines.bottomRow()};
+        return lines.getRows();
     }
 
     public boolean hasWinningCombination() {
@@ -47,7 +57,7 @@ public class Board {
     }
 
     public boolean hasFreeSpace() {
-        for (int cellIndex = 0; cellIndex < NUMBER_OF_SLOTS; cellIndex++) {
+        for (int cellIndex = 0; cellIndex < numberOfSlots; cellIndex++) {
             if (isVacantAt(cellIndex)) {
                 return true;
             }
@@ -60,14 +70,14 @@ public class Board {
     }
 
     public boolean isWithinGridBoundary(int index) {
-        return index >= 0 && index < NUMBER_OF_SLOTS;
+        return index >= 0 && index < numberOfSlots;
     }
 
     public boolean isVacantAt(int cellIndex) {
         return grid[cellIndex] == VACANT;
     }
 
-    private boolean checkForWinIn(Line[] lines) {
+    private boolean checkForWinIn(List<Line> lines) {
         for (Line line : lines) {
             if (line.isWinning()) {
                 return true;
@@ -82,7 +92,7 @@ public class Board {
 
     public List<Integer> getVacantPositions() {
         List<Integer> freePositions = new ArrayList<>();
-        for (int i = 0; i < NUMBER_OF_SLOTS; i++) {
+        for (int i = 0; i < numberOfSlots; i++) {
             if (isVacantAt(i)) {
                 freePositions.add(i);
             }

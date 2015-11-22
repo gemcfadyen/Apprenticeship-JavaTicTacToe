@@ -35,4 +35,11 @@ public class ReplayOptionValidatorTest {
         assertThat(validator.isValid("P").reason(), is("[P] is not a valid replay option"));
     }
 
+    @Test
+    public void replayOptionOfLowerCaseYReturnsTrue() {
+        InputValidator validator = new ReplayOptionValidator();
+
+        assertTrue(validator.isValid("y").isValid());
+    }
+
 }

@@ -2,6 +2,7 @@ package ttt;
 
 import org.junit.Test;
 import ttt.board.Board;
+import ttt.player.DelayedUnbeatablePlayer;
 import ttt.player.PlayerFactory;
 import ttt.player.UnbeatablePlayer;
 
@@ -15,12 +16,15 @@ import static ttt.player.PlayerSymbol.X;
 
 public class UnbeatablePlayerIsUnbeatableTest {
     private static final int NUMBER_OF_GAMES = 100;
+    private static final String PLAYER_CHOICE = "1\n";
+    private static final String REPROMPT = "Y\n";
+    private static final String DO_NOT_REPLAY = "N\n";
 
     @Test
-    public void unbeatablePlayerNeverLoosesWhenTheyOpenTheGame() {
-        PromptSpy promptSpy = new PromptSpy(new StringReader(replayAndGameTypeInputForGame()));
-        PlayerFactory playerFactory = new PlayerFactorySpy(new UnbeatablePlayer(X), new RandomPlayer(O, promptSpy));
-        Game gameWithManyRounds = new Game(new Board(), promptSpy, playerFactory);
+    public void unbeatablePlayerNeverLoosesWhenTheyOpenTheGameIn3x3() {
+        PromptSpy promptSpy = new PromptSpy(new StringReader(setupForGameWithBoardDimensionOf(3)));
+        PlayerFactory playerFactory = new PlayerFactoryStub(new UnbeatablePlayer(X), new RandomPlayer(O, promptSpy));
+        Game gameWithManyRounds = new Game(new BoardFactoryStub(emptyGridPerGameWithDimension(3)), promptSpy, playerFactory);
 
         gameWithManyRounds.play();
 
@@ -29,10 +33,10 @@ public class UnbeatablePlayerIsUnbeatableTest {
     }
 
     @Test
-    public void unbeatablePlayerNeverLoosesWhenTheyDoNotOpenTheGame() {
-        PromptSpy promptSpy = new PromptSpy(new StringReader(replayAndGameTypeInputForGame()));
-        PlayerFactory playerFactory = new PlayerFactorySpy(new RandomPlayer(O, promptSpy), new UnbeatablePlayer(X));
-        Game gameWithManyRounds = new Game(new Board(), promptSpy, playerFactory);
+    public void unbeatablePlayerNeverLoosesWhenTheyDoNotOpenTheGameIn3x3() {
+        PromptSpy promptSpy = new PromptSpy(new StringReader(setupForGameWithBoardDimensionOf(3)));
+        PlayerFactory playerFactory = new PlayerFactoryStub(new RandomPlayer(O, promptSpy), new UnbeatablePlayer(X));
+        Game gameWithManyRounds = new Game(new BoardFactoryStub(emptyGridPerGameWithDimension(3)), promptSpy, playerFactory);
 
         gameWithManyRounds.play();
 
@@ -41,10 +45,10 @@ public class UnbeatablePlayerIsUnbeatableTest {
     }
 
     @Test
-    public void unbeatableVsUnbeatableHasNoGamesWon() {
-        PromptSpy promptSpy = new PromptSpy(new StringReader(replayAndGameTypeInputForGame()));
-        PlayerFactory playerFactory = new PlayerFactorySpy(new UnbeatablePlayer(O), new UnbeatablePlayer(X));
-        Game gameWithManyRounds = new Game(new Board(), promptSpy, playerFactory);
+    public void unbeatableVsUnbeatableHasNoGamesWonIn3x3() {
+        PromptSpy promptSpy = new PromptSpy(new StringReader(setupForGameWithBoardDimensionOf(3)));
+        PlayerFactory playerFactory = new PlayerFactoryStub(new UnbeatablePlayer(O), new UnbeatablePlayer(X));
+        Game gameWithManyRounds = new Game(new BoardFactoryStub(emptyGridPerGameWithDimension(3)), promptSpy, playerFactory);
 
         gameWithManyRounds.play();
 
@@ -52,12 +56,57 @@ public class UnbeatablePlayerIsUnbeatableTest {
         assertThat(promptSpy.getNumberOfTimesXHasWon(), is(0));
     }
 
-    private String replayAndGameTypeInputForGame() {
+    @Test
+    public void delayedUnbeatablePlayerNeverLoosesWhenTheyOpenTheGameIn4x4() {
+        PromptSpy promptSpy = new PromptSpy(new StringReader(setupForGameWithBoardDimensionOf(4)));
+        PlayerFactory playerFactory = new PlayerFactoryStub(new DelayedUnbeatablePlayer(X, new UnbeatablePlayer(X)), new RandomPlayer(O, promptSpy));
+        Game gameWithManyRounds = new Game(new BoardFactoryStub(emptyGridPerGameWithDimension(4)), promptSpy, playerFactory);
+
+        gameWithManyRounds.play();
+
+        assertThat(promptSpy.getNumberOfTimesOHasWon(), is(0));
+        assertThat(promptSpy.getNumberOfTimesXHasWon(), greaterThan(1));
+    }
+
+    @Test
+    public void delayedUnbeatablePlayerNeverLoosesWhenTheyDoNotOpenTheGameIn4x4() {
+        PromptSpy promptSpy = new PromptSpy(new StringReader(setupForGameWithBoardDimensionOf(4)));
+        PlayerFactory playerFactory = new PlayerFactoryStub(new RandomPlayer(O, promptSpy), new DelayedUnbeatablePlayer(X, new UnbeatablePlayer(X)));
+        Game gameWithManyRounds = new Game(new BoardFactoryStub(emptyGridPerGameWithDimension(4)), promptSpy, playerFactory);
+
+        gameWithManyRounds.play();
+
+        assertThat(promptSpy.getNumberOfTimesOHasWon(), is(0));
+        assertThat(promptSpy.getNumberOfTimesXHasWon(), greaterThan(1));
+    }
+
+    @Test
+    public void delayedUnbeatableVsDelayedUnbeatableHasNoGamesWonIn4x4() {
+        PromptSpy promptSpy = new PromptSpy(new StringReader(setupForGameWithBoardDimensionOf(4)));
+        PlayerFactory playerFactory = new PlayerFactoryStub(new DelayedUnbeatablePlayer(O, new UnbeatablePlayer(O)), new DelayedUnbeatablePlayer(X, new UnbeatablePlayer(X)));
+        Game gameWithManyRounds = new Game(new BoardFactoryStub(emptyGridPerGameWithDimension(4)), promptSpy, playerFactory);
+
+        gameWithManyRounds.play();
+
+        assertThat(promptSpy.getNumberOfTimesOHasWon(), is(0));
+        assertThat(promptSpy.getNumberOfTimesXHasWon(), is(0));
+    }
+
+    private String setupForGameWithBoardDimensionOf(int dimension) {
         String userInput = "";
+
         for (int gameNumber = 0; gameNumber < NUMBER_OF_GAMES - 1; gameNumber++) {
-            userInput += "1\nY\n";
+            userInput += dimension + "\n" + PLAYER_CHOICE + REPROMPT;
         }
-        userInput += "1\nN\n";
+        userInput += dimension + "\n" + PLAYER_CHOICE + DO_NOT_REPLAY;
         return userInput;
+    }
+
+    private Board[] emptyGridPerGameWithDimension(int dimension) {
+        Board[] emptyGridPerGame = new Board[NUMBER_OF_GAMES];
+        for (int i = 0; i < NUMBER_OF_GAMES; i++) {
+            emptyGridPerGame[i] = new Board(dimension);
+        }
+        return emptyGridPerGame;
     }
 }

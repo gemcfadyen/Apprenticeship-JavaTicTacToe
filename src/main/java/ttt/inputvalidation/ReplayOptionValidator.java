@@ -6,7 +6,7 @@ public class ReplayOptionValidator implements InputValidator {
     @Override
     public ValidationResult isValid(String input) {
         for (ReplayOption replayOption : ReplayOption.values()) {
-            if (replayOption.name().equals(input)) {
+            if (replayOption.name().equalsIgnoreCase(input)) {
                 return new ValidationResult(input, true, "");
             }
         }

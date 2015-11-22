@@ -16,8 +16,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.function.Function;
 
-import static ttt.GameType.*;
-import static ttt.board.Board.BOARD_DIMENSION;
+import static ttt.GameType.values;
 import static ttt.player.PlayerSymbol.VACANT;
 import static ttt.player.PlayerSymbol.X;
 
@@ -39,10 +38,18 @@ public class CommandPrompt implements Prompt {
     }
 
     @Override
+    public int getBoardDimension(GameType gameType) {
+        askUserForBoardDimension(gameType);
+        InputValidator compositeValidator = compositeFor(dimensionValidatorsFor(gameType));
+
+        return asInteger(getValidInput(compositeValidator, input(), functionToRepromptForValidBoardDimension(gameType)));
+    }
+
+    @Override
     public GameType getGameType() {
         askUserForGameType();
-        InputValidator compoundValidator = compositeFor(gameTypeValidators());
-        return GameType.of(asInteger(getValidInput(compoundValidator, input(), functionToRepromptGameType())));
+        InputValidator compositeValidator = compositeFor(gameTypeValidators());
+        return GameType.of(asInteger(getValidInput(compositeValidator, input(), functionToRepromptGameType())));
     }
 
     @Override
@@ -66,14 +73,15 @@ public class CommandPrompt implements Prompt {
     public void print(Board board) {
         String boardForDisplay = BOARD_COLOUR_ANSII_CHARACTERS + newLine();
 
-        Line[] rows = board.getRows();
+        List<Line> rows = board.getRows();
+        int dimension = rows.size();
         int offset = 0;
         for (Line row : rows) {
             for (PlayerSymbol symbol : row.getSymbols()) {
                 boardForDisplay +=
                           space()
                         + displayCell(symbol, offset)
-                        + getBorderFor(offset);
+                        + getBorderFor(offset, dimension);
                 offset++;
             }
         }
@@ -98,6 +106,11 @@ public class CommandPrompt implements Prompt {
 
     private void clear() {
         display(CLEAR_SCREEN_ANSII_CHARACTERS);
+    }
+
+    private void askUserForBoardDimension(GameType gameType) {
+        display(FONT_COLOUR_ANSII_CHARACTERS
+                + "Please enter the dimension of the board you would like to use [" + gameType.dimensionLowerBoundary() + " to " + gameType.dimensionUpperBoundary() + "]");
     }
 
     private void display(String message) {
@@ -127,6 +140,14 @@ public class CommandPrompt implements Prompt {
         return Integer.valueOf(input);
     }
 
+    public String input() {
+        try {
+            return reader.readLine();
+        } catch (IOException e) {
+            throw new ReadFromPromptException(e.getMessage(), e);
+        }
+    }
+
     private String getValidInput(InputValidator compoundValidator, String input, Function<ValidationResult, Void> reprompt) {
         ValidationResult validationResult = compoundValidator.isValid(input);
         while (!validationResult.isValid()) {
@@ -136,6 +157,14 @@ public class CommandPrompt implements Prompt {
         }
         clear();
         return validationResult.userInput();
+    }
+
+    private Function<ValidationResult, Void> functionToRepromptForValidBoardDimension(GameType gameType) {
+        return validationResult -> {
+            display(BOARD_COLOUR_ANSII_CHARACTERS + validationResult.reason());
+            askUserForBoardDimension(gameType);
+            return null;
+        };
     }
 
     private Function<ValidationResult, Void> functionToRepromptGameType() {
@@ -163,14 +192,6 @@ public class CommandPrompt implements Prompt {
         };
     }
 
-    public String input() {
-        try {
-            return reader.readLine();
-        } catch (IOException e) {
-            throw new ReadFromPromptException(e.getMessage(), e);
-        }
-    }
-
     private void askUserToPlayAgain() {
         display(FONT_COLOUR_ANSII_CHARACTERS
                 + "Play again? [Y/N]");
@@ -183,6 +204,13 @@ public class CommandPrompt implements Prompt {
 
     private List<InputValidator> gameTypeValidators() {
         return Arrays.asList(new NumericValidator(), new GameTypeValidator());
+    }
+
+    private List<InputValidator> dimensionValidatorsFor(GameType gameType) {
+        return Arrays.asList(
+                new NumericValidator(),
+                new WithinGivenRangeValidator(gameType.dimensionUpperBoundary())
+        );
     }
 
     private List<InputValidator> orderedListOfMoveValidators(Board board) {
@@ -198,14 +226,13 @@ public class CommandPrompt implements Prompt {
 
     private String displayCell(PlayerSymbol symbol, int cellOffset) {
         if (symbol == VACANT) {
-            return colour(cellOffset);
+            return optionallyPad(cellOffset) + colour(cellOffset);
         } else {
-            return colour(symbol);
+            return space() + colour(symbol);
         }
     }
 
     private String colour(PlayerSymbol symbol) {
-
         if (symbol.equals(X)) {
             return X_COLOUR_ANSII_CHARACTERS + symbol.getSymbolForDisplay();
         }
@@ -216,39 +243,55 @@ public class CommandPrompt implements Prompt {
         return NUMBER_COLOUR_ANSII_CHARACTERS + String.valueOf(cellOffset + 1);
     }
 
-    private String getBorderFor(int position) {
+    private String getBorderFor(int position, int dimension) {
         String border;
-        if (lastRow(position)) {
+        if (lastRow(position, dimension)) {
             border = space();
-        } else if (endOfRow(position)) {
-            border = dividingHorizontalLine();
+        } else if (endOfRow(position, dimension)) {
+            border = dividingHorizontalLine(dimension);
         } else {
             border = space() + dividingVerticalLine();
         }
         return BOARD_COLOUR_ANSII_CHARACTERS + border;
     }
 
+    private String optionallyPad(int position) {
+        if (singleDigit(position)) {
+            return space();
+        }
+        return "";
+    }
+
     private String dividingVerticalLine() {
         return "|";
     }
 
-    private String dividingHorizontalLine() {
-        return space() + newLine() + "-----------" + newLine();
+    private String dividingHorizontalLine(int dimension) {
+        String dividingLine = space() + newLine();
+        for (int i = 0; i < dimension; i++) {
+            dividingLine += "-----";
+        }
+        dividingLine += newLine();
+        return dividingLine;
     }
 
     private String newLine() {
         return "\n";
     }
 
+    private boolean singleDigit(int position) {
+        return position < 9;
+    }
+
     private String space() {
         return " ";
     }
 
-    private boolean lastRow(int index) {
-        return index == (BOARD_DIMENSION * BOARD_DIMENSION - 1);
+    private boolean lastRow(int index, int dimension) {
+        return index == (dimension * dimension - 1);
     }
 
-    private boolean endOfRow(int index) {
-        return (index + 1) % BOARD_DIMENSION == 0;
+    private boolean endOfRow(int index, int dimension) {
+        return (index + 1) % dimension == 0;
     }
 }

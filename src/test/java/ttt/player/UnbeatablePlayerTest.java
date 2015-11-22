@@ -17,7 +17,7 @@ public class UnbeatablePlayerTest {
                 O, VACANT, VACANT
         );
 
-        UnbeatablePlayer player = new UnbeatablePlayer(X);
+        Player player = new UnbeatablePlayer(X);
 
         assertThat(player.chooseNextMoveFrom(board), is(0));
     }
@@ -30,7 +30,7 @@ public class UnbeatablePlayerTest {
                 O, VACANT, O
         );
 
-        UnbeatablePlayer player = new UnbeatablePlayer(X);
+        Player player = new UnbeatablePlayer(X);
 
         assertThat(player.chooseNextMoveFrom(board), is(5));
     }
@@ -42,7 +42,7 @@ public class UnbeatablePlayerTest {
                 VACANT, O, VACANT,
                 X, VACANT, X
         );
-        UnbeatablePlayer player = new UnbeatablePlayer(X);
+        Player player = new UnbeatablePlayer(X);
 
         assertThat(player.chooseNextMoveFrom(board), is(7));
     }
@@ -54,7 +54,7 @@ public class UnbeatablePlayerTest {
                 X, VACANT, O,
                 VACANT, VACANT, VACANT
         );
-        UnbeatablePlayer player = new UnbeatablePlayer(X);
+        Player player = new UnbeatablePlayer(X);
 
         assertThat(player.chooseNextMoveFrom(board), is(6));
     }
@@ -65,7 +65,7 @@ public class UnbeatablePlayerTest {
                 VACANT, X, VACANT,
                 O, VACANT, O,
                 VACANT, X, VACANT);
-        UnbeatablePlayer player = new UnbeatablePlayer(X);
+        Player player = new UnbeatablePlayer(X);
 
         assertThat(player.chooseNextMoveFrom(board), is(4));
     }
@@ -77,7 +77,7 @@ public class UnbeatablePlayerTest {
                 O, VACANT, X,
                 VACANT, O, VACANT
         );
-        UnbeatablePlayer player = new UnbeatablePlayer(X);
+        Player player = new UnbeatablePlayer(X);
 
         assertThat(player.chooseNextMoveFrom(board), is(8));
     }
@@ -90,7 +90,7 @@ public class UnbeatablePlayerTest {
                 O, VACANT, O,
                 X, VACANT, VACANT
         );
-        UnbeatablePlayer player = new UnbeatablePlayer(X);
+        Player player = new UnbeatablePlayer(X);
 
         assertThat(player.chooseNextMoveFrom(board), is(4));
     }
@@ -102,7 +102,7 @@ public class UnbeatablePlayerTest {
                 O, X, O,
                 VACANT, VACANT, VACANT
         );
-        UnbeatablePlayer player = new UnbeatablePlayer(X);
+        Player player = new UnbeatablePlayer(X);
 
         assertThat(player.chooseNextMoveFrom(board), is(8));
     }
@@ -114,7 +114,7 @@ public class UnbeatablePlayerTest {
                 VACANT, VACANT, O,
                 VACANT, VACANT, VACANT
         );
-        UnbeatablePlayer player = new UnbeatablePlayer(X);
+        Player player = new UnbeatablePlayer(X);
 
         assertThat(player.chooseNextMoveFrom(board), is(8));
     }
@@ -126,7 +126,7 @@ public class UnbeatablePlayerTest {
                 VACANT, O, X,
                 VACANT, O, VACANT
         );
-        UnbeatablePlayer player = new UnbeatablePlayer(X);
+        Player player = new UnbeatablePlayer(X);
 
         assertThat(player.chooseNextMoveFrom(board), is(1));
     }
@@ -138,7 +138,7 @@ public class UnbeatablePlayerTest {
                 VACANT, VACANT, X,
                 O, X, VACANT
         );
-        UnbeatablePlayer player = new UnbeatablePlayer(X);
+        Player player = new UnbeatablePlayer(X);
 
         assertThat(player.chooseNextMoveFrom(board), is(3));
     }
@@ -150,7 +150,7 @@ public class UnbeatablePlayerTest {
                 X, VACANT, VACANT,
                 VACANT, X, VACANT
         );
-        UnbeatablePlayer player = new UnbeatablePlayer(X);
+        Player player = new UnbeatablePlayer(X);
 
         assertThat(player.chooseNextMoveFrom(board), is(1));
     }
@@ -161,7 +161,7 @@ public class UnbeatablePlayerTest {
                 VACANT, VACANT, X,
                 VACANT, VACANT, X,
                 O, VACANT, O);
-        UnbeatablePlayer player = new UnbeatablePlayer(X);
+        Player player = new UnbeatablePlayer(X);
 
         assertThat(player.chooseNextMoveFrom(board), is(7));
     }
@@ -173,7 +173,7 @@ public class UnbeatablePlayerTest {
                 O, O, VACANT,
                 X, VACANT, VACANT
         );
-        UnbeatablePlayer player = new UnbeatablePlayer(X);
+        Player player = new UnbeatablePlayer(X);
 
         assertThat(player.chooseNextMoveFrom(board), is(5));
     }
@@ -185,7 +185,7 @@ public class UnbeatablePlayerTest {
                 VACANT, VACANT, VACANT,
                 VACANT, VACANT, O
         );
-        UnbeatablePlayer player = new UnbeatablePlayer(X);
+        Player player = new UnbeatablePlayer(X);
 
         assertThat(player.chooseNextMoveFrom(board), is(4));
     }
@@ -197,7 +197,7 @@ public class UnbeatablePlayerTest {
                 VACANT, O, VACANT,
                 O, X, VACANT
         );
-        UnbeatablePlayer player = new UnbeatablePlayer(X);
+        Player player = new UnbeatablePlayer(X);
 
         assertThat(player.chooseNextMoveFrom(board), is(2));
     }
@@ -209,7 +209,7 @@ public class UnbeatablePlayerTest {
                 VACANT, X, VACANT,
                 VACANT, VACANT, O
         );
-        UnbeatablePlayer player = new UnbeatablePlayer(X);
+        Player player = new UnbeatablePlayer(X);
 
         assertThat(player.chooseNextMoveFrom(board), is(1));
     }
@@ -221,8 +221,19 @@ public class UnbeatablePlayerTest {
                 VACANT, VACANT, O,
                 VACANT, VACANT, VACANT
         );
-        UnbeatablePlayer player = new UnbeatablePlayer(X);
+        Player player = new UnbeatablePlayer(X);
 
         assertThat(player.chooseNextMoveFrom(board), is(6));
+    }
+
+    @Test
+    public void takesFirstMoveIn3x3Grid() {
+        Board board = new Board(
+                VACANT, VACANT, VACANT,
+                VACANT, VACANT, VACANT,
+                VACANT, VACANT, VACANT
+        );
+        Player player = new UnbeatablePlayer(X);
+        assertThat(player.chooseNextMoveFrom(board), is(0));
     }
 }

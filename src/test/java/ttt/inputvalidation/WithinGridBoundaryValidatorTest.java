@@ -10,7 +10,7 @@ public class WithinGridBoundaryValidatorTest {
 
     @Test
     public void evaluatesFalseIfInputIsWithinGridBoundary() {
-        WithinGridBoundaryValidator gridBoundaryValidator = new WithinGridBoundaryValidator(new Board());
+        WithinGridBoundaryValidator gridBoundaryValidator = new WithinGridBoundaryValidator(new Board(3));
 
         ValidationResult validationResult = gridBoundaryValidator.isValid("100");
 
@@ -19,7 +19,7 @@ public class WithinGridBoundaryValidatorTest {
 
     @Test
     public void evaluatesTrueIfInputIsWithinGridBoundary() {
-        WithinGridBoundaryValidator gridBoundaryValidator = new WithinGridBoundaryValidator(new Board());
+        WithinGridBoundaryValidator gridBoundaryValidator = new WithinGridBoundaryValidator(new Board(3));
 
         ValidationResult validationResult = gridBoundaryValidator.isValid("1");
 
@@ -28,7 +28,7 @@ public class WithinGridBoundaryValidatorTest {
 
     @Test
     public void informativeMethodReturnedWhenInputIsValid() {
-        WithinGridBoundaryValidator gridBoundaryValidator = new WithinGridBoundaryValidator(new Board());
+        WithinGridBoundaryValidator gridBoundaryValidator = new WithinGridBoundaryValidator(new Board(3));
 
         ValidationResult validationResult = gridBoundaryValidator.isValid("-1");
 
