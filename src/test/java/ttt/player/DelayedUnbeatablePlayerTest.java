@@ -295,4 +295,17 @@ public class DelayedUnbeatablePlayerTest {
         );
         assertThat(delayedUnbeatablePlayer.chooseNextMoveFrom(board), is(15));
     }
+
+    @Test
+    public void blocksOpponentFromForkingWhenUnbeatableDoesNotOpenTheGame() {
+        DelayedUnbeatablePlayer delayedUnbeatablePlayer = new DelayedUnbeatablePlayer(X, new UnbeatablePlayer(X));
+
+        Board board = new Board(
+                O, O, O, X,
+                VACANT, O, O, VACANT,
+                X, X, O, X,
+                X, VACANT, X, VACANT
+        );
+        assertThat(delayedUnbeatablePlayer.chooseNextMoveFrom(board), is(15));
+    }
 }

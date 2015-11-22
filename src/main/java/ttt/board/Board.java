@@ -8,7 +8,7 @@ import java.util.List;
 import static ttt.player.PlayerSymbol.VACANT;
 
 public class Board {
-    public int dimension;
+    private int dimension;
     private int numberOfSlots;
     private PlayerSymbol[] grid;
 
