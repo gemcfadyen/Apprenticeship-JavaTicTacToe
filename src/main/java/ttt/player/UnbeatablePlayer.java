@@ -10,8 +10,7 @@ import static ttt.player.PlayerSymbol.opponent;
 public class UnbeatablePlayer extends Player {
     private static final int ALPHA = -100;
     private static final int BETA = 100;
-    private static final int MAX_PLAYER_INITIAL_SCORE = -100;
-    private static final int MIN_PLAYER_INITIAL_SCORE = 100;
+    private static final int MAXIMUM_SEARCH_DEPTH = 8;
 
     public UnbeatablePlayer(PlayerSymbol symbol) {
         super(symbol);
@@ -21,7 +20,7 @@ public class UnbeatablePlayer extends Player {
     public int chooseNextMoveFrom(Board board) {
         ValuedPosition bestMove = alphaBetaMinimax(
                 board,
-                board.getVacantPositions().size(),
+                MAXIMUM_SEARCH_DEPTH,
                 getSymbol(),
                 true,
                 ALPHA,
@@ -31,10 +30,10 @@ public class UnbeatablePlayer extends Player {
 
     private ValuedPosition alphaBetaMinimax(Board board, int remainingDepth, PlayerSymbol currentPlayer, boolean isMaxPlayer, int alpha, int beta) {
         ValuedPosition bestPosition = isMaxPlayer
-                ? new ValuedPosition(MAX_PLAYER_INITIAL_SCORE)
-                : new ValuedPosition(MIN_PLAYER_INITIAL_SCORE);
+                ? new MaxPlayerInitialScore()
+                : new MinPlayerInitialScore();
 
-        if (gameOver(board)) {
+        if (gameOver(board) || hasZero(remainingDepth)) {
             return score(board, remainingDepth);
         }
 
@@ -58,6 +57,10 @@ public class UnbeatablePlayer extends Player {
 
     private boolean gameOver(Board board) {
         return !board.hasFreeSpace() || board.hasWinningCombination();
+    }
+
+    private boolean hasZero(int remainingDepth) {
+        return remainingDepth == 0;
     }
 
     private ValuedPosition score(Board board, int remainingDepth) {
@@ -147,6 +150,20 @@ public class UnbeatablePlayer extends Player {
 
         public Draw() {
             super(DRAW_SCORE);
+        }
+    }
+
+    private static class MaxPlayerInitialScore extends ValuedPosition {
+        private static final int MAX_PLAYER_INITIAL_SCORE = -100;
+        public MaxPlayerInitialScore() {
+            super(MAX_PLAYER_INITIAL_SCORE);
+        }
+    }
+
+    private static class MinPlayerInitialScore extends ValuedPosition {
+        private static final int MIN_PLAYER_INITIAL_SCORE = 100;
+        public MinPlayerInitialScore() {
+            super(MIN_PLAYER_INITIAL_SCORE);
         }
     }
 

@@ -15,7 +15,7 @@ import static ttt.player.PlayerSymbol.O;
 import static ttt.player.PlayerSymbol.X;
 
 public class UnbeatablePlayerIsUnbeatableTest {
-    private static final int NUMBER_OF_GAMES = 100;
+    private static final int NUMBER_OF_GAMES = 500;
     private static final String PLAYER_CHOICE = "1\n";
     private static final String REPROMPT = "Y\n";
     private static final String DO_NOT_REPLAY = "N\n";
