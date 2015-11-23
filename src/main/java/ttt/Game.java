@@ -21,7 +21,7 @@ public class Game {
     private Prompt gamePrompt;
     private int currentPlayerIndex = PLAYER_ONE_INDEX;
 
-    public Game(Board board, Prompt gamePrompt, PlayerFactory playerFactory) {
+    Game(Board board, Prompt gamePrompt, PlayerFactory playerFactory) {
         this.board = board;
         this.gamePrompt = gamePrompt;
         this.playerFactory = playerFactory;
