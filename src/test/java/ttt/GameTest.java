@@ -17,21 +17,17 @@ import static ttt.GameType.HUMAN_VS_UNBEATABLE;
 import static ttt.player.PlayerSymbol.*;
 
 public class GameTest {
-    private static final String HUMAN_VS_UNBEATABLE_FOR_PROMPT = "2\n";
+    private static final String HUMAN_VS_UNBEATABLE_ID = "2\n";
+    private static final String HUMAN_VS_HUMAN_ID = "1\n";
     private static final String DIMENSION = "3\n";
-    private static final String HUMAN_VS_HUMAN = "1\n";
     private static final String DO_NOT_REPLAY = "N\n";
 
     @Test
     public void createsBoardOfSpecifiedDimension() {
-        Prompt gamePrompt = new CommandPrompt(
-                new StringReader(String.valueOf(3)),
-                new StringWriter());
-
         BoardFactoryStub boardFactoryStub = new BoardFactoryStub();
         Game game = new Game(
                 boardFactoryStub,
-                gamePrompt,
+                createCommandPromptToReadInput(DIMENSION),
                 new PlayerFactory()
         );
 
@@ -40,14 +36,10 @@ public class GameTest {
     }
 
     @Test
-    public void setsUpPlayersForSpecifiedGameType() {
-        Prompt gamePrompt = new CommandPrompt(
-                new StringReader(HUMAN_VS_UNBEATABLE_FOR_PROMPT + DIMENSION),
-                new StringWriter());
-
+    public void setsUpPlayersForGameType() {
         Game game = new Game(
                 new BoardFactory(),
-                gamePrompt,
+                createCommandPromptToReadInput(HUMAN_VS_UNBEATABLE_ID + DIMENSION),
                 new PlayerFactory()
         );
 
@@ -60,76 +52,46 @@ public class GameTest {
 
     @Test
     public void gameIsOverWhenBoardIsFull() {
-        Board board = new Board(
-                X, O, X,
-                X, X, O,
-                O, X, O);
-        Game game = new Game(board, new CommandPrompt(new StringReader(""), new StringWriter()), new PlayerFactory());
+        Game game = new Game(
+                new Board(
+                        X, O, X,
+                        X, X, O,
+                        O, X, O),
+                commandPrompt(),
+                new PlayerFactory()
+        );
 
         assertThat(game.gameInProgress(), is(false));
     }
 
     @Test
     public void gameIsWonWhenPlayerPlacesWinningMove() {
-        Board board = new Board(
-                X, VACANT, X,
-                O, X, O,
-                O, X, O);
         PromptSpy gamePrompt = new PromptSpy(new StringReader(""));
-        Game game = new Game(board, gamePrompt, new PlayerFactory());
-        CommandPrompt promptWithWinningMove = new CommandPrompt(new StringReader("2\n"), new StringWriter());
+        Game game = new Game(
+                new Board(
+                        X, VACANT, X,
+                        O, X, O,
+                        O, X, O),
+                gamePrompt,
+                new PlayerFactory()
+        );
 
-        game.playMatch(
-                new Player[]{
-                        new HumanPlayer(X, promptWithWinningMove),
-                        new HumanPlayer(O, new CommandPrompt(new StringReader(""), new StringWriter()))});
+        game.playMatch(twoHumanPlayers());
 
         assertThat(gamePrompt.getNumberOfTimesXHasWon(), is(1));
     }
 
     @Test
-    public void boardIsUpdatedWithPlayersMove() {
-        Board board = new Board(3);
-        Game game = new Game(board,
-                new CommandPrompt(new StringReader(""), new StringWriter()),
-                new PlayerFactory());
-
-        CommandPrompt playersMove = new CommandPrompt(new StringReader("2\n"), new StringWriter());
-        PlayerSpy humanPlayer = new PlayerSpy(X, playersMove);
-
-        game.updateBoardWithPlayersMove(humanPlayer);
-
-        assertThat(board.getSymbolAt(1), is(X));
-        assertThat(board.getVacantPositions().size(), is(8));
-    }
-
-    @Test
-    public void playersTakeTurnsUntilTheBoardIsFull() {
-        PlayerSpy player1Spy = new PlayerSpy(X, createCommandPromptToReadInput("1\n5\n6\n7\n8\n"));
-        PlayerSpy player2Spy = new PlayerSpy(O, createCommandPromptToReadInput("2\n3\n4\n9\n"));
-        PlayerFactoryStub playerFactoryStub = new PlayerFactoryStub(
-                player1Spy,
-                player2Spy
-        );
-
-        Game game = new Game(new BoardFactory(),
-                createCommandPromptToReadInput(HUMAN_VS_HUMAN + DIMENSION + DO_NOT_REPLAY),
-                playerFactoryStub);
-
-        game.play();
-
-        assertThat(player1Spy.numberOfTurnsTaken(), is(5));
-        assertThat(player2Spy.numberOfTurnsTaken(), is(4));
-    }
-
-    @Test
     public void printsCongratulatoryMessageAndBoardWhenThereIsAWin() {
-        Board boardWithWinningRow = new Board(
-                X, X, X,
-                O, VACANT, VACANT,
-                O, VACANT, VACANT);
         PromptSpy gamePrompt = new PromptSpy(new StringReader(""));
-        Game game = new Game(boardWithWinningRow, gamePrompt, null);
+        Game game = new Game(
+                new Board(
+                        X, X, X,
+                        O, VACANT, VACANT,
+                        O, VACANT, VACANT),
+                gamePrompt,
+                new PlayerFactory()
+        );
 
         game.displayResultsOfGame();
 
@@ -140,12 +102,14 @@ public class GameTest {
 
     @Test
     public void printsDrawMessageAndBoardWhenThereIsADraw() {
-        Board boardWithWinningRow = new Board(
+        PromptSpy gamePrompt = createPromptSpyToReadInput("");
+        Game game = new Game(new Board(
                 X, O, X,
                 O, O, X,
-                O, X, O);
-        PromptSpy gamePrompt = new PromptSpy(new StringReader(""));
-        Game game = new Game(boardWithWinningRow, gamePrompt, null);
+                O, X, O),
+                gamePrompt,
+                new PlayerFactory()
+        );
 
         game.displayResultsOfGame();
 
@@ -155,19 +119,17 @@ public class GameTest {
 
     @Test
     public void promptsUserToPlayAgainAtTheEndOfGame() {
-        Board board = new Board(X, VACANT, X, O, X, O, O, O, X);
-        PromptSpy gamePrompt = new PromptSpy(
-                new StringReader(
-                        HUMAN_VS_HUMAN
-                                + DIMENSION
-                                + DO_NOT_REPLAY));
-
-        PlayerFactoryStub playerFactoryStub = new PlayerFactoryStub(
-                createHumanPlayer(X, createCommandPromptToReadInput("2\n")),
-                createHumanPlayer(O, createCommandPromptToReadInput(""))
+        PromptSpy gamePrompt = createPromptSpyToReadInput(HUMAN_VS_HUMAN_ID + DIMENSION + DO_NOT_REPLAY);
+        Board board = new Board(
+                X, VACANT, X,
+                O, X, O,
+                O, O, X
         );
-
-        Game game = new Game(new BoardFactoryStub(board, new Board(3)), gamePrompt, playerFactoryStub);
+        Game game = new Game(
+                new BoardFactoryStub(board),
+                gamePrompt,
+                new PlayerFactoryStub(twoHumanPlayers())
+        );
 
         game.play();
 
@@ -175,8 +137,49 @@ public class GameTest {
         assertThat(gamePrompt.getNumberOfTimesPlayerIsPromptedToPlayAgain(), is(1));
     }
 
+    @Test
+    public void boardIsUpdatedWithPlayersMove() {
+        Board board = new Board(3);
+        Game game = new Game(board, commandPrompt(), new PlayerFactory());
+
+        game.updateBoardWithPlayersMove(createHumanPlayer(X, createCommandPromptToReadInput("2\n")));
+
+        assertThat(board.getSymbolAt(1), is(X));
+        assertThat(board.getVacantPositions().size(), is(8));
+    }
+
+    @Test
+    public void playersTakeTurnsUntilTheBoardIsFull() {
+        PlayerSpy player1Spy = new PlayerSpy(X, createCommandPromptToReadInput("1\n5\n6\n7\n8\n"));
+        PlayerSpy player2Spy = new PlayerSpy(O, createCommandPromptToReadInput("2\n3\n4\n9\n"));
+        Game game = new Game(
+                new BoardFactory(),
+                createCommandPromptToReadInput(HUMAN_VS_HUMAN_ID + DIMENSION + DO_NOT_REPLAY),
+                new PlayerFactoryStub(player1Spy, player2Spy)
+        );
+
+        game.play();
+
+        assertThat(player1Spy.numberOfTurnsTaken(), is(5));
+        assertThat(player2Spy.numberOfTurnsTaken(), is(4));
+    }
+
+    private CommandPrompt commandPrompt() {
+        return new CommandPrompt(new StringReader(""), new StringWriter());
+    }
+
     private Prompt createCommandPromptToReadInput(String usersInputs) {
         return new CommandPrompt(new StringReader(usersInputs), new StringWriter());
+    }
+
+    private PromptSpy createPromptSpyToReadInput(String usersInput) {
+        return new PromptSpy(new StringReader(usersInput));
+    }
+
+    private Player[] twoHumanPlayers() {
+        return new Player[]{
+                createHumanPlayer(X, createCommandPromptToReadInput("2\n")),
+                createHumanPlayer(O, commandPrompt())};
     }
 
     private HumanPlayer createHumanPlayer(PlayerSymbol symbol, Prompt prompt) {
