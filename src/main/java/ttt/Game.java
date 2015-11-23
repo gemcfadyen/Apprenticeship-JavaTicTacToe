@@ -20,7 +20,6 @@ public class Game {
     private Board board;
     private Prompt gamePrompt;
     private int currentPlayerIndex = PLAYER_ONE_INDEX;
-    private boolean hasWinner = false;
 
     public Game(Board board, Prompt gamePrompt, PlayerFactory playerFactory) {
         this.board = board;
@@ -49,14 +48,11 @@ public class Game {
     }
 
     void playSingleGame(Player[] players) {
-        while (gameInProgress(hasWinner)) {
+        while (gameInProgress() ) {
             updateBoardWithPlayersMove(players[currentPlayerIndex]);
-            hasWinner = board.hasWinningCombination();
             currentPlayerIndex = toggle(currentPlayerIndex);
         }
-
-        displayResultsOfGame(hasWinner);
-        hasWinner = false;
+        displayResultsOfGame();
     }
 
     Player[] setupPlayers() {
@@ -71,8 +67,8 @@ public class Game {
         return dimension;
     }
 
-    boolean gameInProgress(boolean hasWinner) {
-        return board.hasFreeSpace() && !hasWinner;
+    boolean gameInProgress() {
+        return board.hasFreeSpace() && !board.hasWinningCombination();
     }
 
     void updateBoardWithPlayersMove(Player player) {
@@ -80,9 +76,9 @@ public class Game {
         board.updateAt(nextMove, player.getSymbol());
     }
 
-    void displayResultsOfGame(boolean hasWinner) {
+    void displayResultsOfGame() {
         gamePrompt.print(board);
-        printExitMessage(hasWinner);
+        printExitMessage(board.hasWinningCombination());
     }
 
     private Player[] createPlayersFor(GameType gameType, int dimension) {

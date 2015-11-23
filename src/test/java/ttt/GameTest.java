@@ -17,16 +17,15 @@ import static ttt.GameType.HUMAN_VS_UNBEATABLE;
 import static ttt.player.PlayerSymbol.*;
 
 public class GameTest {
-    private static final int DIMENSION = 3;
     private static final String HUMAN_VS_UNBEATABLE_FOR_PROMPT = "2\n";
-    private static final String DIMENSION_FOR_PROMPT = "3\n";
+    private static final String DIMENSION = "3\n";
     private static final String HUMAN_VS_HUMAN = "1\n";
     private static final String DO_NOT_REPLAY = "N\n";
 
     @Test
     public void createsBoardOfSpecifiedDimension() {
         Prompt gamePrompt = new CommandPrompt(
-                new StringReader(String.valueOf(DIMENSION)),
+                new StringReader(String.valueOf(3)),
                 new StringWriter());
 
         BoardFactoryStub boardFactoryStub = new BoardFactoryStub();
@@ -36,14 +35,14 @@ public class GameTest {
                 new PlayerFactory()
         );
 
-        assertThat(game.getBoardOfCorrectDimensionFor(HUMAN_VS_UNBEATABLE), is(DIMENSION));
+        assertThat(game.getBoardOfCorrectDimensionFor(HUMAN_VS_UNBEATABLE), is(3));
         assertThat(boardFactoryStub.getLatestBoard().getRows().size(), is(3));
     }
 
     @Test
     public void setsUpPlayersForSpecifiedGameType() {
         Prompt gamePrompt = new CommandPrompt(
-                new StringReader(HUMAN_VS_UNBEATABLE_FOR_PROMPT + DIMENSION_FOR_PROMPT),
+                new StringReader(HUMAN_VS_UNBEATABLE_FOR_PROMPT + DIMENSION),
                 new StringWriter());
 
         Game game = new Game(
@@ -67,9 +66,7 @@ public class GameTest {
                 O, X, O);
         Game game = new Game(board, new CommandPrompt(new StringReader(""), new StringWriter()), new PlayerFactory());
 
-        boolean isGameInProgress = game.gameInProgress(false);
-
-        assertThat(isGameInProgress, is(false));
+        assertThat(game.gameInProgress(), is(false));
     }
 
     @Test
@@ -81,23 +78,23 @@ public class GameTest {
         PromptSpy gamePrompt = new PromptSpy(new StringReader(""));
         Game game = new Game(board, gamePrompt, new PlayerFactory());
         CommandPrompt promptWithWinningMove = new CommandPrompt(new StringReader("2\n"), new StringWriter());
-        Player[] players = new Player[]{
-                new HumanPlayer(X, promptWithWinningMove),
-                new HumanPlayer(O, new CommandPrompt(new StringReader(""), new StringWriter()))};
 
-        game.playSingleGame(players);
+        game.playSingleGame(
+                new Player[]{
+                        new HumanPlayer(X, promptWithWinningMove),
+                        new HumanPlayer(O, new CommandPrompt(new StringReader(""), new StringWriter()))});
 
         assertThat(gamePrompt.getNumberOfTimesXHasWon(), is(1));
     }
 
     @Test
     public void boardIsUpdatedWithPlayersMove() {
-        Board board = new Board(DIMENSION);
+        Board board = new Board(3);
         Game game = new Game(board,
                 new CommandPrompt(new StringReader(""), new StringWriter()),
                 new PlayerFactory());
-        CommandPrompt playersMove = new CommandPrompt(new StringReader("2\n"), new StringWriter());
 
+        CommandPrompt playersMove = new CommandPrompt(new StringReader("2\n"), new StringWriter());
         PlayerSpy humanPlayer = new PlayerSpy(X, playersMove);
 
         game.updateBoardWithPlayersMove(humanPlayer);
@@ -116,7 +113,7 @@ public class GameTest {
         );
 
         Game game = new Game(new BoardFactory(),
-                createCommandPromptToReadInput(HUMAN_VS_HUMAN + DIMENSION_FOR_PROMPT + DO_NOT_REPLAY),
+                createCommandPromptToReadInput(HUMAN_VS_HUMAN + DIMENSION + DO_NOT_REPLAY),
                 playerFactoryStub);
 
         game.play();
@@ -126,7 +123,7 @@ public class GameTest {
     }
 
     @Test
-    public void printsCongratulatoryMessageWhenThereIsAWin() {
+    public void printsCongratulatoryMessageAndBoardWhenThereIsAWin() {
         Board boardWithWinningRow = new Board(
                 X, X, X,
                 O, VACANT, VACANT,
@@ -134,7 +131,7 @@ public class GameTest {
         PromptSpy gamePrompt = new PromptSpy(new StringReader(""));
         Game game = new Game(boardWithWinningRow, gamePrompt, null);
 
-        game.displayResultsOfGame(true);
+        game.displayResultsOfGame();
 
         assertThat(gamePrompt.getNumberOfTimesXHasWon(), is(1));
         assertThat(gamePrompt.getNumberOfTimesOHasWon(), is(0));
@@ -142,7 +139,7 @@ public class GameTest {
     }
 
     @Test
-    public void printsDrawMessageWhenThereIsNoWinOrFreeSpaces() {
+    public void printsDrawMessageAndBoardWhenThereIsADraw() {
         Board boardWithWinningRow = new Board(
                 X, O, X,
                 O, O, X,
@@ -150,24 +147,20 @@ public class GameTest {
         PromptSpy gamePrompt = new PromptSpy(new StringReader(""));
         Game game = new Game(boardWithWinningRow, gamePrompt, null);
 
-        game.displayResultsOfGame(false);
+        game.displayResultsOfGame();
 
         assertThat(gamePrompt.getNumberOfTimesDrawMessageHasBeenPrinted(), is(1));
         assertThat(gamePrompt.getLastBoardThatWasPrinted(), is("XOXOOXOXO"));
     }
 
-//    @Test
-//    public void printsDrawMessageWhenThereAreNoMoreSpacesOnTheBoardAndNoWinner() {
-//        Board board = new Board(X, O, O, O, X, X, VACANT, VACANT, O);
-//        PromptSpy gamePrompt = new PromptSpy(new StringReader(HUMAN_VS_HUMAN + DIMENSION_FOR_PROMPT + DO_NOT_REPLAY));
-
     @Test
     public void promptsUserToPlayAgainAtTheEndOfGame() {
         Board board = new Board(X, VACANT, X, O, X, O, O, O, X);
         PromptSpy gamePrompt = new PromptSpy(
-                new StringReader(HUMAN_VS_HUMAN
-                        + DIMENSION_FOR_PROMPT
-                        + DO_NOT_REPLAY));
+                new StringReader(
+                        HUMAN_VS_HUMAN
+                                + DIMENSION
+                                + DO_NOT_REPLAY));
 
         PlayerFactoryStub playerFactoryStub = new PlayerFactoryStub(
                 createHumanPlayer(X, createCommandPromptToReadInput("2\n")),

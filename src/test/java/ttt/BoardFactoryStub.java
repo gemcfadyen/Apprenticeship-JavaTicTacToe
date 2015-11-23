@@ -6,14 +6,12 @@ import ttt.board.BoardFactory;
 public class BoardFactoryStub extends BoardFactory {
     private Board[] boards;
     private int boardIndex = 0;
-    private int dimension;
 
     public BoardFactoryStub(Board... boardsToReturn) {
         this.boards = boardsToReturn;
     }
 
     public Board createBoardWithSize(int dimension) {
-        this.dimension = dimension;
         optionallyCreateDefaultBoard(dimension);
         return boards[boardIndex++];
     }
@@ -22,10 +20,6 @@ public class BoardFactoryStub extends BoardFactory {
         if (boards.length == 0) {
             boards = new Board[]{new Board(dimension)};
         }
-    }
-
-    public int getDimension() {
-        return dimension;
     }
 
     public Board getLatestBoard() {
