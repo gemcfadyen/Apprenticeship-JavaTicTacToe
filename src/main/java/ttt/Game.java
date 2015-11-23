@@ -16,9 +16,16 @@ public class Game {
     private static final int PLAYER_ONE_INDEX = 0;
     private static final int PLAYER_TWO_INDEX = 1;
     private final PlayerFactory playerFactory;
-    private final BoardFactory boardFactory;
+    private BoardFactory boardFactory;
     private Board board;
     private Prompt gamePrompt;
+    private int currentPlayerIndex = PLAYER_ONE_INDEX;
+
+    Game(Board board, Prompt gamePrompt, PlayerFactory playerFactory) {
+        this.board = board;
+        this.gamePrompt = gamePrompt;
+        this.playerFactory = playerFactory;
+    }
 
     public Game(BoardFactory boardFactory, Prompt gamePrompt, PlayerFactory playerFactory) {
         this.boardFactory = boardFactory;
@@ -28,56 +35,58 @@ public class Game {
 
     public static void main(String... args) {
         Game game = new Game(new BoardFactory(), buildPrompt(), new PlayerFactory());
-
         game.play();
     }
 
     public void play() {
         ReplayOption replayOption = Y;
         while (replayOption.equals(Y)) {
-            replayOption = playSingleGame();
+            Player[] players = setupPlayers();
+            playMatch(players);
+            replayOption = gamePrompt.getReplayOption();
         }
     }
 
-    private ReplayOption playSingleGame() {
-        int currentPlayerIndex = PLAYER_ONE_INDEX;
-        boolean hasWinner = false;
-
-        GameType gameType = gamePrompt.getGameType();
-        int dimension = gamePrompt.getBoardDimension(gameType);
-        board = boardFactory.createBoardWithSize(dimension);
-        Player[] players = createPlayersFor(gameType, dimension);
-
-        while (gameInProgress(hasWinner)) {
+    void playMatch(Player[] players) {
+        while (gameInProgress() ) {
             updateBoardWithPlayersMove(players[currentPlayerIndex]);
-            hasWinner = board.hasWinningCombination();
             currentPlayerIndex = toggle(currentPlayerIndex);
         }
+        displayResultsOfGame();
+    }
 
-        displayResultsOfGame(hasWinner);
-        return gamePrompt.getReplayOption();
+    boolean gameInProgress() {
+        return board.hasFreeSpace() && !board.hasWinningCombination();
+    }
+
+    void updateBoardWithPlayersMove(Player player) {
+        int nextMove = player.chooseNextMoveFrom(board);
+        board.updateAt(nextMove, player.getSymbol());
+    }
+
+    Player[] setupPlayers() {
+        GameType gameType = gamePrompt.getGameType();
+        int dimension = getBoardOfCorrectDimensionFor(gameType);
+        return createPlayersFor(gameType, dimension);
+    }
+
+    void displayResultsOfGame() {
+        gamePrompt.print(board);
+        printExitMessage(board.hasWinningCombination());
+    }
+
+    int getBoardOfCorrectDimensionFor(GameType gameType) {
+        int dimension = gamePrompt.getBoardDimension(gameType);
+        board = boardFactory.createBoardWithSize(dimension);
+        return dimension;
     }
 
     private Player[] createPlayersFor(GameType gameType, int dimension) {
         return playerFactory.createPlayers(gameType, gamePrompt, dimension);
     }
 
-    private boolean gameInProgress(boolean hasWinner) {
-        return board.hasFreeSpace() && !hasWinner;
-    }
-
-    private void updateBoardWithPlayersMove(Player player) {
-        int nextMove = player.chooseNextMoveFrom(board);
-        board.updateAt(nextMove, player.getSymbol());
-    }
-
     private int toggle(int currentPlayerIndex) {
         return currentPlayerIndex == PLAYER_ONE_INDEX ? PLAYER_TWO_INDEX : PLAYER_ONE_INDEX;
-    }
-
-    private void displayResultsOfGame(boolean hasWinner) {
-        gamePrompt.print(board);
-        printExitMessage(hasWinner);
     }
 
     private void printExitMessage(boolean hasWinner) {
