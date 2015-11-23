@@ -79,7 +79,7 @@ public class GameTest {
         Game game = new Game(board, gamePrompt, new PlayerFactory());
         CommandPrompt promptWithWinningMove = new CommandPrompt(new StringReader("2\n"), new StringWriter());
 
-        game.playSingleGame(
+        game.playMatch(
                 new Player[]{
                         new HumanPlayer(X, promptWithWinningMove),
                         new HumanPlayer(O, new CommandPrompt(new StringReader(""), new StringWriter()))});

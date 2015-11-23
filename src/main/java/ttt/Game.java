@@ -42,29 +42,17 @@ public class Game {
         ReplayOption replayOption = Y;
         while (replayOption.equals(Y)) {
             Player[] players = setupPlayers();
-            playSingleGame(players);
+            playMatch(players);
             replayOption = gamePrompt.getReplayOption();
         }
     }
 
-    void playSingleGame(Player[] players) {
+    void playMatch(Player[] players) {
         while (gameInProgress() ) {
             updateBoardWithPlayersMove(players[currentPlayerIndex]);
             currentPlayerIndex = toggle(currentPlayerIndex);
         }
         displayResultsOfGame();
-    }
-
-    Player[] setupPlayers() {
-        GameType gameType = gamePrompt.getGameType();
-        int dimension = getBoardOfCorrectDimensionFor(gameType);
-        return createPlayersFor(gameType, dimension);
-    }
-
-    int getBoardOfCorrectDimensionFor(GameType gameType) {
-        int dimension = gamePrompt.getBoardDimension(gameType);
-        board = boardFactory.createBoardWithSize(dimension);
-        return dimension;
     }
 
     boolean gameInProgress() {
@@ -76,9 +64,21 @@ public class Game {
         board.updateAt(nextMove, player.getSymbol());
     }
 
+    Player[] setupPlayers() {
+        GameType gameType = gamePrompt.getGameType();
+        int dimension = getBoardOfCorrectDimensionFor(gameType);
+        return createPlayersFor(gameType, dimension);
+    }
+
     void displayResultsOfGame() {
         gamePrompt.print(board);
         printExitMessage(board.hasWinningCombination());
+    }
+
+    int getBoardOfCorrectDimensionFor(GameType gameType) {
+        int dimension = gamePrompt.getBoardDimension(gameType);
+        board = boardFactory.createBoardWithSize(dimension);
+        return dimension;
     }
 
     private Player[] createPlayersFor(GameType gameType, int dimension) {
