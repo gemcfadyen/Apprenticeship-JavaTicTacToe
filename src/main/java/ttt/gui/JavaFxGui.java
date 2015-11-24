@@ -35,8 +35,10 @@ public class JavaFxGui extends Application {
 
 
         ClickableElement gameSelectionButton = new JavaFxRadioButton(humanVsHumanRadioButton);
-        ClickEvent gameSelectionOnClick = new UserSelectsGameType();
+        DimensionPrompt dimensionPrompt = new BoardDimensionPrompt();
+        ClickEvent gameSelectionOnClick = new UserSelectsGameType(gameSelectionButton, dimensionPrompt);
         RegisterClickEvent registerGameSelectionLogic = new RegisterClickEvent();
+        registerGameSelectionLogic.register(gameSelectionButton, gameSelectionOnClick);
 
         //draw the page
         Scene scene = new Scene(gridPane, 700, 700);
