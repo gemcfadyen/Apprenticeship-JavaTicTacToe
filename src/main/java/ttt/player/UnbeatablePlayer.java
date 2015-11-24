@@ -10,6 +10,7 @@ import static ttt.player.PlayerSymbol.opponent;
 public class UnbeatablePlayer extends Player {
     private static final int ALPHA = -100;
     private static final int BETA = 100;
+    private static final int OPTIMISED_REMAINING_DEPTH = 8;
 
     public UnbeatablePlayer(PlayerSymbol symbol) {
         super(symbol);
@@ -19,7 +20,7 @@ public class UnbeatablePlayer extends Player {
     public int chooseNextMoveFrom(Board board) {
         ValuedPosition bestMove = alphaBetaMinimax(
                 board,
-                board.getRows().size() * 2,
+                OPTIMISED_REMAINING_DEPTH,
                 getSymbol(),
                 true,
                 ALPHA,

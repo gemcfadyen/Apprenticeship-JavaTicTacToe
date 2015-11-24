@@ -17,9 +17,9 @@ import static ttt.GameType.HUMAN_VS_UNBEATABLE;
 import static ttt.player.PlayerSymbol.*;
 
 public class GameTest {
-    private static final String HUMAN_VS_UNBEATABLE_ID = "2\n";
+    private static final String HUMAN_VS_UNBEATABLE_OPTION = "2\n";
     private static final String HUMAN_VS_HUMAN_ID = "1\n";
-    private static final String DIMENSION = "3\n";
+    private static final String INPUT_FOR_3x3 = "3\n";
     private static final String DO_NOT_REPLAY = "N\n";
 
     @Test
@@ -27,7 +27,7 @@ public class GameTest {
         BoardFactoryStub boardFactoryStub = new BoardFactoryStub();
         Game game = new Game(
                 boardFactoryStub,
-                createCommandPromptToReadInput(DIMENSION),
+                createCommandPromptToReadInput(INPUT_FOR_3x3),
                 new PlayerFactory()
         );
 
@@ -39,7 +39,7 @@ public class GameTest {
     public void setsUpPlayersForGameType() {
         Game game = new Game(
                 new BoardFactory(),
-                createCommandPromptToReadInput(HUMAN_VS_UNBEATABLE_ID + DIMENSION),
+                createCommandPromptToReadInput(HUMAN_VS_UNBEATABLE_OPTION + INPUT_FOR_3x3),
                 new PlayerFactory()
         );
 
@@ -53,8 +53,7 @@ public class GameTest {
     @Test
     public void gameIsOverWhenBoardIsFull() {
         Game game = new Game(
-                new Board(
-                        X, O, X,
+                boardWith(X, O, X,
                         X, X, O,
                         O, X, O),
                 commandPrompt(),
@@ -68,7 +67,7 @@ public class GameTest {
     public void gameIsWonWhenPlayerPlacesWinningMove() {
         PromptSpy gamePrompt = new PromptSpy(new StringReader(""));
         Game game = new Game(
-                new Board(
+                boardWith(
                         X, VACANT, X,
                         O, X, O,
                         O, X, O),
@@ -85,7 +84,7 @@ public class GameTest {
     public void printsCongratulatoryMessageAndBoardWhenThereIsAWin() {
         PromptSpy gamePrompt = new PromptSpy(new StringReader(""));
         Game game = new Game(
-                new Board(
+                boardWith(
                         X, X, X,
                         O, VACANT, VACANT,
                         O, VACANT, VACANT),
@@ -103,10 +102,11 @@ public class GameTest {
     @Test
     public void printsDrawMessageAndBoardWhenThereIsADraw() {
         PromptSpy gamePrompt = createPromptSpyToReadInput("");
-        Game game = new Game(new Board(
-                X, O, X,
-                O, O, X,
-                O, X, O),
+        Game game = new Game(
+                boardWith(
+                        X, O, X,
+                        O, O, X,
+                        O, X, O),
                 gamePrompt,
                 new PlayerFactory()
         );
@@ -119,8 +119,8 @@ public class GameTest {
 
     @Test
     public void promptsUserToPlayAgainAtTheEndOfGame() {
-        PromptSpy gamePrompt = createPromptSpyToReadInput(HUMAN_VS_HUMAN_ID + DIMENSION + DO_NOT_REPLAY);
-        Board board = new Board(
+        PromptSpy gamePrompt = createPromptSpyToReadInput(HUMAN_VS_HUMAN_ID + INPUT_FOR_3x3 + DO_NOT_REPLAY);
+        Board board = boardWith(
                 X, VACANT, X,
                 O, X, O,
                 O, O, X
@@ -154,7 +154,7 @@ public class GameTest {
         PlayerSpy player2Spy = new PlayerSpy(O, createCommandPromptToReadInput("2\n3\n4\n9\n"));
         Game game = new Game(
                 new BoardFactory(),
-                createCommandPromptToReadInput(HUMAN_VS_HUMAN_ID + DIMENSION + DO_NOT_REPLAY),
+                createCommandPromptToReadInput(HUMAN_VS_HUMAN_ID + INPUT_FOR_3x3 + DO_NOT_REPLAY),
                 new PlayerFactoryStub(player1Spy, player2Spy)
         );
 
@@ -162,6 +162,10 @@ public class GameTest {
 
         assertThat(player1Spy.numberOfTurnsTaken(), is(5));
         assertThat(player2Spy.numberOfTurnsTaken(), is(4));
+    }
+
+    private Board boardWith(PlayerSymbol... layout) {
+        return new Board(layout);
     }
 
     private CommandPrompt commandPrompt() {
