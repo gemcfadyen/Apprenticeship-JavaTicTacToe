@@ -25,11 +25,20 @@ public class RegisterClickEventTest {
             clickActionSet = true;
         }
 
+        @Override
+        public void disable() {
+
+        }
+
         public boolean hasClickEventRegistered() {
             return clickActionSet;
         }
     }
 
     private class ClickEventStub implements ClickEvent {
+        @Override
+        public void action() {
+
+        }
     }
 }
