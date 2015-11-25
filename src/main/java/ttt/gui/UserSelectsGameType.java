@@ -1,21 +1,19 @@
 package ttt.gui;
 
+import static ttt.GameType.HUMAN_VS_HUMAN;
+
 public class UserSelectsGameType implements ClickEvent {
     private ClickableElement gameSelectionRadioBox;
-    private DimensionPrompt dimensionPrompt;
-    private boolean isActive = true;
+    private WritePrompt gameController;
 
-    public UserSelectsGameType(ClickableElement gameSelectionRadioBox, DimensionPrompt dimensionPrompt) {
+    public UserSelectsGameType(ClickableElement gameSelectionRadioBox, WritePrompt gameController) {
         this.gameSelectionRadioBox = gameSelectionRadioBox;
-        this.dimensionPrompt = dimensionPrompt;
+        this.gameController = gameController;
     }
 
     @Override
     public void action() {
-        if (isActive) {
-            dimensionPrompt.promptForGameDimension();
-            gameSelectionRadioBox.disable();
-            isActive = false;
-        }
+        gameController.presentBoardDimensionsFor(HUMAN_VS_HUMAN);
+        gameSelectionRadioBox.disable();
     }
 }
