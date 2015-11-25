@@ -5,6 +5,7 @@ import ttt.ReplayOption;
 import ttt.board.Board;
 import ttt.player.PlayerSymbol;
 import ttt.ui.Prompt;
+import ttt.ui.WritePrompt;
 
 public class GameController implements Prompt, WritePrompt {
     private BoardPresenter boardPresenter;
@@ -14,12 +15,12 @@ public class GameController implements Prompt, WritePrompt {
     }
 
     @Override
-    public int getBoardDimension(GameType gameType) {
+    public int readBoardDimension(GameType gameType) {
         return 0;
     }
 
     @Override
-    public GameType getGameType() {
+    public GameType readGameType() {
         return null;
     }
 
@@ -45,6 +46,11 @@ public class GameController implements Prompt, WritePrompt {
 
     @Override
     public void printDrawMessage() {
+
+    }
+
+    @Override
+    public void presentGameTypes() {
 
     }
 

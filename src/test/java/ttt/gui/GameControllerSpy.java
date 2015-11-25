@@ -6,31 +6,26 @@ import ttt.board.Board;
 import ttt.player.PlayerSymbol;
 import ttt.ui.Prompt;
 
-public class GameControllerSpy implements Prompt, WritePrompt {
+public class GameControllerSpy implements Prompt {
     private boolean promptedForGameDimension = false;
-    private int numberOfTimesPromptHasBeenCalled = 0;
 
-    public boolean hasPresentedGridDimensions() {
-        return promptedForGameDimension;
-    }
+    @Override
+    public void presentGameTypes() {
 
-    public int getNumberOfTimesPromptHasBeenCalled() {
-        return numberOfTimesPromptHasBeenCalled;
     }
 
     @Override
     public void presentBoardDimensionsFor(GameType gameType) {
         promptedForGameDimension = true;
-        numberOfTimesPromptHasBeenCalled++;
     }
 
     @Override
-    public int getBoardDimension(GameType gameType) {
+    public int readBoardDimension(GameType gameType) {
         return 3;
     }
 
     @Override
-    public GameType getGameType() {
+    public GameType readGameType() {
         return null;
     }
 
@@ -56,5 +51,9 @@ public class GameControllerSpy implements Prompt, WritePrompt {
 
     @Override
     public void printDrawMessage() {
+    }
+
+    public boolean hasPresentedGridDimensions() {
+        return promptedForGameDimension;
     }
 }

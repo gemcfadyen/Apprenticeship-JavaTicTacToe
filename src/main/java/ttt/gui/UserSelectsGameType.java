@@ -1,5 +1,7 @@
 package ttt.gui;
 
+import ttt.ui.WritePrompt;
+
 import static ttt.GameType.HUMAN_VS_HUMAN;
 
 public class UserSelectsGameType implements ClickEvent {
