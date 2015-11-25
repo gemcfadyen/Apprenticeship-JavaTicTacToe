@@ -33,7 +33,7 @@ public class CommandPromptTest {
     private static final String NEXT_MOVE_PROMPT = "Please enter the index for your next move";
     private static final String A_IS_NOT_A_VALID_NUMBER = "[a] is not a valid integer\n\n";
     private static final String A_IS_NOT_A_NUMBER_REPROMPT = A_IS_NOT_A_VALID_NUMBER + FONT_COLOUR_ANSII_CHARACTERS + NEXT_MOVE_PROMPT;
-    public static final String Z_IS_NOT_A_VALID_INTEGER = "[z] is not a valid integer\n\n";
+    private static final String Z_IS_NOT_A_VALID_INTEGER = "[z] is not a valid integer\n\n";
     private static final String Z_IS_NOT_A_NUMBER_MOVE_REPROMPT = Z_IS_NOT_A_VALID_INTEGER + FONT_COLOUR_ANSII_CHARACTERS + NEXT_MOVE_PROMPT;
     private static final String DRAW_MESSAGE = "No winner this time";
     private static final String A_IS_NOT_REPLAY_OPTION = "[A] is not a valid replay option\n\n" + FONT_COLOUR_ANSII_CHARACTERS + PLAY_AGAIN_PROMPT;
@@ -42,11 +42,11 @@ public class CommandPromptTest {
     private static final String SMALLER_THAN_GRID_BOUNDARY_MESSAGE = "[-100] is outside of the grid boundary\n\n" + FONT_COLOUR_ANSII_CHARACTERS + NEXT_MOVE_PROMPT;
 
     @Test
-    public void promptsUserForBoardDimension() {
+    public void askUserForBoardDimension() {
         StringWriter writer = new StringWriter();
         Prompt prompt = new CommandPrompt(new StringReader("1\n"), writer);
 
-        prompt.getBoardDimension(HUMAN_VS_HUMAN);
+        prompt.presentBoardDimensionsFor(HUMAN_VS_HUMAN);
 
         assertThat(writer.toString().contains("Please enter the dimension of the board you would like to use [1 to 10]\n"), is(true));
     }
@@ -56,7 +56,7 @@ public class CommandPromptTest {
         StringReader reader = new StringReader("3\n");
         Prompt prompt = new CommandPrompt(reader, new StringWriter());
 
-        int dimension = prompt.getBoardDimension(HUMAN_VS_HUMAN);
+        int dimension = prompt.readBoardDimension(HUMAN_VS_HUMAN);
 
         assertThat(dimension, is(3));
     }
@@ -67,15 +67,15 @@ public class CommandPromptTest {
         StringWriter writer = new StringWriter();
         Prompt prompt = new CommandPrompt(reader, writer);
 
-        int dimension = prompt.getBoardDimension(HUMAN_VS_HUMAN);
+        int dimension = prompt.readBoardDimension(HUMAN_VS_HUMAN);
 
         assertThat(dimension, is(4));
         assertThat(writer.toString().contains(
-                          BOARD_OUTLINE_COLOUR_ANSII_CHARACTERS
+                BOARD_OUTLINE_COLOUR_ANSII_CHARACTERS
                         + Z_IS_NOT_A_VALID_INTEGER
                         + FONT_COLOUR_ANSII_CHARACTERS
                         + "Please enter the dimension of the board you would like to use [1 to 10]\n\n"
-                                  + CLEAR_SCREEN_ANSI_CHARACTERS + "\n"), is(true));
+                        + CLEAR_SCREEN_ANSI_CHARACTERS + "\n"), is(true));
     }
 
 
@@ -85,7 +85,7 @@ public class CommandPromptTest {
         StringWriter writer = new StringWriter();
         Prompt prompt = new CommandPrompt(reader, writer);
 
-        int dimension = prompt.getBoardDimension(HUMAN_VS_UNBEATABLE);
+        int dimension = prompt.readBoardDimension(HUMAN_VS_UNBEATABLE);
 
         assertThat(dimension, is(4));
         assertThat(writer.toString().contains(
@@ -217,16 +217,19 @@ public class CommandPromptTest {
     }
 
     @Test
-    public void promptsForGameType() {
+    public void presentsGameTypes() {
         StringWriter writer = new StringWriter();
         Prompt prompt = new CommandPrompt(new StringReader("1\n"), writer);
 
-        prompt.getGameType();
+        prompt.presentGameTypes();
 
-        assertThat(writer.toString().contains(FONT_COLOUR_ANSII_CHARACTERS
-                + "Enter 1 to play Human vs Human\n"
-                + "Enter 2 to play Human vs Unbeatable\n"
-                + "Enter 3 to play Unbeatable vs Human\n\n\n"), is(true));
+        assertThat(writer.toString(), is(
+                "\n"
+                        + CLEAR_SCREEN_ANSI_CHARACTERS + "\n\n"
+                        + FONT_COLOUR_ANSII_CHARACTERS
+                        + "Enter 1 to play Human vs Human\n"
+                        + "Enter 2 to play Human vs Unbeatable\n"
+                        + "Enter 3 to play Unbeatable vs Human\n\n"));
     }
 
     @Test
@@ -234,7 +237,7 @@ public class CommandPromptTest {
         StringWriter writer = new StringWriter();
         Prompt prompt = new CommandPrompt(new StringReader("1\n"), writer);
 
-        GameType gameType = prompt.getGameType();
+        GameType gameType = prompt.readGameType();
 
         assertThat(gameType, is(HUMAN_VS_HUMAN));
     }
@@ -244,7 +247,7 @@ public class CommandPromptTest {
         StringWriter writer = new StringWriter();
         Prompt prompt = new CommandPrompt(new StringReader("1\n"), writer);
 
-        prompt.getGameType();
+        prompt.readGameType();
 
         assertThat(writer.toString().endsWith(CLEAR_SCREEN_ANSI_CHARACTERS + "\n"), is(true));
     }
@@ -254,7 +257,7 @@ public class CommandPromptTest {
         StringWriter writer = new StringWriter();
         Prompt prompt = new CommandPrompt(new StringReader("a\n1\n"), writer);
 
-        GameType gameType = prompt.getGameType();
+        GameType gameType = prompt.readGameType();
 
         assertThat(gameType, is(HUMAN_VS_HUMAN));
         assertThat(writer.toString().contains(CLEAR_SCREEN_ANSI_CHARACTERS + "\n\n"
@@ -269,7 +272,7 @@ public class CommandPromptTest {
         StringWriter writer = new StringWriter();
         Prompt prompt = new CommandPrompt(new StringReader("7\n1\n"), writer);
 
-        GameType gameType = prompt.getGameType();
+        GameType gameType = prompt.readGameType();
 
         assertThat(gameType, is(HUMAN_VS_HUMAN));
 
@@ -336,15 +339,15 @@ public class CommandPromptTest {
         prompt.print(board);
 
         String expectedFormattedBoard =
-                 "  " + NUMBER_COLOUR_ANSII_CHARACTERS + 1 + BOARD_OUTLINE_COLOUR_ANSII_CHARACTERS + " |  " + NUMBER_COLOUR_ANSII_CHARACTERS + 2 + BOARD_OUTLINE_COLOUR_ANSII_CHARACTERS + " |  " + NUMBER_COLOUR_ANSII_CHARACTERS + 3 + BOARD_OUTLINE_COLOUR_ANSII_CHARACTERS + " |  " + NUMBER_COLOUR_ANSII_CHARACTERS + 4 + BOARD_OUTLINE_COLOUR_ANSII_CHARACTERS + " \n"
-                + "--------------------\n  "
-                + O_COLOUR + O.name() + BOARD_OUTLINE_COLOUR_ANSII_CHARACTERS + " |  " + NUMBER_COLOUR_ANSII_CHARACTERS + 6 + BOARD_OUTLINE_COLOUR_ANSII_CHARACTERS + " |  " + NUMBER_COLOUR_ANSII_CHARACTERS + 7 + BOARD_OUTLINE_COLOUR_ANSII_CHARACTERS + " |  " + NUMBER_COLOUR_ANSII_CHARACTERS + 8 + BOARD_OUTLINE_COLOUR_ANSII_CHARACTERS + " \n"
-                + "--------------------\n  "
-                + NUMBER_COLOUR_ANSII_CHARACTERS + 9 + BOARD_OUTLINE_COLOUR_ANSII_CHARACTERS + " | " + NUMBER_COLOUR_ANSII_CHARACTERS + 10 + BOARD_OUTLINE_COLOUR_ANSII_CHARACTERS + " | " + NUMBER_COLOUR_ANSII_CHARACTERS + 11 + BOARD_OUTLINE_COLOUR_ANSII_CHARACTERS + " |  " + X_COLOUR + X.name() + BOARD_OUTLINE_COLOUR_ANSII_CHARACTERS + " \n"
-                + "--------------------\n "
-                + NUMBER_COLOUR_ANSII_CHARACTERS + 13 + BOARD_OUTLINE_COLOUR_ANSII_CHARACTERS + " | " + NUMBER_COLOUR_ANSII_CHARACTERS + 14 + BOARD_OUTLINE_COLOUR_ANSII_CHARACTERS + " | " + NUMBER_COLOUR_ANSII_CHARACTERS + 15 + BOARD_OUTLINE_COLOUR_ANSII_CHARACTERS + " | " + NUMBER_COLOUR_ANSII_CHARACTERS + 16 + BOARD_OUTLINE_COLOUR_ANSII_CHARACTERS + " \n";
+                "  " + NUMBER_COLOUR_ANSII_CHARACTERS + 1 + BOARD_OUTLINE_COLOUR_ANSII_CHARACTERS + " |  " + NUMBER_COLOUR_ANSII_CHARACTERS + 2 + BOARD_OUTLINE_COLOUR_ANSII_CHARACTERS + " |  " + NUMBER_COLOUR_ANSII_CHARACTERS + 3 + BOARD_OUTLINE_COLOUR_ANSII_CHARACTERS + " |  " + NUMBER_COLOUR_ANSII_CHARACTERS + 4 + BOARD_OUTLINE_COLOUR_ANSII_CHARACTERS + " \n"
+                        + "--------------------\n  "
+                        + O_COLOUR + O.name() + BOARD_OUTLINE_COLOUR_ANSII_CHARACTERS + " |  " + NUMBER_COLOUR_ANSII_CHARACTERS + 6 + BOARD_OUTLINE_COLOUR_ANSII_CHARACTERS + " |  " + NUMBER_COLOUR_ANSII_CHARACTERS + 7 + BOARD_OUTLINE_COLOUR_ANSII_CHARACTERS + " |  " + NUMBER_COLOUR_ANSII_CHARACTERS + 8 + BOARD_OUTLINE_COLOUR_ANSII_CHARACTERS + " \n"
+                        + "--------------------\n  "
+                        + NUMBER_COLOUR_ANSII_CHARACTERS + 9 + BOARD_OUTLINE_COLOUR_ANSII_CHARACTERS + " | " + NUMBER_COLOUR_ANSII_CHARACTERS + 10 + BOARD_OUTLINE_COLOUR_ANSII_CHARACTERS + " | " + NUMBER_COLOUR_ANSII_CHARACTERS + 11 + BOARD_OUTLINE_COLOUR_ANSII_CHARACTERS + " |  " + X_COLOUR + X.name() + BOARD_OUTLINE_COLOUR_ANSII_CHARACTERS + " \n"
+                        + "--------------------\n "
+                        + NUMBER_COLOUR_ANSII_CHARACTERS + 13 + BOARD_OUTLINE_COLOUR_ANSII_CHARACTERS + " | " + NUMBER_COLOUR_ANSII_CHARACTERS + 14 + BOARD_OUTLINE_COLOUR_ANSII_CHARACTERS + " | " + NUMBER_COLOUR_ANSII_CHARACTERS + 15 + BOARD_OUTLINE_COLOUR_ANSII_CHARACTERS + " | " + NUMBER_COLOUR_ANSII_CHARACTERS + 16 + BOARD_OUTLINE_COLOUR_ANSII_CHARACTERS + " \n";
 
-        assertThat(writer.toString(), is("\n" + CLEAR_SCREEN_ANSI_CHARACTERS + "\n\n" + BOARD_OUTLINE_COLOUR_ANSII_CHARACTERS + "\n"  + expectedFormattedBoard));
+        assertThat(writer.toString(), is("\n" + CLEAR_SCREEN_ANSI_CHARACTERS + "\n\n" + BOARD_OUTLINE_COLOUR_ANSII_CHARACTERS + "\n" + expectedFormattedBoard));
     }
 
     @Test
