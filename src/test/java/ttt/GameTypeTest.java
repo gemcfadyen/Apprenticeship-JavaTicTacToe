@@ -54,5 +54,4 @@ public class GameTypeTest {
         GameType gameType = GameType.of(3);
         assertThat(gameType.dimensionLowerBoundary(), is(1));
     }
-
 }

@@ -20,22 +20,24 @@ public class PromptSpy implements Prompt {
     private int numberOfTimesXHasWon = 0;
     private int numberOfTimesOHasWon = 0;
     private int numberOfTimesPlayerIsReprompted = 0;
-    private int numberOfTimesPlayerOptionsHaveBeenPrinted;
-    private int numberOfTimesBoardDimensionPrompted = 0;
-
-    @Override
-    public int getBoardDimension(GameType gameType) {
-        numberOfTimesBoardDimensionPrompted++;
-        return Integer.valueOf(readInput());
-    }
+    private int numberOfTimesGameOptionsHaveBeenRead = 0;
+    private int numberOfTimesBoardDimensionRead = 0;
+    private int numberOfTimesBoardDimensionsAskedFor = 0;
+    private int numberOfTimesGameOptionsAskedFor = 0;
 
     public PromptSpy(Reader reader) {
         this.reader = new BufferedReader(reader);
     }
 
     @Override
-    public GameType getGameType() {
-        numberOfTimesPlayerOptionsHaveBeenPrinted++;
+    public int readBoardDimension(GameType gameType) {
+        numberOfTimesBoardDimensionRead++;
+        return Integer.valueOf(readInput());
+    }
+
+    @Override
+    public GameType readGameType() {
+        numberOfTimesGameOptionsHaveBeenRead++;
         return GameType.of(Integer.valueOf(readInput()));
     }
 
@@ -53,6 +55,16 @@ public class PromptSpy implements Prompt {
     @Override
     public void print(Board board) {
         this.lastBoardPrinted = board;
+    }
+
+    @Override
+    public void presentGameTypes() {
+        numberOfTimesGameOptionsAskedFor++;
+    }
+
+    @Override
+    public void presentBoardDimensionsFor(GameType gameType) {
+        numberOfTimesBoardDimensionsAskedFor++;
     }
 
     @Override
@@ -108,11 +120,19 @@ public class PromptSpy implements Prompt {
         return numberOfTimesPlayerIsReprompted;
     }
 
-    public int getNumberOfTimesPromptedForPlayerOption() {
-        return numberOfTimesPlayerOptionsHaveBeenPrinted;
+    public int getNumberOfTimesPromptedForGameOption() {
+        return numberOfTimesGameOptionsAskedFor;
     }
 
-    public int getNumberOfTimesBoardDimensionPrompted() {
-        return numberOfTimesBoardDimensionPrompted;
+    public int getNumberOfTimesGameOptionsWereRead() {
+        return numberOfTimesGameOptionsHaveBeenRead;
+    }
+
+    public int getNumberOfTimesDimensionsHaveBeenAskedFor() {
+        return numberOfTimesBoardDimensionsAskedFor;
+    }
+
+    public int getNumberOfTimesBoardDimensionRead() {
+        return numberOfTimesBoardDimensionRead;
     }
 }

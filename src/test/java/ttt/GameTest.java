@@ -25,26 +25,32 @@ public class GameTest {
     @Test
     public void createsBoardOfSpecifiedDimension() {
         BoardFactoryStub boardFactoryStub = new BoardFactoryStub();
+        PromptSpy promptSpy = createPromptSpyToReadInput(INPUT_FOR_3x3);
         Game game = new Game(
                 boardFactoryStub,
-                createCommandPromptToReadInput(INPUT_FOR_3x3),
+                promptSpy,
                 new PlayerFactory()
         );
 
+        assertThat(promptSpy.getNumberOfTimesDimensionsHaveBeenAskedFor(), is(1));
+        assertThat(promptSpy.getNumberOfTimesBoardDimensionRead(), is(1));
         assertThat(game.getBoardOfCorrectDimensionFor(HUMAN_VS_UNBEATABLE), is(3));
         assertThat(boardFactoryStub.getLatestBoard().getRows().size(), is(3));
     }
 
     @Test
     public void setsUpPlayersForGameType() {
+        PromptSpy promptSpy = createPromptSpyToReadInput(HUMAN_VS_UNBEATABLE_OPTION + INPUT_FOR_3x3);
         Game game = new Game(
                 new BoardFactory(),
-                createCommandPromptToReadInput(HUMAN_VS_UNBEATABLE_OPTION + INPUT_FOR_3x3),
+                promptSpy,
                 new PlayerFactory()
         );
 
         Player[] players = game.setupPlayers();
 
+        assertThat(promptSpy.getNumberOfTimesPromptedForGameOption(), is(1));
+        assertThat(promptSpy.getNumberOfTimesGameOptionsWereRead(), is(1));
         assertThat(players.length, is(2));
         assertThat(players[0], instanceOf(HumanPlayer.class));
         assertThat(players[1], instanceOf(UnbeatablePlayer.class));
