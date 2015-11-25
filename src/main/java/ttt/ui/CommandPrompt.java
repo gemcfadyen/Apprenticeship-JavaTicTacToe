@@ -38,16 +38,24 @@ public class CommandPrompt implements Prompt {
     }
 
     @Override
-    public int getBoardDimension(GameType gameType) {
+    public void presentGameTypes() {
+        askUserForGameType();
+    }
+
+    @Override
+    public void presentBoardDimensionsFor(GameType gameType) {
         askUserForBoardDimension(gameType);
+    }
+
+    @Override
+    public int readBoardDimension(GameType gameType) {
         InputValidator compositeValidator = compositeFor(dimensionValidatorsFor(gameType));
 
         return asInteger(getValidInput(compositeValidator, input(), functionToRepromptForValidBoardDimension(gameType)));
     }
 
     @Override
-    public GameType getGameType() {
-        askUserForGameType();
+    public GameType readGameType() {
         InputValidator compositeValidator = compositeFor(gameTypeValidators());
         return GameType.of(asInteger(getValidInput(compositeValidator, input(), functionToRepromptGameType())));
     }
@@ -79,9 +87,9 @@ public class CommandPrompt implements Prompt {
         for (Line row : rows) {
             for (PlayerSymbol symbol : row.getSymbols()) {
                 boardForDisplay +=
-                          space()
-                        + displayCell(symbol, offset)
-                        + getBorderFor(offset, dimension);
+                        space()
+                                + displayCell(symbol, offset)
+                                + getBorderFor(offset, dimension);
                 offset++;
             }
         }
