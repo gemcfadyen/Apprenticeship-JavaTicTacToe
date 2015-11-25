@@ -65,7 +65,8 @@ public class Game {
     }
 
     Player[] setupPlayers() {
-        GameType gameType = gamePrompt.getGameType();
+        gamePrompt.presentGameTypes();
+        GameType gameType = gamePrompt.readGameType();
         int dimension = getBoardOfCorrectDimensionFor(gameType);
         return createPlayersFor(gameType, dimension);
     }
@@ -76,7 +77,8 @@ public class Game {
     }
 
     int getBoardOfCorrectDimensionFor(GameType gameType) {
-        int dimension = gamePrompt.getBoardDimension(gameType);
+        gamePrompt.presentBoardDimensionsFor(gameType);
+        int dimension = gamePrompt.readBoardDimension(gameType);
         board = boardFactory.createBoardWithSize(dimension);
         return dimension;
     }
