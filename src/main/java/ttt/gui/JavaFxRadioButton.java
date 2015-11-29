@@ -15,7 +15,8 @@ public class JavaFxRadioButton implements ClickableElement {
     }
 
     @Override
-    public void disable() {
-        radioButton.setDisable(true);
+    public String getText() {
+        return radioButton.getText();
     }
+
 }

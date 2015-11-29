@@ -32,9 +32,11 @@ public class GameTest {
                 new PlayerFactory()
         );
 
+        int dimension = game.getBoardOfCorrectDimensionFor(HUMAN_VS_UNBEATABLE);
+
         assertThat(promptSpy.getNumberOfTimesDimensionsHaveBeenAskedFor(), is(1));
         assertThat(promptSpy.getNumberOfTimesBoardDimensionRead(), is(1));
-        assertThat(game.getBoardOfCorrectDimensionFor(HUMAN_VS_UNBEATABLE), is(3));
+        assertThat(dimension, is(3));
         assertThat(boardFactoryStub.getLatestBoard().getRows().size(), is(3));
     }
 

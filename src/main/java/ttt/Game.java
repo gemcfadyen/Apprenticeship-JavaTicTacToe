@@ -15,11 +15,15 @@ import static ttt.ReplayOption.Y;
 public class Game {
     private static final int PLAYER_ONE_INDEX = 0;
     private static final int PLAYER_TWO_INDEX = 1;
-    private final PlayerFactory playerFactory;
+    private PlayerFactory playerFactory;
     private BoardFactory boardFactory;
     private Board board;
     private Prompt gamePrompt;
     private int currentPlayerIndex = PLAYER_ONE_INDEX;
+
+    public Game() {
+
+    }
 
     Game(Board board, Prompt gamePrompt, PlayerFactory playerFactory) {
         this.board = board;
@@ -48,7 +52,7 @@ public class Game {
     }
 
     void playMatch(Player[] players) {
-        while (gameInProgress() ) {
+        while (gameInProgress()) {
             updateBoardWithPlayersMove(players[currentPlayerIndex]);
             currentPlayerIndex = toggle(currentPlayerIndex);
         }
@@ -105,4 +109,6 @@ public class Game {
                 new OutputStreamWriter(System.out)
         );
     }
+
+
 }

@@ -26,8 +26,8 @@ public class RegisterClickEventTest {
         }
 
         @Override
-        public void disable() {
-
+        public String getText() {
+            return "Text On Clickable Element";
         }
 
         public boolean hasClickEventRegistered() {

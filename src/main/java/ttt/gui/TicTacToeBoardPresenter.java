@@ -14,7 +14,7 @@ public class TicTacToeBoardPresenter implements BoardPresenter {
 
     public TicTacToeBoardPresenter(Scene scene) {
         this.scene = scene;
-        this.scene.getStylesheets().add(JavaFxGui.class.getResource("presentation.css").toExternalForm());
+//        this.scene.getStylesheets().add(JavaFxGui.class.getResource("presentation.css").toExternalForm());
     }
 
     @Override
@@ -23,8 +23,8 @@ public class TicTacToeBoardPresenter implements BoardPresenter {
         setWelcomeMessage(gameTypePane);
         displayGameTypes(gameTypePane);
         ClickableElement gameSelectionButton = new JavaFxRadioButton(humanVsHumanRadioButton);
-        GameController gameController = new GameController(this);
-        ClickEvent gameSelectionOnClick = new UserSelectsGameType(gameSelectionButton, gameController);
+        GuiPrompt guiPrompt = new GuiPrompt(this);
+        ClickEvent gameSelectionOnClick = new UserSelectsGameType(guiPrompt, gameSelectionButton);
         RegisterClickEvent registerGameSelectionLogic = new RegisterClickEvent();
         registerGameSelectionLogic.register(gameSelectionButton, gameSelectionOnClick);
         scene.setRoot(gameTypePane);

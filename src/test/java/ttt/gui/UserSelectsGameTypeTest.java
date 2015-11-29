@@ -9,24 +9,35 @@ public class UserSelectsGameTypeTest {
 
     @Test
     public void promptsForDimensionWhenGameTypeIsSelected() {
-        GameControllerSpy gameControllerSpy = new GameControllerSpy();
-        ClickableElement gameSelectionRadioBox = new GameSelectionRadioBoxSpy();
-        UserSelectsGameType userSelectsGameType = new UserSelectsGameType(gameSelectionRadioBox, gameControllerSpy);
+        GuiPromptSpy guiPromptSpy = new GuiPromptSpy();
+        ClickableElement selectedRadioBox = new ClickableElementStub();
+        UserSelectsGameType userSelectsGameType = new UserSelectsGameType(guiPromptSpy, selectedRadioBox);
 
         userSelectsGameType.action();
 
-        assertThat(gameControllerSpy.hasPresentedGridDimensions(), is(true));
+        assertThat(guiPromptSpy.hasPresentedGridDimensions(), is(true));
     }
 
-    private class GameSelectionRadioBoxSpy implements ClickableElement {
+    @Test
+    public void capturesGameTypeChosen() {
+        GuiPromptSpy guiPromptSpy = new GuiPromptSpy();
+        ClickableElement selectedRadioBox = new ClickableElementStub();
+        UserSelectsGameType userSelectsGameType = new UserSelectsGameType(guiPromptSpy, selectedRadioBox);
 
+        userSelectsGameType.action();
+
+        assertThat(guiPromptSpy.hasPromptedForGameDimensionFor("Human vs Human"), is(true));
+    }
+
+    private class ClickableElementStub implements ClickableElement {
         @Override
         public void setClickAction(ClickEvent clickEvent) {
 
         }
 
         @Override
-        public void disable() {
+        public String getText() {
+            return "Human vs Human";
         }
     }
 }
