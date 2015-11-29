@@ -61,6 +61,12 @@ public class TicTacToeBoardPresenter implements BoardPresenter {
     public void presentsBoard(Board board) {
         GridPane boardPane = new GridPane();
         gridPaneSetup(boardPane);
+        printBoardsOnPane(board, boardPane);
+        scene.setRoot(boardPane);
+
+    }
+
+    private void printBoardsOnPane(Board board, GridPane boardPane) {
         List<Line> rows = board.getRows();
 
         int displayRowIndex = 2;
@@ -79,6 +85,7 @@ public class TicTacToeBoardPresenter implements BoardPresenter {
                 registerClickEvent.register(clickableCell, makeMoveOnClick);
 
                 HBox gridLayout = new HBox(10);
+                gridLayout.setAlignment(Pos.CENTER);
                 gridLayout.getChildren().add(cell);
                 boardPane.add(gridLayout, displayColumnIndex++, displayRowIndex);
             }
@@ -86,18 +93,60 @@ public class TicTacToeBoardPresenter implements BoardPresenter {
             displayRowIndex++;
             displayColumnIndex = 2;
         }
-        scene.setRoot(boardPane);
+    }
 
+
+    private void printDrawnBoardsOnPane(Board board, GridPane boardPane) {
+        List<Line> rows = board.getRows();
+
+        int displayRowIndex = 2;
+        int displayColumnIndex = 2;
+        int lineNumber = 0;
+        int offset = 0;
+        int dimension = rows.size();
+
+
+        for (Line line : rows) {
+            PlayerSymbol[] symbols = line.getSymbols();
+            for (int i = 0; i < symbols.length; i++) {
+                Button cell = createButton(board.getSymbolAt(i).getSymbolForDisplay(), String.valueOf(i + offset));
+
+                DeactivatableElement clickableCell = new JavaFxButton(cell);
+                clickableCell.setDisabled();
+
+                HBox gridLayout = new HBox(10);
+                gridLayout.setAlignment(Pos.CENTER);
+                gridLayout.getChildren().add(cell);
+                boardPane.add(gridLayout, displayColumnIndex++, displayRowIndex);
+            }
+            offset += dimension + lineNumber;
+            displayRowIndex++;
+            displayColumnIndex = 2;
+        }
     }
 
     @Override
     public void printsWinning(Board board, PlayerSymbol symbol) {
+        GridPane gameOverPane = new GridPane();
+        gridPaneSetup(gameOverPane);
+        printDrawnBoardsOnPane(board, gameOverPane);
 
+        Text gameOverTarget = new Text("Game Over, " + symbol.getSymbolForDisplay() + " won this time");
+        gameOverTarget.setId("gameOverTargetId");
+        gameOverPane.add(gameOverTarget, 2, 7, 6, 1);
+        scene.setRoot(gameOverPane);
     }
 
     @Override
     public void printsDraw(Board board) {
+        GridPane gameOverPane = new GridPane();
+        gridPaneSetup(gameOverPane);
+        printDrawnBoardsOnPane(board, gameOverPane);
 
+        Text gameOverTarget = new Text("Game Over, No winner this time");
+        gameOverTarget.setId("gameOverTargetId");
+        gameOverPane.add(gameOverTarget, 2, 7, 6, 1);
+        scene.setRoot(gameOverPane);
     }
 
     private Button createButton(String text, String value) {

@@ -21,14 +21,8 @@ public class JavaFxGui extends Application {
 
         TicTacToeBoardPresenter ticTacToeBoardPresenter = new TicTacToeBoardPresenter(scene);
 
-     /*   Game game = new Game(new BoardFactory(),
-                new GuiPrompt(ticTacToeBoardPresenter),
-                new PlayerFactory());
-       */
         GuiPrompt guiPrompt = new GuiPrompt(ticTacToeBoardPresenter);
         guiPrompt.presentGameTypes();
 
-//        GameController gameController = new GameController(game, guiPrompt);
-//        gameController.presentGameTypes();
     }
 }
