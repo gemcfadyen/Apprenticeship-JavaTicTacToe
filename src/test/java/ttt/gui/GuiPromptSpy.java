@@ -1,16 +1,14 @@
 package ttt.gui;
 
 import ttt.GameType;
-import ttt.ReplayOption;
 import ttt.board.Board;
 import ttt.player.PlayerSymbol;
 
 import static ttt.player.PlayerSymbol.X;
 
-public class GuiPromptSpy implements TemporaryGuiPrompt {
+public class GuiPromptSpy implements GameRulesPrompt {
     private boolean promptedForGameDimension = false;
     private int numberOfTimesBoardIsPrinted = 0;
-    private boolean promptedForGameType = false;
     private GameType chosenGameType;
     private int dimension;
     private boolean gameIsStarted = false;
@@ -18,33 +16,12 @@ public class GuiPromptSpy implements TemporaryGuiPrompt {
 
     @Override
     public void presentGameTypes() {
-        promptedForGameType = true;
     }
 
     @Override
     public void presentBoardDimensionsFor(GameType gameType) {
         this.chosenGameType = gameType;
         promptedForGameDimension = true;
-    }
-
-    @Override
-    public int readBoardDimension(GameType gameType) {
-        return 3;
-    }
-
-    @Override
-    public GameType readGameType() {
-        return null;
-    }
-
-    @Override
-    public ReplayOption getReplayOption() {
-        return null;
-    }
-
-    @Override
-    public int getNextMove(Board board) {
-        return 0;
     }
 
     @Override
@@ -55,11 +32,21 @@ public class GuiPromptSpy implements TemporaryGuiPrompt {
 
     @Override
     public void printWinningMessageFor(PlayerSymbol symbol) {
-
     }
 
     @Override
     public void printDrawMessage() {
+    }
+
+    @Override
+    public void playMoveAt(String move) {
+        gameIsStarted = true;
+        this.move = Integer.valueOf(move);
+    }
+
+    @Override
+    public PlayerSymbol getCurrentPlayer() {
+        return X;
     }
 
     public boolean hasPresentedGridDimensions() {
@@ -74,31 +61,12 @@ public class GuiPromptSpy implements TemporaryGuiPrompt {
         return dimension;
     }
 
-    public boolean hasPresentedGameTypes() {
-        return promptedForGameType;
-    }
-
     public boolean hasPromptedForGameDimensionFor(String gameType) {
-        if (gameType.equals(chosenGameType.gameNameForDisplay())) {
-            return true;
-        }
-
-        return false;
+        return gameType.equals(chosenGameType.gameNameForDisplay());
     }
 
     public boolean gameIsStarted() {
         return gameIsStarted;
-    }
-
-    @Override
-    public void playMoveAt(String move) {
-        gameIsStarted = true;
-        this.move = Integer.valueOf(move);
-    }
-
-    @Override
-    public PlayerSymbol getCurrentPlayer() {
-        return X;
     }
 
     public int moveTaken() {

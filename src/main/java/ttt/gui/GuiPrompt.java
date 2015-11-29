@@ -1,11 +1,10 @@
 package ttt.gui;
 
 import ttt.GameType;
-import ttt.ReplayOption;
 import ttt.board.Board;
 import ttt.player.PlayerSymbol;
 
-public class GuiPrompt implements TemporaryGuiPrompt {
+public class GuiPrompt implements GameRulesPrompt {
     private BoardPresenter boardPresenter;
     private Board board;
     private PlayerSymbol currentPlayer;
@@ -19,26 +18,6 @@ public class GuiPrompt implements TemporaryGuiPrompt {
         this.boardPresenter = boardPresenter;
         this.board = board;
         this.currentPlayer = PlayerSymbol.X;
-    }
-
-    @Override
-    public int readBoardDimension(GameType gameType) {
-        return 0;
-    }
-
-    @Override
-    public GameType readGameType() {
-        return null;
-    }
-
-    @Override
-    public ReplayOption getReplayOption() {
-        return null;
-    }
-
-    @Override
-    public int getNextMove(Board board) {
-        return 0;
     }
 
     @Override
@@ -72,9 +51,7 @@ public class GuiPrompt implements TemporaryGuiPrompt {
         board.updateAt(Integer.valueOf(move), currentPlayer);
         if (board.hasWinningCombination()) {
             printWinningMessageFor(currentPlayer);
-        }
-
-        if (!board.hasFreeSpace()) {
+        } else if (!board.hasFreeSpace()) {
             printDrawMessage();
         }
         currentPlayer = PlayerSymbol.opponent(currentPlayer);

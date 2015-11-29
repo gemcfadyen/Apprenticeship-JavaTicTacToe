@@ -21,10 +21,6 @@ public class Game {
     private Prompt gamePrompt;
     private int currentPlayerIndex = PLAYER_ONE_INDEX;
 
-    public Game() {
-
-    }
-
     Game(Board board, Prompt gamePrompt, PlayerFactory playerFactory) {
         this.board = board;
         this.gamePrompt = gamePrompt;

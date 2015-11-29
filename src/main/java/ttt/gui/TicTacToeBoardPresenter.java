@@ -14,11 +14,12 @@ import ttt.board.Line;
 import ttt.player.PlayerSymbol;
 
 import java.util.List;
+import java.util.function.Function;
 
 public class TicTacToeBoardPresenter implements BoardPresenter {
     private RadioButton humanVsHumanRadioButton;
     private Scene scene;
-    private TemporaryGuiPrompt guiPrompt;
+    private GameRulesPrompt guiPrompt;
     private RegisterClickEvent registerClickEvent;
 
     public TicTacToeBoardPresenter(Scene scene) {
@@ -31,10 +32,13 @@ public class TicTacToeBoardPresenter implements BoardPresenter {
     public void presentGameTypes() {
         GridPane gameTypePane = new GridPane();
         setWelcomeMessage(gameTypePane);
+
         displayGameTypes(gameTypePane);
+
         ClickableElement gameSelectionButton = new JavaFxRadioButton(humanVsHumanRadioButton);
         ClickEvent gameSelectionOnClick = new UserSelectsGameType(guiPrompt, gameSelectionButton);
         registerClickEvent.register(gameSelectionButton, gameSelectionOnClick);
+
         scene.setRoot(gameTypePane);
     }
 
@@ -42,10 +46,13 @@ public class TicTacToeBoardPresenter implements BoardPresenter {
     public void presentGridDimensionsFor(GameType gameType) {
         GridPane dimensionPane = new GridPane();
         setWelcomeMessage(dimensionPane);
+
         Text dimensionPrompt = new Text("Choose a board dimension");
         dimensionPrompt.setId("gameSetupId");
+
         RadioButton boardDimension = new RadioButton("3x3");
         boardDimension.setId("gameSetupSelectionId");
+
         dimensionPane.add(dimensionPrompt, 2, 2, 4, 1);
         dimensionPane.add(boardDimension, 2, 4, 4, 1);
 
@@ -61,79 +68,22 @@ public class TicTacToeBoardPresenter implements BoardPresenter {
     public void presentsBoard(Board board) {
         GridPane boardPane = new GridPane();
         gridPaneSetup(boardPane);
-        printBoardsOnPane(board, boardPane);
+        printBoardsOnPane(board, boardPane, getCellLabelForInitialBoard(), registerEvent());
+
         scene.setRoot(boardPane);
-
-    }
-
-    private void printBoardsOnPane(Board board, GridPane boardPane) {
-        List<Line> rows = board.getRows();
-
-        int displayRowIndex = 2;
-        int displayColumnIndex = 2;
-        int lineNumber = 0;
-        int offset = 0;
-        int dimension = rows.size();
-
-        for (Line line : rows) {
-            PlayerSymbol[] symbols = line.getSymbols();
-            for (int i = 0; i < symbols.length; i++) {
-                Button cell = createButton(String.valueOf(offset + i + 1), String.valueOf(i + offset));
-
-                DeactivatableElement clickableCell = new JavaFxButton(cell);
-                ClickEvent makeMoveOnClick = new UserSelectsButtonForMove(guiPrompt, clickableCell);
-                registerClickEvent.register(clickableCell, makeMoveOnClick);
-
-                HBox gridLayout = new HBox(10);
-                gridLayout.setAlignment(Pos.CENTER);
-                gridLayout.getChildren().add(cell);
-                boardPane.add(gridLayout, displayColumnIndex++, displayRowIndex);
-            }
-            offset += dimension + lineNumber;
-            displayRowIndex++;
-            displayColumnIndex = 2;
-        }
-    }
-
-
-    private void printDrawnBoardsOnPane(Board board, GridPane boardPane) {
-        List<Line> rows = board.getRows();
-
-        int displayRowIndex = 2;
-        int displayColumnIndex = 2;
-        int lineNumber = 0;
-        int offset = 0;
-        int dimension = rows.size();
-
-
-        for (Line line : rows) {
-            PlayerSymbol[] symbols = line.getSymbols();
-            for (int i = 0; i < symbols.length; i++) {
-                Button cell = createButton(board.getSymbolAt(i).getSymbolForDisplay(), String.valueOf(i + offset));
-
-                DeactivatableElement clickableCell = new JavaFxButton(cell);
-                clickableCell.setDisabled();
-
-                HBox gridLayout = new HBox(10);
-                gridLayout.setAlignment(Pos.CENTER);
-                gridLayout.getChildren().add(cell);
-                boardPane.add(gridLayout, displayColumnIndex++, displayRowIndex);
-            }
-            offset += dimension + lineNumber;
-            displayRowIndex++;
-            displayColumnIndex = 2;
-        }
     }
 
     @Override
     public void printsWinning(Board board, PlayerSymbol symbol) {
         GridPane gameOverPane = new GridPane();
         gridPaneSetup(gameOverPane);
-        printDrawnBoardsOnPane(board, gameOverPane);
 
-        Text gameOverTarget = new Text("Game Over, " + symbol.getSymbolForDisplay() + " won this time");
+        printBoardsOnPane(board, gameOverPane, getCellLabelForWinningBoard(board), disable());
+
+        Text gameOverTarget = new Text("Game Over, " + symbol.getSymbolForDisplay() + " won");
         gameOverTarget.setId("gameOverTargetId");
         gameOverPane.add(gameOverTarget, 2, 7, 6, 1);
+
         scene.setRoot(gameOverPane);
     }
 
@@ -141,19 +91,13 @@ public class TicTacToeBoardPresenter implements BoardPresenter {
     public void printsDraw(Board board) {
         GridPane gameOverPane = new GridPane();
         gridPaneSetup(gameOverPane);
-        printDrawnBoardsOnPane(board, gameOverPane);
 
-        Text gameOverTarget = new Text("Game Over, No winner this time");
+        printBoardsOnPane(board, gameOverPane, getCellLabelForDrawnBoard(board), disable());
+
+        Text gameOverTarget = new Text("Game Over, No winner");
         gameOverTarget.setId("gameOverTargetId");
         gameOverPane.add(gameOverTarget, 2, 7, 6, 1);
         scene.setRoot(gameOverPane);
-    }
-
-    private Button createButton(String text, String value) {
-        Button firstSquare = new Button(text);
-        firstSquare.setId(value);
-        firstSquare.setMinSize(100, 100);
-        return firstSquare;
     }
 
     private void setWelcomeMessage(GridPane gridPane) {
@@ -163,13 +107,6 @@ public class TicTacToeBoardPresenter implements BoardPresenter {
         gridPaneSetup(gridPane);
     }
 
-    private void gridPaneSetup(GridPane gridPane) {
-        gridPane.setAlignment(Pos.CENTER);
-        gridPane.setHgap(10);
-        gridPane.setVgap(10);
-        gridPane.setPadding(new Insets(25, 25, 25, 25));
-    }
-
     private void displayGameTypes(GridPane gridPane) {
         Text gameSelectionPrompt = new Text("Choose a game type");
         gameSelectionPrompt.setId("gameSetupId");
@@ -177,5 +114,90 @@ public class TicTacToeBoardPresenter implements BoardPresenter {
         humanVsHumanRadioButton = new RadioButton("Human vs Human");
         humanVsHumanRadioButton.setId("gameSetupSelectionId");
         gridPane.add(humanVsHumanRadioButton, 2, 4, 4, 1);
+    }
+
+    private void gridPaneSetup(GridPane gridPane) {
+        gridPane.setAlignment(Pos.CENTER);
+        gridPane.setHgap(10);
+        gridPane.setVgap(10);
+        gridPane.setPadding(new Insets(25, 25, 25, 25));
+    }
+
+    private void printBoardsOnPane(Board board, GridPane boardPane, Function<Integer, String> labelForCell, Function<Button, Void> actionOnCell) {
+        List<Line> rows = board.getRows();
+
+        int displayRowIndex = 2;
+        int displayColumnIndex = 2;
+        int lineNumber = 0;
+        int offset = 0;
+        int dimension = rows.size();
+
+        for (Line line : rows) {
+            PlayerSymbol[] symbols = line.getSymbols();
+            for (int i = 0; i < symbols.length; i++) {
+                Button cell = createButton(labelForCell.apply(i + offset), String.valueOf(i + offset));
+
+                actionOnCell.apply(cell);
+
+                boardPane.add(configureHBox(cell), displayColumnIndex++, displayRowIndex);
+            }
+            offset += dimension + lineNumber;
+            displayRowIndex++;
+            displayColumnIndex = 2;
+        }
+    }
+
+    private Button createButton(String text, String value) {
+        Button cell = new Button(text);
+        cell.setId(value);
+        cell.setMinSize(100, 100);
+        return cell;
+    }
+
+    private HBox configureHBox(Button cell) {
+        HBox gridLayout = new HBox(10);
+        gridLayout.setAlignment(Pos.CENTER);
+        gridLayout.getChildren().add(cell);
+        return gridLayout;
+    }
+
+    private Function<Integer, String> getCellLabelForInitialBoard() {
+        return index -> String.valueOf(index + 1);
+    }
+
+    private Function getCellLabelForDrawnBoard(Board board) {
+        Function<Integer, String> getLabel = index -> board.getSymbolAt(index).getSymbolForDisplay();
+        return getLabel;
+    }
+
+    private Function getCellLabelForWinningBoard(Board board) {
+        Function<Integer, String> getLabel = index -> {
+            PlayerSymbol symbolAtIndex = board.getSymbolAt(index);
+
+            return (symbolAtIndex == PlayerSymbol.VACANT)
+                    ? String.valueOf(index + 1)
+                    : symbolAtIndex.getSymbolForDisplay();
+
+        };
+
+        return getLabel;
+    }
+
+    private Function<Button, Void> registerEvent() {
+        return button -> {
+            DeactivatableElement clickableCell = new JavaFxButton(button);
+            ClickEvent makeMoveOnClick = new UserSelectsButtonForMove(guiPrompt, clickableCell);
+            registerClickEvent.register(clickableCell, makeMoveOnClick);
+            return null;
+        };
+    }
+
+    private Function<Button, Void> disable() {
+        return button -> {
+            DeactivatableElement clickableCell = new JavaFxButton(button);
+            clickableCell.setDisabled();
+            return null;
+        };
+
     }
 }

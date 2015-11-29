@@ -7,7 +7,6 @@ import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
 import static ttt.GameType.HUMAN_VS_HUMAN;
 import static ttt.player.PlayerSymbol.*;
-import static ttt.player.PlayerSymbol.X;
 
 public class GuiPromptTest {
     @Test
@@ -61,7 +60,6 @@ public class GuiPromptTest {
         guiPrompt.playMoveAt("0");
 
         assertThat(boardPresenter.hasIdentifiedAWin(), is(true));
-
     }
 
     @Test
@@ -76,6 +74,20 @@ public class GuiPromptTest {
         guiPrompt.playMoveAt("7");
 
         assertThat(boardPresenter.hasIdentifiedADraw(), is(true));
+    }
 
+    @Test
+    public void whenLastMoveCreatesWinningRowThenWinningMessageReported() {
+        Board board = new Board(
+                X, O, X,
+                O, O, X,
+                O, X, VACANT);
+        BoardPresenterSpy boardPresenter = new BoardPresenterSpy();
+        GuiPrompt guiPrompt = new GuiPrompt(boardPresenter, board);
+
+        guiPrompt.playMoveAt("8");
+
+        assertThat(boardPresenter.hasIdentifiedADraw(), is(false));
+        assertThat(boardPresenter.hasIdentifiedAWin(), is(true));
     }
 }

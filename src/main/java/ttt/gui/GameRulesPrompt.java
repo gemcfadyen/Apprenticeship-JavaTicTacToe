@@ -1,9 +1,9 @@
 package ttt.gui;
 
 import ttt.player.PlayerSymbol;
-import ttt.ui.Prompt;
+import ttt.ui.WritePrompt;
 
-public interface TemporaryGuiPrompt extends Prompt {
+public interface GameRulesPrompt extends WritePrompt {
     void playMoveAt(String move);
     PlayerSymbol getCurrentPlayer();
 }
