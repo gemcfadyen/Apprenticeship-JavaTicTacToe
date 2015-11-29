@@ -18,7 +18,7 @@ import java.util.List;
 public class TicTacToeBoardPresenter implements BoardPresenter {
     private RadioButton humanVsHumanRadioButton;
     private Scene scene;
-    private GuiPrompt guiPrompt;
+    private TemporaryGuiPrompt guiPrompt;
     private RegisterClickEvent registerClickEvent;
 
     public TicTacToeBoardPresenter(Scene scene) {
@@ -72,9 +72,9 @@ public class TicTacToeBoardPresenter implements BoardPresenter {
         for (Line line : rows) {
             PlayerSymbol[] symbols = line.getSymbols();
             for (int i = 0; i < symbols.length; i++) {
-                Button cell = createButton(String.valueOf(offset + i + 1), String.valueOf(i));
+                Button cell = createButton(String.valueOf(offset + i + 1), String.valueOf(i + offset));
 
-                ClickableElement clickableCell = new JavaFxButton(cell);
+                DeactivatableElement clickableCell = new JavaFxButton(cell);
                 ClickEvent makeMoveOnClick = new UserSelectsButtonForMove(guiPrompt, clickableCell);
                 registerClickEvent.register(clickableCell, makeMoveOnClick);
 
@@ -87,6 +87,16 @@ public class TicTacToeBoardPresenter implements BoardPresenter {
             displayColumnIndex = 2;
         }
         scene.setRoot(boardPane);
+
+    }
+
+    @Override
+    public void printsWinning(Board board, PlayerSymbol symbol) {
+
+    }
+
+    @Override
+    public void printsDraw(Board board) {
 
     }
 

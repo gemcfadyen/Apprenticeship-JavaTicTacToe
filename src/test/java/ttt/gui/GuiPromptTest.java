@@ -1,12 +1,13 @@
 package ttt.gui;
 
 import org.junit.Test;
-import ttt.GameType;
 import ttt.board.Board;
 
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
 import static ttt.GameType.HUMAN_VS_HUMAN;
+import static ttt.player.PlayerSymbol.*;
+import static ttt.player.PlayerSymbol.X;
 
 public class GuiPromptTest {
     @Test
@@ -17,15 +18,6 @@ public class GuiPromptTest {
 
         assertThat(boardPresenterSpy.hasPresentedGameTypes(), is(true));
     }
-
-//    @Test
-//    public void returnsHumanVsHumanGameType() {
-//        BoardPresenterSpy boardPresenterSpy = new BoardPresenterSpy();
-//        GuiPrompt guiPrompt = new GuiPrompt(boardPresenterSpy);
-//        GameType gameType = guiPrompt.readGameType();
-//
-//        assertThat(gameType, is(HUMAN_VS_HUMAN));
-//    }
 
     @Test
     public void displaysPromptForGridDimension() {
@@ -44,5 +36,46 @@ public class GuiPromptTest {
         guiPrompt.print(board);
 
         assertThat(boardPresenterSpy.hasDrawnBoard(), is(true));
+    }
+
+    @Test
+    public void playerMakesMove() {
+        Board board = new Board(3);
+        GuiPrompt guiPrompt = new GuiPrompt(new BoardPresenterSpy(), board);
+
+        guiPrompt.playMoveAt("7");
+
+        assertThat(board.getSymbolAt(7), is(X));
+        assertThat(guiPrompt.getCurrentPlayer(), is(O));
+    }
+
+    @Test
+    public void identifiesWin() {
+        Board board = new Board(
+                VACANT, X, X,
+                O, O, VACANT,
+                VACANT, VACANT, VACANT);
+        BoardPresenterSpy boardPresenter = new BoardPresenterSpy();
+        GuiPrompt guiPrompt = new GuiPrompt(boardPresenter, board);
+
+        guiPrompt.playMoveAt("0");
+
+        assertThat(boardPresenter.hasIdentifiedAWin(), is(true));
+
+    }
+
+    @Test
+    public void identifiesDraw() {
+        Board board = new Board(
+                X, O, X,
+                O, O, X,
+                X, VACANT, O);
+        BoardPresenterSpy boardPresenter = new BoardPresenterSpy();
+        GuiPrompt guiPrompt = new GuiPrompt(boardPresenter, board);
+
+        guiPrompt.playMoveAt("7");
+
+        assertThat(boardPresenter.hasIdentifiedADraw(), is(true));
+
     }
 }

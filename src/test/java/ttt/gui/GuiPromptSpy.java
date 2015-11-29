@@ -4,14 +4,17 @@ import ttt.GameType;
 import ttt.ReplayOption;
 import ttt.board.Board;
 import ttt.player.PlayerSymbol;
-import ttt.ui.Prompt;
 
-public class GuiPromptSpy implements Prompt {
+import static ttt.player.PlayerSymbol.X;
+
+public class GuiPromptSpy implements TemporaryGuiPrompt {
     private boolean promptedForGameDimension = false;
     private int numberOfTimesBoardIsPrinted = 0;
     private boolean promptedForGameType = false;
     private GameType chosenGameType;
     private int dimension;
+    private boolean gameIsStarted = false;
+    private int move;
 
     @Override
     public void presentGameTypes() {
@@ -81,5 +84,24 @@ public class GuiPromptSpy implements Prompt {
         }
 
         return false;
+    }
+
+    public boolean gameIsStarted() {
+        return gameIsStarted;
+    }
+
+    @Override
+    public void playMoveAt(String move) {
+        gameIsStarted = true;
+        this.move = Integer.valueOf(move);
+    }
+
+    @Override
+    public PlayerSymbol getCurrentPlayer() {
+        return X;
+    }
+
+    public int moveTaken() {
+        return move;
     }
 }

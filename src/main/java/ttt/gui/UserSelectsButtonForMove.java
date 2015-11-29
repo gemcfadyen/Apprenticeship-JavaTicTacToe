@@ -1,16 +1,29 @@
 package ttt.gui;
 
-public class UserSelectsButtonForMove implements ClickEvent {
-    private GuiPrompt guiPrompt;
-    private ClickableElement clickableElement;
+import ttt.player.PlayerSymbol;
 
-    public UserSelectsButtonForMove(GuiPrompt guiPrompt, ClickableElement clickableElement) {
+public class UserSelectsButtonForMove implements ClickEvent {
+    private TemporaryGuiPrompt guiPrompt;
+    private DeactivatableElement deactivableElement;
+    private boolean isActive = true;
+
+    public UserSelectsButtonForMove(TemporaryGuiPrompt guiPrompt, DeactivatableElement deactivatableElement) {
         this.guiPrompt = guiPrompt;
-        this.clickableElement = clickableElement;
+        this.deactivableElement = deactivatableElement;
     }
 
     @Override
     public void action() {
-        System.out.println("Selected cell: " + clickableElement.getText());
+        if (isActive) {
+            PlayerSymbol symbol = guiPrompt.getCurrentPlayer();
+            deactivableElement.setText(symbol.getSymbolForDisplay());
+            String id = deactivableElement.getId();
+            System.out.println("Player made move at " + id);
+            guiPrompt.playMoveAt(id);
+            deactivableElement.setDisabled();
+            //board presenter check for win
+
+            isActive = false;
+        }
     }
 }

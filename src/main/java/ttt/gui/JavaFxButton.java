@@ -2,7 +2,7 @@ package ttt.gui;
 
 import javafx.scene.control.Button;
 
-public class JavaFxButton implements ClickableElement {
+public class JavaFxButton implements DeactivatableElement {
     private Button button;
 
     public JavaFxButton(Button button) {
@@ -17,5 +17,20 @@ public class JavaFxButton implements ClickableElement {
     @Override
     public String getText() {
         return button.getText();
+    }
+
+    @Override
+    public void setDisabled() {
+        button.setDisable(true);
+    }
+
+    @Override
+    public void setText(String text) {
+        button.setText(text);
+    }
+
+    @Override
+    public String getId() {
+        return button.getId();
     }
 }
