@@ -35,7 +35,7 @@ public class GuiPrompt implements Prompt {
 
     @Override
     public void print(Board board) {
-
+        boardPresenter.presentsBoard(board);
     }
 
     @Override

@@ -16,5 +16,4 @@ public class GameControllerTest {
         gameController.presentGameTypes();
         assertThat(guiPrompt.hasPresentedGameTypes(), is(true));
     }
-
 }

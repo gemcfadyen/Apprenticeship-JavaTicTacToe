@@ -3,18 +3,28 @@ package ttt.gui;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.RadioButton;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.text.Text;
 import ttt.GameType;
+import ttt.board.Board;
+import ttt.board.Line;
+import ttt.player.PlayerSymbol;
+
+import java.util.List;
 
 public class TicTacToeBoardPresenter implements BoardPresenter {
     private RadioButton humanVsHumanRadioButton;
     private Scene scene;
+    private GuiPrompt guiPrompt;
+    private RegisterClickEvent registerClickEvent;
 
     public TicTacToeBoardPresenter(Scene scene) {
         this.scene = scene;
-//        this.scene.getStylesheets().add(JavaFxGui.class.getResource("presentation.css").toExternalForm());
+        guiPrompt = new GuiPrompt(this);
+        registerClickEvent = new RegisterClickEvent();
     }
 
     @Override
@@ -23,10 +33,8 @@ public class TicTacToeBoardPresenter implements BoardPresenter {
         setWelcomeMessage(gameTypePane);
         displayGameTypes(gameTypePane);
         ClickableElement gameSelectionButton = new JavaFxRadioButton(humanVsHumanRadioButton);
-        GuiPrompt guiPrompt = new GuiPrompt(this);
         ClickEvent gameSelectionOnClick = new UserSelectsGameType(guiPrompt, gameSelectionButton);
-        RegisterClickEvent registerGameSelectionLogic = new RegisterClickEvent();
-        registerGameSelectionLogic.register(gameSelectionButton, gameSelectionOnClick);
+        registerClickEvent.register(gameSelectionButton, gameSelectionOnClick);
         scene.setRoot(gameTypePane);
     }
 
@@ -38,16 +46,65 @@ public class TicTacToeBoardPresenter implements BoardPresenter {
         dimensionPrompt.setId("gameSetupId");
         RadioButton boardDimension = new RadioButton("3x3");
         boardDimension.setId("gameSetupSelectionId");
-
         dimensionPane.add(dimensionPrompt, 2, 2, 4, 1);
         dimensionPane.add(boardDimension, 2, 4, 4, 1);
+
+        ClickableElement dimensionSelectionButton = new JavaFxRadioButton(boardDimension);
+        ClickEvent boardDimensionOnClick = new UserSelectsBoardDimension(guiPrompt, dimensionSelectionButton);
+
+        registerClickEvent.register(dimensionSelectionButton, boardDimensionOnClick);
+
         scene.setRoot(dimensionPane);
+    }
+
+    @Override
+    public void presentsBoard(Board board) {
+        GridPane boardPane = new GridPane();
+        gridPaneSetup(boardPane);
+        List<Line> rows = board.getRows();
+
+        int displayRowIndex = 2;
+        int displayColumnIndex = 2;
+        int lineNumber = 0;
+        int offset = 0;
+        int dimension = rows.size();
+
+        for (Line line : rows) {
+            PlayerSymbol[] symbols = line.getSymbols();
+            for (int i = 0; i < symbols.length; i++) {
+                Button cell = createButton(String.valueOf(offset + i + 1), String.valueOf(i));
+
+                ClickableElement clickableCell = new JavaFxButton(cell);
+                ClickEvent makeMoveOnClick = new UserSelectsButtonForMove(guiPrompt, clickableCell);
+                registerClickEvent.register(clickableCell, makeMoveOnClick);
+
+                HBox gridLayout = new HBox(10);
+                gridLayout.getChildren().add(cell);
+                boardPane.add(gridLayout, displayColumnIndex++, displayRowIndex);
+            }
+            offset += dimension + lineNumber;
+            displayRowIndex++;
+            displayColumnIndex = 2;
+        }
+        scene.setRoot(boardPane);
+
+    }
+
+    private Button createButton(String text, String value) {
+        Button firstSquare = new Button(text);
+        firstSquare.setId(value);
+        firstSquare.setMinSize(100, 100);
+        return firstSquare;
     }
 
     private void setWelcomeMessage(GridPane gridPane) {
         Text gameTitle = new Text("Tic Tac Toe");
         gameTitle.setId("gameTitleId");
         gridPane.add(gameTitle, 0, 0, 6, 1);
+        gridPaneSetup(gridPane);
+    }
+
+    private void gridPaneSetup(GridPane gridPane) {
         gridPane.setAlignment(Pos.CENTER);
         gridPane.setHgap(10);
         gridPane.setVgap(10);

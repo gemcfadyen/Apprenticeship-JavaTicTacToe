@@ -11,6 +11,7 @@ public class GuiPromptSpy implements Prompt {
     private int numberOfTimesBoardIsPrinted = 0;
     private boolean promptedForGameType = false;
     private GameType chosenGameType;
+    private int dimension;
 
     @Override
     public void presentGameTypes() {
@@ -45,6 +46,7 @@ public class GuiPromptSpy implements Prompt {
 
     @Override
     public void print(Board board) {
+        this.dimension = board.getRows().size();
         numberOfTimesBoardIsPrinted++;
     }
 
@@ -63,6 +65,10 @@ public class GuiPromptSpy implements Prompt {
 
     public int getNumberOfTimesBoardIsPrinted() {
         return numberOfTimesBoardIsPrinted;
+    }
+
+    public int getDimension() {
+        return dimension;
     }
 
     public boolean hasPresentedGameTypes() {

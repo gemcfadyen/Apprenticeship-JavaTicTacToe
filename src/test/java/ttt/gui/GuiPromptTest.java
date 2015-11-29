@@ -36,13 +36,13 @@ public class GuiPromptTest {
         assertThat(boardPresenterSpy.hasPresentedGridDimensions(), is(true));
     }
 
-//    @Test
-//    public void displaysBoardOfSpecificSize() {
-//        BoardPresenterSpy boardPresenterSpy = new BoardPresenterSpy();
-//        GuiPrompt guiPrompt = new GuiPrompt(boardPresenterSpy);
-//        Board board = new Board(3);
-//        guiPrompt.print(board);
-//
-//        assertThat(boardPresenterSpy.hasPresentedGridDimensions(), is(true));
-//    }
+    @Test
+    public void displaysBoardOfSpecificSize() {
+        BoardPresenterSpy boardPresenterSpy = new BoardPresenterSpy();
+        GuiPrompt guiPrompt = new GuiPrompt(boardPresenterSpy);
+        Board board = new Board(3);
+        guiPrompt.print(board);
+
+        assertThat(boardPresenterSpy.hasDrawnBoard(), is(true));
+    }
 }
