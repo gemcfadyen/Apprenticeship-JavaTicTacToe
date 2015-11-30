@@ -8,6 +8,12 @@ import static org.junit.Assert.assertThat;
 public class GameTypeTest {
 
     @Test
+    public void getsHumanVsHumanGameTypeFromDisplayName() {
+        GameType gameType = GameType.of("Human vs Human");
+        assertThat(gameType, is(GameType.HUMAN_VS_HUMAN));
+    }
+
+    @Test
     public void getsHumanVsHumanGameType() {
         GameType gameType = GameType.of(1);
         assertThat(gameType, is(GameType.HUMAN_VS_HUMAN));

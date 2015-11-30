@@ -40,4 +40,8 @@ public enum GameType {
         }
         return HUMAN_VS_HUMAN;
     }
+
+    public static GameType of(String displayName) {
+        return HUMAN_VS_HUMAN;
+    }
 }
