@@ -128,7 +128,6 @@ public class TicTacToeBoardPresenter implements BoardPresenter {
 
         int displayRowIndex = 2;
         int displayColumnIndex = 2;
-        int lineNumber = 0;
         int offset = 0;
         int dimension = rows.size();
 
@@ -141,7 +140,7 @@ public class TicTacToeBoardPresenter implements BoardPresenter {
 
                 boardPane.add(configureHBox(cell), displayColumnIndex++, displayRowIndex);
             }
-            offset += dimension + lineNumber;
+            offset += dimension;
             displayRowIndex++;
             displayColumnIndex = 2;
         }

@@ -4,6 +4,9 @@ import ttt.GameType;
 import ttt.board.Board;
 import ttt.player.PlayerSymbol;
 
+import static ttt.player.PlayerSymbol.X;
+import static ttt.player.PlayerSymbol.opponent;
+
 public class GuiPrompt implements GameRulesPrompt {
     private BoardPresenter boardPresenter;
     private Board board;
@@ -11,13 +14,12 @@ public class GuiPrompt implements GameRulesPrompt {
 
     public GuiPrompt(BoardPresenter boardPresenter) {
         this.boardPresenter = boardPresenter;
-        this.currentPlayer = PlayerSymbol.X;
+        this.currentPlayer = X;
     }
 
     GuiPrompt(BoardPresenter boardPresenter, Board board) {
-        this.boardPresenter = boardPresenter;
+        this(boardPresenter);
         this.board = board;
-        this.currentPlayer = PlayerSymbol.X;
     }
 
     @Override
@@ -54,7 +56,7 @@ public class GuiPrompt implements GameRulesPrompt {
         } else if (!board.hasFreeSpace()) {
             printDrawMessage();
         }
-        currentPlayer = PlayerSymbol.opponent(currentPlayer);
+        currentPlayer = opponent(currentPlayer);
     }
 
     @Override
