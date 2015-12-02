@@ -23,6 +23,5 @@ public class JavaFxGui extends Application {
 
         GuiPrompt guiPrompt = new GuiPrompt(ticTacToeBoardPresenter);
         guiPrompt.presentGameTypes();
-
     }
 }
