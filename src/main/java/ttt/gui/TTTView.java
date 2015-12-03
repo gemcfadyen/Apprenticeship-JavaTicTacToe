@@ -58,7 +58,7 @@ public class TTTView implements WritePromptForGui {
         dimensionPane.add(boardDimension, 2, 4, 4, 1);
 
         ClickableElement dimensionSelectionButton = new JavaFxRadioButton(boardDimension);
-        ClickEvent boardDimensionOnClick = new UserSelectsBoardDimension(null, controller, dimensionSelectionButton);
+        ClickEvent boardDimensionOnClick = new UserSelectsBoardDimension(controller, dimensionSelectionButton);
 
         registerClickEvent.register(dimensionSelectionButton, boardDimensionOnClick);
 
