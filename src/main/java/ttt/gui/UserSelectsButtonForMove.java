@@ -16,8 +16,9 @@ public class UserSelectsButtonForMove implements ClickEvent {
 
     @Override
     public void action() {
-        if (isActive) {
+//        if (isActive) {
             controller.playMove(deactivatableElement.getId());
+//            deactivatableElement.setDisabled();
 //            controller.updateBoardToShow(symbol);
 //            PlayerSymbol symbol = gameRules.getCurrentPlayer();
 //            deactivatableElement.setText(symbol.getSymbolForDisplay());
@@ -32,8 +33,7 @@ public class UserSelectsButtonForMove implements ClickEvent {
 //            gameRules.togglePlayer();
 //            deactivatableElement.setText(symbol.getSymbolForDisplay());
 
-            deactivatableElement.setDisabled();
-            isActive = false;
+//            isActive = false;
         }
     }
-}
+//}

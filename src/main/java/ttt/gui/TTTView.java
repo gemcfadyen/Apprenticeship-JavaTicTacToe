@@ -16,6 +16,8 @@ import ttt.ui.WritePromptForGuiNew;
 import java.util.List;
 import java.util.function.Function;
 
+import static ttt.player.PlayerSymbol.*;
+
 public class TTTView implements WritePromptForGuiNew {
     private RadioButton humanVsHumanRadioButton;
     private TicTacToeBoardController controller;
@@ -72,10 +74,9 @@ public class TTTView implements WritePromptForGuiNew {
 
     @Override
     public void printBoard(Board board) {
-
         GridPane boardPane = new GridPane();
         gridPaneSetup(boardPane);
-        printBoardsOnPane(board, boardPane, getCellLabelForInitialBoard(), registerEvent());
+        printBoardsOnPane(board, boardPane, getCellLabelForWinningBoard(board), registerEvent());
 
         scene.setRoot(boardPane);
     }
@@ -83,6 +84,19 @@ public class TTTView implements WritePromptForGuiNew {
     @Override
     public void printDrawMessage() {
 
+    }
+
+    private Function getCellLabelForWinningBoard(Board board) {
+        Function<Integer, String> getLabel = index -> {
+            PlayerSymbol symbolAtIndex = board.getSymbolAt(index);
+
+            return (symbolAtIndex == VACANT)
+                    ? String.valueOf(index + 1)
+                    : symbolAtIndex.getSymbolForDisplay();
+
+        };
+
+        return getLabel;
     }
 
     private Function<Button, Void> registerEvent() {
@@ -121,6 +135,7 @@ public class TTTView implements WritePromptForGuiNew {
         humanVsHumanRadioButton.setId("gameSetupSelectionId");
         gridPane.add(humanVsHumanRadioButton, 2, 4, 4, 1);
     }
+
     private void printBoardsOnPane(Board board, GridPane boardPane, Function<Integer, String> labelForCell, Function<Button, Void> actionOnCell) {
         List<Line> rows = board.getRows();
 
@@ -133,7 +148,9 @@ public class TTTView implements WritePromptForGuiNew {
             PlayerSymbol[] symbols = line.getSymbols();
             for (int i = 0; i < symbols.length; i++) {
                 Button cell = createButton(labelForCell.apply(i + offset), String.valueOf(i + offset));
-
+                if (cell.getText() == X.name() || cell.getText() == O.name()) {
+                    cell.setDisable(true);
+                }
                 actionOnCell.apply(cell);
 
                 boardPane.add(configureHBox(cell), displayColumnIndex++, displayRowIndex);

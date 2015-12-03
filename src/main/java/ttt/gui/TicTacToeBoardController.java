@@ -70,6 +70,8 @@ public class TicTacToeBoardController implements TTTController {
         PlayerSymbol symbol = model.getCurrentPlayer();
 
         model.playMoveAt(id);
+        Board board = model.getBoard();
+        view.printBoard(board);
 //        view.updateBoardWith(symbol);
         if(model.hasWinner()) {
             view.printWinningMessageFor(symbol);
