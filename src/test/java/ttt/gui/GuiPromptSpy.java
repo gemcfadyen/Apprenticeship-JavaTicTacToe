@@ -13,7 +13,7 @@ public class GuiPromptSpy implements WritePromptForGui {
     private int numberOfTimesDrawPrinted = 0;
 
     @Override
-    public void presentGameTypes() {
+    public void presentGameTypes(String typeOfGame) {
     }
 
 

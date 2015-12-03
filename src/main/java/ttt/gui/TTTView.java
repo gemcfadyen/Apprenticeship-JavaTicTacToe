@@ -23,11 +23,11 @@ public class TTTView implements WritePromptForGui {
     }
 
     @Override
-    public void presentGameTypes() {
+    public void presentGameTypes(String typeOfGame) {
         GridPane gameTypePane = new GridPane();
         setWelcomeMessage(gameTypePane);
 
-        displayGameTypes(gameTypePane, "Human vs Human");
+        displayGameTypes(gameTypePane, typeOfGame);
 
         ClickableElement gameSelectionButton = new JavaFxRadioButton(humanVsHumanRadioButton);
         ClickEvent gameSelectionOnClick = new UserSelectsGameType(controller, gameSelectionButton);

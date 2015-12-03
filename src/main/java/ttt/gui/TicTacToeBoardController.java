@@ -12,7 +12,6 @@ import ttt.GameType;
 import ttt.board.Board;
 import ttt.board.Line;
 import ttt.player.PlayerSymbol;
-import ttt.ui.WritePromptForGui;
 
 import java.util.List;
 import java.util.function.Function;
@@ -39,17 +38,7 @@ public class TicTacToeBoardController implements TTTController {
     public void presentGameTypes() {
 
         GameType gameType = model.getGameTypes();
-        view.presentGameTypes();
-//        GridPane gameTypePane = new GridPane();
-//        setWelcomeMessage(gameTypePane);
-//
-//        displayGameTypes(gameTypePane);
-//
-//        ClickableElement gameSelectionButton = new JavaFxRadioButton(humanVsHumanRadioButton);
-//        ClickEvent gameSelectionOnClick = new UserSelectsGameType(this, gameSelectionButton);
-//        registerClickEvent.register(gameSelectionButton, gameSelectionOnClick);
-//
-//        scene.setRoot(gameTypePane);
+        view.presentGameTypes(gameType.gameNameForDisplay());
     }
 
     @Override

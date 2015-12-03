@@ -5,7 +5,7 @@ import ttt.player.PlayerSymbol;
 
 public interface WritePromptForGui {
 
-    void presentGameTypes();
+    void presentGameTypes(String typeOfGame);
 
     void presentBoardDimensionsFor(GameType gameType);
 
