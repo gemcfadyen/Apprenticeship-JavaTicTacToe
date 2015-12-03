@@ -16,12 +16,3 @@ public interface WritePromptForGuiNew {
     void printDrawMessage();
 
 }
-//    //read
-//    int readBoardDimension(GameType gameType);
-//
-//    GameType readGameType();
-//
-//    ReplayOption getReplayOption();
-//
-//    int getNextMove(Board board);
-//}

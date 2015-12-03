@@ -102,14 +102,10 @@ public class TTTView implements WritePromptForGuiNew {
     private Function<Button, Void> registerEvent() {
         return button -> {
             DeactivatableElement clickableCell = new JavaFxButton(button);
-            ClickEvent makeMoveOnClick = new UserSelectsButtonForMove(controller, null, clickableCell);
+            ClickEvent makeMoveOnClick = new UserSelectsButtonForMove(controller, clickableCell);
             registerClickEvent.register(clickableCell, makeMoveOnClick);
             return null;
         };
-    }
-
-    private Function<Integer, String> getCellLabelForInitialBoard() {
-        return index -> String.valueOf(index + 1);
     }
 
     private void gridPaneSetup(GridPane gridPane) {
