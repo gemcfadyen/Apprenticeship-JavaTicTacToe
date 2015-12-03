@@ -17,17 +17,20 @@ public class UserSelectsButtonForMove implements ClickEvent {
     @Override
     public void action() {
         if (isActive) {
-            PlayerSymbol symbol = gameRules.getCurrentPlayer();
-            deactivatableElement.setText(symbol.getSymbolForDisplay());
-
-            gameRules.playMoveAt(deactivatableElement.getId());
-
-            if(gameRules.hasWinner()) {
-                controller.printWinningMessageFor(symbol);
-            } else if(!gameRules.boardHasFreeSpace()) {
-                controller.printDrawMessage();
-            }
-            gameRules.togglePlayer();
+            controller.playMove(deactivatableElement.getId());
+//            controller.updateBoardToShow(symbol);
+//            PlayerSymbol symbol = gameRules.getCurrentPlayer();
+//            deactivatableElement.setText(symbol.getSymbolForDisplay());
+//
+//            gameRules.playMoveAt(deactivatableElement.getId());
+//
+//            if(gameRules.hasWinner()) {
+//                controller.printWinningMessageFor(symbol);
+//            } else if(!gameRules.boardHasFreeSpace()) {
+//                controller.printDrawMessage();
+//            }
+//            gameRules.togglePlayer();
+//            deactivatableElement.setText(symbol.getSymbolForDisplay());
 
             deactivatableElement.setDisabled();
             isActive = false;

@@ -12,4 +12,6 @@ public interface TTTController {
     void printWinningMessageFor(PlayerSymbol symbol);
 
     void presentBoard(String dimensionForBoard);
+
+    void playMove(String id);
 }

@@ -11,12 +11,12 @@ import javafx.scene.text.Text;
 import ttt.board.Board;
 import ttt.board.Line;
 import ttt.player.PlayerSymbol;
-import ttt.ui.WritePromptForGui;
+import ttt.ui.WritePromptForGuiNew;
 
 import java.util.List;
 import java.util.function.Function;
 
-public class TTTView implements WritePromptForGui {
+public class TTTView implements WritePromptForGuiNew {
     private RadioButton humanVsHumanRadioButton;
     private TicTacToeBoardController controller;
     private Scene scene;

@@ -11,13 +11,14 @@ import ttt.GameType;
 import ttt.board.Board;
 import ttt.board.Line;
 import ttt.player.PlayerSymbol;
+import ttt.ui.WritePromptForGuiNew;
 
 import java.util.List;
 import java.util.function.Function;
 
 public class TicTacToeBoardController implements TTTController {
 
-    private TTTView view;
+    private WritePromptForGuiNew view;
     private GameRules model;
 
     private Scene scene;
@@ -61,6 +62,22 @@ public class TicTacToeBoardController implements TTTController {
         model.initialiseGame(Integer.valueOf(dimensionForBoard).intValue());
         Board board = model.getBoard();
         view.printBoard(board);
+    }
+
+    @Override
+    public void playMove(String id) {
+
+        PlayerSymbol symbol = model.getCurrentPlayer();
+
+        model.playMoveAt(id);
+//        view.updateBoardWith(symbol);
+        if(model.hasWinner()) {
+            view.printWinningMessageFor(symbol);
+        } else if(!model.boardHasFreeSpace()) {
+            view.printDrawMessage();
+        }
+        model.togglePlayer();
+
     }
 
     public void printDrawMessage() {
