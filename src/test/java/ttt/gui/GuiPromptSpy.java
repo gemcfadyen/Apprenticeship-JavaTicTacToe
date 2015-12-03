@@ -1,6 +1,7 @@
 package ttt.gui;
 
 import ttt.GameType;
+import ttt.board.Board;
 import ttt.player.PlayerSymbol;
 import ttt.ui.WritePromptForGui;
 
@@ -24,7 +25,7 @@ public class GuiPromptSpy implements WritePromptForGui {
     }
 
     @Override
-    public void printBoard() {
+    public void printBoard(Board board) {
 //        this.dimension = board.getRows().size();
         numberOfTimesBoardIsPrinted++;
     }

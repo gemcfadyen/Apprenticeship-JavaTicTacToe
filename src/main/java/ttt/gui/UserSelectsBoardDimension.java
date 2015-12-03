@@ -17,7 +17,8 @@ public class UserSelectsBoardDimension implements ClickEvent {
         String dimension = dimensionSelectionButton.getText();
         String dimensionForBoard = String.valueOf(dimension.charAt(0));
 
-        gameRules.createBoard(Integer.valueOf(dimensionForBoard));
-        controller.printBoard();
+        controller.presentBoard(dimensionForBoard);
+//        gameRules.createBoard(Integer.valueOf(dimensionForBoard));
+//        controller.printBoard();
     }
 }

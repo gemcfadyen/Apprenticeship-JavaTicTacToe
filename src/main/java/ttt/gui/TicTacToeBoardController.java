@@ -68,15 +68,6 @@ public class TicTacToeBoardController implements TTTController {
     }
 
     @Override
-    public void printBoard() {
-        GridPane boardPane = new GridPane();
-        gridPaneSetup(boardPane);
-        printBoardsOnPane(model.getBoard(), boardPane, getCellLabelForInitialBoard(), registerEvent());
-
-        scene.setRoot(boardPane);
-    }
-
-    @Override
     public void printWinningMessageFor(PlayerSymbol symbol) {
         GridPane gameOverPane = new GridPane();
         gridPaneSetup(gameOverPane);
@@ -89,6 +80,19 @@ public class TicTacToeBoardController implements TTTController {
         gameOverPane.add(gameOverTarget, 2, 7, 6, 1);
 
         scene.setRoot(gameOverPane);
+    }
+
+    @Override
+    public void presentBoard(String dimensionForBoard) {
+
+        Board board = model.getBoard();
+        view.printBoard(board);
+//
+//        GridPane boardPane = new GridPane();
+//        gridPaneSetup(boardPane);
+//        printBoardsOnPane(board, boardPane, getCellLabelForInitialBoard(), registerEvent());
+//
+//        scene.setRoot(boardPane);
     }
 
     public void printDrawMessage() {

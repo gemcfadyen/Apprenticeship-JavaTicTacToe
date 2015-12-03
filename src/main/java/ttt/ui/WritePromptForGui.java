@@ -1,6 +1,7 @@
 package ttt.ui;
 
 import ttt.GameType;
+import ttt.board.Board;
 import ttt.player.PlayerSymbol;
 
 public interface WritePromptForGui {
@@ -11,7 +12,7 @@ public interface WritePromptForGui {
 
     void printWinningMessageFor(PlayerSymbol symbol);
 
-    void printBoard();
+    void printBoard(Board board);
 
     void printDrawMessage();
 

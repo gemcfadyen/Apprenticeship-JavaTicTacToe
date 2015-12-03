@@ -3,11 +3,18 @@ package ttt.gui;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.RadioButton;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.text.Text;
+import ttt.board.Board;
+import ttt.board.Line;
 import ttt.player.PlayerSymbol;
 import ttt.ui.WritePromptForGui;
+
+import java.util.List;
+import java.util.function.Function;
 
 public class TTTView implements WritePromptForGui {
     private RadioButton humanVsHumanRadioButton;
@@ -64,13 +71,31 @@ public class TTTView implements WritePromptForGui {
     }
 
     @Override
-    public void printBoard() {
+    public void printBoard(Board board) {
 
+        GridPane boardPane = new GridPane();
+        gridPaneSetup(boardPane);
+        printBoardsOnPane(board, boardPane, getCellLabelForInitialBoard(), registerEvent());
+
+        scene.setRoot(boardPane);
     }
 
     @Override
     public void printDrawMessage() {
 
+    }
+
+    private Function<Button, Void> registerEvent() {
+        return button -> {
+            DeactivatableElement clickableCell = new JavaFxButton(button);
+            ClickEvent makeMoveOnClick = new UserSelectsButtonForMove(controller, null, clickableCell);
+            registerClickEvent.register(clickableCell, makeMoveOnClick);
+            return null;
+        };
+    }
+
+    private Function<Integer, String> getCellLabelForInitialBoard() {
+        return index -> String.valueOf(index + 1);
     }
 
     private void gridPaneSetup(GridPane gridPane) {
@@ -95,6 +120,42 @@ public class TTTView implements WritePromptForGui {
         humanVsHumanRadioButton = new RadioButton(typeOfGame);
         humanVsHumanRadioButton.setId("gameSetupSelectionId");
         gridPane.add(humanVsHumanRadioButton, 2, 4, 4, 1);
+    }
+    private void printBoardsOnPane(Board board, GridPane boardPane, Function<Integer, String> labelForCell, Function<Button, Void> actionOnCell) {
+        List<Line> rows = board.getRows();
+
+        int displayRowIndex = 2;
+        int displayColumnIndex = 2;
+        int offset = 0;
+        int dimension = rows.size();
+
+        for (Line line : rows) {
+            PlayerSymbol[] symbols = line.getSymbols();
+            for (int i = 0; i < symbols.length; i++) {
+                Button cell = createButton(labelForCell.apply(i + offset), String.valueOf(i + offset));
+
+                actionOnCell.apply(cell);
+
+                boardPane.add(configureHBox(cell), displayColumnIndex++, displayRowIndex);
+            }
+            offset += dimension;
+            displayRowIndex++;
+            displayColumnIndex = 2;
+        }
+    }
+
+    private Button createButton(String text, String value) {
+        Button cell = new Button(text);
+        cell.setId(value);
+        cell.setMinSize(100, 100);
+        return cell;
+    }
+
+    private HBox configureHBox(Button cell) {
+        HBox gridLayout = new HBox(10);
+        gridLayout.setAlignment(Pos.CENTER);
+        gridLayout.getChildren().add(cell);
+        return gridLayout;
     }
 
 }
