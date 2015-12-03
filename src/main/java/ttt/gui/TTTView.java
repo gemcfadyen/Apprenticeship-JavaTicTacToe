@@ -6,7 +6,6 @@ import javafx.scene.Scene;
 import javafx.scene.control.RadioButton;
 import javafx.scene.layout.GridPane;
 import javafx.scene.text.Text;
-import ttt.GameType;
 import ttt.player.PlayerSymbol;
 import ttt.ui.WritePromptForGui;
 
@@ -37,7 +36,7 @@ public class TTTView implements WritePromptForGui {
     }
 
     @Override
-    public void presentBoardDimensionsFor(GameType gameType) {
+    public void presentBoardDimensions(String dimension) {
 
         GridPane dimensionPane = new GridPane();
         setWelcomeMessage(dimensionPane);
@@ -45,7 +44,7 @@ public class TTTView implements WritePromptForGui {
         Text dimensionPrompt = new Text("Choose a board dimension");
         dimensionPrompt.setId("gameSetupId");
 
-        RadioButton boardDimension = new RadioButton("3x3");
+        RadioButton boardDimension = new RadioButton(dimension);
         boardDimension.setId("gameSetupSelectionId");
 
         dimensionPane.add(dimensionPrompt, 2, 2, 4, 1);

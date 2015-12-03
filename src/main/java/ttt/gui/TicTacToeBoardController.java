@@ -44,8 +44,8 @@ public class TicTacToeBoardController implements TTTController {
     @Override
     public void presentBoardDimensionsFor(GameType gameType) {
 
-//        String dimension = model.getDimension(gameType);
-        view.presentBoardDimensionsFor(gameType);
+        String dimension = model.getDimension(gameType);
+        view.presentBoardDimensions(dimension);
 //        GridPane dimensionPane = new GridPane();
 //        setWelcomeMessage(dimensionPane);
 //
@@ -204,9 +204,9 @@ public class TicTacToeBoardController implements TTTController {
 
     }
 
-    @Override
-    public void displayDimensionPanel(GameType gameType) {
-        String dimension = model.getDimension(gameType);
-        view.presentBoardDimensionsFor(gameType);
-    }
+//    @Override
+//    public void displayDimensionPanel(GameType gameType) {
+//        String dimension = model.getDimension(gameType);
+//        view.presentBoardDimensions(gameType);
+//    }
 }

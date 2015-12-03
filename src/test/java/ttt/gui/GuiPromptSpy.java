@@ -18,8 +18,8 @@ public class GuiPromptSpy implements WritePromptForGui {
 
 
     @Override
-    public void presentBoardDimensionsFor(GameType gameType) {
-        this.chosenGameType = gameType;
+    public void presentBoardDimensions(String dimension) {
+//        this.chosenGameType = dimension;
         promptedForGameDimension = true;
     }
 

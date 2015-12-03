@@ -7,7 +7,7 @@ public interface WritePromptForGui {
 
     void presentGameTypes(String typeOfGame);
 
-    void presentBoardDimensionsFor(GameType gameType);
+    void presentBoardDimensions(String gameType);
 
     void printWinningMessageFor(PlayerSymbol symbol);
 

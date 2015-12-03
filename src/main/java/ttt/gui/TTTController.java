@@ -5,7 +5,7 @@ import ttt.player.PlayerSymbol;
 
 public interface TTTController {
 
-    void displayDimensionPanel(GameType gameType);
+//    void displayDimensionPanel(GameType gameType);
 
     void printBoard();
 
