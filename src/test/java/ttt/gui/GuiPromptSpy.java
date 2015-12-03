@@ -1,18 +1,19 @@
 package ttt.gui;
 
 import ttt.GameType;
+import ttt.ReplayOption;
 import ttt.board.Board;
 import ttt.player.PlayerSymbol;
+import ttt.ui.Prompt;
+import ttt.ui.WritePromptForGui;
 
-import static ttt.player.PlayerSymbol.X;
-
-public class GuiPromptSpy implements GameRulesPrompt {
+public class GuiPromptSpy implements WritePromptForGui {
     private boolean promptedForGameDimension = false;
     private int numberOfTimesBoardIsPrinted = 0;
     private GameType chosenGameType;
     private int dimension;
-    private boolean gameIsStarted = false;
-    private int move;
+    private int numberOfTimesWinPrinted = 0;
+    private int numberOfTimesDrawPrinted = 0;
 
     @Override
     public void presentGameTypes() {
@@ -25,28 +26,19 @@ public class GuiPromptSpy implements GameRulesPrompt {
     }
 
     @Override
-    public void print(Board board) {
-        this.dimension = board.getRows().size();
+    public void printBoard() {
+//        this.dimension = board.getRows().size();
         numberOfTimesBoardIsPrinted++;
     }
 
     @Override
     public void printWinningMessageFor(PlayerSymbol symbol) {
+        numberOfTimesWinPrinted++;
     }
 
     @Override
     public void printDrawMessage() {
-    }
-
-    @Override
-    public void playMoveAt(String move) {
-        gameIsStarted = true;
-        this.move = Integer.valueOf(move);
-    }
-
-    @Override
-    public PlayerSymbol getCurrentPlayer() {
-        return X;
+        numberOfTimesDrawPrinted++;
     }
 
     public boolean hasPresentedGridDimensions() {
@@ -65,11 +57,12 @@ public class GuiPromptSpy implements GameRulesPrompt {
         return gameType.equals(chosenGameType.gameNameForDisplay());
     }
 
-    public boolean gameIsStarted() {
-        return gameIsStarted;
+    public int numberOfTimesWinPrinted() {
+        return numberOfTimesWinPrinted;
     }
 
-    public int moveTaken() {
-        return move;
+    public int numberOfTimesDrawPrinted() {
+        return numberOfTimesDrawPrinted;
     }
+
 }

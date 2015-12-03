@@ -13,4 +13,6 @@ public interface GameInterface {
     boolean boardHasFreeSpace();
 
     void togglePlayer();
+
+    void createBoard(int dimension);
 }

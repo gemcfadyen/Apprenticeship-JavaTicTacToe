@@ -9,6 +9,8 @@ import javafx.scene.text.Text;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import ttt.board.BoardFactory;
+import ttt.player.PlayerFactory;
 
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
@@ -22,13 +24,18 @@ public class GameIsPlayedThroughTheGuiTest {
     }
 
     @Before
-    public void setup(){
+    public void setup() {
         scene = new Scene(new GridPane(), 700, 700);
     }
 
     @Test
     public void playersTakeTurnsUntilGameIsWon() throws Exception {
-        TicTacToeBoardPresenter boardPresenter = new TicTacToeBoardPresenter(scene);
+        TicTacToeBoardPresenter boardPresenter = new TicTacToeBoardPresenter(
+                new GameRules(
+                        new PlayerFactory(),
+                        null,
+                        new BoardFactory()
+                ), scene);
         boardPresenter.presentGameTypes();
 
         selectHumanVsHumanGameType(scene);

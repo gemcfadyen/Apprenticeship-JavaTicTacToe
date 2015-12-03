@@ -1,24 +1,34 @@
 package ttt.gui;
 
 import ttt.player.PlayerSymbol;
+import ttt.ui.WritePromptForGui;
 
 public class UserSelectsButtonForMove implements ClickEvent {
-    private GameRulesPrompt guiPrompt;
+    private WritePromptForGui prompt;
+    private GameInterface gameRules;
     private DeactivatableElement deactivatableElement;
     private boolean isActive = true;
 
-    public UserSelectsButtonForMove(GameRulesPrompt guiPrompt, DeactivatableElement deactivatableElement) {
-        this.guiPrompt = guiPrompt;
+    public UserSelectsButtonForMove(WritePromptForGui prompt, GameInterface gameRules, DeactivatableElement deactivatableElement) {
+        this.prompt = prompt;
+        this.gameRules = gameRules;
         this.deactivatableElement = deactivatableElement;
     }
 
     @Override
     public void action() {
         if (isActive) {
-            PlayerSymbol symbol = guiPrompt.getCurrentPlayer();
+            PlayerSymbol symbol = gameRules.getCurrentPlayer();
             deactivatableElement.setText(symbol.getSymbolForDisplay());
 
-            guiPrompt.playMoveAt(deactivatableElement.getId());
+            gameRules.playMoveAt(deactivatableElement.getId());
+
+            if(gameRules.hasWinner()) {
+                prompt.printWinningMessageFor(symbol);
+            } else if(!gameRules.boardHasFreeSpace()) {
+                prompt.printDrawMessage();
+            }
+            gameRules.togglePlayer();
 
             deactivatableElement.setDisabled();
             isActive = false;

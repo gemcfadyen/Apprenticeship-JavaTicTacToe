@@ -12,19 +12,20 @@ import ttt.GameType;
 import ttt.board.Board;
 import ttt.board.Line;
 import ttt.player.PlayerSymbol;
+import ttt.ui.WritePromptForGui;
 
 import java.util.List;
 import java.util.function.Function;
 
-public class TicTacToeBoardPresenter implements BoardPresenter {
+public class TicTacToeBoardPresenter implements WritePromptForGui {
     private RadioButton humanVsHumanRadioButton;
     private Scene scene;
-    private GameRulesPrompt guiPrompt;
     private RegisterClickEvent registerClickEvent;
+    private GameRules gameRules;
 
-    public TicTacToeBoardPresenter(Scene scene) {
+    public TicTacToeBoardPresenter(GameRules gameRules, Scene scene) {
+        this.gameRules = gameRules;
         this.scene = scene;
-        guiPrompt = new GuiPrompt(this);
         registerClickEvent = new RegisterClickEvent();
     }
 
@@ -36,14 +37,14 @@ public class TicTacToeBoardPresenter implements BoardPresenter {
         displayGameTypes(gameTypePane);
 
         ClickableElement gameSelectionButton = new JavaFxRadioButton(humanVsHumanRadioButton);
-        ClickEvent gameSelectionOnClick = new UserSelectsGameType(guiPrompt, gameSelectionButton);
+        ClickEvent gameSelectionOnClick = new UserSelectsGameType(this, gameSelectionButton);
         registerClickEvent.register(gameSelectionButton, gameSelectionOnClick);
 
         scene.setRoot(gameTypePane);
     }
 
     @Override
-    public void presentGridDimensionsFor(GameType gameType) {
+    public void presentBoardDimensionsFor(GameType gameType) {
         GridPane dimensionPane = new GridPane();
         setWelcomeMessage(dimensionPane);
 
@@ -57,7 +58,7 @@ public class TicTacToeBoardPresenter implements BoardPresenter {
         dimensionPane.add(boardDimension, 2, 4, 4, 1);
 
         ClickableElement dimensionSelectionButton = new JavaFxRadioButton(boardDimension);
-        ClickEvent boardDimensionOnClick = new UserSelectsBoardDimension(guiPrompt, dimensionSelectionButton);
+        ClickEvent boardDimensionOnClick = new UserSelectsBoardDimension(gameRules, this, dimensionSelectionButton);
 
         registerClickEvent.register(dimensionSelectionButton, boardDimensionOnClick);
 
@@ -65,19 +66,20 @@ public class TicTacToeBoardPresenter implements BoardPresenter {
     }
 
     @Override
-    public void presentsBoard(Board board) {
+    public void printBoard() {
         GridPane boardPane = new GridPane();
         gridPaneSetup(boardPane);
-        printBoardsOnPane(board, boardPane, getCellLabelForInitialBoard(), registerEvent());
+        printBoardsOnPane(gameRules.getBoard(), boardPane, getCellLabelForInitialBoard(), registerEvent());
 
         scene.setRoot(boardPane);
     }
 
     @Override
-    public void printsWinning(Board board, PlayerSymbol symbol) {
+    public void printWinningMessageFor(PlayerSymbol symbol) {
         GridPane gameOverPane = new GridPane();
         gridPaneSetup(gameOverPane);
 
+        Board board = gameRules.getBoard();
         printBoardsOnPane(board, gameOverPane, getCellLabelForWinningBoard(board), disable());
 
         Text gameOverTarget = new Text("Game Over, " + symbol.getSymbolForDisplay() + " won");
@@ -88,10 +90,11 @@ public class TicTacToeBoardPresenter implements BoardPresenter {
     }
 
     @Override
-    public void printsDraw(Board board) {
+    public void printDrawMessage() {
         GridPane gameOverPane = new GridPane();
         gridPaneSetup(gameOverPane);
 
+        Board board = gameRules.getBoard();
         printBoardsOnPane(board, gameOverPane, getCellLabelForDrawnBoard(board), disable());
 
         Text gameOverTarget = new Text("Game Over, No winner");
@@ -185,7 +188,7 @@ public class TicTacToeBoardPresenter implements BoardPresenter {
     private Function<Button, Void> registerEvent() {
         return button -> {
             DeactivatableElement clickableCell = new JavaFxButton(button);
-            ClickEvent makeMoveOnClick = new UserSelectsButtonForMove(guiPrompt, clickableCell);
+            ClickEvent makeMoveOnClick = new UserSelectsButtonForMove(this, gameRules, clickableCell);
             registerClickEvent.register(clickableCell, makeMoveOnClick);
             return null;
         };

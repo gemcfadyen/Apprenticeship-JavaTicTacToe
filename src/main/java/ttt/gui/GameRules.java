@@ -12,21 +12,23 @@ public class GameRules implements GameInterface {
     private static final int PLAYER_ONE_INDEX = 0;
     private static final int PLAYER_TWO_INDEX = 1;
     private int currentPlayerIndex = PLAYER_ONE_INDEX;
+    private BoardFactory boardFactory;
+    private PlayerFactory playerFactory;
     private Board board;
     private Player[] players;
     private GameType gameType;
 
-    public GameRules() {
-
+    GameRules(Board board, Player[] players) {
+        this.board = board;
+        this.players = players;
     }
 
-    public GameRules(Prompt playerPrompt,
-                     PlayerFactory playerFactory,
-                     BoardFactory boardFactory,
-                     GameType gameType,
-                     int dimension) {
-        board = boardFactory.createBoardWithSize(dimension);
-        players = playerFactory.createPlayers(gameType, playerPrompt, dimension);
+
+    public GameRules(PlayerFactory playerFactory,
+                     Prompt gamePrompt,
+                     BoardFactory boardFactory) {
+        this.playerFactory = playerFactory;
+        this.boardFactory = boardFactory;
 
     }
 
@@ -54,7 +56,15 @@ public class GameRules implements GameInterface {
 
     public void togglePlayer() {
         currentPlayerIndex =
-                currentPlayerIndex == PLAYER_ONE_INDEX ? PLAYER_TWO_INDEX : PLAYER_ONE_INDEX;
+                currentPlayerIndex == PLAYER_ONE_INDEX
+                        ? PLAYER_TWO_INDEX
+                        : PLAYER_ONE_INDEX;
+    }
+
+    @Override
+    public void createBoard(int dimension) {
+        board = boardFactory.createBoardWithSize(dimension);
+        players = playerFactory.createPlayers(gameType, null, dimension);
     }
 
     //TODO added in spike mode

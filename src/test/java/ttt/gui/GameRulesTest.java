@@ -3,27 +3,20 @@ package ttt.gui;
 import org.hamcrest.Matchers;
 import org.junit.Test;
 import ttt.BoardFactoryStub;
+import ttt.GameType;
 import ttt.board.Board;
-import ttt.board.BoardFactory;
 import ttt.player.PlayerFactory;
 import ttt.player.PlayerSymbol;
 
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
-import static ttt.GameType.HUMAN_VS_HUMAN;
 import static ttt.player.PlayerSymbol.*;
 
 public class GameRulesTest {
     @Test
     public void getCurrentPlayer() {
         Board board = new Board(3);
-        GameRules gamesRules = new GameRules(
-                new GuiPromptSpy(),
-                new PlayerFactory(),
-                new BoardFactoryStub(board),
-                HUMAN_VS_HUMAN,
-                3
-        );
+        GameRules gamesRules = new GameRules(board, new PlayerFactory().createPlayers(GameType.HUMAN_VS_HUMAN, null, 3));
 
         assertThat(gamesRules.getCurrentPlayer(), is(X));
     }
@@ -31,76 +24,12 @@ public class GameRulesTest {
     @Test
     public void playerMakesMove() {
         Board board = new Board(3);
-        GameRules gamesRules = new GameRules(
-                new GuiPromptSpy(),
-                new PlayerFactory(),
-                new BoardFactoryStub(board),
-                HUMAN_VS_HUMAN,
-                3
-        );
+        GameRules gamesRules = new GameRules(board, new PlayerFactory().createPlayers(GameType.HUMAN_VS_HUMAN, null, 3));
 
         gamesRules.playMoveAt("7");
 
         assertThat(board.getSymbolAt(7), is(X));
-//        assertThat(gamesRules.getCurrentPlayer(), is(O));
     }
-
-//    @Test
-//    public void identifiesWin() {
-//        Board board = new Board(
-//                VACANT, X, X,
-//                O, O, VACANT,
-//                VACANT, VACANT, VACANT);
-//        BoardFactory boardFactory = new BoardFactoryStub(board);
-//        GuiPromptSpy playerPrompt = new GuiPromptSpy();
-//        GameRules gameRules = new GameRules(
-//                playerPrompt,
-//                new PlayerFactory(),
-//                boardFactory,
-//                HUMAN_VS_HUMAN,
-//                3);
-//
-//        gameRules.playMoveAt("0");
-//
-//        assertThat(playerPrompt.numberOfTimesWinPrinted(), is(1));
-//    }
-
-//    @Test
-//    public void identifiesDraw() {
-//        Board board = new Board(
-//                X, O, X,
-//                O, O, X,
-//                X, VACANT, O);
-//        GuiPromptSpy playerPrompt = new GuiPromptSpy();
-//        GameRules gameRules = new GameRules(playerPrompt,
-//                new PlayerFactory(),
-//                new BoardFactoryStub(board),
-//                HUMAN_VS_HUMAN,
-//                3);
-//
-//        gameRules.playMoveAt("7");
-//
-//        assertThat(playerPrompt.numberOfTimesDrawPrinted(), is(1));
-//    }
-
-//    @Test
-//    public void whenLastMoveCreatesWinningRowThenWinningMessageReported() {
-//        Board board = new Board(
-//                X, O, X,
-//                O, O, X,
-//                O, X, VACANT);
-//        GuiPromptSpy playerPrompt = new GuiPromptSpy();
-//        GameRules gameRules = new GameRules(playerPrompt,
-//                new PlayerFactory(),
-//                new BoardFactoryStub(board),
-//                HUMAN_VS_HUMAN,
-//                3);
-//
-//        gameRules.playMoveAt("8");
-//
-//        assertThat(playerPrompt.numberOfTimesWinPrinted(), is(1));
-//        assertThat(playerPrompt.numberOfTimesDrawPrinted(), is(0));
-//    }
 
     @Test
     public void gameHasWinner() {
@@ -108,12 +37,7 @@ public class GameRulesTest {
                 X, O, X,
                 O, O, X,
                 O, X, X);
-        GuiPromptSpy playerPrompt = new GuiPromptSpy();
-        GameRules gameRules = new GameRules(playerPrompt,
-                new PlayerFactory(),
-                new BoardFactoryStub(board),
-                HUMAN_VS_HUMAN,
-                3);
+        GameRules gameRules = new GameRules(board, new PlayerFactory().createPlayers(GameType.HUMAN_VS_HUMAN, null, 3));
 
         boolean hasWinner = gameRules.hasWinner();
 
@@ -126,12 +50,7 @@ public class GameRulesTest {
                 X, O, X,
                 O, O, X,
                 O, X, VACANT);
-        GuiPromptSpy playerPrompt = new GuiPromptSpy();
-        GameRules gameRules = new GameRules(playerPrompt,
-                new PlayerFactory(),
-                new BoardFactoryStub(board),
-                HUMAN_VS_HUMAN,
-                3);
+        GameRules gameRules = new GameRules(board, new PlayerFactory().createPlayers(GameType.HUMAN_VS_HUMAN, null, 3));
 
         boolean hasFreeSpace = gameRules.boardHasFreeSpace();
 
@@ -144,12 +63,7 @@ public class GameRulesTest {
                 X, O, X,
                 O, O, X,
                 O, X, VACANT);
-        GuiPromptSpy playerPrompt = new GuiPromptSpy();
-        GameRules gameRules = new GameRules(playerPrompt,
-                new PlayerFactory(),
-                new BoardFactoryStub(board),
-                HUMAN_VS_HUMAN,
-                3);
+        GameRules gameRules = new GameRules(board, new PlayerFactory().createPlayers(GameType.HUMAN_VS_HUMAN, null, 3));
 
         boolean hasWinner = gameRules.hasWinner();
 
@@ -159,13 +73,7 @@ public class GameRulesTest {
     @Test
     public void togglesPlayer() {
         Board board = new Board(3);
-        GameRules gamesRules = new GameRules(
-                new GuiPromptSpy(),
-                new PlayerFactory(),
-                new BoardFactoryStub(board),
-                HUMAN_VS_HUMAN,
-                3
-        );
+        GameRules gamesRules = new GameRules(board, new PlayerFactory().createPlayers(GameType.HUMAN_VS_HUMAN, null, 3));
 
         PlayerSymbol currentPlayer = gamesRules.getCurrentPlayer();
         gamesRules.togglePlayer();

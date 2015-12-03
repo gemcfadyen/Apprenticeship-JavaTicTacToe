@@ -1,13 +1,13 @@
 package ttt.gui;
 
 import ttt.GameType;
-import ttt.ui.WritePrompt;
+import ttt.ui.WritePromptForGui;
 
 public class UserSelectsGameType implements ClickEvent {
-    private WritePrompt guiPrompt;
+    private WritePromptForGui guiPrompt;
     private ClickableElement selectedRadioBox;
 
-    public UserSelectsGameType(WritePrompt guiPrompt, ClickableElement selectedRadioBox) {
+    public UserSelectsGameType(WritePromptForGui guiPrompt, ClickableElement selectedRadioBox) {
         this.guiPrompt = guiPrompt;
         this.selectedRadioBox = selectedRadioBox;
     }

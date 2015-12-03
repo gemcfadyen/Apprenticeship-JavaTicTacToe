@@ -3,11 +3,11 @@ package ttt.gui;
 import ttt.GameType;
 import ttt.board.Board;
 import ttt.player.PlayerSymbol;
+import ttt.ui.WritePrompt;
 
 import static ttt.player.PlayerSymbol.X;
-import static ttt.player.PlayerSymbol.opponent;
 
-public class GuiPrompt implements GameRulesPrompt {
+public class GuiPrompt implements WritePrompt {
     private BoardPresenter boardPresenter;
     private Board board;
     private PlayerSymbol currentPlayer;
@@ -46,21 +46,5 @@ public class GuiPrompt implements GameRulesPrompt {
     @Override
     public void presentBoardDimensionsFor(GameType gameType) {
         boardPresenter.presentGridDimensionsFor(gameType);
-    }
-
-    @Override
-    public void playMoveAt(String move) {
-        board.updateAt(Integer.valueOf(move), currentPlayer);
-        if (board.hasWinningCombination()) {
-            printWinningMessageFor(currentPlayer);
-        } else if (!board.hasFreeSpace()) {
-            printDrawMessage();
-        }
-        currentPlayer = opponent(currentPlayer);
-    }
-
-    @Override
-    public PlayerSymbol getCurrentPlayer() {
-        return currentPlayer;
     }
 }
