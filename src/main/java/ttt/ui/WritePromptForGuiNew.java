@@ -13,6 +13,6 @@ public interface WritePromptForGuiNew {
 
     void printBoard(Board board);
 
-    void printDrawMessage();
+    void printDrawMessage(Board board);
 
 }

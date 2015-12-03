@@ -91,8 +91,21 @@ public class TTTView implements WritePromptForGuiNew {
     }
 
     @Override
-    public void printDrawMessage() {
+    public void printDrawMessage(Board board) {
+        GridPane gameOverPane = new GridPane();
+        gridPaneSetup(gameOverPane);
 
+        printBoardsOnPane(board, gameOverPane, getCellLabelForDrawnBoard(board), disable());
+
+        Text gameOverTarget = new Text("Game Over, No winner");
+        gameOverTarget.setId("gameOverTargetId");
+        gameOverPane.add(gameOverTarget, 2, 7, 6, 1);
+        scene.setRoot(gameOverPane);
+    }
+
+    private Function getCellLabelForDrawnBoard(Board board) {
+        Function<Integer, String> getLabel = index -> board.getSymbolAt(index).getSymbolForDisplay();
+        return getLabel;
     }
 
     private Function<Button, Void> disable() {
