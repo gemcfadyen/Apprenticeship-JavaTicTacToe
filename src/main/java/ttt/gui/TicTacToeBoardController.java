@@ -74,7 +74,7 @@ public class TicTacToeBoardController implements TTTController {
         view.printBoard(board);
 //        view.updateBoardWith(symbol);
         if(model.hasWinner()) {
-            view.printWinningMessageFor(symbol);
+            view.printWinningMessageFor(symbol, board);
         } else if(!model.boardHasFreeSpace()) {
             view.printDrawMessage();
         }

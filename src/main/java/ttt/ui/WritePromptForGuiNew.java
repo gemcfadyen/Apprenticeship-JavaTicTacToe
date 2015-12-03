@@ -9,7 +9,7 @@ public interface WritePromptForGuiNew {
 
     void presentBoardDimensions(String gameType);
 
-    void printWinningMessageFor(PlayerSymbol symbol);
+    void printWinningMessageFor(PlayerSymbol symbol, Board board);
 
     void printBoard(Board board);
 

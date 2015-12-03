@@ -68,8 +68,17 @@ public class TTTView implements WritePromptForGuiNew {
     }
 
     @Override
-    public void printWinningMessageFor(PlayerSymbol symbol) {
+    public void printWinningMessageFor(PlayerSymbol symbol, Board board) {
+        GridPane gameOverPane = new GridPane();
+        gridPaneSetup(gameOverPane);
 
+        printBoardsOnPane(board, gameOverPane, getCellLabelForWinningBoard(board), disable());
+
+        Text gameOverTarget = new Text("Game Over, " + symbol.getSymbolForDisplay() + " won");
+        gameOverTarget.setId("gameOverTargetId");
+        gameOverPane.add(gameOverTarget, 2, 7, 6, 1);
+
+        scene.setRoot(gameOverPane);
     }
 
     @Override
@@ -83,6 +92,15 @@ public class TTTView implements WritePromptForGuiNew {
 
     @Override
     public void printDrawMessage() {
+
+    }
+
+    private Function<Button, Void> disable() {
+        return button -> {
+            DeactivatableElement clickableCell = new JavaFxButton(button);
+            clickableCell.setDisabled();
+            return null;
+        };
 
     }
 
