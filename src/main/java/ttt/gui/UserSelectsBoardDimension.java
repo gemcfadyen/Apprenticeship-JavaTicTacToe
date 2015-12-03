@@ -4,12 +4,12 @@ import ttt.ui.WritePromptForGui;
 
 public class UserSelectsBoardDimension implements ClickEvent {
     private final GameInterface gameRules;
-    private WritePromptForGui guiPrompt;
+    private TTTController controller;
     private ClickableElement dimensionSelectionButton;
 
-    public UserSelectsBoardDimension(GameInterface gameRules, WritePromptForGui guiPrompt, ClickableElement dimensionSelectionButton) {
+    public UserSelectsBoardDimension(GameInterface gameRules, TTTController controller, ClickableElement dimensionSelectionButton) {
         this.gameRules = gameRules;
-        this.guiPrompt = guiPrompt;
+        this.controller = controller;
         this.dimensionSelectionButton = dimensionSelectionButton;
     }
 
@@ -19,6 +19,7 @@ public class UserSelectsBoardDimension implements ClickEvent {
         String dimensionForBoard = String.valueOf(dimension.charAt(0));
 
         gameRules.createBoard(Integer.valueOf(dimensionForBoard));
-        guiPrompt.printBoard();
+        controller.printBoard();
+//        guiPrompt.printBoard();
     }
 }

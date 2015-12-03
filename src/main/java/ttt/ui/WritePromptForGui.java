@@ -1,13 +1,11 @@
 package ttt.ui;
 
 import ttt.GameType;
-import ttt.ReplayOption;
-import ttt.board.Board;
 import ttt.player.PlayerSymbol;
 
 public interface WritePromptForGui {
 
-    void presentGameTypes(String typeOfGame);
+    void presentGameTypes();
 
     void presentBoardDimensionsFor(GameType gameType);
 

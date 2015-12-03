@@ -73,8 +73,9 @@ public class GameRules implements GameInterface {
     }
 
     @Override
-    public String getDimension() {
-        return "3x3";
+    public String getDimension(GameType gameType) {
+        return String.valueOf(gameType.dimensionUpperBoundary());
+//        return "3x3";
     }
 
     //TODO added in spike mode

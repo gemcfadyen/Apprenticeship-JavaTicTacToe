@@ -37,10 +37,10 @@ public class TicTacToeBoardController implements TTTController, WritePromptForGu
     }
 
     @Override
-    public void presentGameTypes(String ignoreMe) {
+    public void presentGameTypes() {
 
         GameType gameType = model.getGameTypes();
-        view.presentGameTypes(gameType.gameNameForDisplay());
+        view.presentGameTypes();
 //        GridPane gameTypePane = new GridPane();
 //        setWelcomeMessage(gameTypePane);
 //
@@ -55,25 +55,28 @@ public class TicTacToeBoardController implements TTTController, WritePromptForGu
 
     @Override
     public void presentBoardDimensionsFor(GameType gameType) {
-        GridPane dimensionPane = new GridPane();
-        setWelcomeMessage(dimensionPane);
 
-        Text dimensionPrompt = new Text("Choose a board dimension");
-        dimensionPrompt.setId("gameSetupId");
-        String dimensions = model.getDimension();
-
-        RadioButton boardDimension = new RadioButton(dimensions);
-        boardDimension.setId("gameSetupSelectionId");
-
-        dimensionPane.add(dimensionPrompt, 2, 2, 4, 1);
-        dimensionPane.add(boardDimension, 2, 4, 4, 1);
-
-        ClickableElement dimensionSelectionButton = new JavaFxRadioButton(boardDimension);
-        ClickEvent boardDimensionOnClick = new UserSelectsBoardDimension(model, this, dimensionSelectionButton);
-
-        registerClickEvent.register(dimensionSelectionButton, boardDimensionOnClick);
-
-        scene.setRoot(dimensionPane);
+//        String dimension = model.getDimension(gameType);
+        view.presentBoardDimensionsFor(gameType);
+//        GridPane dimensionPane = new GridPane();
+//        setWelcomeMessage(dimensionPane);
+//
+//        Text dimensionPrompt = new Text("Choose a board dimension");
+//        dimensionPrompt.setId("gameSetupId");
+//        String dimensions = model.getDimension();
+//
+//        RadioButton boardDimension = new RadioButton(dimensions);
+//        boardDimension.setId("gameSetupSelectionId");
+//
+//        dimensionPane.add(dimensionPrompt, 2, 2, 4, 1);
+//        dimensionPane.add(boardDimension, 2, 4, 4, 1);
+//
+//        ClickableElement dimensionSelectionButton = new JavaFxRadioButton(boardDimension);
+//        ClickEvent boardDimensionOnClick = new UserSelectsBoardDimension(model, this, dimensionSelectionButton);
+//
+//        registerClickEvent.register(dimensionSelectionButton, boardDimensionOnClick);
+//
+//        scene.setRoot(dimensionPane);
     }
 
     @Override
@@ -216,6 +219,7 @@ public class TicTacToeBoardController implements TTTController, WritePromptForGu
 
     @Override
     public void displayDimensionPanel(GameType gameType) {
+        String dimension = model.getDimension(gameType);
         view.presentBoardDimensionsFor(gameType);
     }
 }

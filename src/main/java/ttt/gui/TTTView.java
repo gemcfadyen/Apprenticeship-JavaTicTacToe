@@ -23,11 +23,11 @@ public class TTTView implements WritePromptForGui {
     }
 
     @Override
-    public void presentGameTypes(String typeOfGame) {
+    public void presentGameTypes() {
         GridPane gameTypePane = new GridPane();
         setWelcomeMessage(gameTypePane);
 
-        displayGameTypes(gameTypePane, typeOfGame);
+        displayGameTypes(gameTypePane, "Human vs Human");
 
         ClickableElement gameSelectionButton = new JavaFxRadioButton(humanVsHumanRadioButton);
         ClickEvent gameSelectionOnClick = new UserSelectsGameType(controller, gameSelectionButton);
@@ -52,7 +52,7 @@ public class TTTView implements WritePromptForGui {
         dimensionPane.add(boardDimension, 2, 4, 4, 1);
 
         ClickableElement dimensionSelectionButton = new JavaFxRadioButton(boardDimension);
-        ClickEvent boardDimensionOnClick = new UserSelectsBoardDimension(null, this, dimensionSelectionButton);
+        ClickEvent boardDimensionOnClick = new UserSelectsBoardDimension(null, controller, dimensionSelectionButton);
 
         registerClickEvent.register(dimensionSelectionButton, boardDimensionOnClick);
 

@@ -36,7 +36,7 @@ public class GameIsPlayedThroughTheGuiTest {
                         null,
                         new BoardFactory()
                 ), scene);
-        boardPresenter.presentGameTypes("Human vs Human");
+        boardPresenter.presentGameTypes();
 
         selectHumanVsHumanGameType(scene);
         select3x3Grid(scene);
