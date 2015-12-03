@@ -78,7 +78,6 @@ public class GameRules implements GameInterface {
 //        return "3x3";
     }
 
-    //TODO added in spike mode
     public Board getBoard() {
         return board;
     }
