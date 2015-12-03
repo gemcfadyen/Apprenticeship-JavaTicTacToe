@@ -84,7 +84,7 @@ public class TicTacToeBoardController implements TTTController {
 
     @Override
     public void presentBoard(String dimensionForBoard) {
-        model.createBoard(Integer.valueOf(dimensionForBoard).intValue());
+        model.initialiseGame(Integer.valueOf(dimensionForBoard).intValue());
         Board board = model.getBoard();
         view.printBoard(board);
 //

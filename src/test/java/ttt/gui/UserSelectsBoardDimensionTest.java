@@ -63,7 +63,7 @@ public class UserSelectsBoardDimensionTest {
 //        }
 //
 //        @Override
-//        public void createBoard(int dimension) {
+//        public void initialiseGame(int dimension) {
 //            boardCreated = true;
 //        }
 //

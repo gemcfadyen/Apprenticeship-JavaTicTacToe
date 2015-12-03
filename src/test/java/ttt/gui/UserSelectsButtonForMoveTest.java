@@ -159,7 +159,7 @@ public class UserSelectsButtonForMoveTest {
 //        }
 //
 //        @Override
-//        public void createBoard(int dimension) {
+//        public void initialiseGame(int dimension) {
 //
 //        }
 //
@@ -211,7 +211,7 @@ public class UserSelectsButtonForMoveTest {
 //        }
 //
 //        @Override
-//        public void createBoard(int dimension) {
+//        public void initialiseGame(int dimension) {
 //
 //        }
 //

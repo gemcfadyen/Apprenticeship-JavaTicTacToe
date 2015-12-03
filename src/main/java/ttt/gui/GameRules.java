@@ -62,7 +62,7 @@ public class GameRules implements GameInterface {
     }
 
     @Override
-    public void createBoard(int dimension) {
+    public void initialiseGame(int dimension) {
         board = boardFactory.createBoardWithSize(dimension);
         players = playerFactory.createPlayers(gameType, null, dimension);
     }

@@ -15,7 +15,7 @@ public interface GameInterface {
 
     void togglePlayer();
 
-    void createBoard(int dimension);
+    void initialiseGame(int dimension);
 
     GameType getGameTypes();
 
