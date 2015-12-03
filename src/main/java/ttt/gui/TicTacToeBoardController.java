@@ -18,7 +18,7 @@ import java.util.List;
 import java.util.function.Function;
 
 //controller
-public class TicTacToeBoardController implements TTTController, WritePromptForGui {
+public class TicTacToeBoardController implements TTTController {
 
     private TTTView view;
     private GameRules model;
@@ -36,7 +36,6 @@ public class TicTacToeBoardController implements TTTController, WritePromptForGu
         registerClickEvent = new RegisterClickEvent();
     }
 
-    @Override
     public void presentGameTypes() {
 
         GameType gameType = model.getGameTypes();
@@ -103,7 +102,6 @@ public class TicTacToeBoardController implements TTTController, WritePromptForGu
         scene.setRoot(gameOverPane);
     }
 
-    @Override
     public void printDrawMessage() {
         GridPane gameOverPane = new GridPane();
         gridPaneSetup(gameOverPane);

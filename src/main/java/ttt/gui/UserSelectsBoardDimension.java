@@ -1,6 +1,5 @@
 package ttt.gui;
 
-import ttt.ui.WritePromptForGui;
 
 public class UserSelectsBoardDimension implements ClickEvent {
     private final GameInterface gameRules;
@@ -20,6 +19,5 @@ public class UserSelectsBoardDimension implements ClickEvent {
 
         gameRules.createBoard(Integer.valueOf(dimensionForBoard));
         controller.printBoard();
-//        guiPrompt.printBoard();
     }
 }

@@ -1,16 +1,15 @@
 package ttt.gui;
 
 import ttt.player.PlayerSymbol;
-import ttt.ui.WritePromptForGui;
 
 public class UserSelectsButtonForMove implements ClickEvent {
-    private WritePromptForGui prompt;
+    private TicTacToeBoardController controller;
     private GameInterface gameRules;
     private DeactivatableElement deactivatableElement;
     private boolean isActive = true;
 
-    public UserSelectsButtonForMove(WritePromptForGui prompt, GameInterface gameRules, DeactivatableElement deactivatableElement) {
-        this.prompt = prompt;
+    public UserSelectsButtonForMove(TicTacToeBoardController controller, GameInterface gameRules, DeactivatableElement deactivatableElement) {
+        this.controller = controller;
         this.gameRules = gameRules;
         this.deactivatableElement = deactivatableElement;
     }
@@ -24,9 +23,9 @@ public class UserSelectsButtonForMove implements ClickEvent {
             gameRules.playMoveAt(deactivatableElement.getId());
 
             if(gameRules.hasWinner()) {
-                prompt.printWinningMessageFor(symbol);
+                controller.printWinningMessageFor(symbol);
             } else if(!gameRules.boardHasFreeSpace()) {
-                prompt.printDrawMessage();
+                controller.printDrawMessage();
             }
             gameRules.togglePlayer();
 
