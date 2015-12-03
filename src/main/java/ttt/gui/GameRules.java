@@ -67,6 +67,16 @@ public class GameRules implements GameInterface {
         players = playerFactory.createPlayers(gameType, null, dimension);
     }
 
+    @Override
+    public GameType getGameTypes() {
+        return GameType.HUMAN_VS_HUMAN;
+    }
+
+    @Override
+    public String getDimension() {
+        return "3x3";
+    }
+
     //TODO added in spike mode
     public Board getBoard() {
         return board;

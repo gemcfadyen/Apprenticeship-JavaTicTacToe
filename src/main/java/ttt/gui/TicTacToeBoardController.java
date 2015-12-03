@@ -17,7 +17,8 @@ import ttt.ui.WritePromptForGui;
 import java.util.List;
 import java.util.function.Function;
 
-public class TicTacToeBoardPresenter implements WritePromptForGui {
+//controller
+public class TicTacToeBoardController implements TTTController, WritePromptForGui {
 
     private TTTView view;
     private GameRules model;
@@ -27,18 +28,19 @@ public class TicTacToeBoardPresenter implements WritePromptForGui {
     private Scene scene;
     private RegisterClickEvent registerClickEvent;
 
-    public TicTacToeBoardPresenter(GameRules model, Scene scene) {
+    public TicTacToeBoardController(GameRules model, Scene scene) {
 
         this.model = model;
         this.scene = scene;
-        this.view = new TTTView(scene);
+        this.view = new TTTView(this, scene);
         registerClickEvent = new RegisterClickEvent();
     }
 
     @Override
-    public void presentGameTypes() {
+    public void presentGameTypes(String ignoreMe) {
 
-        view.presentGameTypes();
+        GameType gameType = model.getGameTypes();
+        view.presentGameTypes(gameType.gameNameForDisplay());
 //        GridPane gameTypePane = new GridPane();
 //        setWelcomeMessage(gameTypePane);
 //
@@ -58,8 +60,9 @@ public class TicTacToeBoardPresenter implements WritePromptForGui {
 
         Text dimensionPrompt = new Text("Choose a board dimension");
         dimensionPrompt.setId("gameSetupId");
+        String dimensions = model.getDimension();
 
-        RadioButton boardDimension = new RadioButton("3x3");
+        RadioButton boardDimension = new RadioButton(dimensions);
         boardDimension.setId("gameSetupSelectionId");
 
         dimensionPane.add(dimensionPrompt, 2, 2, 4, 1);
@@ -209,5 +212,10 @@ public class TicTacToeBoardPresenter implements WritePromptForGui {
             return null;
         };
 
+    }
+
+    @Override
+    public void displayDimensionPanel(GameType gameType) {
+        view.presentBoardDimensionsFor(gameType);
     }
 }

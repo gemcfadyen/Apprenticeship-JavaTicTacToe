@@ -1,5 +1,6 @@
 package ttt.gui;
 
+import ttt.GameType;
 import ttt.player.PlayerSymbol;
 
 public interface GameInterface {
@@ -15,4 +16,8 @@ public interface GameInterface {
     void togglePlayer();
 
     void createBoard(int dimension);
+
+    GameType getGameTypes();
+
+    String getDimension();
 }

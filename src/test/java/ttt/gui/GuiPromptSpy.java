@@ -1,10 +1,7 @@
 package ttt.gui;
 
 import ttt.GameType;
-import ttt.ReplayOption;
-import ttt.board.Board;
 import ttt.player.PlayerSymbol;
-import ttt.ui.Prompt;
 import ttt.ui.WritePromptForGui;
 
 public class GuiPromptSpy implements WritePromptForGui {
@@ -16,8 +13,9 @@ public class GuiPromptSpy implements WritePromptForGui {
     private int numberOfTimesDrawPrinted = 0;
 
     @Override
-    public void presentGameTypes() {
+    public void presentGameTypes(String typeOfGame) {
     }
+
 
     @Override
     public void presentBoardDimensionsFor(GameType gameType) {

@@ -1,20 +1,19 @@
 package ttt.gui;
 
 import ttt.GameType;
-import ttt.ui.WritePromptForGui;
 
 public class UserSelectsGameType implements ClickEvent {
-    private WritePromptForGui guiPrompt;
+    private TTTController controller;
     private ClickableElement selectedRadioBox;
 
-    public UserSelectsGameType(WritePromptForGui guiPrompt, ClickableElement selectedRadioBox) {
-        this.guiPrompt = guiPrompt;
+    public UserSelectsGameType(TTTController controller, ClickableElement selectedRadioBox) {
+        this.controller = controller;
         this.selectedRadioBox = selectedRadioBox;
     }
 
     @Override
     public void action() {
-        guiPrompt.presentBoardDimensionsFor(
+        controller.displayDimensionPanel(
                 GameType.of(selectedRadioBox.getText()));
     }
 }

@@ -30,13 +30,13 @@ public class GameIsPlayedThroughTheGuiTest {
 
     @Test
     public void playersTakeTurnsUntilGameIsWon() throws Exception {
-        TicTacToeBoardPresenter boardPresenter = new TicTacToeBoardPresenter(
+        TicTacToeBoardController boardPresenter = new TicTacToeBoardController(
                 new GameRules(
                         new PlayerFactory(),
                         null,
                         new BoardFactory()
                 ), scene);
-        boardPresenter.presentGameTypes();
+        boardPresenter.presentGameTypes("Human vs Human");
 
         selectHumanVsHumanGameType(scene);
         select3x3Grid(scene);

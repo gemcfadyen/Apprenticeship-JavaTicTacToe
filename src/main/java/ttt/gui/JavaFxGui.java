@@ -22,7 +22,7 @@ public class JavaFxGui extends Application {
         primaryStage.show();
 
         GameRules gameRules = new GameRules(new PlayerFactory(), null, new BoardFactory());
-        TicTacToeBoardPresenter ticTacToeBoardPresenter = new TicTacToeBoardPresenter(gameRules, scene);
-        ticTacToeBoardPresenter.presentGameTypes();
+        TicTacToeBoardController ticTacToeBoardController = new TicTacToeBoardController(gameRules, scene);
+        ticTacToeBoardController.presentGameTypes("Human vs Human");
     }
 }

@@ -12,23 +12,25 @@ import ttt.ui.WritePromptForGui;
 
 public class TTTView implements WritePromptForGui {
     private RadioButton humanVsHumanRadioButton;
+    private TicTacToeBoardController controller;
     private Scene scene;
     private RegisterClickEvent registerClickEvent;
 
-    public TTTView(Scene scene) {
+    public TTTView(TicTacToeBoardController controller, Scene scene) {
+        this.controller = controller;
         this.scene = scene;
         registerClickEvent = new RegisterClickEvent();
     }
 
     @Override
-    public void presentGameTypes() {
+    public void presentGameTypes(String typeOfGame) {
         GridPane gameTypePane = new GridPane();
         setWelcomeMessage(gameTypePane);
 
-        displayGameTypes(gameTypePane);
+        displayGameTypes(gameTypePane, typeOfGame);
 
         ClickableElement gameSelectionButton = new JavaFxRadioButton(humanVsHumanRadioButton);
-        ClickEvent gameSelectionOnClick = new UserSelectsGameType(this, gameSelectionButton);
+        ClickEvent gameSelectionOnClick = new UserSelectsGameType(controller, gameSelectionButton);
         registerClickEvent.register(gameSelectionButton, gameSelectionOnClick);
 
         scene.setRoot(gameTypePane);
@@ -37,6 +39,24 @@ public class TTTView implements WritePromptForGui {
     @Override
     public void presentBoardDimensionsFor(GameType gameType) {
 
+        GridPane dimensionPane = new GridPane();
+        setWelcomeMessage(dimensionPane);
+
+        Text dimensionPrompt = new Text("Choose a board dimension");
+        dimensionPrompt.setId("gameSetupId");
+
+        RadioButton boardDimension = new RadioButton("3x3");
+        boardDimension.setId("gameSetupSelectionId");
+
+        dimensionPane.add(dimensionPrompt, 2, 2, 4, 1);
+        dimensionPane.add(boardDimension, 2, 4, 4, 1);
+
+        ClickableElement dimensionSelectionButton = new JavaFxRadioButton(boardDimension);
+        ClickEvent boardDimensionOnClick = new UserSelectsBoardDimension(null, this, dimensionSelectionButton);
+
+        registerClickEvent.register(dimensionSelectionButton, boardDimensionOnClick);
+
+        scene.setRoot(dimensionPane);
     }
 
     @Override
@@ -68,11 +88,12 @@ public class TTTView implements WritePromptForGui {
         gridPaneSetup(gridPane);
     }
 
-    private void displayGameTypes(GridPane gridPane) {
+    private void displayGameTypes(GridPane gridPane, String typeOfGame) {
         Text gameSelectionPrompt = new Text("Choose a game type");
         gameSelectionPrompt.setId("gameSetupId");
         gridPane.add(gameSelectionPrompt, 2, 2, 4, 1);
-        humanVsHumanRadioButton = new RadioButton("Human vs Human");
+
+        humanVsHumanRadioButton = new RadioButton(typeOfGame);
         humanVsHumanRadioButton.setId("gameSetupSelectionId");
         gridPane.add(humanVsHumanRadioButton, 2, 4, 4, 1);
     }
