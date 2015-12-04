@@ -9,7 +9,7 @@ public interface TTTController {
 
     void presentBoardDimensionsFor(GameType gameType);
 
-    void printWinningMessageFor(PlayerSymbol symbol);
+//    void printWinningMessageFor(PlayerSymbol symbol);
 
     void presentBoard(String dimensionForBoard);
 
