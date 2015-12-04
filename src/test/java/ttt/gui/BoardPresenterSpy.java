@@ -9,6 +9,7 @@ public class BoardPresenterSpy implements BoardPresenter {
     private boolean hasDisplayedBoard = false;
     private boolean hasPrintedWinningBoard = false;
     private boolean hasPrintedGameIsDrawn = false;
+    private PlayerSymbol winningSymbol;
 
     @Override
     public void presentGameTypes(String gameType) {
@@ -27,6 +28,7 @@ public class BoardPresenterSpy implements BoardPresenter {
 
     @Override
     public void printsWinning(Board board, PlayerSymbol symbol) {
+        winningSymbol = symbol;
         hasPrintedWinningBoard = true;
     }
 
@@ -53,5 +55,9 @@ public class BoardPresenterSpy implements BoardPresenter {
 
     public boolean hasIdentifiedADraw() {
         return hasPrintedGameIsDrawn;
+    }
+
+    public PlayerSymbol getWinningSymbol() {
+        return winningSymbol;
     }
 }

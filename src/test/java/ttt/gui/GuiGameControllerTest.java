@@ -1,10 +1,12 @@
 package ttt.gui;
 
 import org.junit.Test;
+import ttt.player.PlayerSymbol;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 import static ttt.GameType.HUMAN_VS_HUMAN;
+import static ttt.player.PlayerSymbol.*;
 
 public class GuiGameControllerTest {
     @Test
@@ -76,5 +78,21 @@ public class GuiGameControllerTest {
         assertThat(gameRulesSpy.hasToggledPlayers(), is(true));
         assertThat(gameRulesSpy.getPositionOfMove(), is("1"));
         assertThat(boardPresenterSpy.hasDrawnBoard(), is(true));
+    }
+
+    @Test
+    public void gameHasWinner() {
+        BoardPresenterSpy boardPresenterSpy = new BoardPresenterSpy();
+        TicTacToeRulesSpy gameRulesSpy = new TicTacToeRulesSpy();
+
+        ViewFactory viewFactoryStub = (gameController, gameRules) -> boardPresenterSpy;
+
+        GuiGameController controller = new GuiGameController(gameRulesSpy, viewFactoryStub);
+        controller.playMove("1");
+
+        assertThat(gameRulesSpy.gameCheckedForWin(), is(true));
+        assertThat(gameRulesSpy.hasGotCurrentPlayer(), is(true));
+        assertThat(boardPresenterSpy.hasIdentifiedAWin(), is(true));
+        assertThat(boardPresenterSpy.getWinningSymbol(), is(X));
     }
 }

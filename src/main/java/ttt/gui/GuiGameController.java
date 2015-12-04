@@ -36,8 +36,13 @@ public class GuiGameController implements GameController {
     @Override
     public void playMove(String position) {
         ticTacToeRules.playMoveAt(position);
-        ticTacToeRules.togglePlayer();
         Board board = ticTacToeRules.getBoard();
         boardView.presentsBoard(board);
+
+        if (ticTacToeRules.hasWinner()) {
+            boardView.printsWinning(board, ticTacToeRules.getCurrentPlayer());
+        }
+
+        ticTacToeRules.togglePlayer();
     }
 }

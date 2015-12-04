@@ -12,6 +12,8 @@ public class TicTacToeRulesSpy implements GameRules {
     private boolean hasMadeMove = false;
     private String positionOfMove;
     private boolean hasToggledPlayer = false;
+    private boolean winnerChecked = false;
+    private boolean hasGotCurrentPlayer = false;
 
     @Override
     public void playMoveAt(String move) {
@@ -21,12 +23,14 @@ public class TicTacToeRulesSpy implements GameRules {
 
     @Override
     public PlayerSymbol getCurrentPlayer() {
-        return null;
+        hasGotCurrentPlayer = true;
+        return PlayerSymbol.X;
     }
 
     @Override
     public boolean hasWinner() {
-        return false;
+        winnerChecked = true;
+        return true;
     }
 
     @Override
@@ -87,5 +91,13 @@ public class TicTacToeRulesSpy implements GameRules {
 
     public boolean hasToggledPlayers() {
         return hasToggledPlayer;
+    }
+
+    public boolean gameCheckedForWin() {
+        return winnerChecked;
+    }
+
+    public boolean hasGotCurrentPlayer() {
+        return hasGotCurrentPlayer;
     }
 }
