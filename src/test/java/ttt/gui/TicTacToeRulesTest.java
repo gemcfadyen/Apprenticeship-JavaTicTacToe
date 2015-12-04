@@ -3,8 +3,10 @@ package ttt.gui;
 import org.junit.Test;
 import ttt.BoardFactoryStub;
 import ttt.GameType;
+import ttt.PlayerFactoryStub;
 import ttt.board.Board;
 import ttt.board.BoardFactory;
+import ttt.player.HumanPlayer;
 import ttt.player.Player;
 import ttt.player.PlayerFactory;
 import ttt.player.PlayerSymbol;
@@ -115,7 +117,31 @@ public class TicTacToeRulesTest {
 
         String dimension = gamesRules.getDimension(HUMAN_VS_HUMAN);
 
-        assertThat(dimension, is("5"));
+        assertThat(dimension, is("3"));
+    }
+
+    @Test
+    public void gameTypeIsSet() {
+        PlayerFactorySpy playerFactorySpy = new PlayerFactorySpy();
+        TicTacToeRules gamesRules = new TicTacToeRules(new BoardFactory(), playerFactorySpy);
+
+        gamesRules.storeGameType(HUMAN_VS_HUMAN);
+        gamesRules.initialiseGame("3");
+
+        assertThat(playerFactorySpy.getGameTypeUsed(), is(HUMAN_VS_HUMAN));
+    }
+
+    @Test
+    public void initialisesGame() {
+        Board board = new Board(
+                X, O, X,
+                O, X, O,
+                VACANT, VACANT, X
+        );
+
+        TicTacToeRules ticTacToeRules = new TicTacToeRules(new BoardFactoryStub(board), new PlayerFactoryStub(new HumanPlayer(X, null), new HumanPlayer(O, null)));
+        ticTacToeRules.initialiseGame("3");
+        assertThat(ticTacToeRules.getBoard(), is(board));
     }
 
     @Test

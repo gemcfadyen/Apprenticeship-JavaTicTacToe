@@ -15,6 +15,7 @@ public class TicTacToeRules implements GameRules {
     private Board board;
     private Player[] players;
     private int currentPlayerIndex = PLAYER_ONE_INDEX;
+    private GameType gameType;
 
     public TicTacToeRules(Board board, Player[] players) {
         this.board = board;
@@ -22,7 +23,6 @@ public class TicTacToeRules implements GameRules {
     }
 
     public TicTacToeRules(BoardFactory boardFactory, PlayerFactory playerFactory) {
-
         this.boardFactory = boardFactory;
         this.playerFactory = playerFactory;
     }
@@ -52,7 +52,9 @@ public class TicTacToeRules implements GameRules {
 
     @Override
     public void initialiseGame(String dimension) {
-        board = boardFactory.createBoardWithSize(Integer.valueOf(dimension));
+        Integer boardDimension = Integer.valueOf(dimension);
+        board = boardFactory.createBoardWithSize(boardDimension);
+        players = playerFactory.createPlayers(gameType, null, boardDimension);
     }
 
     public GameType getGameTypes() {
@@ -64,8 +66,14 @@ public class TicTacToeRules implements GameRules {
         return String.valueOf(gameType.dimensionUpperBoundary());
     }
 
+
     @Override
     public Board getBoard() {
         return board;
+    }
+
+    @Override
+    public void storeGameType(GameType gameType) {
+        this.gameType = gameType;
     }
 }

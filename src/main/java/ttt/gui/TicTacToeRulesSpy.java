@@ -8,6 +8,7 @@ public class TicTacToeRulesSpy implements GameRules {
     private boolean hasGotGameTypes = false;
     private boolean hasGotBoardDimensions = false;
     private boolean hasInitialisedGame = false;
+    private boolean hasStoredGameType = false;
 
     @Override
     public void playMoveAt(String move) {
@@ -51,6 +52,11 @@ public class TicTacToeRulesSpy implements GameRules {
         return null;
     }
 
+    @Override
+    public void storeGameType(GameType gameType) {
+        hasStoredGameType = true;
+    }
+
     public boolean hasObtainedGameTypes() {
         return hasGotGameTypes;
     }
@@ -61,5 +67,9 @@ public class TicTacToeRulesSpy implements GameRules {
 
     public boolean hasInitialisedGame() {
         return hasInitialisedGame;
+    }
+
+    public boolean hasStoredGameType() {
+        return hasStoredGameType;
     }
 }

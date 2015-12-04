@@ -49,5 +49,18 @@ public class GuiGameControllerTest {
         assertThat(gameRulesSpy.hasInitialisedGame(), is(true));
     }
 
+    @Test
+    public void setsGameType() {
+        BoardPresenterSpy boardPresenterSpy = new BoardPresenterSpy();
+        TicTacToeRulesSpy gameRulesSpy = new TicTacToeRulesSpy();
+
+        ViewFactory viewFactoryStub = (gameController, gameRules) -> boardPresenterSpy;
+
+        GuiGameController controller = new GuiGameController(gameRulesSpy, viewFactoryStub);
+        controller.presentBoardDimensionsFor(HUMAN_VS_HUMAN);
+
+        assertThat(gameRulesSpy.hasStoredGameType(), is(true));
+    }
+
 
 }

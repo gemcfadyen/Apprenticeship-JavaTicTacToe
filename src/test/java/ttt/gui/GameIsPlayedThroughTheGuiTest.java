@@ -9,8 +9,7 @@ import javafx.scene.text.Text;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import ttt.GameType;
-import ttt.board.Board;
+import ttt.board.BoardFactory;
 import ttt.player.PlayerFactory;
 
 import static org.hamcrest.Matchers.is;
@@ -31,9 +30,7 @@ public class GameIsPlayedThroughTheGuiTest {
 
     @Test
     public void playersTakeTurnsUntilGameIsWon() throws Exception {
-        TicTacToeRules ticTacToeRules = new TicTacToeRules(new Board(3), new PlayerFactory().createPlayers(GameType.HUMAN_VS_HUMAN, null, 3));
-//        TicTacToeBoardPresenter boardPresenter = new TicTacToeBoardPresenter(ticTacToeRules, scene);
-//        boardPresenter.presentGameTypes(GameType.HUMAN_VS_HUMAN.gameNameForDisplay()); //TODO replace with controller
+        TicTacToeRules ticTacToeRules = new TicTacToeRules(new BoardFactory(), new PlayerFactory());
         GuiGameController controller = new GuiGameController(ticTacToeRules, new JavaFxViewFactory(scene, ticTacToeRules));
         controller.presentGameTypes();
 

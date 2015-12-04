@@ -33,6 +33,7 @@ public class TicTacToeBoardPresenter implements BoardPresenter {
         this.scene = scene;
 //        this.gamesRules = gameRules;
         this.controller = controller;
+        this.registerClickEvent = new RegisterClickEvent();
     }
 
     @Override

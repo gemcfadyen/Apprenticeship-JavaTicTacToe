@@ -23,4 +23,6 @@ public interface GameRules {
     String getDimension(GameType gameType);
 
     Board getBoard();
+
+    void storeGameType(GameType gameType);
 }
