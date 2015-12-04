@@ -21,11 +21,18 @@ public class TicTacToeBoardPresenter implements BoardPresenter {
     private Scene scene;
     private GameRulesPrompt guiPrompt;
     private RegisterClickEvent registerClickEvent;
+    private GuiGameController controller;
 
-    public TicTacToeBoardPresenter(GameRules gameRules, Scene scene) {
+    public TicTacToeBoardPresenter(TicTacToeRules ticTacToeRules, Scene scene) {
         this.scene = scene;
-        guiPrompt = new GuiPrompt(this, gameRules);
+        guiPrompt = new GuiPrompt(this, ticTacToeRules);
         registerClickEvent = new RegisterClickEvent();
+    }
+
+    public TicTacToeBoardPresenter(GameRules gameRules, GuiGameController controller, Scene scene) {
+        this.scene = scene;
+//        this.gamesRules = gameRules;
+        this.controller = controller;
     }
 
     @Override

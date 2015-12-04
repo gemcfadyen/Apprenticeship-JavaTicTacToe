@@ -18,8 +18,8 @@ public class GuiPromptTest {
     @Test
     public void displaysPromptForGameType() {
         BoardPresenterSpy boardPresenterSpy = new BoardPresenterSpy();
-        GameRules gameRules = new GameRules(new BoardFactory(), new PlayerFactory());
-        GuiPrompt guiPrompt = new GuiPrompt(boardPresenterSpy, gameRules);
+        TicTacToeRules ticTacToeRules = new TicTacToeRules(new BoardFactory(), new PlayerFactory());
+        GuiPrompt guiPrompt = new GuiPrompt(boardPresenterSpy, ticTacToeRules);
         guiPrompt.presentGameTypes();
 
         assertThat(boardPresenterSpy.hasPresentedGameTypes(), is(true));
@@ -28,8 +28,8 @@ public class GuiPromptTest {
     @Test
     public void displaysPromptForGridDimension() {
         BoardPresenterSpy boardPresenterSpy = new BoardPresenterSpy();
-        GameRules gameRules = new GameRules(new BoardFactory(), new PlayerFactory());
-        GuiPrompt guiPrompt = new GuiPrompt(boardPresenterSpy, gameRules);
+        TicTacToeRules ticTacToeRules = new TicTacToeRules(new BoardFactory(), new PlayerFactory());
+        GuiPrompt guiPrompt = new GuiPrompt(boardPresenterSpy, ticTacToeRules);
         guiPrompt.presentBoardDimensionsFor(HUMAN_VS_HUMAN);
 
         assertThat(boardPresenterSpy.hasPresentedGridDimensions(), is(true));
@@ -38,8 +38,8 @@ public class GuiPromptTest {
     @Test
     public void displaysBoardOfSpecificSize() {
         BoardPresenterSpy boardPresenterSpy = new BoardPresenterSpy();
-        GameRules gameRules = new GameRules(new BoardFactory(), new PlayerFactory());
-        GuiPrompt guiPrompt = new GuiPrompt(boardPresenterSpy, gameRules);
+        TicTacToeRules ticTacToeRules = new TicTacToeRules(new BoardFactory(), new PlayerFactory());
+        GuiPrompt guiPrompt = new GuiPrompt(boardPresenterSpy, ticTacToeRules);
         Board board = new Board(3);
         guiPrompt.print(board);
 
@@ -49,8 +49,8 @@ public class GuiPromptTest {
     @Test
     public void playerMakesMove() {
         Board board = new Board(3);
-        GameRules gameRules = new GameRules(board, new PlayerFactory().createPlayers(HUMAN_VS_HUMAN, UNUSED_PROMPT, 3));
-        GuiPrompt guiPrompt = new GuiPrompt(new BoardPresenterSpy(), board, gameRules);
+        TicTacToeRules ticTacToeRules = new TicTacToeRules(board, new PlayerFactory().createPlayers(HUMAN_VS_HUMAN, UNUSED_PROMPT, 3));
+        GuiPrompt guiPrompt = new GuiPrompt(new BoardPresenterSpy(), board, ticTacToeRules);
 
         guiPrompt.playMoveAt("7");
 
@@ -65,8 +65,8 @@ public class GuiPromptTest {
                 O, O, VACANT,
                 VACANT, VACANT, VACANT);
         BoardPresenterSpy boardPresenter = new BoardPresenterSpy();
-        GameRules gameRules = new GameRules(board, new PlayerFactory().createPlayers(HUMAN_VS_HUMAN, null, 3));
-        GuiPrompt guiPrompt = new GuiPrompt(boardPresenter, board, gameRules);
+        TicTacToeRules ticTacToeRules = new TicTacToeRules(board, new PlayerFactory().createPlayers(HUMAN_VS_HUMAN, null, 3));
+        GuiPrompt guiPrompt = new GuiPrompt(boardPresenter, board, ticTacToeRules);
 
         guiPrompt.playMoveAt("0");
 
@@ -80,8 +80,8 @@ public class GuiPromptTest {
                 O, O, X,
                 X, VACANT, O);
         BoardPresenterSpy boardPresenter = new BoardPresenterSpy();
-        GameRules gameRules = new GameRules(board, new PlayerFactory().createPlayers(HUMAN_VS_HUMAN, null, 3));
-        GuiPrompt guiPrompt = new GuiPrompt(boardPresenter, board, gameRules);
+        TicTacToeRules ticTacToeRules = new TicTacToeRules(board, new PlayerFactory().createPlayers(HUMAN_VS_HUMAN, null, 3));
+        GuiPrompt guiPrompt = new GuiPrompt(boardPresenter, board, ticTacToeRules);
 
         guiPrompt.playMoveAt("7");
 
@@ -95,8 +95,8 @@ public class GuiPromptTest {
                 O, O, X,
                 O, X, VACANT);
         BoardPresenterSpy boardPresenter = new BoardPresenterSpy();
-        GameRules gameRules = new GameRules(board, new PlayerFactory().createPlayers(HUMAN_VS_HUMAN, null, 3));
-        GuiPrompt guiPrompt = new GuiPrompt(boardPresenter, board, gameRules);
+        TicTacToeRules ticTacToeRules = new TicTacToeRules(board, new PlayerFactory().createPlayers(HUMAN_VS_HUMAN, null, 3));
+        GuiPrompt guiPrompt = new GuiPrompt(boardPresenter, board, ticTacToeRules);
 
         guiPrompt.playMoveAt("8");
 

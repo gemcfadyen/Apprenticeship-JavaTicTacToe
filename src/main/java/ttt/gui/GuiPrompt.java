@@ -8,18 +8,18 @@ import static ttt.player.PlayerSymbol.X;
 
 public class GuiPrompt implements GameRulesPrompt {
     private BoardPresenter boardPresenter;
-    private GameRules gameRules;
+    private TicTacToeRules ticTacToeRules;
     private Board board;
     private PlayerSymbol currentPlayer;
 
-    public GuiPrompt(BoardPresenter boardPresenter, GameRules gameRules) {
+    public GuiPrompt(BoardPresenter boardPresenter, TicTacToeRules ticTacToeRules) {
         this.boardPresenter = boardPresenter;
-        this.gameRules = gameRules;
+        this.ticTacToeRules = ticTacToeRules;
         this.currentPlayer = X;
     }
 
-    GuiPrompt(BoardPresenter boardPresenter, Board board, GameRules gameRules) {
-        this(boardPresenter, gameRules);
+    GuiPrompt(BoardPresenter boardPresenter, Board board, TicTacToeRules ticTacToeRules) {
+        this(boardPresenter, ticTacToeRules);
         this.board = board;
     }
 
@@ -41,7 +41,7 @@ public class GuiPrompt implements GameRulesPrompt {
 
     @Override
     public void presentGameTypes() {
-        GameType gameType = gameRules.getGameTypes();
+        GameType gameType = ticTacToeRules.getGameTypes();
         boardPresenter.presentGameTypes(gameType.gameNameForDisplay());
     }
 
@@ -51,16 +51,16 @@ public class GuiPrompt implements GameRulesPrompt {
     }
 
     public void playMoveAt(String move) {
-        gameRules.playMoveAt(move);
-        if (gameRules.hasWinner()) {
+        ticTacToeRules.playMoveAt(move);
+        if (ticTacToeRules.hasWinner()) {
             printWinningMessageFor(currentPlayer);
-        } else if (!gameRules.hasFreeSpace()) {
+        } else if (!ticTacToeRules.hasFreeSpace()) {
             printDrawMessage();
         }
-        gameRules.togglePlayer();
+        ticTacToeRules.togglePlayer();
     }
 
     public PlayerSymbol getCurrentPlayer() {
-        return gameRules.getCurrentPlayer();
+        return ticTacToeRules.getCurrentPlayer();
     }
 }

@@ -21,10 +21,13 @@ public class JavaFxGui extends Application {
         primaryStage.setScene(scene);
         primaryStage.show();
 
-        GameRules gameRules = new GameRules(new BoardFactory(), new PlayerFactory());
-        TicTacToeBoardPresenter ticTacToeBoardPresenter = new TicTacToeBoardPresenter(gameRules, scene);
+        TicTacToeRules ticTacToeRules = new TicTacToeRules(new BoardFactory(), new PlayerFactory());
+//        TicTacToeBoardPresenter ticTacToeBoardPresenter = new TicTacToeBoardPresenter(ticTacToeRules, scene);
 
-        GuiPrompt guiPrompt = new GuiPrompt(ticTacToeBoardPresenter, gameRules);
-        guiPrompt.presentGameTypes();
+        GuiGameController guiGameController = new GuiGameController(ticTacToeRules, new JavaFxViewFactory(scene, ticTacToeRules));
+        guiGameController.displayGameTypes();
+
+//        GuiPrompt guiPrompt = new GuiPrompt(ticTacToeBoardPresenter, ticTacToeRules);
+//        guiPrompt.presentGameTypes();
     }
 }

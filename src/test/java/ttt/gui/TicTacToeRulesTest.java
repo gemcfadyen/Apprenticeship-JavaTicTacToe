@@ -14,7 +14,7 @@ import static org.hamcrest.Matchers.*;
 import static ttt.GameType.HUMAN_VS_HUMAN;
 import static ttt.player.PlayerSymbol.*;
 
-public class GameRulesTest {
+public class TicTacToeRulesTest {
     private static final Prompt UNUSED_PROMPT = null;
 
     @Test
@@ -22,8 +22,8 @@ public class GameRulesTest {
         Board board = new Board(3);
         Player[] players = new PlayerFactory().createPlayers(HUMAN_VS_HUMAN, UNUSED_PROMPT, 3);
 
-        GameRules gameRules = new GameRules(board, players);
-        gameRules.playMoveAt("1");
+        TicTacToeRules ticTacToeRules = new TicTacToeRules(board, players);
+        ticTacToeRules.playMoveAt("1");
 
         assertThat(board.getSymbolAt(1), is(X));
     }
@@ -33,8 +33,8 @@ public class GameRulesTest {
         Board board = new Board(3);
         Player[] players = new PlayerFactory().createPlayers(HUMAN_VS_HUMAN, UNUSED_PROMPT, 3);
 
-        GameRules gameRules = new GameRules(board, players);
-        PlayerSymbol currentPlayerSymbol = gameRules.getCurrentPlayer();
+        TicTacToeRules ticTacToeRules = new TicTacToeRules(board, players);
+        PlayerSymbol currentPlayerSymbol = ticTacToeRules.getCurrentPlayer();
 
         assertThat(currentPlayerSymbol, is(X));
     }
@@ -49,8 +49,8 @@ public class GameRulesTest {
 
         Player[] players = new PlayerFactory().createPlayers(HUMAN_VS_HUMAN, UNUSED_PROMPT, 3);
 
-        GameRules gameRules = new GameRules(board, players);
-        assertThat(gameRules.hasWinner(), is(true));
+        TicTacToeRules ticTacToeRules = new TicTacToeRules(board, players);
+        assertThat(ticTacToeRules.hasWinner(), is(true));
     }
 
     @Test
@@ -63,8 +63,8 @@ public class GameRulesTest {
 
         Player[] players = new PlayerFactory().createPlayers(HUMAN_VS_HUMAN, UNUSED_PROMPT, 3);
 
-        GameRules gameRules = new GameRules(board, players);
-        assertThat(gameRules.hasWinner(), is(false));
+        TicTacToeRules ticTacToeRules = new TicTacToeRules(board, players);
+        assertThat(ticTacToeRules.hasWinner(), is(false));
     }
 
     @Test
@@ -72,8 +72,8 @@ public class GameRulesTest {
         Board board = new Board(3);
         Player[] players = new PlayerFactory().createPlayers(HUMAN_VS_HUMAN, UNUSED_PROMPT, 3);
 
-        GameRules gameRules = new GameRules(board, players);
-        assertThat(gameRules.hasFreeSpace(), is(true));
+        TicTacToeRules ticTacToeRules = new TicTacToeRules(board, players);
+        assertThat(ticTacToeRules.hasFreeSpace(), is(true));
     }
 
     @Test
@@ -84,13 +84,13 @@ public class GameRulesTest {
                 X, X, O);
         Player[] players = new PlayerFactory().createPlayers(HUMAN_VS_HUMAN, UNUSED_PROMPT, 3);
 
-        GameRules gameRules = new GameRules(board, players);
-        assertThat(gameRules.hasFreeSpace(), is(false));
+        TicTacToeRules ticTacToeRules = new TicTacToeRules(board, players);
+        assertThat(ticTacToeRules.hasFreeSpace(), is(false));
     }
 
     @Test
     public void togglesPlayer() {
-        GameRules gamesRules = new GameRules(new Board(3), new PlayerFactory().createPlayers(HUMAN_VS_HUMAN, null, 3));
+        TicTacToeRules gamesRules = new TicTacToeRules(new Board(3), new PlayerFactory().createPlayers(HUMAN_VS_HUMAN, null, 3));
 
         PlayerSymbol currentPlayer = gamesRules.getCurrentPlayer();
         gamesRules.togglePlayer();
@@ -101,7 +101,7 @@ public class GameRulesTest {
 
     @Test
     public void getGameTypes() {
-        GameRules gamesRules = new GameRules(new BoardFactory(), new PlayerFactory());
+        TicTacToeRules gamesRules = new TicTacToeRules(new BoardFactory(), new PlayerFactory());
 
         GameType gameType = gamesRules.getGameTypes();
 
