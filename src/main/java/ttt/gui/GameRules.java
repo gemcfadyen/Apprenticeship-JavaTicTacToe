@@ -1,6 +1,7 @@
 package ttt.gui;
 
 import ttt.GameType;
+import ttt.board.Board;
 import ttt.player.PlayerSymbol;
 
 public interface GameRules {
@@ -15,9 +16,11 @@ public interface GameRules {
 
     void togglePlayer();
 
-//    void initialiseGame(int dimension);
+    void initialiseGame(String dimension);
 
     GameType getGameTypes();
 
     String getDimension(GameType gameType);
+
+    Board getBoard();
 }

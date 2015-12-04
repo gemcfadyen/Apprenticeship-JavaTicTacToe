@@ -1,13 +1,12 @@
 package ttt.gui;
 
-import ttt.GameType;
 import ttt.board.Board;
 import ttt.player.PlayerSymbol;
 
 public class BoardPresenterSpy implements BoardPresenter {
     private boolean hasPresentedGridDimension = false;
     private boolean hasPresentedGameTypes;
-    private boolean hasDrawnBoard = false;
+    private boolean hasDisplayedBoard = false;
     private boolean hasPrintedWinningBoard = false;
     private boolean hasPrintedGameIsDrawn = false;
 
@@ -17,13 +16,13 @@ public class BoardPresenterSpy implements BoardPresenter {
     }
 
     @Override
-    public void presentGridDimensionsFor(GameType gameType) {
+    public void presentGridDimensionsFor(String dimension) {
         hasPresentedGridDimension = true;
     }
 
     @Override
     public void presentsBoard(Board board) {
-        hasDrawnBoard = true;
+        hasDisplayedBoard = true;
     }
 
     @Override
@@ -45,7 +44,7 @@ public class BoardPresenterSpy implements BoardPresenter {
     }
 
     public boolean hasDrawnBoard() {
-        return hasDrawnBoard;
+        return hasDisplayedBoard;
     }
 
     public boolean hasIdentifiedAWin() {

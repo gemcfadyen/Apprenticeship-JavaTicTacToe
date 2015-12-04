@@ -1,6 +1,7 @@
 package ttt.gui;
 
 import org.junit.Test;
+import ttt.BoardFactoryStub;
 import ttt.GameType;
 import ttt.board.Board;
 import ttt.board.BoardFactory;
@@ -115,6 +116,19 @@ public class TicTacToeRulesTest {
         String dimension = gamesRules.getDimension(HUMAN_VS_HUMAN);
 
         assertThat(dimension, is("5"));
+    }
+
+    @Test
+    public void getBoard() {
+        Board board = new Board(
+                X, O, X,
+                O, X, O,
+                VACANT, VACANT, X
+        );
+
+        TicTacToeRules ticTacToeRules = new TicTacToeRules(new BoardFactoryStub(board), new PlayerFactory());
+        ticTacToeRules.initialiseGame("3");
+        assertThat(ticTacToeRules.getBoard(), is(board));
     }
 }
 

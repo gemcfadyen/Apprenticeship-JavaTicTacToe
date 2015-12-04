@@ -50,6 +50,11 @@ public class TicTacToeRules implements GameRules {
                         : PLAYER_ONE_INDEX;
     }
 
+    @Override
+    public void initialiseGame(String dimension) {
+        board = boardFactory.createBoardWithSize(Integer.valueOf(dimension));
+    }
+
     public GameType getGameTypes() {
         return GameType.HUMAN_VS_HUMAN;
     }
@@ -57,5 +62,10 @@ public class TicTacToeRules implements GameRules {
     @Override
     public String getDimension(GameType gameType) {
         return String.valueOf(gameType.dimensionUpperBoundary());
+    }
+
+    @Override
+    public Board getBoard() {
+        return board;
     }
 }

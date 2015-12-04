@@ -50,21 +50,21 @@ public class TicTacToeBoardPresenter implements BoardPresenter {
     }
 
     @Override
-    public void presentGridDimensionsFor(GameType gameType) {
+    public void presentGridDimensionsFor(String dimension) {
         GridPane dimensionPane = new GridPane();
         setWelcomeMessage(dimensionPane);
 
         Text dimensionPrompt = new Text("Choose a board dimension");
         dimensionPrompt.setId("gameSetupId");
 
-        RadioButton boardDimension = new RadioButton("3x3");
+        RadioButton boardDimension = new RadioButton(dimension);
         boardDimension.setId("gameSetupSelectionId");
 
         dimensionPane.add(dimensionPrompt, 2, 2, 4, 1);
         dimensionPane.add(boardDimension, 2, 4, 4, 1);
 
         ClickableElement dimensionSelectionButton = new JavaFxRadioButton(boardDimension);
-        ClickEvent boardDimensionOnClick = new UserSelectsBoardDimension(guiPrompt, dimensionSelectionButton);
+        ClickEvent boardDimensionOnClick = new UserSelectsBoardDimension(controller, dimensionSelectionButton);
 
         registerClickEvent.register(dimensionSelectionButton, boardDimensionOnClick);
 

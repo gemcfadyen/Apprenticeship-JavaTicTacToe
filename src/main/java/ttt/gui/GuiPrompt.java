@@ -47,7 +47,7 @@ public class GuiPrompt implements GameRulesPrompt {
 
     @Override
     public void presentBoardDimensionsFor(GameType gameType) {
-        boardPresenter.presentGridDimensionsFor(gameType);
+        boardPresenter.presentGridDimensionsFor("3");
     }
 
     public void playMoveAt(String move) {

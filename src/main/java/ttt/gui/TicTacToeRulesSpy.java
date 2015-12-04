@@ -1,11 +1,13 @@
 package ttt.gui;
 
 import ttt.GameType;
+import ttt.board.Board;
 import ttt.player.PlayerSymbol;
 
 public class TicTacToeRulesSpy implements GameRules {
     private boolean hasGotGameTypes = false;
     private boolean hasGotBoardDimensions = false;
+    private boolean hasInitialisedGame = false;
 
     @Override
     public void playMoveAt(String move) {
@@ -28,6 +30,11 @@ public class TicTacToeRulesSpy implements GameRules {
     }
 
     @Override
+    public void initialiseGame(String dimension) {
+        hasInitialisedGame = true;
+    }
+
+    @Override
     public GameType getGameTypes() {
         hasGotGameTypes = true;
         return GameType.HUMAN_VS_HUMAN;
@@ -39,11 +46,20 @@ public class TicTacToeRulesSpy implements GameRules {
         return String.valueOf(gameType.dimensionUpperBoundary());
     }
 
+    @Override
+    public Board getBoard() {
+        return null;
+    }
+
     public boolean hasObtainedGameTypes() {
         return hasGotGameTypes;
     }
 
     public boolean hasObtainedBoardDimensions() {
         return hasGotBoardDimensions;
+    }
+
+    public boolean hasInitialisedGame() {
+        return hasInitialisedGame;
     }
 }

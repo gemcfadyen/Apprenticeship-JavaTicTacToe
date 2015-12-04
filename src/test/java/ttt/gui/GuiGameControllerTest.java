@@ -34,4 +34,20 @@ public class GuiGameControllerTest {
         assertThat(boardPresenterSpy.hasPresentedGridDimensions(), is(true));
         assertThat(gameRulesSpy.hasObtainedBoardDimensions(), is(true));
     }
+
+    @Test
+    public void initialisesGameAndDisplaysBoard() {
+        BoardPresenterSpy boardPresenterSpy = new BoardPresenterSpy();
+        TicTacToeRulesSpy gameRulesSpy = new TicTacToeRulesSpy();
+
+        ViewFactory viewFactoryStub = (gameController, gameRules) -> boardPresenterSpy;
+
+        GuiGameController controller = new GuiGameController(gameRulesSpy, viewFactoryStub);
+        controller.presentBoard("3");
+
+        assertThat(boardPresenterSpy.hasDrawnBoard(), is(true));
+        assertThat(gameRulesSpy.hasInitialisedGame(), is(true));
+    }
+
+
 }

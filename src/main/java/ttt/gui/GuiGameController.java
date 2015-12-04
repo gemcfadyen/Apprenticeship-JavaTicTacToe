@@ -1,6 +1,7 @@
 package ttt.gui;
 
 import ttt.GameType;
+import ttt.board.Board;
 
 public class GuiGameController implements GameController {
 
@@ -21,6 +22,13 @@ public class GuiGameController implements GameController {
     @Override
     public void presentBoardDimensionsFor(GameType gameType) {
         String dimension = ticTacToeRules.getDimension(gameType);
-        boardView.presentGridDimensionsFor(gameType); //TODO remove parameter and replace with dimension
+        boardView.presentGridDimensionsFor(dimension);
+    }
+
+    @Override
+    public void presentBoard(String dimension) {
+        ticTacToeRules.initialiseGame(dimension);
+        Board board = ticTacToeRules.getBoard();
+        boardView.presentsBoard(board);
     }
 }
