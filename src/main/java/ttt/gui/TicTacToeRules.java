@@ -53,4 +53,9 @@ public class TicTacToeRules implements GameRules {
     public GameType getGameTypes() {
         return GameType.HUMAN_VS_HUMAN;
     }
+
+    @Override
+    public String getDimension(GameType gameType) {
+        return String.valueOf(gameType.dimensionUpperBoundary());
+    }
 }

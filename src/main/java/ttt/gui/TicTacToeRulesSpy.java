@@ -5,6 +5,7 @@ import ttt.player.PlayerSymbol;
 
 public class TicTacToeRulesSpy implements GameRules {
     private boolean hasGotGameTypes = false;
+    private boolean hasGotBoardDimensions = false;
 
     @Override
     public void playMoveAt(String move) {
@@ -32,7 +33,17 @@ public class TicTacToeRulesSpy implements GameRules {
         return GameType.HUMAN_VS_HUMAN;
     }
 
+    @Override
+    public String getDimension(GameType gameType) {
+        hasGotBoardDimensions = true;
+        return String.valueOf(gameType.dimensionUpperBoundary());
+    }
+
     public boolean hasObtainedGameTypes() {
         return hasGotGameTypes;
+    }
+
+    public boolean hasObtainedBoardDimensions() {
+        return hasGotBoardDimensions;
     }
 }

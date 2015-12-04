@@ -19,5 +19,5 @@ public interface GameRules {
 
     GameType getGameTypes();
 
-//    String getDimension(GameType gameType);
+    String getDimension(GameType gameType);
 }

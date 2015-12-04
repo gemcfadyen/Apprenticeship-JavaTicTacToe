@@ -20,6 +20,7 @@ public class GuiGameController implements GameController {
 
     @Override
     public void presentBoardDimensionsFor(GameType gameType) {
-
+        String dimension = ticTacToeRules.getDimension(gameType);
+        boardView.presentGridDimensionsFor(gameType); //TODO remove parameter and replace with dimension
     }
 }

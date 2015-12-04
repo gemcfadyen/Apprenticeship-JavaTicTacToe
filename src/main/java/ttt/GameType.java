@@ -1,7 +1,7 @@
 package ttt;
 
 public enum GameType {
-    HUMAN_VS_HUMAN("Human vs Human", 1, 10),
+    HUMAN_VS_HUMAN("Human vs Human", 1, 5),
     HUMAN_VS_UNBEATABLE("Human vs Unbeatable", 2, 4),
     UNBEATABLE_VS_HUMAN("Unbeatable vs Human", 3, 4);
 

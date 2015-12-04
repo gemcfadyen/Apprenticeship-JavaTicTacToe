@@ -108,5 +108,13 @@ public class TicTacToeRulesTest {
         assertThat(gameType, is(HUMAN_VS_HUMAN));
     }
 
+    @Test
+    public void getDimensions() {
+        TicTacToeRules gamesRules = new TicTacToeRules(new BoardFactory(), new PlayerFactory());
 
+        String dimension = gamesRules.getDimension(HUMAN_VS_HUMAN);
+
+        assertThat(dimension, is("5"));
+    }
 }
+
