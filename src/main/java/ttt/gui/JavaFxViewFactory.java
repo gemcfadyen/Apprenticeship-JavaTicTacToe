@@ -12,6 +12,6 @@ public class JavaFxViewFactory implements ViewFactory {
     }
 
     public BoardPresenter createView(GuiGameController controller, GameRules gameRules) {
-        return new TicTacToeBoardPresenter(gameRules, controller, scene);
+        return new TicTacToeBoardPresenter(controller, scene);
     }
 }

@@ -32,4 +32,12 @@ public class GuiGameController implements GameController {
         Board board = ticTacToeRules.getBoard();
         boardView.presentsBoard(board);
     }
+
+    @Override
+    public void playMove(String position) {
+        ticTacToeRules.playMoveAt(position);
+        ticTacToeRules.togglePlayer();
+        Board board = ticTacToeRules.getBoard();
+        boardView.presentsBoard(board);
+    }
 }

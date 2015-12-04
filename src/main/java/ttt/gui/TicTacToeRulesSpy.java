@@ -9,10 +9,14 @@ public class TicTacToeRulesSpy implements GameRules {
     private boolean hasGotBoardDimensions = false;
     private boolean hasInitialisedGame = false;
     private boolean hasStoredGameType = false;
+    private boolean hasMadeMove = false;
+    private String positionOfMove;
+    private boolean hasToggledPlayer = false;
 
     @Override
     public void playMoveAt(String move) {
-
+        positionOfMove = move;
+        hasMadeMove = true;
     }
 
     @Override
@@ -27,7 +31,7 @@ public class TicTacToeRulesSpy implements GameRules {
 
     @Override
     public void togglePlayer() {
-
+        hasToggledPlayer = true;
     }
 
     @Override
@@ -71,5 +75,17 @@ public class TicTacToeRulesSpy implements GameRules {
 
     public boolean hasStoredGameType() {
         return hasStoredGameType;
+    }
+
+    public boolean hasMadeMove() {
+        return hasMadeMove;
+    }
+
+    public String getPositionOfMove() {
+        return positionOfMove;
+    }
+
+    public boolean hasToggledPlayers() {
+        return hasToggledPlayer;
     }
 }

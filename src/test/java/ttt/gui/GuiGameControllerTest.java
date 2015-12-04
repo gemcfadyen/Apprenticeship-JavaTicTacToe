@@ -62,5 +62,19 @@ public class GuiGameControllerTest {
         assertThat(gameRulesSpy.hasStoredGameType(), is(true));
     }
 
+    @Test
+    public void takesMove() {
+        BoardPresenterSpy boardPresenterSpy = new BoardPresenterSpy();
+        TicTacToeRulesSpy gameRulesSpy = new TicTacToeRulesSpy();
 
+        ViewFactory viewFactoryStub = (gameController, gameRules) -> boardPresenterSpy;
+
+        GuiGameController controller = new GuiGameController(gameRulesSpy, viewFactoryStub);
+        controller.playMove("1");
+
+        assertThat(gameRulesSpy.hasMadeMove(), is(true));
+        assertThat(gameRulesSpy.hasToggledPlayers(), is(true));
+        assertThat(gameRulesSpy.getPositionOfMove(), is("1"));
+        assertThat(boardPresenterSpy.hasDrawnBoard(), is(true));
+    }
 }

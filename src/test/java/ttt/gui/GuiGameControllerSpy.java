@@ -7,6 +7,7 @@ public class GuiGameControllerSpy implements GameController {
     private GameType gameType;
     private boolean hasPresentedBoard = false;
     private int boardDimension = 0;
+    private boolean hasTakenMove = false;
 
     @Override
     public void presentGameTypes() {
@@ -25,6 +26,11 @@ public class GuiGameControllerSpy implements GameController {
         boardDimension = Integer.valueOf(dimensionForBoard);
     }
 
+    @Override
+    public void playMove(String position) {
+        hasTakenMove = true;
+    }
+
     public boolean hasPresentedBoardDimensions() {
         return hasPresentedBoardDimensions;
     }
@@ -39,5 +45,9 @@ public class GuiGameControllerSpy implements GameController {
 
     public int boardSize() {
         return boardDimension;
+    }
+
+    public boolean hasTakenMove() {
+        return hasTakenMove;
     }
 }

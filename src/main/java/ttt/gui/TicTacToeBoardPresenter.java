@@ -8,7 +8,6 @@ import javafx.scene.control.RadioButton;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.text.Text;
-import ttt.GameType;
 import ttt.board.Board;
 import ttt.board.Line;
 import ttt.player.PlayerSymbol;
@@ -16,22 +15,16 @@ import ttt.player.PlayerSymbol;
 import java.util.List;
 import java.util.function.Function;
 
+import static ttt.player.PlayerSymbol.*;
+
 public class TicTacToeBoardPresenter implements BoardPresenter {
     private RadioButton humanVsHumanRadioButton;
     private Scene scene;
-    private GameRulesPrompt guiPrompt;
     private RegisterClickEvent registerClickEvent;
     private GuiGameController controller;
 
-    public TicTacToeBoardPresenter(TicTacToeRules ticTacToeRules, Scene scene) {
+    public TicTacToeBoardPresenter(GuiGameController controller, Scene scene) {
         this.scene = scene;
-        guiPrompt = new GuiPrompt(this, ticTacToeRules);
-        registerClickEvent = new RegisterClickEvent();
-    }
-
-    public TicTacToeBoardPresenter(GameRules gameRules, GuiGameController controller, Scene scene) {
-        this.scene = scene;
-//        this.gamesRules = gameRules;
         this.controller = controller;
         this.registerClickEvent = new RegisterClickEvent();
     }
@@ -76,7 +69,7 @@ public class TicTacToeBoardPresenter implements BoardPresenter {
     public void presentsBoard(Board board) {
         GridPane boardPane = new GridPane();
         gridPaneSetup(boardPane);
-        printBoardsOnPane(board, boardPane, getCellLabelForInitialBoard(), registerEvent());
+        printBoardsOnPane(board, boardPane, getCellLabelForWinningBoard(board), registerEvent());
 
         scene.setRoot(boardPane);
     }
@@ -143,7 +136,9 @@ public class TicTacToeBoardPresenter implements BoardPresenter {
             PlayerSymbol[] symbols = line.getSymbols();
             for (int i = 0; i < symbols.length; i++) {
                 Button cell = createButton(labelForCell.apply(i + offset), String.valueOf(i + offset));
-
+                if (cell.getText() == X.getSymbolForDisplay() || cell.getText() == O.getSymbolForDisplay()) {
+                    cell.setDisable(true);
+                }
                 actionOnCell.apply(cell);
 
                 boardPane.add(configureHBox(cell), displayColumnIndex++, displayRowIndex);
@@ -181,7 +176,7 @@ public class TicTacToeBoardPresenter implements BoardPresenter {
         Function<Integer, String> getLabel = index -> {
             PlayerSymbol symbolAtIndex = board.getSymbolAt(index);
 
-            return (symbolAtIndex == PlayerSymbol.VACANT)
+            return (symbolAtIndex == VACANT)
                     ? String.valueOf(index + 1)
                     : symbolAtIndex.getSymbolForDisplay();
 
@@ -193,7 +188,7 @@ public class TicTacToeBoardPresenter implements BoardPresenter {
     private Function<Button, Void> registerEvent() {
         return button -> {
             DeactivatableElement clickableCell = new JavaFxButton(button);
-            ClickEvent makeMoveOnClick = new UserSelectsButtonForMove(guiPrompt, clickableCell);
+            ClickEvent makeMoveOnClick = new UserSelectsButtonForMove(controller, clickableCell);
             registerClickEvent.register(clickableCell, makeMoveOnClick);
             return null;
         };
