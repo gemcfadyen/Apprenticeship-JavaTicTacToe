@@ -15,7 +15,6 @@ public class TicTacToeRulesSpy implements GameRules {
     private boolean hasToggledPlayer = false;
     private boolean winnerChecked = false;
     private boolean boardCheckedForFreeSpaces = false;
-    private boolean drawChecked = false;
     private boolean hasGotCurrentPlayer = false;
 
     public TicTacToeRulesSpy() {

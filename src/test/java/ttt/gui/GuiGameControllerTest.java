@@ -107,16 +107,38 @@ public class GuiGameControllerTest {
         BoardPresenterSpy boardPresenterSpy = new BoardPresenterSpy();
         Board drawnBoard = new Board(
                 X, O, X,
-                X, O, VACANT,
+                VACANT, O, X,
                 X, VACANT, VACANT);
         TicTacToeRulesSpy gameRulesSpy = new TicTacToeRulesSpy(drawnBoard);
 
         ViewFactory viewFactoryStub = (gameController, gameRules) -> boardPresenterSpy;
 
         GuiGameController controller = new GuiGameController(gameRulesSpy, viewFactoryStub);
-        controller.playMove("1");
+        controller.playMove("7");
 
         assertThat(gameRulesSpy.boardCheckedForFreeSpace(), is(true));
         assertThat(boardPresenterSpy.hasDrawnBoard(), is(true));
+    }
+
+    @Test
+    public void winningOnLastTurnDisplaysWin() {
+        BoardPresenterSpy boardPresenterSpy = new BoardPresenterSpy();
+
+        Board winningBoard = new Board(
+                X, O, X,
+                X, O, O,
+                X, X, O);
+        TicTacToeRulesSpy gameRulesSpy = new TicTacToeRulesSpy(winningBoard);
+
+        ViewFactory viewFactoryStub = (gameController, gameRules) -> boardPresenterSpy;
+
+        GuiGameController controller = new GuiGameController(gameRulesSpy, viewFactoryStub);
+        controller.playMove("6");
+
+        assertThat(gameRulesSpy.gameCheckedForWin(), is(true));
+        assertThat(gameRulesSpy.hasGotCurrentPlayer(), is(true));
+        assertThat(boardPresenterSpy.hasIdentifiedAWin(), is(true));
+        assertThat(boardPresenterSpy.getWinningSymbol(), is(X));
+        assertThat(boardPresenterSpy.hasIdentifiedADraw(), is(false));
     }
 }
