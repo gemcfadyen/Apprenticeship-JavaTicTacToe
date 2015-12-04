@@ -27,13 +27,13 @@ public class BoardPresenterSpy implements BoardPresenter {
     }
 
     @Override
-    public void printsWinning(Board board, PlayerSymbol symbol) {
+    public void printsWinningMessage(Board board, PlayerSymbol symbol) {
         winningSymbol = symbol;
         hasPrintedWinningBoard = true;
     }
 
     @Override
-    public void printsDraw(Board board) {
+    public void printsDrawMessage(Board board) {
         hasPrintedGameIsDrawn = true;
     }
 

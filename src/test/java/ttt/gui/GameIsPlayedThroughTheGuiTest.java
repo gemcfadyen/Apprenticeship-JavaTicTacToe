@@ -31,7 +31,7 @@ public class GameIsPlayedThroughTheGuiTest {
     @Test
     public void playersTakeTurnsUntilGameIsWon() throws Exception {
         TicTacToeRules ticTacToeRules = new TicTacToeRules(new BoardFactory(), new PlayerFactory());
-        GuiGameController controller = new GuiGameController(ticTacToeRules, new JavaFxViewFactory(scene, ticTacToeRules));
+        GuiGameController controller = new GuiGameController(ticTacToeRules, new JavaFxViewFactory(scene));
         controller.presentGameTypes();
 
         selectHumanVsHumanGameType(scene);

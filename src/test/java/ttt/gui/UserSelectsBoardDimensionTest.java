@@ -9,7 +9,6 @@ public class UserSelectsBoardDimensionTest {
 
     @Test
     public void presentsBoardWhenDimensionIsSelected() {
-        GuiPromptSpy guiPromptSpy = new GuiPromptSpy();
         GuiGameControllerSpy controller = new GuiGameControllerSpy();
         ClickableElement dimensionSelectionButton = new ClickableElementStub();
         UserSelectsBoardDimension userSelectsBoardDimension = new UserSelectsBoardDimension(controller, dimensionSelectionButton);
@@ -17,7 +16,6 @@ public class UserSelectsBoardDimensionTest {
 
         assertThat(controller.hasPresentedBoard(), is(true));
         assertThat(controller.boardSize(), is(3));
-//        assertThat(guiPromptSpy.getDimension(), is(3));
     }
 
     private class ClickableElementStub implements ClickableElement {

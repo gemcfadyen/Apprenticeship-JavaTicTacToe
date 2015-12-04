@@ -10,7 +10,6 @@ public class UserSelectsGameTypeTest {
 
     @Test
     public void asksGameControllerForForDimensionWhenGameTypeIsSelected() {
-        GuiPromptSpy guiPromptSpy = new GuiPromptSpy();
         GuiGameControllerSpy controllerSpy = new GuiGameControllerSpy();
         ClickableElement selectedRadioBox = new ClickableElementStub();
         UserSelectsGameType userSelectsGameType = new UserSelectsGameType(controllerSpy, selectedRadioBox);
@@ -22,7 +21,6 @@ public class UserSelectsGameTypeTest {
 
     @Test
     public void capturesGameTypeChosen() {
-        GuiPromptSpy guiPromptSpy = new GuiPromptSpy();
         GuiGameControllerSpy controllerSpy = new GuiGameControllerSpy();
         ClickableElement selectedRadioBox = new ClickableElementStub();
         UserSelectsGameType userSelectsGameType = new UserSelectsGameType(controllerSpy, selectedRadioBox);

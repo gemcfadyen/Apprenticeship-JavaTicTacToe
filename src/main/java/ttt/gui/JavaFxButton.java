@@ -25,11 +25,6 @@ public class JavaFxButton implements DeactivatableElement {
     }
 
     @Override
-    public void setText(String text) {
-        button.setText(text);
-    }
-
-    @Override
     public String getId() {
         return button.getId();
     }

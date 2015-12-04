@@ -75,7 +75,7 @@ public class TicTacToeBoardPresenter implements BoardPresenter {
     }
 
     @Override
-    public void printsWinning(Board board, PlayerSymbol symbol) {
+    public void printsWinningMessage(Board board, PlayerSymbol symbol) {
         GridPane gameOverPane = new GridPane();
         gridPaneSetup(gameOverPane);
 
@@ -89,7 +89,7 @@ public class TicTacToeBoardPresenter implements BoardPresenter {
     }
 
     @Override
-    public void printsDraw(Board board) {
+    public void printsDrawMessage(Board board) {
         GridPane gameOverPane = new GridPane();
         gridPaneSetup(gameOverPane);
 
@@ -161,10 +161,6 @@ public class TicTacToeBoardPresenter implements BoardPresenter {
         gridLayout.setAlignment(Pos.CENTER);
         gridLayout.getChildren().add(cell);
         return gridLayout;
-    }
-
-    private Function<Integer, String> getCellLabelForInitialBoard() {
-        return index -> String.valueOf(index + 1);
     }
 
     private Function getCellLabelForDrawnBoard(Board board) {
