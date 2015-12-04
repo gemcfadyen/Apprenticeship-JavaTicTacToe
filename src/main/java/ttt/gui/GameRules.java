@@ -1,5 +1,6 @@
 package ttt.gui;
 
+import ttt.GameType;
 import ttt.board.Board;
 import ttt.board.BoardFactory;
 import ttt.player.Player;
@@ -47,5 +48,9 @@ public class GameRules {
                 currentPlayerIndex == PLAYER_ONE_INDEX
                         ? PLAYER_TWO_INDEX
                         : PLAYER_ONE_INDEX;
+    }
+
+    public GameType getGameTypes() {
+        return GameType.HUMAN_VS_HUMAN;
     }
 }

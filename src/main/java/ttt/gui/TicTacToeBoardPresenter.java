@@ -29,11 +29,11 @@ public class TicTacToeBoardPresenter implements BoardPresenter {
     }
 
     @Override
-    public void presentGameTypes() {
+    public void presentGameTypes(String gameType) {
         GridPane gameTypePane = new GridPane();
         setWelcomeMessage(gameTypePane);
 
-        displayGameTypes(gameTypePane);
+        displayGameTypes(gameTypePane, gameType);
 
         ClickableElement gameSelectionButton = new JavaFxRadioButton(humanVsHumanRadioButton);
         ClickEvent gameSelectionOnClick = new UserSelectsGameType(guiPrompt, gameSelectionButton);
@@ -107,11 +107,11 @@ public class TicTacToeBoardPresenter implements BoardPresenter {
         gridPaneSetup(gridPane);
     }
 
-    private void displayGameTypes(GridPane gridPane) {
+    private void displayGameTypes(GridPane gridPane, String gameType) {
         Text gameSelectionPrompt = new Text("Choose a game type");
         gameSelectionPrompt.setId("gameSetupId");
         gridPane.add(gameSelectionPrompt, 2, 2, 4, 1);
-        humanVsHumanRadioButton = new RadioButton("Human vs Human");
+        humanVsHumanRadioButton = new RadioButton(gameType);
         humanVsHumanRadioButton.setId("gameSetupSelectionId");
         gridPane.add(humanVsHumanRadioButton, 2, 4, 4, 1);
     }

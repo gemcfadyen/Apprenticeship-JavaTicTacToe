@@ -1,9 +1,9 @@
 package ttt.gui;
 
-import org.hamcrest.Matchers;
 import org.junit.Test;
 import ttt.GameType;
 import ttt.board.Board;
+import ttt.board.BoardFactory;
 import ttt.player.Player;
 import ttt.player.PlayerFactory;
 import ttt.player.PlayerSymbol;
@@ -11,7 +11,7 @@ import ttt.ui.Prompt;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
-import static org.hamcrest.Matchers.is;
+import static ttt.GameType.HUMAN_VS_HUMAN;
 import static ttt.player.PlayerSymbol.*;
 
 public class GameRulesTest {
@@ -20,7 +20,7 @@ public class GameRulesTest {
     @Test
     public void makesMove() {
         Board board = new Board(3);
-        Player[] players = new PlayerFactory().createPlayers(GameType.HUMAN_VS_HUMAN, UNUSED_PROMPT, 3);
+        Player[] players = new PlayerFactory().createPlayers(HUMAN_VS_HUMAN, UNUSED_PROMPT, 3);
 
         GameRules gameRules = new GameRules(board, players);
         gameRules.playMoveAt("1");
@@ -31,7 +31,7 @@ public class GameRulesTest {
     @Test
     public void currentPlayersSymbol() {
         Board board = new Board(3);
-        Player[] players = new PlayerFactory().createPlayers(GameType.HUMAN_VS_HUMAN, UNUSED_PROMPT, 3);
+        Player[] players = new PlayerFactory().createPlayers(HUMAN_VS_HUMAN, UNUSED_PROMPT, 3);
 
         GameRules gameRules = new GameRules(board, players);
         PlayerSymbol currentPlayerSymbol = gameRules.getCurrentPlayer();
@@ -47,7 +47,7 @@ public class GameRulesTest {
                 VACANT, VACANT, X
         );
 
-        Player[] players = new PlayerFactory().createPlayers(GameType.HUMAN_VS_HUMAN, UNUSED_PROMPT, 3);
+        Player[] players = new PlayerFactory().createPlayers(HUMAN_VS_HUMAN, UNUSED_PROMPT, 3);
 
         GameRules gameRules = new GameRules(board, players);
         assertThat(gameRules.hasWinner(), is(true));
@@ -61,7 +61,7 @@ public class GameRulesTest {
                 VACANT, VACANT, VACANT
         );
 
-        Player[] players = new PlayerFactory().createPlayers(GameType.HUMAN_VS_HUMAN, UNUSED_PROMPT, 3);
+        Player[] players = new PlayerFactory().createPlayers(HUMAN_VS_HUMAN, UNUSED_PROMPT, 3);
 
         GameRules gameRules = new GameRules(board, players);
         assertThat(gameRules.hasWinner(), is(false));
@@ -70,7 +70,7 @@ public class GameRulesTest {
     @Test
     public void hasFreeSpace() {
         Board board = new Board(3);
-        Player[] players = new PlayerFactory().createPlayers(GameType.HUMAN_VS_HUMAN, UNUSED_PROMPT, 3);
+        Player[] players = new PlayerFactory().createPlayers(HUMAN_VS_HUMAN, UNUSED_PROMPT, 3);
 
         GameRules gameRules = new GameRules(board, players);
         assertThat(gameRules.hasFreeSpace(), is(true));
@@ -82,7 +82,7 @@ public class GameRulesTest {
                 X, O, X,
                 O, X, O,
                 X, X, O);
-        Player[] players = new PlayerFactory().createPlayers(GameType.HUMAN_VS_HUMAN, UNUSED_PROMPT, 3);
+        Player[] players = new PlayerFactory().createPlayers(HUMAN_VS_HUMAN, UNUSED_PROMPT, 3);
 
         GameRules gameRules = new GameRules(board, players);
         assertThat(gameRules.hasFreeSpace(), is(false));
@@ -90,7 +90,7 @@ public class GameRulesTest {
 
     @Test
     public void togglesPlayer() {
-        GameRules gamesRules = new GameRules(new Board(3), new PlayerFactory().createPlayers(GameType.HUMAN_VS_HUMAN, null, 3));
+        GameRules gamesRules = new GameRules(new Board(3), new PlayerFactory().createPlayers(HUMAN_VS_HUMAN, null, 3));
 
         PlayerSymbol currentPlayer = gamesRules.getCurrentPlayer();
         gamesRules.togglePlayer();
@@ -98,5 +98,15 @@ public class GameRulesTest {
 
         assertThat(currentPlayer, is(not(equalTo(toggledPlayer))));
     }
+
+    @Test
+    public void getGameTypes() {
+        GameRules gamesRules = new GameRules(new BoardFactory(), new PlayerFactory());
+
+        GameType gameType = gamesRules.getGameTypes();
+
+        assertThat(gameType, is(HUMAN_VS_HUMAN));
+    }
+
 
 }

@@ -5,7 +5,7 @@ import ttt.board.Board;
 import ttt.player.PlayerSymbol;
 
 public interface BoardPresenter {
-    void presentGameTypes();
+    void presentGameTypes(String gameType);
     void presentGridDimensionsFor(GameType gameType);
     void presentsBoard(Board board);
     void printsWinning(Board board, PlayerSymbol symbol);

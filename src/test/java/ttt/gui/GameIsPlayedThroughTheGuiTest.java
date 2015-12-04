@@ -33,7 +33,7 @@ public class GameIsPlayedThroughTheGuiTest {
     public void playersTakeTurnsUntilGameIsWon() throws Exception {
         GameRules gameRules = new GameRules(new Board(3), new PlayerFactory().createPlayers(GameType.HUMAN_VS_HUMAN, null, 3));
         TicTacToeBoardPresenter boardPresenter = new TicTacToeBoardPresenter(gameRules, scene);
-        boardPresenter.presentGameTypes();
+        boardPresenter.presentGameTypes(GameType.HUMAN_VS_HUMAN.gameNameForDisplay()); //TODO replace with controller
 
         selectHumanVsHumanGameType(scene);
         select3x3Grid(scene);

@@ -12,7 +12,7 @@ public class BoardPresenterSpy implements BoardPresenter {
     private boolean hasPrintedGameIsDrawn = false;
 
     @Override
-    public void presentGameTypes() {
+    public void presentGameTypes(String gameType) {
         hasPresentedGameTypes = true;
     }
 

@@ -41,7 +41,8 @@ public class GuiPrompt implements GameRulesPrompt {
 
     @Override
     public void presentGameTypes() {
-        boardPresenter.presentGameTypes();
+        GameType gameType = gameRules.getGameTypes();
+        boardPresenter.presentGameTypes(gameType.gameNameForDisplay());
     }
 
     @Override
