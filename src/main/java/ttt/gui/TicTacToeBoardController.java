@@ -11,20 +11,19 @@ public class TicTacToeBoardController implements TTTController {
     private WritePromptForGuiNew view;
     private GameRules model;
 
+    //pass in a viewfactory which takes scene as a constructor arg, then for testsi can dummy it out
     public TicTacToeBoardController(GameRules model, Scene scene) {
         this.model = model;
         this.view = new TTTView(this, scene);
     }
 
     public void presentGameTypes() {
-
         GameType gameType = model.getGameTypes();
         view.presentGameTypes(gameType.gameNameForDisplay());
     }
 
     @Override
     public void presentBoardDimensionsFor(GameType gameType) {
-
         String dimension = model.getDimension(gameType);
         view.presentBoardDimensions(dimension);
     }
@@ -44,7 +43,6 @@ public class TicTacToeBoardController implements TTTController {
         // model.playMoveAt(id)
 //        view.printBoard();
 
-
         model.playMoveAt(id);
         Board board = model.getBoard();
         view.printBoard(board);
@@ -54,7 +52,6 @@ public class TicTacToeBoardController implements TTTController {
             view.printDrawMessage(board);
         }
         model.togglePlayer();
-
     }
 
 
