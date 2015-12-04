@@ -22,9 +22,9 @@ public class TicTacToeBoardPresenter implements BoardPresenter {
     private GameRulesPrompt guiPrompt;
     private RegisterClickEvent registerClickEvent;
 
-    public TicTacToeBoardPresenter(Scene scene) {
+    public TicTacToeBoardPresenter(GameRules gameRules, Scene scene) {
         this.scene = scene;
-        guiPrompt = new GuiPrompt(this);
+        guiPrompt = new GuiPrompt(this, gameRules);
         registerClickEvent = new RegisterClickEvent();
     }
 

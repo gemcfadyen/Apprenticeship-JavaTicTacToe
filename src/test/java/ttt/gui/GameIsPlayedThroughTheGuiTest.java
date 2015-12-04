@@ -9,6 +9,9 @@ import javafx.scene.text.Text;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import ttt.GameType;
+import ttt.board.Board;
+import ttt.player.PlayerFactory;
 
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
@@ -28,7 +31,8 @@ public class GameIsPlayedThroughTheGuiTest {
 
     @Test
     public void playersTakeTurnsUntilGameIsWon() throws Exception {
-        TicTacToeBoardPresenter boardPresenter = new TicTacToeBoardPresenter(scene);
+        GameRules gameRules = new GameRules(new Board(3), new PlayerFactory().createPlayers(GameType.HUMAN_VS_HUMAN, null, 3));
+        TicTacToeBoardPresenter boardPresenter = new TicTacToeBoardPresenter(gameRules, scene);
         boardPresenter.presentGameTypes();
 
         selectHumanVsHumanGameType(scene);

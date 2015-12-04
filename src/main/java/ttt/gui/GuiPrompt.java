@@ -5,20 +5,21 @@ import ttt.board.Board;
 import ttt.player.PlayerSymbol;
 
 import static ttt.player.PlayerSymbol.X;
-import static ttt.player.PlayerSymbol.opponent;
 
 public class GuiPrompt implements GameRulesPrompt {
     private BoardPresenter boardPresenter;
+    private GameRules gameRules;
     private Board board;
     private PlayerSymbol currentPlayer;
 
-    public GuiPrompt(BoardPresenter boardPresenter) {
+    public GuiPrompt(BoardPresenter boardPresenter, GameRules gameRules) {
         this.boardPresenter = boardPresenter;
+        this.gameRules = gameRules;
         this.currentPlayer = X;
     }
 
-    GuiPrompt(BoardPresenter boardPresenter, Board board) {
-        this(boardPresenter);
+    GuiPrompt(BoardPresenter boardPresenter, Board board, GameRules gameRules) {
+        this(boardPresenter, gameRules);
         this.board = board;
     }
 
@@ -48,19 +49,17 @@ public class GuiPrompt implements GameRulesPrompt {
         boardPresenter.presentGridDimensionsFor(gameType);
     }
 
-    @Override
     public void playMoveAt(String move) {
-        board.updateAt(Integer.valueOf(move), currentPlayer);
-        if (board.hasWinningCombination()) {
+        gameRules.playMoveAt(move);
+        if (gameRules.hasWinner()) {
             printWinningMessageFor(currentPlayer);
-        } else if (!board.hasFreeSpace()) {
+        } else if (!gameRules.hasFreeSpace()) {
             printDrawMessage();
         }
-        currentPlayer = opponent(currentPlayer);
+        gameRules.togglePlayer();
     }
 
-    @Override
     public PlayerSymbol getCurrentPlayer() {
-        return currentPlayer;
+        return gameRules.getCurrentPlayer();
     }
 }
