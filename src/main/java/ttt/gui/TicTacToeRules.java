@@ -57,23 +57,28 @@ public class TicTacToeRules implements GameRules {
         players = playerFactory.createPlayers(gameType, null, boardDimension);
     }
 
-    public GameType getGameTypes() {
-        return GameType.HUMAN_VS_HUMAN;
-    }
-
     @Override
     public String getDimension(GameType gameType) {
         return String.valueOf(gameType.dimensionUpperBoundary());
     }
-
 
     @Override
     public Board getBoard() {
         return board;
     }
 
+
     @Override
     public void storeGameType(GameType gameType) {
         this.gameType = gameType;
+    }
+
+    @Override
+    public boolean boardHasFreeSpace() {
+        return board.hasFreeSpace();
+    }
+
+    public GameType getGameTypes() {
+        return GameType.HUMAN_VS_HUMAN;
     }
 }

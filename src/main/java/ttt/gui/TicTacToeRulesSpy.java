@@ -5,6 +5,7 @@ import ttt.board.Board;
 import ttt.player.PlayerSymbol;
 
 public class TicTacToeRulesSpy implements GameRules {
+    private Board board;
     private boolean hasGotGameTypes = false;
     private boolean hasGotBoardDimensions = false;
     private boolean hasInitialisedGame = false;
@@ -13,7 +14,16 @@ public class TicTacToeRulesSpy implements GameRules {
     private String positionOfMove;
     private boolean hasToggledPlayer = false;
     private boolean winnerChecked = false;
+    private boolean boardCheckedForFreeSpaces = false;
+    private boolean drawChecked = false;
     private boolean hasGotCurrentPlayer = false;
+
+    public TicTacToeRulesSpy() {
+    }
+
+    public TicTacToeRulesSpy(Board board) {
+        this.board = board;
+    }
 
     @Override
     public void playMoveAt(String move) {
@@ -30,7 +40,7 @@ public class TicTacToeRulesSpy implements GameRules {
     @Override
     public boolean hasWinner() {
         winnerChecked = true;
-        return true;
+        return board.hasWinningCombination();
     }
 
     @Override
@@ -57,12 +67,18 @@ public class TicTacToeRulesSpy implements GameRules {
 
     @Override
     public Board getBoard() {
-        return null;
+        return board;
     }
 
     @Override
     public void storeGameType(GameType gameType) {
         hasStoredGameType = true;
+    }
+
+    @Override
+    public boolean boardHasFreeSpace() {
+        boardCheckedForFreeSpaces = true;
+        return board.hasFreeSpace();
     }
 
     public boolean hasObtainedGameTypes() {
@@ -99,5 +115,9 @@ public class TicTacToeRulesSpy implements GameRules {
 
     public boolean hasGotCurrentPlayer() {
         return hasGotCurrentPlayer;
+    }
+
+    public boolean boardCheckedForFreeSpace() {
+        return boardCheckedForFreeSpaces;
     }
 }

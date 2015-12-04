@@ -12,8 +12,6 @@ public interface GameRules {
 
     boolean hasWinner();
 
-//    boolean boardHasFreeSpace();
-
     void togglePlayer();
 
     void initialiseGame(String dimension);
@@ -25,4 +23,6 @@ public interface GameRules {
     Board getBoard();
 
     void storeGameType(GameType gameType);
+
+    boolean boardHasFreeSpace();
 }

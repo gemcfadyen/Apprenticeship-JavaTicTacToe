@@ -156,5 +156,30 @@ public class TicTacToeRulesTest {
         ticTacToeRules.initialiseGame("3");
         assertThat(ticTacToeRules.getBoard(), is(board));
     }
+
+    @Test
+    public void boardHasFreeSpace() {
+        Board board = new Board(
+                X, O, X,
+                O, X, O,
+                VACANT, VACANT, X
+        );
+
+        TicTacToeRules ticTacToeRules = new TicTacToeRules(board, new PlayerFactory().createPlayers(HUMAN_VS_HUMAN, null, 3));
+
+        assertThat(ticTacToeRules.boardHasFreeSpace(), is(true));
+    }
+
+    @Test
+    public void boardHasNoFreeSpace() {
+        Board board = new Board(
+                X, O, X,
+                O, X, O,
+                X, O, X);
+
+        TicTacToeRules ticTacToeRules = new TicTacToeRules(board, new PlayerFactory().createPlayers(HUMAN_VS_HUMAN, null, 3));
+
+        assertThat(ticTacToeRules.boardHasFreeSpace(), is(false));
+    }
 }
 

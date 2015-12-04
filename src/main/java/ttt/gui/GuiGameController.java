@@ -43,6 +43,10 @@ public class GuiGameController implements GameController {
             boardView.printsWinning(board, ticTacToeRules.getCurrentPlayer());
         }
 
+        if(!ticTacToeRules.boardHasFreeSpace()) {
+            boardView.printsDraw(board);
+        }
+
         ticTacToeRules.togglePlayer();
     }
 }

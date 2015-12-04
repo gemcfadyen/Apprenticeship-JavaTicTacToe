@@ -1,7 +1,7 @@
 package ttt.gui;
 
 import org.junit.Test;
-import ttt.player.PlayerSymbol;
+import ttt.board.Board;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
@@ -67,7 +67,8 @@ public class GuiGameControllerTest {
     @Test
     public void takesMove() {
         BoardPresenterSpy boardPresenterSpy = new BoardPresenterSpy();
-        TicTacToeRulesSpy gameRulesSpy = new TicTacToeRulesSpy();
+        Board board = new Board(3);
+        TicTacToeRulesSpy gameRulesSpy = new TicTacToeRulesSpy(board);
 
         ViewFactory viewFactoryStub = (gameController, gameRules) -> boardPresenterSpy;
 
@@ -83,7 +84,12 @@ public class GuiGameControllerTest {
     @Test
     public void gameHasWinner() {
         BoardPresenterSpy boardPresenterSpy = new BoardPresenterSpy();
-        TicTacToeRulesSpy gameRulesSpy = new TicTacToeRulesSpy();
+
+        Board winningBoard = new Board(
+                X, O, X,
+                X, O, VACANT,
+                X, VACANT, VACANT);
+        TicTacToeRulesSpy gameRulesSpy = new TicTacToeRulesSpy(winningBoard);
 
         ViewFactory viewFactoryStub = (gameController, gameRules) -> boardPresenterSpy;
 
@@ -94,5 +100,23 @@ public class GuiGameControllerTest {
         assertThat(gameRulesSpy.hasGotCurrentPlayer(), is(true));
         assertThat(boardPresenterSpy.hasIdentifiedAWin(), is(true));
         assertThat(boardPresenterSpy.getWinningSymbol(), is(X));
+    }
+
+    @Test
+    public void gameHasDraw() {
+        BoardPresenterSpy boardPresenterSpy = new BoardPresenterSpy();
+        Board drawnBoard = new Board(
+                X, O, X,
+                X, O, VACANT,
+                X, VACANT, VACANT);
+        TicTacToeRulesSpy gameRulesSpy = new TicTacToeRulesSpy(drawnBoard);
+
+        ViewFactory viewFactoryStub = (gameController, gameRules) -> boardPresenterSpy;
+
+        GuiGameController controller = new GuiGameController(gameRulesSpy, viewFactoryStub);
+        controller.playMove("1");
+
+        assertThat(gameRulesSpy.boardCheckedForFreeSpace(), is(true));
+        assertThat(boardPresenterSpy.hasDrawnBoard(), is(true));
     }
 }
