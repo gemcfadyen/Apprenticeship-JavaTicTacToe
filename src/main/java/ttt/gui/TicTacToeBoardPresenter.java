@@ -43,7 +43,7 @@ public class TicTacToeBoardPresenter implements BoardPresenter {
         displayGameTypes(gameTypePane, gameType);
 
         ClickableElement gameSelectionButton = new JavaFxRadioButton(humanVsHumanRadioButton);
-        ClickEvent gameSelectionOnClick = new UserSelectsGameType(guiPrompt, gameSelectionButton);
+        ClickEvent gameSelectionOnClick = new UserSelectsGameType(controller, gameSelectionButton);
         registerClickEvent.register(gameSelectionButton, gameSelectionOnClick);
 
         scene.setRoot(gameTypePane);

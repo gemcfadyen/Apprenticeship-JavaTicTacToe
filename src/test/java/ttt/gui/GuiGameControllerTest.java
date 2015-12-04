@@ -14,7 +14,7 @@ public class GuiGameControllerTest {
         ViewFactory viewFactoryStub = (gameController, gameRules) -> boardPresenterSpy;
 
         GuiGameController controller = new GuiGameController(gameRulesSpy, viewFactoryStub);
-        controller.displayGameTypes();
+        controller.presentGameTypes();
 
         assertThat(boardPresenterSpy.hasPresentedGameTypes(), is(true));
         assertThat(gameRulesSpy.hasObtainedGameTypes(), is(true));

@@ -35,7 +35,7 @@ public class GameIsPlayedThroughTheGuiTest {
 //        TicTacToeBoardPresenter boardPresenter = new TicTacToeBoardPresenter(ticTacToeRules, scene);
 //        boardPresenter.presentGameTypes(GameType.HUMAN_VS_HUMAN.gameNameForDisplay()); //TODO replace with controller
         GuiGameController controller = new GuiGameController(ticTacToeRules, new JavaFxViewFactory(scene, ticTacToeRules));
-        controller.displayGameTypes();
+        controller.presentGameTypes();
 
         selectHumanVsHumanGameType(scene);
         select3x3Grid(scene);
