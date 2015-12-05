@@ -1,7 +1,6 @@
 package ttt.gui;
 
 import javafx.geometry.Insets;
-import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.RadioButton;
@@ -13,8 +12,11 @@ import ttt.board.Line;
 import ttt.player.PlayerSymbol;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.function.Function;
 
+import static javafx.geometry.Pos.CENTER;
+import static javafx.geometry.Pos.TOP_CENTER;
 import static ttt.player.PlayerSymbol.*;
 
 public class TicTacToeBoardPresenter implements BoardPresenter {
@@ -69,7 +71,9 @@ public class TicTacToeBoardPresenter implements BoardPresenter {
     public void presentsBoard(Board board) {
         GridPane boardPane = new GridPane();
         gridPaneSetup(boardPane);
-        printBoardsOnPane(board, boardPane, getCellLabelForWinningBoard(board), registerEvent());
+
+        gridPaneSetup(boardPane);
+        printBoardsOnPane(board, boardPane, getCellLabelForActiveBoard(board), registerEvent());
 
         scene.setRoot(boardPane);
     }
@@ -78,12 +82,11 @@ public class TicTacToeBoardPresenter implements BoardPresenter {
     public void printsWinningMessage(Board board, PlayerSymbol symbol) {
         GridPane gameOverPane = new GridPane();
         gridPaneSetup(gameOverPane);
-
-        printBoardsOnPane(board, gameOverPane, getCellLabelForWinningBoard(board), disable());
+        printBoardsOnPane(board, gameOverPane, getCellLabelForActiveBoard(board), disable());
 
         Text gameOverTarget = new Text("Game Over, " + symbol.getSymbolForDisplay() + " won");
         gameOverTarget.setId("gameOverTargetId");
-        gameOverPane.add(gameOverTarget, 2, 7, 6, 1);
+        gameOverPane.add(gameOverTarget, 2, 8, 3, 1);
 
         scene.setRoot(gameOverPane);
     }
@@ -97,14 +100,14 @@ public class TicTacToeBoardPresenter implements BoardPresenter {
 
         Text gameOverTarget = new Text("Game Over, No winner");
         gameOverTarget.setId("gameOverTargetId");
-        gameOverPane.add(gameOverTarget, 2, 7, 6, 1);
+        gameOverPane.add(gameOverTarget, 2, 8, 3, 1);
         scene.setRoot(gameOverPane);
     }
 
     private void setWelcomeMessage(GridPane gridPane) {
         Text gameTitle = new Text("Tic Tac Toe");
         gameTitle.setId("gameTitleId");
-        gridPane.add(gameTitle, 0, 0, 6, 1);
+        gridPane.add(gameTitle, 0, 0, 4, 1);
         gridPaneSetup(gridPane);
     }
 
@@ -118,7 +121,7 @@ public class TicTacToeBoardPresenter implements BoardPresenter {
     }
 
     private void gridPaneSetup(GridPane gridPane) {
-        gridPane.setAlignment(Pos.CENTER);
+        gridPane.setAlignment(TOP_CENTER);
         gridPane.setHgap(10);
         gridPane.setVgap(10);
         gridPane.setPadding(new Insets(25, 25, 25, 25));
@@ -136,9 +139,6 @@ public class TicTacToeBoardPresenter implements BoardPresenter {
             PlayerSymbol[] symbols = line.getSymbols();
             for (int i = 0; i < symbols.length; i++) {
                 Button cell = createButton(labelForCell.apply(i + offset), String.valueOf(i + offset));
-                if (cell.getText() == X.getSymbolForDisplay() || cell.getText() == O.getSymbolForDisplay()) {
-                    cell.setDisable(true);
-                }
                 actionOnCell.apply(cell);
 
                 boardPane.add(configureHBox(cell), displayColumnIndex++, displayRowIndex);
@@ -158,17 +158,12 @@ public class TicTacToeBoardPresenter implements BoardPresenter {
 
     private HBox configureHBox(Button cell) {
         HBox gridLayout = new HBox(10);
-        gridLayout.setAlignment(Pos.CENTER);
+        gridLayout.setAlignment(CENTER);
         gridLayout.getChildren().add(cell);
         return gridLayout;
     }
 
-    private Function getCellLabelForDrawnBoard(Board board) {
-        Function<Integer, String> getLabel = index -> board.getSymbolAt(index).getSymbolForDisplay();
-        return getLabel;
-    }
-
-    private Function getCellLabelForWinningBoard(Board board) {
+    private Function getCellLabelForActiveBoard(Board board) {
         Function<Integer, String> getLabel = index -> {
             PlayerSymbol symbolAtIndex = board.getSymbolAt(index);
 
@@ -181,8 +176,22 @@ public class TicTacToeBoardPresenter implements BoardPresenter {
         return getLabel;
     }
 
+    private Function getCellLabelForDrawnBoard(Board board) {
+        Function<Integer, String> getLabel = index -> board.getSymbolAt(index).getSymbolForDisplay();
+        return getLabel;
+    }
+
+    private void disableOccupied(Button cell) {
+        if (Objects.equals(cell.getText(), X.getSymbolForDisplay())
+                || Objects.equals(cell.getText(), O.getSymbolForDisplay())) {
+            cell.setDisable(true);
+        }
+    }
+
     private Function<Button, Void> registerEvent() {
         return button -> {
+            disableOccupied(button);
+
             DeactivatableElement clickableCell = new JavaFxButton(button);
             ClickEvent makeMoveOnClick = new UserSelectsButtonForMove(controller, clickableCell);
             registerClickEvent.register(clickableCell, makeMoveOnClick);

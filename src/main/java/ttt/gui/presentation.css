@@ -22,16 +22,11 @@
 
 }
 
-#actionTargetId {
--fx-fill:WHITE;
--fx-font-weight:bold;
--fx-effect:dropshadow(gaussian, rgba(255,255,255,0.5) , 0,0,0,1);
-}
-
 #gameOverTargetId {
--fx-fill:WHITE;
 -fx-font-size: 20px;
--fx-font-weight:bold;
+ -fx-font-family: "Arial";
+ -fx-fill: #f0fff0;
+ -fx-effect: innershadow( three-pass-box , rgba(0,0,0,0.7) , 6, 0.0 , 0 , 2);
 }
 
 .label {

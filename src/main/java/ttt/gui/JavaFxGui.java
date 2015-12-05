@@ -15,7 +15,7 @@ public class JavaFxGui extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        Scene scene = new Scene(new GridPane(), 700, 700);
+        Scene scene = new Scene(new GridPane(), 500, 600);
         scene.getStylesheets().add(JavaFxGui.class.getResource("presentation.css").toExternalForm());
         primaryStage.setTitle("Tic Tac Toe");
         primaryStage.setScene(scene);
