@@ -43,7 +43,7 @@ public class GameIsPlayedThroughTheGuiTest {
         playerOTakesMove(scene, "#4");
         playerXTakesMove(scene, "#6");
 
-        assertThat(getWinningMessage(scene).getText(), is("Game Over, X won"));
+        assertThat(getWinningMessage(scene).getText(), is("Game Over - X won"));
     }
 
     private void selectHumanVsHumanGameType(Scene scene) {

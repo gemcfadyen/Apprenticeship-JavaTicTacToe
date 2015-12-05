@@ -19,14 +19,12 @@
  -fx-font-size: 13px;
  -fx-font-family: "Arial";
  -fx-text-fill: WHITE;
-
 }
 
 #gameOverTargetId {
+-fx-fill:WHITE;
 -fx-font-size: 20px;
- -fx-font-family: "Arial";
- -fx-fill: #f0fff0;
- -fx-effect: innershadow( three-pass-box , rgba(0,0,0,0.7) , 6, 0.0 , 0 , 2);
+-fx-font-weight:bold;
 }
 
 .label {

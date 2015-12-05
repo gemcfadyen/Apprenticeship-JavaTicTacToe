@@ -16,11 +16,9 @@ import java.util.Objects;
 import java.util.function.Function;
 
 import static javafx.geometry.Pos.CENTER;
-import static javafx.geometry.Pos.TOP_CENTER;
 import static ttt.player.PlayerSymbol.*;
 
 public class TicTacToeBoardPresenter implements BoardPresenter {
-    private RadioButton humanVsHumanRadioButton;
     private Scene scene;
     private RegisterClickEvent registerClickEvent;
     private GuiGameController controller;
@@ -38,10 +36,6 @@ public class TicTacToeBoardPresenter implements BoardPresenter {
 
         displayGameTypes(gameTypePane, gameType);
 
-        ClickableElement gameSelectionButton = new JavaFxRadioButton(humanVsHumanRadioButton);
-        ClickEvent gameSelectionOnClick = new UserSelectsGameType(controller, gameSelectionButton);
-        registerClickEvent.register(gameSelectionButton, gameSelectionOnClick);
-
         scene.setRoot(gameTypePane);
     }
 
@@ -50,6 +44,12 @@ public class TicTacToeBoardPresenter implements BoardPresenter {
         GridPane dimensionPane = new GridPane();
         setWelcomeMessage(dimensionPane);
 
+        displayDimensions(dimension, dimensionPane);
+
+        scene.setRoot(dimensionPane);
+    }
+
+    private void displayDimensions(String dimension, GridPane dimensionPane) {
         Text dimensionPrompt = new Text("Choose a board dimension");
         dimensionPrompt.setId("gameSetupId");
 
@@ -59,21 +59,18 @@ public class TicTacToeBoardPresenter implements BoardPresenter {
         dimensionPane.add(dimensionPrompt, 2, 2, 4, 1);
         dimensionPane.add(boardDimension, 2, 4, 4, 1);
 
-        ClickableElement dimensionSelectionButton = new JavaFxRadioButton(boardDimension);
-        ClickEvent boardDimensionOnClick = new UserSelectsBoardDimension(controller, dimensionSelectionButton);
-
-        registerClickEvent.register(dimensionSelectionButton, boardDimensionOnClick);
-
-        scene.setRoot(dimensionPane);
+        registerActionForSelectingDimension(boardDimension);
     }
 
     @Override
     public void presentsBoard(Board board) {
         GridPane boardPane = new GridPane();
         gridPaneSetup(boardPane);
+        unusedTextBoxForConsistantLayout(boardPane);
 
         gridPaneSetup(boardPane);
         printBoardsOnPane(board, boardPane, getCellLabelForActiveBoard(board), registerEvent());
+
 
         scene.setRoot(boardPane);
     }
@@ -82,11 +79,9 @@ public class TicTacToeBoardPresenter implements BoardPresenter {
     public void printsWinningMessage(Board board, PlayerSymbol symbol) {
         GridPane gameOverPane = new GridPane();
         gridPaneSetup(gameOverPane);
-        printBoardsOnPane(board, gameOverPane, getCellLabelForActiveBoard(board), disable());
 
-        Text gameOverTarget = new Text("Game Over, " + symbol.getSymbolForDisplay() + " won");
-        gameOverTarget.setId("gameOverTargetId");
-        gameOverPane.add(gameOverTarget, 2, 8, 3, 1);
+        winningStatus(symbol, gameOverPane);
+        printBoardsOnPane(board, gameOverPane, getCellLabelForActiveBoard(board), disable());
 
         scene.setRoot(gameOverPane);
     }
@@ -96,11 +91,9 @@ public class TicTacToeBoardPresenter implements BoardPresenter {
         GridPane gameOverPane = new GridPane();
         gridPaneSetup(gameOverPane);
 
+        drawStatus(gameOverPane);
         printBoardsOnPane(board, gameOverPane, getCellLabelForDrawnBoard(board), disable());
 
-        Text gameOverTarget = new Text("Game Over, No winner");
-        gameOverTarget.setId("gameOverTargetId");
-        gameOverPane.add(gameOverTarget, 2, 8, 3, 1);
         scene.setRoot(gameOverPane);
     }
 
@@ -115,16 +108,11 @@ public class TicTacToeBoardPresenter implements BoardPresenter {
         Text gameSelectionPrompt = new Text("Choose a game type");
         gameSelectionPrompt.setId("gameSetupId");
         gridPane.add(gameSelectionPrompt, 2, 2, 4, 1);
-        humanVsHumanRadioButton = new RadioButton(gameType);
+        RadioButton humanVsHumanRadioButton = new RadioButton(gameType);
         humanVsHumanRadioButton.setId("gameSetupSelectionId");
         gridPane.add(humanVsHumanRadioButton, 2, 4, 4, 1);
-    }
 
-    private void gridPaneSetup(GridPane gridPane) {
-        gridPane.setAlignment(TOP_CENTER);
-        gridPane.setHgap(10);
-        gridPane.setVgap(10);
-        gridPane.setPadding(new Insets(25, 25, 25, 25));
+        registerActionForSelectingGameType(humanVsHumanRadioButton);
     }
 
     private void printBoardsOnPane(Board board, GridPane boardPane, Function<Integer, String> labelForCell, Function<Button, Void> actionOnCell) {
@@ -147,6 +135,47 @@ public class TicTacToeBoardPresenter implements BoardPresenter {
             displayRowIndex++;
             displayColumnIndex = 2;
         }
+    }
+
+    private void gridPaneSetup(GridPane gridPane) {
+        gridPane.setAlignment(CENTER);
+        gridPane.setHgap(10);
+        gridPane.setVgap(10);
+        gridPane.setPadding(new Insets(25, 25, 25, 25));
+    }
+
+    private void winningStatus(PlayerSymbol symbol, GridPane gameOverPane) {
+        Text gameOverTarget = new Text("Game Over - " + symbol.getSymbolForDisplay() + " won");
+        gameOverTarget.setId("gameOverTargetId");
+        positionTextUnderBoard(gameOverPane, gameOverTarget);
+    }
+
+    private void drawStatus(GridPane gameOverPane) {
+        Text gameOverTarget = new Text("Game Over - No winner");
+        gameOverTarget.setId("gameOverTargetId");
+        positionTextUnderBoard(gameOverPane, gameOverTarget);
+    }
+
+    private void unusedTextBoxForConsistantLayout(GridPane boardPane) {
+        Text unusedTextForStableLayout = new Text("");
+        unusedTextForStableLayout.setId("unusedId");
+        positionTextUnderBoard(boardPane, unusedTextForStableLayout);
+    }
+
+    private void registerActionForSelectingGameType(RadioButton radioButton) {
+        ClickableElement gameSelectionButton = new JavaFxRadioButton(radioButton);
+        ClickEvent gameSelectionOnClick = new UserSelectsGameType(controller, gameSelectionButton);
+        registerClickEvent.register(gameSelectionButton, gameSelectionOnClick);
+    }
+
+    private void registerActionForSelectingDimension(RadioButton radioButton) {
+        ClickableElement dimensionSelectionButton = new JavaFxRadioButton(radioButton);
+        ClickEvent gameSelectionOnClick = new UserSelectsBoardDimension(controller, dimensionSelectionButton);
+        registerClickEvent.register(dimensionSelectionButton, gameSelectionOnClick);
+    }
+
+    private void positionTextUnderBoard(GridPane boardPane, Text unusedTextForStableLayout) {
+        boardPane.add(unusedTextForStableLayout, 2, 8, 3, 1);
     }
 
     private Button createButton(String text, String value) {
@@ -205,6 +234,5 @@ public class TicTacToeBoardPresenter implements BoardPresenter {
             clickableCell.setDisabled();
             return null;
         };
-
     }
 }
