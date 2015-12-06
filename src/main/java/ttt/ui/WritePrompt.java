@@ -5,7 +5,6 @@ import ttt.board.Board;
 import ttt.player.PlayerSymbol;
 
 public interface WritePrompt {
-    void presentGameTypes();
     void presentBoardDimensionsFor(GameType gameType);
     void printWinningMessageFor(PlayerSymbol symbol);
     void print(Board board);

@@ -58,8 +58,28 @@ public class PromptSpy implements Prompt {
     }
 
     @Override
-    public void presentGameTypes() {
+    public void presentGameTypes(List<GameType> allGameTypes) {
         numberOfTimesGameOptionsAskedFor++;
+    }
+
+    @Override
+    public void presentGridDimensionsUpTo(String dimension) {
+
+    }
+
+    @Override
+    public void presentsBoard(Board board) {
+
+    }
+
+    @Override
+    public void printsWinningMessage(Board board, PlayerSymbol symbol) {
+
+    }
+
+    @Override
+    public void printsDrawMessage(Board board) {
+
     }
 
     @Override

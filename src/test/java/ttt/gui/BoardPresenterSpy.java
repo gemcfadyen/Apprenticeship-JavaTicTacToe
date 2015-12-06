@@ -1,7 +1,10 @@
 package ttt.gui;
 
+import ttt.GameType;
 import ttt.board.Board;
 import ttt.player.PlayerSymbol;
+
+import java.util.List;
 
 public class BoardPresenterSpy implements BoardPresenter {
     private boolean hasPresentedGridDimension = false;
@@ -12,7 +15,7 @@ public class BoardPresenterSpy implements BoardPresenter {
     private PlayerSymbol winningSymbol;
 
     @Override
-    public void presentGameTypes(String gameType) {
+    public void presentGameTypes(List<GameType> gameTypes) {
         hasPresentedGameTypes = true;
     }
 

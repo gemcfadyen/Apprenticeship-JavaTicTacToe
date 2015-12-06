@@ -11,6 +11,8 @@ import java.io.Reader;
 import java.io.StringReader;
 import java.io.StringWriter;
 import java.io.Writer;
+import java.util.Arrays;
+import java.util.List;
 
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.is;
@@ -221,7 +223,8 @@ public class CommandPromptTest {
         StringWriter writer = new StringWriter();
         Prompt prompt = new CommandPrompt(new StringReader("1\n"), writer);
 
-        prompt.presentGameTypes();
+        List<GameType> allGameTypes = Arrays.asList(GameType.values());
+        prompt.presentGameTypes(allGameTypes);
 
         assertThat(writer.toString(), is(
                 "\n"

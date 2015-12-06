@@ -11,6 +11,7 @@ import ttt.ui.Prompt;
 
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
+import java.util.List;
 
 import static ttt.ReplayOption.Y;
 
@@ -30,6 +31,7 @@ public class CommandLineGameController {
         this.playerFactory = playerFactory;
     }
 
+    //todo remove factories
     public CommandLineGameController(GameRules gameRules, BoardFactory boardFactory, Prompt gamePrompt, PlayerFactory playerFactory) {
         this.gameRules = gameRules;
         this.boardFactory = boardFactory;
@@ -37,10 +39,16 @@ public class CommandLineGameController {
         this.playerFactory = playerFactory;
     }
 
+    //todo remove factories
     public CommandLineGameController(GameRules gameRules, Board board, Prompt gamePrompt, PlayerFactory playerFactory) {
         this(board, gamePrompt, playerFactory);
         this.gameRules = gameRules;
 
+    }
+
+    public CommandLineGameController(GameRules gameRules, Prompt commandLinePrompt) {
+        this.gameRules = gameRules;
+        this.gamePrompt = commandLinePrompt;
     }
 
     public static void main(String... args) {
@@ -57,7 +65,8 @@ public class CommandLineGameController {
     public void play() {
         ReplayOption replayOption = Y;
         while (replayOption.equals(Y)) {
-            Player[] players = setupPlayers();
+            presentGameTypes();
+            Player[] players = setupPlayers(GameType.HUMAN_VS_HUMAN);
             playMatch(players);
             replayOption = gamePrompt.getReplayOption();
         }
@@ -80,11 +89,22 @@ public class CommandLineGameController {
         board.updateAt(nextMove, player.getSymbol());
     }
 
-    Player[] setupPlayers() {
-        gamePrompt.presentGameTypes();
-        GameType gameType = gamePrompt.readGameType();
-        int dimension = getBoardOfCorrectDimensionFor(gameType);
+    Player[] setupPlayers(GameType gameType) {
+        int dimension = getDimension(gameType);
         return createPlayersFor(gameType, dimension);
+    }
+
+    private int getDimension(GameType gameType) {
+        return getBoardOfCorrectDimensionFor(gameType);
+    }
+
+    void presentGameTypes() {
+        List<GameType> allGameTypes = gameRules.getGameTypes();
+
+        gamePrompt.presentGameTypes(allGameTypes);
+        GameType gameType = gamePrompt.readGameType();
+
+        gameRules.storeGameType(gameType);
     }
 
     void displayResultsOfGame() {

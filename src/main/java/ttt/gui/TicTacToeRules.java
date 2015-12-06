@@ -8,6 +8,9 @@ import ttt.player.PlayerFactory;
 import ttt.player.PlayerSymbol;
 import ttt.ui.Prompt;
 
+import java.util.Arrays;
+import java.util.List;
+
 public class TicTacToeRules implements GameRules {
     private static final int PLAYER_ONE_INDEX = 0;
     private static final int PLAYER_TWO_INDEX = 1;
@@ -80,8 +83,8 @@ public class TicTacToeRules implements GameRules {
         return board.hasFreeSpace();
     }
 
-    public GameType getGameTypes() {
+    public List<GameType> getGameTypes() {
         //Will return list of game types when gui is expanded to deal with multiple gametypes
-        return GameType.HUMAN_VS_HUMAN;
+        return Arrays.asList(GameType.values());
     }
 }

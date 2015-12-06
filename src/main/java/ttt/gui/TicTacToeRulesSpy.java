@@ -4,6 +4,9 @@ import ttt.GameType;
 import ttt.board.Board;
 import ttt.player.PlayerSymbol;
 
+import java.util.Arrays;
+import java.util.List;
+
 public class TicTacToeRulesSpy implements GameRules {
     private Board board;
     private boolean hasGotGameTypes = false;
@@ -53,9 +56,9 @@ public class TicTacToeRulesSpy implements GameRules {
     }
 
     @Override
-    public GameType getGameTypes() {
+    public List<GameType> getGameTypes() {
         hasGotGameTypes = true;
-        return GameType.HUMAN_VS_HUMAN;
+        return Arrays.asList(GameType.HUMAN_VS_HUMAN);
     }
 
     @Override

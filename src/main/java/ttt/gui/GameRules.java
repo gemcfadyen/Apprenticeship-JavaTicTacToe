@@ -4,6 +4,8 @@ import ttt.GameType;
 import ttt.board.Board;
 import ttt.player.PlayerSymbol;
 
+import java.util.List;
+
 public interface GameRules {
 
     void playMoveAt(String move);
@@ -16,7 +18,7 @@ public interface GameRules {
 
     void initialiseGame(String dimension);
 
-    GameType getGameTypes();
+    List<GameType> getGameTypes();
 
     String getDimension(GameType gameType);
 

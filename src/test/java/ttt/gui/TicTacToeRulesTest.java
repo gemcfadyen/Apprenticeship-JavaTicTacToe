@@ -1,5 +1,6 @@
 package ttt.gui;
 
+import org.hamcrest.Matchers;
 import org.junit.Test;
 import ttt.BoardFactoryStub;
 import ttt.GameType;
@@ -11,9 +12,13 @@ import ttt.player.PlayerFactory;
 import ttt.player.PlayerSymbol;
 import ttt.ui.Prompt;
 
+import java.util.List;
+
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
 import static ttt.GameType.HUMAN_VS_HUMAN;
+import static ttt.GameType.HUMAN_VS_UNBEATABLE;
+import static ttt.GameType.UNBEATABLE_VS_HUMAN;
 import static ttt.player.PlayerSymbol.*;
 
 public class TicTacToeRulesTest {
@@ -100,9 +105,9 @@ public class TicTacToeRulesTest {
     public void getGameTypes() {
         TicTacToeRules gamesRules = new TicTacToeRules(new BoardFactory(), new PlayerFactory());
 
-        GameType gameType = gamesRules.getGameTypes();
+        List<GameType> gameTypes = gamesRules.getGameTypes();
 
-        assertThat(gameType, is(HUMAN_VS_HUMAN));
+        assertThat(gameTypes, Matchers.contains(HUMAN_VS_HUMAN, HUMAN_VS_UNBEATABLE, UNBEATABLE_VS_HUMAN));
     }
 
     @Test

@@ -16,7 +16,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.function.Function;
 
-import static ttt.GameType.values;
 import static ttt.player.PlayerSymbol.VACANT;
 import static ttt.player.PlayerSymbol.X;
 
@@ -35,11 +34,6 @@ public class CommandPrompt implements Prompt {
         this.writer = writer;
 
         clear();
-    }
-
-    @Override
-    public void presentGameTypes() {
-        askUserForGameType();
     }
 
     @Override
@@ -130,10 +124,10 @@ public class CommandPrompt implements Prompt {
         }
     }
 
-    private void askUserForGameType() {
+    private void askUserForGameType(List<GameType> gameTypes) {
         String gameTypeMessage = FONT_COLOUR_ANSII_CHARACTERS;
 
-        for (GameType gameType : values()) {
+        for (GameType gameType : gameTypes) {
             gameTypeMessage += "Enter " + gameType.numericRepresentation() + " to play " + gameType.gameNameForDisplay() + newLine();
         }
 
@@ -178,7 +172,7 @@ public class CommandPrompt implements Prompt {
     private Function<ValidationResult, Void> functionToRepromptGameType() {
         return validationResult -> {
             display(BOARD_COLOUR_ANSII_CHARACTERS + validationResult.reason());
-            askUserForGameType();
+            askUserForGameType(Arrays.asList(GameType.values())); //TODO pass in from model
             return null;
         };
     }
@@ -301,5 +295,30 @@ public class CommandPrompt implements Prompt {
 
     private boolean endOfRow(int index, int dimension) {
         return (index + 1) % dimension == 0;
+    }
+
+    @Override
+    public void presentGameTypes(List<GameType> gameTypes) {
+        askUserForGameType(gameTypes);
+    }
+
+    @Override
+    public void presentGridDimensionsUpTo(String dimension) {
+
+    }
+
+    @Override
+    public void presentsBoard(Board board) {
+
+    }
+
+    @Override
+    public void printsWinningMessage(Board board, PlayerSymbol symbol) {
+
+    }
+
+    @Override
+    public void printsDrawMessage(Board board) {
+
     }
 }

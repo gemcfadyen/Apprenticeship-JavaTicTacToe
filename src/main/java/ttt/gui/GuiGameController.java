@@ -3,6 +3,8 @@ package ttt.gui;
 import ttt.GameType;
 import ttt.board.Board;
 
+import java.util.List;
+
 public class GuiGameController implements GameController {
 
     private GameRules ticTacToeRules;
@@ -15,8 +17,8 @@ public class GuiGameController implements GameController {
 
     @Override
     public void presentGameTypes() {
-        GameType gameTypes = ticTacToeRules.getGameTypes();
-        boardView.presentGameTypes(gameTypes.gameNameForDisplay());
+        List<GameType> allGameTypes = ticTacToeRules.getGameTypes();
+        boardView.presentGameTypes(allGameTypes);
     }
 
     @Override
