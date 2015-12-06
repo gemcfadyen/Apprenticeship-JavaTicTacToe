@@ -2,6 +2,8 @@ package ttt;
 
 import ttt.board.Board;
 import ttt.board.BoardFactory;
+import ttt.gui.GameRules;
+import ttt.gui.TicTacToeRules;
 import ttt.player.Player;
 import ttt.player.PlayerFactory;
 import ttt.ui.CommandPrompt;
@@ -16,6 +18,7 @@ public class CommandLineGameController {
     private static final int PLAYER_ONE_INDEX = 0;
     private static final int PLAYER_TWO_INDEX = 1;
     private PlayerFactory playerFactory;
+    private GameRules gameRules;
     private BoardFactory boardFactory;
     private Board board;
     private Prompt gamePrompt;
@@ -27,14 +30,27 @@ public class CommandLineGameController {
         this.playerFactory = playerFactory;
     }
 
-    public CommandLineGameController(BoardFactory boardFactory, Prompt gamePrompt, PlayerFactory playerFactory) {
+    public CommandLineGameController(GameRules gameRules, BoardFactory boardFactory, Prompt gamePrompt, PlayerFactory playerFactory) {
+        this.gameRules = gameRules;
         this.boardFactory = boardFactory;
         this.gamePrompt = gamePrompt;
         this.playerFactory = playerFactory;
     }
 
+    public CommandLineGameController(GameRules gameRules, Board board, Prompt gamePrompt, PlayerFactory playerFactory) {
+        this(board, gamePrompt, playerFactory);
+        this.gameRules = gameRules;
+
+    }
+
     public static void main(String... args) {
-        CommandLineGameController commandLineGameController = new CommandLineGameController(new BoardFactory(), buildPrompt(), new PlayerFactory());
+        TicTacToeRules gameRules = new TicTacToeRules(new BoardFactory(), new PlayerFactory());
+        CommandLineGameController commandLineGameController = new CommandLineGameController(
+                gameRules,
+                new BoardFactory(), //TODO remove once refactoring is ok
+                buildPrompt(),
+                new PlayerFactory()
+        );
         commandLineGameController.play();
     }
 

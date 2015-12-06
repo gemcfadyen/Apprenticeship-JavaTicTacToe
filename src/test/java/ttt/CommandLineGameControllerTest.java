@@ -3,6 +3,7 @@ package ttt;
 import org.junit.Test;
 import ttt.board.Board;
 import ttt.board.BoardFactory;
+import ttt.gui.GameRules;
 import ttt.player.*;
 import ttt.ui.CommandPrompt;
 import ttt.ui.Prompt;
@@ -21,12 +22,14 @@ public class CommandLineGameControllerTest {
     private static final String HUMAN_VS_HUMAN_ID = "1\n";
     private static final String INPUT_FOR_3x3 = "3\n";
     private static final String DO_NOT_REPLAY = "N\n";
+    private GameRules gameRules;
 
     @Test
     public void createsBoardOfSpecifiedDimension() {
         BoardFactoryStub boardFactoryStub = new BoardFactoryStub();
         PromptSpy promptSpy = createPromptSpyToReadInput(INPUT_FOR_3x3);
         CommandLineGameController commandLineGameController = new CommandLineGameController(
+                gameRules,
                 boardFactoryStub,
                 promptSpy,
                 new PlayerFactory()
@@ -44,6 +47,7 @@ public class CommandLineGameControllerTest {
     public void setsUpPlayersForGameType() {
         PromptSpy promptSpy = createPromptSpyToReadInput(HUMAN_VS_UNBEATABLE_OPTION + INPUT_FOR_3x3);
         CommandLineGameController commandLineGameController = new CommandLineGameController(
+                gameRules,
                 new BoardFactory(),
                 promptSpy,
                 new PlayerFactory()
@@ -61,6 +65,7 @@ public class CommandLineGameControllerTest {
     @Test
     public void gameIsOverWhenBoardIsFull() {
         CommandLineGameController commandLineGameController = new CommandLineGameController(
+                gameRules,
                 boardWith(X, O, X,
                         X, X, O,
                         O, X, O),
@@ -75,6 +80,7 @@ public class CommandLineGameControllerTest {
     public void gameIsWonWhenPlayerPlacesWinningMove() {
         PromptSpy gamePrompt = new PromptSpy(new StringReader(""));
         CommandLineGameController commandLineGameController = new CommandLineGameController(
+                gameRules,
                 boardWith(
                         X, VACANT, X,
                         O, X, O,
@@ -92,6 +98,7 @@ public class CommandLineGameControllerTest {
     public void printsCongratulatoryMessageAndBoardWhenThereIsAWin() {
         PromptSpy gamePrompt = new PromptSpy(new StringReader(""));
         CommandLineGameController commandLineGameController = new CommandLineGameController(
+                gameRules,
                 boardWith(
                         X, X, X,
                         O, VACANT, VACANT,
@@ -111,6 +118,7 @@ public class CommandLineGameControllerTest {
     public void printsDrawMessageAndBoardWhenThereIsADraw() {
         PromptSpy gamePrompt = createPromptSpyToReadInput("");
         CommandLineGameController commandLineGameController = new CommandLineGameController(
+                gameRules,
                 boardWith(
                         X, O, X,
                         O, O, X,
@@ -134,6 +142,7 @@ public class CommandLineGameControllerTest {
                 O, O, X
         );
         CommandLineGameController commandLineGameController = new CommandLineGameController(
+                gameRules,
                 new BoardFactoryStub(board),
                 gamePrompt,
                 new PlayerFactoryStub(twoHumanPlayers())
@@ -148,7 +157,12 @@ public class CommandLineGameControllerTest {
     @Test
     public void boardIsUpdatedWithPlayersMove() {
         Board board = new Board(3);
-        CommandLineGameController commandLineGameController = new CommandLineGameController(board, commandPrompt(), new PlayerFactory());
+        CommandLineGameController commandLineGameController = new CommandLineGameController(
+                gameRules,
+                board,
+                commandPrompt(),
+                new PlayerFactory()
+        );
 
         commandLineGameController.updateBoardWithPlayersMove(createHumanPlayer(X, createCommandPromptToReadInput("2\n")));
 
@@ -161,6 +175,7 @@ public class CommandLineGameControllerTest {
         PlayerSpy player1Spy = new PlayerSpy(X, createCommandPromptToReadInput("1\n5\n6\n7\n8\n"));
         PlayerSpy player2Spy = new PlayerSpy(O, createCommandPromptToReadInput("2\n3\n4\n9\n"));
         CommandLineGameController commandLineGameController = new CommandLineGameController(
+                gameRules,
                 new BoardFactory(),
                 createCommandPromptToReadInput(HUMAN_VS_HUMAN_ID + INPUT_FOR_3x3 + DO_NOT_REPLAY),
                 new PlayerFactoryStub(player1Spy, player2Spy)
