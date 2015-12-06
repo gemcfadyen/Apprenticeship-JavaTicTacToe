@@ -17,16 +17,13 @@ import static ttt.ReplayOption.Y;
 
 //todo implements gamecontroller
 public class CommandLineGameController {
-    private static final int PLAYER_ONE_INDEX = 0;
-    private static final int PLAYER_TWO_INDEX = 1;
-    private PlayerFactory playerFactory;
     private GameRules gameRules;
-    private Board board;
-    private Prompt gamePrompt;
-    private int currentPlayerIndex = PLAYER_ONE_INDEX;
 
-    CommandLineGameController(Board board, Prompt gamePrompt, PlayerFactory playerFactory) {
-        this.board = board;
+
+    private PlayerFactory playerFactory;
+    private Prompt gamePrompt;
+
+    CommandLineGameController(Prompt gamePrompt, PlayerFactory playerFactory) {
         this.gamePrompt = gamePrompt;
         this.playerFactory = playerFactory;
     }
@@ -36,12 +33,11 @@ public class CommandLineGameController {
         this.gameRules = gameRules;
         this.gamePrompt = gamePrompt;
         this.playerFactory = playerFactory;
-        this.board = new Board(3);
     }
 
     //todo remove factories
     public CommandLineGameController(GameRules gameRules, Board board, Prompt gamePrompt, PlayerFactory playerFactory) {
-        this(board, gamePrompt, playerFactory);
+        this(gamePrompt, playerFactory);
         this.gameRules = gameRules;
     }
 
@@ -71,28 +67,26 @@ public class CommandLineGameController {
 
             gameRules.initialiseGame(String.valueOf(dimension));
 
-            Player[] players = setupPlayers(GameType.HUMAN_VS_HUMAN, dimension);
-            playMatch(players);
+            playMatch();
             replayOption = gamePrompt.getReplayOption();
         }
     }
 
-    void playMatch(Player[] players) {
-
+    void playMatch() {
         while (gameInProgress()) {
-            updateBoardWithPlayersMove(players[currentPlayerIndex]);
-            currentPlayerIndex = toggle(currentPlayerIndex);
+            updateBoardWithPlayersMove();
+            gameRules.togglePlayer();
         }
         displayResultsOfGame();
     }
 
     boolean gameInProgress() {
-        return board.hasFreeSpace() && !board.hasWinningCombination();
+        return gameRules.boardHasFreeSpace() && !gameRules.hasWinner();
     }
 
-    void updateBoardWithPlayersMove(Player player) {
-        int nextMove = player.chooseNextMoveFrom(board);
-        board.updateAt(nextMove, player.getSymbol());
+    void updateBoardWithPlayersMove() {
+        String nextMove = gameRules.getCurrentPlayersNextMove();
+        gameRules.playMoveAt(nextMove);
     }
 
     Player[] setupPlayers(GameType gameType, int dimension) {
@@ -120,23 +114,18 @@ public class CommandLineGameController {
     }
 
     void displayResultsOfGame() {
-        gamePrompt.print(board);
-        printExitMessage(board.hasWinningCombination());
+        printExitMessage();
     }
 
     private Player[] createPlayersFor(GameType gameType, int dimension) {
         return playerFactory.createPlayers(gameType, gamePrompt, dimension);
     }
 
-    private int toggle(int currentPlayerIndex) {
-        return currentPlayerIndex == PLAYER_ONE_INDEX ? PLAYER_TWO_INDEX : PLAYER_ONE_INDEX;
-    }
-
-    private void printExitMessage(boolean hasWinner) {
-        if (!hasWinner) {
-            gamePrompt.printDrawMessage();
+    private void printExitMessage() {
+        if (!gameRules.hasWinner()) {
+            gamePrompt.printsDrawMessage(gameRules.getBoard());
         } else {
-            gamePrompt.printWinningMessageFor(board.getWinningSymbol());
+            gamePrompt.printsWinningMessage(gameRules.getBoard(), gameRules.getWinningSymbol());
         }
     }
 

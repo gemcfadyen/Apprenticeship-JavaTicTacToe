@@ -36,8 +36,13 @@ public class TicTacToeRules implements GameRules {
         board.updateAt(Integer.valueOf(move), players[currentPlayerIndex].getSymbol());
     }
 
-    public PlayerSymbol getCurrentPlayer() {
+    public PlayerSymbol getCurrentPlayerSymbol() {
         return players[currentPlayerIndex].getSymbol();
+    }
+
+    @Override
+    public PlayerSymbol getWinningSymbol() {
+        return board.getWinningSymbol();
     }
 
     public boolean hasWinner() {
@@ -81,6 +86,11 @@ public class TicTacToeRules implements GameRules {
     @Override
     public boolean boardHasFreeSpace() {
         return board.hasFreeSpace();
+    }
+
+    @Override
+    public String getCurrentPlayersNextMove() {
+        return String.valueOf(players[currentPlayerIndex].chooseNextMoveFrom(board));
     }
 
     public List<GameType> getGameTypes() {

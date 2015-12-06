@@ -54,7 +54,7 @@ public class GuiGameControllerTest {
 
     @Test
     public void takesMove() {
-        gameRulesSpy = new TicTacToeRulesSpy(new Board(3));
+        gameRulesSpy = new TicTacToeRulesSpy(new Board(3), "1");
         GuiGameController controller = new GuiGameController(gameRulesSpy, createViewFactory());
 
         controller.playMove("1");
@@ -67,15 +67,15 @@ public class GuiGameControllerTest {
 
     @Test
     public void gameHasWinner() {
-        Board boardAfterWinningMoveTaken = new Board(
-                X, O, X,
+        Board board = new Board(
+                VACANT, O, X,
                 X, O, VACANT,
                 X, VACANT, VACANT
         );
-        gameRulesSpy = new TicTacToeRulesSpy(boardAfterWinningMoveTaken);
+        gameRulesSpy = new TicTacToeRulesSpy(board, "0");
         GuiGameController controller = new GuiGameController(gameRulesSpy, createViewFactory());
 
-        controller.playMove("1");
+        controller.playMove("0");
 
         assertThat(gameRulesSpy.gameCheckedForWin(), is(true));
         assertThat(gameRulesSpy.hasGotCurrentPlayer(), is(true));
@@ -85,12 +85,12 @@ public class GuiGameControllerTest {
 
     @Test
     public void gameHasDraw() {
-        Board boardAfterMoveTaken = new Board(
+        Board board = new Board(
                 X, O, X,
-                VACANT, O, X,
-                X, X, VACANT
+                O, O, X,
+                X, VACANT, O
         );
-        gameRulesSpy = new TicTacToeRulesSpy(boardAfterMoveTaken);
+        gameRulesSpy = new TicTacToeRulesSpy(board, "7");
         GuiGameController controller = new GuiGameController(gameRulesSpy, createViewFactory());
 
         controller.playMove("7");
@@ -101,12 +101,12 @@ public class GuiGameControllerTest {
 
     @Test
     public void winningOnLastTurnDisplaysWin() {
-        Board boardAfterLastMoveTaken = new Board(
+        Board board = new Board(
                 X, O, X,
                 X, O, O,
-                X, X, O
+                VACANT, X, O
         );
-        gameRulesSpy = new TicTacToeRulesSpy(boardAfterLastMoveTaken);
+        gameRulesSpy = new TicTacToeRulesSpy(board, "6");
         GuiGameController controller = new GuiGameController(gameRulesSpy, createViewFactory());
 
         controller.playMove("6");

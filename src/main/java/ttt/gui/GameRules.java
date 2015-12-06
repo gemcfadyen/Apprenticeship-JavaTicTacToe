@@ -10,7 +10,9 @@ public interface GameRules {
 
     void playMoveAt(String move);
 
-    PlayerSymbol getCurrentPlayer();
+    PlayerSymbol getCurrentPlayerSymbol();
+
+    PlayerSymbol getWinningSymbol();
 
     boolean hasWinner();
 
@@ -27,4 +29,6 @@ public interface GameRules {
     void storeGameType(GameType gameType);
 
     boolean boardHasFreeSpace();
+
+    String getCurrentPlayersNextMove();
 }

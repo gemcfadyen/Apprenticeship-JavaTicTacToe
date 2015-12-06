@@ -311,16 +311,18 @@ public class CommandPrompt implements Prompt {
 
     @Override
     public void presentsBoard(Board board) {
-
+        print(board);
     }
 
     @Override
     public void printsWinningMessage(Board board, PlayerSymbol symbol) {
-
+        print(board);
+        printWinningMessageFor(symbol);
     }
 
     @Override
     public void printsDrawMessage(Board board) {
-
+        print(board);
+        printDrawMessage();
     }
 }

@@ -2,6 +2,8 @@ package ttt;
 
 import org.junit.Test;
 import ttt.board.Board;
+import ttt.board.BoardFactory;
+import ttt.gui.TicTacToeRules;
 import ttt.gui.TicTacToeRulesSpy;
 import ttt.player.*;
 import ttt.ui.CommandPrompt;
@@ -99,32 +101,43 @@ public class CommandLineGameControllerTest {
 
     @Test
     public void gameIsOverWhenBoardIsFull() {
+        Board board = boardWith(
+                X, O, X,
+                X, X, O,
+                O, O, X
+        );
+        gameRulesSpy = new TicTacToeRulesSpy(board, "");
+
         CommandLineGameController commandLineGameController = new CommandLineGameController(
                 gameRulesSpy,
-                boardWith(X, O, X,
-                        X, X, O,
-                        O, X, O),
+                board,
                 commandPrompt(),
                 new PlayerFactory()
         );
 
-        assertThat(commandLineGameController.gameInProgress(), is(false));
+        boolean gameInProgress = commandLineGameController.gameInProgress();
+
+        assertThat(gameInProgress, is(false));
+        assertThat(gameRulesSpy.boardCheckedForFreeSpace(), is(true));
     }
 
     @Test
     public void gameIsWonWhenPlayerPlacesWinningMove() {
         PromptSpy gamePrompt = new PromptSpy(new StringReader(""));
+
+        Board board = boardWith(
+                X, VACANT, X,
+                O, X, O,
+                O, X, O);
+        gameRulesSpy = new TicTacToeRulesSpy(board, "1");
         CommandLineGameController commandLineGameController = new CommandLineGameController(
                 gameRulesSpy,
-                boardWith(
-                        X, VACANT, X,
-                        O, X, O,
-                        O, X, O),
+                board,
                 gamePrompt,
                 new PlayerFactory()
         );
 
-        commandLineGameController.playMatch(twoHumanPlayers());
+        commandLineGameController.playMatch();
 
         assertThat(gamePrompt.getNumberOfTimesXHasWon(), is(1));
     }
@@ -132,12 +145,14 @@ public class CommandLineGameControllerTest {
     @Test
     public void printsCongratulatoryMessageAndBoardWhenThereIsAWin() {
         PromptSpy gamePrompt = new PromptSpy(new StringReader(""));
+        Board board = boardWith(
+                X, X, X,
+                O, VACANT, VACANT,
+                O, VACANT, VACANT);
+        TicTacToeRulesSpy gameRulesSpy = new TicTacToeRulesSpy(board, "");
         CommandLineGameController commandLineGameController = new CommandLineGameController(
                 gameRulesSpy,
-                boardWith(
-                        X, X, X,
-                        O, VACANT, VACANT,
-                        O, VACANT, VACANT),
+                board,
                 gamePrompt,
                 new PlayerFactory()
         );
@@ -147,17 +162,20 @@ public class CommandLineGameControllerTest {
         assertThat(gamePrompt.getNumberOfTimesXHasWon(), is(1));
         assertThat(gamePrompt.getNumberOfTimesOHasWon(), is(0));
         assertThat(gamePrompt.getLastBoardThatWasPrinted(), is("XXXOVACANTVACANTOVACANTVACANT"));
+        assertThat(gameRulesSpy.hasGotWinnersSymbol(), is(true));
     }
 
     @Test
     public void printsDrawMessageAndBoardWhenThereIsADraw() {
         PromptSpy gamePrompt = createPromptSpyToReadInput("");
+        Board board = boardWith(
+                X, O, X,
+                O, O, X,
+                O, X, O);
+        TicTacToeRulesSpy gameRulesSpy = new TicTacToeRulesSpy(board, "");
         CommandLineGameController commandLineGameController = new CommandLineGameController(
                 gameRulesSpy,
-                boardWith(
-                        X, O, X,
-                        O, O, X,
-                        O, X, O),
+                board,
                 gamePrompt,
                 new PlayerFactory()
         );
@@ -176,10 +194,9 @@ public class CommandLineGameControllerTest {
                 O, X, O,
                 O, O, X
         );
-        TicTacToeRulesSpy gameRules = new TicTacToeRulesSpy(board);
+        TicTacToeRulesSpy gameRules = new TicTacToeRulesSpy(board, "1");
         CommandLineGameController commandLineGameController = new CommandLineGameController(
                 gameRules,
-                board,
                 gamePrompt,
                 new PlayerFactoryStub(twoHumanPlayers())
         );
@@ -193,14 +210,14 @@ public class CommandLineGameControllerTest {
     @Test
     public void boardIsUpdatedWithPlayersMove() {
         Board board = new Board(3);
+        TicTacToeRulesSpy gameRulesSpy = new TicTacToeRulesSpy(board, "1");
         CommandLineGameController commandLineGameController = new CommandLineGameController(
                 gameRulesSpy,
-                board,
                 commandPrompt(),
                 new PlayerFactory()
         );
 
-        commandLineGameController.updateBoardWithPlayersMove(createHumanPlayer(X, createCommandPromptToReadInput("2\n")));
+        commandLineGameController.updateBoardWithPlayersMove();
 
         assertThat(board.getSymbolAt(1), is(X));
         assertThat(board.getVacantPositions().size(), is(8));
@@ -211,17 +228,14 @@ public class CommandLineGameControllerTest {
         PlayerSpy player1Spy = new PlayerSpy(X, createCommandPromptToReadInput("1\n5\n6\n7\n8\n"));
         PlayerSpy player2Spy = new PlayerSpy(O, createCommandPromptToReadInput("2\n3\n4\n9\n"));
         CommandLineGameController commandLineGameController = new CommandLineGameController(
-                gameRulesSpy,
-                new Board(3),
-                createCommandPromptToReadInput(HUMAN_VS_HUMAN_ID + INPUT_FOR_3x3 + DO_NOT_REPLAY),
-                new PlayerFactoryStub(player1Spy, player2Spy)
+                new TicTacToeRules(new BoardFactory(), new PlayerFactoryStub(player1Spy, player2Spy)),
+                createCommandPromptToReadInput(HUMAN_VS_HUMAN_ID + INPUT_FOR_3x3 + DO_NOT_REPLAY)
         );
 
         commandLineGameController.play();
 
         assertThat(player1Spy.numberOfTurnsTaken(), is(5));
         assertThat(player2Spy.numberOfTurnsTaken(), is(4));
-        assertThat(gameRulesSpy.hasInitialisedGame(), is(true));
     }
 
     private Board boardWith(PlayerSymbol... layout) {

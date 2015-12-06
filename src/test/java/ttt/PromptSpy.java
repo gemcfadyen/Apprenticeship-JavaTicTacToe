@@ -69,17 +69,25 @@ public class PromptSpy implements Prompt {
 
     @Override
     public void presentsBoard(Board board) {
-
+        this.lastBoardPrinted = board;
     }
 
     @Override
     public void printsWinningMessage(Board board, PlayerSymbol symbol) {
+        if (symbol == X) {
+            numberOfTimesXHasWon++;
+        }
 
+        if (symbol == O) {
+            numberOfTimesOHasWon++;
+        }
+        lastBoardPrinted = board;
     }
 
     @Override
     public void printsDrawMessage(Board board) {
-
+        numberOfTimesDrawMessageHasBeenPrinted++;
+        lastBoardPrinted = board;
     }
 
     @Override
