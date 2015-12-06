@@ -54,23 +54,4 @@ public class UnusedPrompt implements Prompt {
         return 0;
     }
 
-    @Override
-    public void presentBoardDimensionsFor(GameType gameType) {
-
-    }
-
-    @Override
-    public void printWinningMessageFor(PlayerSymbol symbol) {
-
-    }
-
-    @Override
-    public void print(Board board) {
-
-    }
-
-    @Override
-    public void printDrawMessage() {
-
-    }
 }

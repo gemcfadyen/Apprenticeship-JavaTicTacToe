@@ -53,11 +53,6 @@ public class PromptSpy implements Prompt {
     }
 
     @Override
-    public void print(Board board) {
-        this.lastBoardPrinted = board;
-    }
-
-    @Override
     public void presentGameTypes(List<GameType> allGameTypes) {
         numberOfTimesGameOptionsAskedFor++;
     }
@@ -88,27 +83,6 @@ public class PromptSpy implements Prompt {
     public void printsDrawMessage(Board board) {
         numberOfTimesDrawMessageHasBeenPrinted++;
         lastBoardPrinted = board;
-    }
-
-    @Override
-    public void presentBoardDimensionsFor(GameType gameType) {
-        numberOfTimesBoardDimensionsAskedFor++;
-    }
-
-    @Override
-    public void printWinningMessageFor(PlayerSymbol symbol) {
-        if (symbol == X) {
-            numberOfTimesXHasWon++;
-        }
-
-        if (symbol == O) {
-            numberOfTimesOHasWon++;
-        }
-    }
-
-    @Override
-    public void printDrawMessage() {
-        numberOfTimesDrawMessageHasBeenPrinted++;
     }
 
     private String readInput() {

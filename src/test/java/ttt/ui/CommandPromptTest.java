@@ -48,7 +48,7 @@ public class CommandPromptTest {
         StringWriter writer = new StringWriter();
         Prompt prompt = new CommandPrompt(new StringReader("1\n"), writer);
 
-        prompt.presentBoardDimensionsFor(HUMAN_VS_HUMAN);
+        prompt.presentGridDimensionsUpTo("5");
 
         assertThat(writer.toString().contains("Please enter the dimension of the board you would like to use [1 to 5]\n"), is(true));
     }
@@ -291,7 +291,7 @@ public class CommandPromptTest {
         StringWriter writer = new StringWriter();
         Prompt prompt = new CommandPrompt(new StringReader(""), writer);
 
-        prompt.print(board);
+        prompt.presentsBoard(board);
 
         String formattedGrid = vacant3x3Board();
 
@@ -304,7 +304,7 @@ public class CommandPromptTest {
         StringWriter writer = new StringWriter();
         Prompt prompt = new CommandPrompt(new StringReader(""), writer);
 
-        prompt.print(board);
+        prompt.presentsBoard(board);
 
         String formattedGrid = vacant4x4Board();
 
@@ -318,7 +318,7 @@ public class CommandPromptTest {
         StringWriter writer = new StringWriter();
         Prompt prompt = new CommandPrompt(new StringReader(""), writer);
 
-        prompt.print(board);
+        prompt.presentsBoard(board);
 
         assertThat(writer.toString(), is("\n" + CLEAR_SCREEN_ANSI_CHARACTERS + "\n\n" + BOARD_OUTLINE_COLOUR_ANSII_CHARACTERS + "\n  "
                 + NUMBER_COLOUR_ANSII_CHARACTERS + 1 + BOARD_OUTLINE_COLOUR_ANSII_CHARACTERS + " |  " + X_COLOUR + X.name() + BOARD_OUTLINE_COLOUR_ANSII_CHARACTERS + " |  " + X_COLOUR + X.name() + BOARD_OUTLINE_COLOUR_ANSII_CHARACTERS + " \n"
@@ -339,7 +339,7 @@ public class CommandPromptTest {
         StringWriter writer = new StringWriter();
         Prompt prompt = new CommandPrompt(new StringReader(""), writer);
 
-        prompt.print(board);
+        prompt.presentsBoard(board);
 
         String expectedFormattedBoard =
                 "  " + NUMBER_COLOUR_ANSII_CHARACTERS + 1 + BOARD_OUTLINE_COLOUR_ANSII_CHARACTERS + " |  " + NUMBER_COLOUR_ANSII_CHARACTERS + 2 + BOARD_OUTLINE_COLOUR_ANSII_CHARACTERS + " |  " + NUMBER_COLOUR_ANSII_CHARACTERS + 3 + BOARD_OUTLINE_COLOUR_ANSII_CHARACTERS + " |  " + NUMBER_COLOUR_ANSII_CHARACTERS + 4 + BOARD_OUTLINE_COLOUR_ANSII_CHARACTERS + " \n"
@@ -358,10 +358,14 @@ public class CommandPromptTest {
         Reader reader = new StringReader("");
         StringWriter writer = new StringWriter();
         CommandPrompt prompt = new CommandPrompt(reader, writer);
+        Board board = new Board(
+                X, X, X,
+                O, O, VACANT,
+                VACANT, VACANT, VACANT);
 
-        prompt.printWinningMessageFor(X);
-
-        assertThat(writer.toString(), is("\n" + CLEAR_SCREEN_ANSI_CHARACTERS + "\n\n" + FONT_COLOUR_ANSII_CHARACTERS + "Congratulations - " + X_COLOUR + X.name() + FONT_COLOUR_ANSII_CHARACTERS + " has won\n"));
+        prompt.printsWinningMessage(board, X);
+//TODO check that the board is also being printed
+        assertThat(writer.toString().endsWith("\n\n" + FONT_COLOUR_ANSII_CHARACTERS + "Congratulations - " + X_COLOUR + X.name() + FONT_COLOUR_ANSII_CHARACTERS + " has won\n"), is(true));
     }
 
     @Test
@@ -369,10 +373,18 @@ public class CommandPromptTest {
         Reader reader = new StringReader("");
         StringWriter writer = new StringWriter();
         CommandPrompt prompt = new CommandPrompt(reader, writer);
+        Board board = new Board(
+                X, O, X,
+                O, X, X,
+                O, X, O
+        );
 
-        prompt.printDrawMessage();
+        prompt.printsDrawMessage(board);
 
-        assertThat(writer.toString(), is("\n" + CLEAR_SCREEN_ANSI_CHARACTERS + "\n\n" + FONT_COLOUR_ANSII_CHARACTERS + DRAW_MESSAGE + "\n"));
+//        String s = writer.toString();
+//        assertThat(s, is("\n" + CLEAR_SCREEN_ANSI_CHARACTERS + "\n\n" + FONT_COLOUR_ANSII_CHARACTERS + DRAW_MESSAGE + "\n"));
+        //TODO check that the board is also being printed
+        assertThat(writer.toString().endsWith(FONT_COLOUR_ANSII_CHARACTERS + DRAW_MESSAGE + "\n"), is(true));
     }
 
     @Test
@@ -397,7 +409,7 @@ public class CommandPromptTest {
     public void setsFontColourWhenPrintingGrid() {
         Writer writer = new StringWriter();
         Prompt commandPrompt = new CommandPrompt(new StringReader(""), writer);
-        commandPrompt.print(new Board(3));
+        commandPrompt.presentsBoard(new Board(3));
 
         assertThat(writer.toString().startsWith("\n" + CLEAR_SCREEN_ANSI_CHARACTERS + "\n\n" + BOARD_OUTLINE_COLOUR_ANSII_CHARACTERS + "\n"), is(true));
     }
@@ -408,7 +420,7 @@ public class CommandPromptTest {
         StringWriter writer = new StringWriter();
         Prompt prompt = new CommandPrompt(new StringReader(""), writer);
 
-        prompt.print(board);
+        prompt.presentsBoard(board);
 
         assertThat(writer.toString().contains(3 + BOARD_OUTLINE_COLOUR_ANSII_CHARACTERS), is(true));
     }
@@ -420,7 +432,7 @@ public class CommandPromptTest {
         StringWriter writer = new StringWriter();
         Prompt prompt = new CommandPrompt(new StringReader(""), writer);
 
-        prompt.print(board);
+        prompt.presentsBoard(board);
 
         assertThat(writer.toString().contains(NUMBER_COLOUR_ANSII_CHARACTERS), is(true));
         assertThat(writer.toString().contains(BOARD_OUTLINE_COLOUR_ANSII_CHARACTERS), is(true));
@@ -430,7 +442,12 @@ public class CommandPromptTest {
     public void raiseOutputExceptionWhenThereIsAProblemWritingToPrompt() {
         Writer writerWhichThrowsIOException = new WriterStubWhichThrowsExceptionOnWrite();
         Prompt promptWhichThrowsExceptionOnWrite = new CommandPrompt(new StringReader(""), writerWhichThrowsIOException);
-        promptWhichThrowsExceptionOnWrite.printWinningMessageFor(X);
+        Board board = new Board(
+                X, X, X,
+                O, O, VACANT,
+                VACANT, VACANT, VACANT);
+
+        promptWhichThrowsExceptionOnWrite.printsWinningMessage(board, X);
     }
 
     @Test(expected = ReadFromPromptException.class)

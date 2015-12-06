@@ -12,14 +12,12 @@ import ttt.ui.Prompt;
 import java.io.StringReader;
 import java.io.StringWriter;
 
-import static org.hamcrest.Matchers.instanceOf;
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
 import static ttt.GameType.HUMAN_VS_UNBEATABLE;
 import static ttt.player.PlayerSymbol.*;
 
 public class CommandLineGameControllerTest {
-    private static final String HUMAN_VS_UNBEATABLE_OPTION = "2\n";
     private static final String HUMAN_VS_HUMAN_ID = "1\n";
     private static final String INPUT_FOR_3x3 = "3\n";
     private static final String DO_NOT_REPLAY = "N\n";
@@ -83,23 +81,6 @@ public class CommandLineGameControllerTest {
     }
 
     @Test
-    public void setsUpPlayersForGameType() {
-        PromptSpy promptSpy = createPromptSpyToReadInput(HUMAN_VS_UNBEATABLE_OPTION + INPUT_FOR_3x3);
-        CommandLineGameController commandLineGameController = new CommandLineGameController(
-                gameRulesSpy,
-                new Board(3),
-                promptSpy,
-                new PlayerFactory(promptSpy)
-        );
-
-        Player[] players = commandLineGameController.setupPlayers(GameType.HUMAN_VS_HUMAN, 3);
-
-        assertThat(players.length, is(2));
-        assertThat(players[0], instanceOf(HumanPlayer.class));
-        assertThat(players[1], instanceOf(HumanPlayer.class));
-    }
-
-    @Test
     public void gameIsOverWhenBoardIsFull() {
         Board board = boardWith(
                 X, O, X,
@@ -110,9 +91,7 @@ public class CommandLineGameControllerTest {
 
         CommandLineGameController commandLineGameController = new CommandLineGameController(
                 gameRulesSpy,
-                board,
-                commandPrompt(),
-                null
+                commandPrompt()
         );
 
         boolean gameInProgress = commandLineGameController.gameInProgress();
@@ -132,9 +111,7 @@ public class CommandLineGameControllerTest {
         gameRulesSpy = new TicTacToeRulesSpy(board, "1");
         CommandLineGameController commandLineGameController = new CommandLineGameController(
                 gameRulesSpy,
-                board,
-                gamePrompt,
-                null
+                gamePrompt
         );
 
         commandLineGameController.playMatch();
@@ -152,9 +129,7 @@ public class CommandLineGameControllerTest {
         TicTacToeRulesSpy gameRulesSpy = new TicTacToeRulesSpy(board, "");
         CommandLineGameController commandLineGameController = new CommandLineGameController(
                 gameRulesSpy,
-                board,
-                gamePrompt,
-                null
+                gamePrompt
         );
 
         commandLineGameController.displayResultsOfGame();
@@ -175,9 +150,7 @@ public class CommandLineGameControllerTest {
         TicTacToeRulesSpy gameRulesSpy = new TicTacToeRulesSpy(board, "");
         CommandLineGameController commandLineGameController = new CommandLineGameController(
                 gameRulesSpy,
-                board,
-                gamePrompt,
-                null
+                gamePrompt
         );
 
         commandLineGameController.displayResultsOfGame();
@@ -197,11 +170,10 @@ public class CommandLineGameControllerTest {
         TicTacToeRulesSpy gameRules = new TicTacToeRulesSpy(board, "1");
         CommandLineGameController commandLineGameController = new CommandLineGameController(
                 gameRules,
-                gamePrompt,
-                new PlayerFactoryStub(twoHumanPlayers())
+                gamePrompt
         );
 
-        commandLineGameController.play();
+        commandLineGameController.startGame();
 
         assertThat(gamePrompt.getNumberOfTimesXHasWon(), is(1));
         assertThat(gamePrompt.getNumberOfTimesPlayerIsPromptedToPlayAgain(), is(1));
@@ -213,8 +185,7 @@ public class CommandLineGameControllerTest {
         TicTacToeRulesSpy gameRulesSpy = new TicTacToeRulesSpy(board, "1");
         CommandLineGameController commandLineGameController = new CommandLineGameController(
                 gameRulesSpy,
-                commandPrompt(),
-                null
+                commandPrompt()
         );
 
         commandLineGameController.updateBoardWithPlayersMove();
@@ -232,7 +203,7 @@ public class CommandLineGameControllerTest {
                 createCommandPromptToReadInput(HUMAN_VS_HUMAN_ID + INPUT_FOR_3x3 + DO_NOT_REPLAY)
         );
 
-        commandLineGameController.play();
+        commandLineGameController.startGame();
 
         assertThat(player1Spy.numberOfTurnsTaken(), is(5));
         assertThat(player2Spy.numberOfTurnsTaken(), is(4));

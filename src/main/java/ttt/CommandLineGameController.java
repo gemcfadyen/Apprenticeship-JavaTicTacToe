@@ -1,10 +1,8 @@
 package ttt;
 
-import ttt.board.Board;
 import ttt.board.BoardFactory;
 import ttt.gui.GameRules;
 import ttt.gui.TicTacToeRules;
-import ttt.player.Player;
 import ttt.player.PlayerFactory;
 import ttt.ui.CommandPrompt;
 import ttt.ui.Prompt;
@@ -15,31 +13,9 @@ import java.util.List;
 
 import static ttt.ReplayOption.Y;
 
-//todo implements gamecontroller
 public class CommandLineGameController {
     private GameRules gameRules;
-
-
-    private PlayerFactory playerFactory;
     private Prompt gamePrompt;
-
-    CommandLineGameController(Prompt gamePrompt, PlayerFactory playerFactory) {
-        this.gamePrompt = gamePrompt;
-        this.playerFactory = playerFactory;
-    }
-
-    //todo remove factories
-    public CommandLineGameController(GameRules gameRules, Prompt gamePrompt, PlayerFactory playerFactory) {
-        this.gameRules = gameRules;
-        this.gamePrompt = gamePrompt;
-        this.playerFactory = playerFactory;
-    }
-
-    //todo remove factories
-    public CommandLineGameController(GameRules gameRules, Board board, Prompt gamePrompt, PlayerFactory playerFactory) {
-        this(gamePrompt, playerFactory);
-        this.gameRules = gameRules;
-    }
 
     public CommandLineGameController(GameRules gameRules, Prompt commandLinePrompt) {
         this.gameRules = gameRules;
@@ -52,12 +28,11 @@ public class CommandLineGameController {
         CommandLineGameController commandLineGameController = new CommandLineGameController(
                 gameRules,
                 gamePrompt
-//                new PlayerFactory()
         );
-        commandLineGameController.play();
+        commandLineGameController.startGame();
     }
 
-    public void play() {
+    public void startGame() {
         ReplayOption replayOption = Y;
         while (replayOption.equals(Y)) {
             presentGameTypes();
@@ -69,6 +44,7 @@ public class CommandLineGameController {
             gameRules.initialiseGame(String.valueOf(dimension));
 
             playMatch();
+
             replayOption = gamePrompt.getReplayOption();
         }
     }
@@ -87,14 +63,14 @@ public class CommandLineGameController {
 
     void updateBoardWithPlayersMove() {
         String nextMove = gameRules.getCurrentPlayersNextMove();
+        playMove(nextMove);
+    }
+
+    public void playMove(String nextMove) {
         gameRules.playMoveAt(nextMove);
     }
 
-    Player[] setupPlayers(GameType gameType, int dimension) {
-        return createPlayersFor(gameType, dimension);
-    }
-
-    void presentGameTypes() {
+    public void presentGameTypes() {
         List<GameType> allGameTypes = gameRules.getGameTypes();
         gamePrompt.presentGameTypes(allGameTypes);
     }
@@ -105,7 +81,7 @@ public class CommandLineGameController {
         return gameType;
     }
 
-    void presentBoardDimensionsFor(GameType gameType) {
+    public void presentBoardDimensionsFor(GameType gameType) {
         String largestDimension = gameRules.getDimension(gameType);
         gamePrompt.presentGridDimensionsUpTo(largestDimension);
     }
@@ -116,10 +92,6 @@ public class CommandLineGameController {
 
     void displayResultsOfGame() {
         printExitMessage();
-    }
-
-    private Player[] createPlayersFor(GameType gameType, int dimension) {
-        return playerFactory.createPlayers(gameType, dimension);
     }
 
     private void printExitMessage() {
@@ -136,6 +108,4 @@ public class CommandLineGameController {
                 new OutputStreamWriter(System.out)
         );
     }
-
-
 }

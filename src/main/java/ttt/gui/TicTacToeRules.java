@@ -75,7 +75,6 @@ public class TicTacToeRules implements GameRules {
         return board;
     }
 
-
     @Override
     public void storeGameType(GameType gameType) {
         this.gameType = gameType;

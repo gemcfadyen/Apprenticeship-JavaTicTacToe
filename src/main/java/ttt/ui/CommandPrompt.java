@@ -36,12 +36,6 @@ public class CommandPrompt implements Prompt {
         clear();
     }
 
-    //TODO remove
-    @Override
-    public void presentBoardDimensionsFor(GameType gameType) {
-        askUserForBoardDimension(gameType.dimensionUpperBoundary());
-    }
-
     @Override
     public int readBoardDimension(int largestDimension) {
         InputValidator compositeValidator = compositeFor(dimensionValidatorsFor(largestDimension));
@@ -73,8 +67,7 @@ public class CommandPrompt implements Prompt {
         return ReplayOption.of(getValidInput(compoundValidator, input(), functionToRepromptReplay()));
     }
 
-    @Override
-    public void print(Board board) {
+    private void print(Board board) {
         String boardForDisplay = BOARD_COLOUR_ANSII_CHARACTERS + newLine();
 
         List<Line> rows = board.getRows();
@@ -93,8 +86,7 @@ public class CommandPrompt implements Prompt {
         display(boardForDisplay);
     }
 
-    @Override
-    public void printWinningMessageFor(PlayerSymbol symbol) {
+    private void printWinningMessageFor(PlayerSymbol symbol) {
         display(FONT_COLOUR_ANSII_CHARACTERS
                 + "Congratulations - "
                 + colour(symbol)
@@ -102,8 +94,7 @@ public class CommandPrompt implements Prompt {
                 + " has won");
     }
 
-    @Override
-    public void printDrawMessage() {
+    private void printDrawMessage() {
         display(FONT_COLOUR_ANSII_CHARACTERS
                 + "No winner this time");
     }

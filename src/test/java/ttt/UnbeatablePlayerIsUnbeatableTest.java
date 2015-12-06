@@ -28,9 +28,9 @@ public class UnbeatablePlayerIsUnbeatableTest {
         PlayerFactory playerFactory = new PlayerFactoryStub(new UnbeatablePlayer(X), new RandomPlayer(O, promptSpy));
         BoardFactoryStub boardFactory = new BoardFactoryStub(emptyGridPerGameWithDimension(3));
         GameRules gameRules = new TicTacToeRules(boardFactory, playerFactory);
-        CommandLineGameController gameWithManyRounds = new CommandLineGameController(gameRules, promptSpy, playerFactory);
+        CommandLineGameController gameWithManyRounds = new CommandLineGameController(gameRules, promptSpy);
 
-        gameWithManyRounds.play();
+        gameWithManyRounds.startGame();
 
         assertThat(promptSpy.getNumberOfTimesOHasWon(), is(0));
         assertThat(promptSpy.getNumberOfTimesXHasWon(), greaterThan(1));
@@ -42,9 +42,9 @@ public class UnbeatablePlayerIsUnbeatableTest {
         PlayerFactory playerFactory = new PlayerFactoryStub(new RandomPlayer(O, promptSpy), new UnbeatablePlayer(X));
         BoardFactoryStub boardFactory = new BoardFactoryStub(emptyGridPerGameWithDimension(3));
         GameRules gameRules = new TicTacToeRules(boardFactory, playerFactory);
-        CommandLineGameController gameWithManyRounds = new CommandLineGameController(gameRules, promptSpy, playerFactory);
+        CommandLineGameController gameWithManyRounds = new CommandLineGameController(gameRules, promptSpy);
 
-        gameWithManyRounds.play();
+        gameWithManyRounds.startGame();
 
         assertThat(promptSpy.getNumberOfTimesOHasWon(), is(0));
         assertThat(promptSpy.getNumberOfTimesXHasWon(), greaterThan(1));
@@ -56,9 +56,9 @@ public class UnbeatablePlayerIsUnbeatableTest {
         PlayerFactory playerFactory = new PlayerFactoryStub(new UnbeatablePlayer(O), new UnbeatablePlayer(X));
         BoardFactoryStub boardFactory = new BoardFactoryStub(emptyGridPerGameWithDimension(3));
         GameRules gameRules = new TicTacToeRules(boardFactory, playerFactory);
-        CommandLineGameController gameWithManyRounds = new CommandLineGameController(gameRules, promptSpy, playerFactory);
+        CommandLineGameController gameWithManyRounds = new CommandLineGameController(gameRules, promptSpy);
 
-        gameWithManyRounds.play();
+        gameWithManyRounds.startGame();
 
         assertThat(promptSpy.getNumberOfTimesOHasWon(), is(0));
         assertThat(promptSpy.getNumberOfTimesXHasWon(), is(0));
@@ -70,9 +70,9 @@ public class UnbeatablePlayerIsUnbeatableTest {
         PlayerFactory playerFactory = new PlayerFactoryStub(new DelayedUnbeatablePlayer(X, new UnbeatablePlayer(X)), new RandomPlayer(O, promptSpy));
         BoardFactoryStub boardFactory = new BoardFactoryStub(emptyGridPerGameWithDimension(4));
         GameRules gameRules = new TicTacToeRules(boardFactory, playerFactory);
-        CommandLineGameController gameWithManyRounds = new CommandLineGameController(gameRules, promptSpy, playerFactory);
+        CommandLineGameController gameWithManyRounds = new CommandLineGameController(gameRules, promptSpy);
 
-        gameWithManyRounds.play();
+        gameWithManyRounds.startGame();
 
         assertThat(promptSpy.getNumberOfTimesOHasWon(), is(0));
         assertThat(promptSpy.getNumberOfTimesXHasWon(), greaterThan(1));
@@ -84,9 +84,9 @@ public class UnbeatablePlayerIsUnbeatableTest {
         PlayerFactory playerFactory = new PlayerFactoryStub(new RandomPlayer(O, promptSpy), new DelayedUnbeatablePlayer(X, new UnbeatablePlayer(X)));
         BoardFactoryStub boardFactory = new BoardFactoryStub(emptyGridPerGameWithDimension(4));
         GameRules gameRules = new TicTacToeRules(boardFactory, playerFactory);
-        CommandLineGameController gameWithManyRounds = new CommandLineGameController(gameRules, promptSpy, playerFactory);
+        CommandLineGameController gameWithManyRounds = new CommandLineGameController(gameRules, promptSpy);
 
-        gameWithManyRounds.play();
+        gameWithManyRounds.startGame();
 
         assertThat(promptSpy.getNumberOfTimesOHasWon(), is(0));
         assertThat(promptSpy.getNumberOfTimesXHasWon(), greaterThan(1));
@@ -98,9 +98,9 @@ public class UnbeatablePlayerIsUnbeatableTest {
         PlayerFactory playerFactory = new PlayerFactoryStub(new DelayedUnbeatablePlayer(O, new UnbeatablePlayer(O)), new DelayedUnbeatablePlayer(X, new UnbeatablePlayer(X)));
         BoardFactoryStub boardFactory = new BoardFactoryStub(emptyGridPerGameWithDimension(4));
         GameRules gameRules = new TicTacToeRules(boardFactory, playerFactory);
-        CommandLineGameController gameWithManyRounds = new CommandLineGameController(gameRules, promptSpy, playerFactory);
+        CommandLineGameController gameWithManyRounds = new CommandLineGameController(gameRules, promptSpy);
 
-        gameWithManyRounds.play();
+        gameWithManyRounds.startGame();
 
         assertThat(promptSpy.getNumberOfTimesOHasWon(), is(0));
         assertThat(promptSpy.getNumberOfTimesXHasWon(), is(0));
