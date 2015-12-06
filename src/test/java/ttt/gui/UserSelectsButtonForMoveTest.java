@@ -18,7 +18,6 @@ public class UserSelectsButtonForMoveTest {
     }
 
     private static class DeactivableElementSpy implements DeactivatableElement {
-        private String text;
 
         private DeactivableElementSpy() {
         }
@@ -30,7 +29,7 @@ public class UserSelectsButtonForMoveTest {
 
         @Override
         public String getText() {
-            return text;
+            return "";
         }
 
 

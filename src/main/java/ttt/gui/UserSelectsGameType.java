@@ -13,6 +13,8 @@ public class UserSelectsGameType implements ClickEvent {
 
     @Override
     public void action() {
-        controller.presentBoardDimensionsFor(GameType.of(selectedRadioBox.getText()));
+        controller.presentBoardDimensionsFor(
+                GameType.of(selectedRadioBox.getText())
+        );
     }
 }

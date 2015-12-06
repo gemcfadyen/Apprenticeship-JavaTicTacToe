@@ -6,10 +6,12 @@ import ttt.board.BoardFactory;
 import ttt.player.Player;
 import ttt.player.PlayerFactory;
 import ttt.player.PlayerSymbol;
+import ttt.ui.Prompt;
 
 public class TicTacToeRules implements GameRules {
     private static final int PLAYER_ONE_INDEX = 0;
     private static final int PLAYER_TWO_INDEX = 1;
+    private static final Prompt UNUSED_PLAYER_PROMPT = null;
     private BoardFactory boardFactory;
     private PlayerFactory playerFactory;
     private Board board;
@@ -54,7 +56,7 @@ public class TicTacToeRules implements GameRules {
     public void initialiseGame(String dimension) {
         Integer boardDimension = Integer.valueOf(dimension);
         board = boardFactory.createBoardWithSize(boardDimension);
-        players = playerFactory.createPlayers(gameType, null, boardDimension);
+        players = playerFactory.createPlayers(gameType, UNUSED_PLAYER_PROMPT, boardDimension);
     }
 
     @Override
@@ -79,6 +81,7 @@ public class TicTacToeRules implements GameRules {
     }
 
     public GameType getGameTypes() {
+        //Will return list of game types when gui is expanded to deal with multiple gametypes
         return GameType.HUMAN_VS_HUMAN;
     }
 }

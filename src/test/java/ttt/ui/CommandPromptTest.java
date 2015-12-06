@@ -48,7 +48,7 @@ public class CommandPromptTest {
 
         prompt.presentBoardDimensionsFor(HUMAN_VS_HUMAN);
 
-        assertThat(writer.toString().contains("Please enter the dimension of the board you would like to use [1 to 10]\n"), is(true));
+        assertThat(writer.toString().contains("Please enter the dimension of the board you would like to use [1 to 5]\n"), is(true));
     }
 
     @Test
@@ -74,7 +74,7 @@ public class CommandPromptTest {
                 BOARD_OUTLINE_COLOUR_ANSII_CHARACTERS
                         + Z_IS_NOT_A_VALID_INTEGER
                         + FONT_COLOUR_ANSII_CHARACTERS
-                        + "Please enter the dimension of the board you would like to use [1 to 10]\n\n"
+                        + "Please enter the dimension of the board you would like to use [1 to 5]\n\n"
                         + CLEAR_SCREEN_ANSI_CHARACTERS + "\n"), is(true));
     }
 

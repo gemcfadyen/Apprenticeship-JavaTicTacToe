@@ -23,7 +23,7 @@ public class GuiGameController implements GameController {
     public void presentBoardDimensionsFor(GameType gameType) {
         ticTacToeRules.storeGameType(gameType);
         String dimension = ticTacToeRules.getDimension(gameType);
-        boardView.presentGridDimensionsFor(dimension);
+        boardView.presentGridDimensionsUpTo(dimension);
     }
 
     @Override

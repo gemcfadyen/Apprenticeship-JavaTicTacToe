@@ -10,8 +10,11 @@ public class UserSelectsBoardDimensionTest {
     @Test
     public void presentsBoardWhenDimensionIsSelected() {
         GuiGameControllerSpy controller = new GuiGameControllerSpy();
-        ClickableElement dimensionSelectionButton = new ClickableElementStub();
-        UserSelectsBoardDimension userSelectsBoardDimension = new UserSelectsBoardDimension(controller, dimensionSelectionButton);
+        UserSelectsBoardDimension userSelectsBoardDimension = new UserSelectsBoardDimension(
+                controller,
+                new ClickableElementStub()
+        );
+
         userSelectsBoardDimension.action();
 
         assertThat(controller.hasPresentedBoard(), is(true));
@@ -21,7 +24,6 @@ public class UserSelectsBoardDimensionTest {
     private class ClickableElementStub implements ClickableElement {
         @Override
         public void setClickAction(ClickEvent clickEvent) {
-
         }
 
         @Override

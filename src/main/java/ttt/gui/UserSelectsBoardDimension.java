@@ -11,7 +11,6 @@ public class UserSelectsBoardDimension implements ClickEvent {
 
     @Override
     public void action() {
-        String dimension = dimensionSelectionButton.getText();
-        controller.presentBoard(dimension);
+        controller.presentBoard(dimensionSelectionButton.getText());
     }
 }

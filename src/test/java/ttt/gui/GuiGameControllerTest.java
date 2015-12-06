@@ -9,14 +9,14 @@ import static ttt.GameType.HUMAN_VS_HUMAN;
 import static ttt.player.PlayerSymbol.*;
 
 public class GuiGameControllerTest {
+
+    private BoardPresenterSpy boardPresenterSpy = new BoardPresenterSpy();
+    private TicTacToeRulesSpy gameRulesSpy = new TicTacToeRulesSpy();
+
     @Test
     public void getsGameTypesFromGameAndDisplaysThemToUser() {
-        BoardPresenterSpy boardPresenterSpy = new BoardPresenterSpy();
-        TicTacToeRulesSpy gameRulesSpy = new TicTacToeRulesSpy();
+        GuiGameController controller = new GuiGameController(gameRulesSpy, createViewFactory());
 
-        ViewFactory viewFactoryStub = (gameController, gameRules) -> boardPresenterSpy;
-
-        GuiGameController controller = new GuiGameController(gameRulesSpy, viewFactoryStub);
         controller.presentGameTypes();
 
         assertThat(boardPresenterSpy.hasPresentedGameTypes(), is(true));
@@ -25,12 +25,8 @@ public class GuiGameControllerTest {
 
     @Test
     public void getsDimensionsForGametypeAndDisplaysToUser() {
-        BoardPresenterSpy boardPresenterSpy = new BoardPresenterSpy();
-        TicTacToeRulesSpy gameRulesSpy = new TicTacToeRulesSpy();
+        GuiGameController controller = new GuiGameController(gameRulesSpy, createViewFactory());
 
-        ViewFactory viewFactoryStub = (gameController, gameRules) -> boardPresenterSpy;
-
-        GuiGameController controller = new GuiGameController(gameRulesSpy, viewFactoryStub);
         controller.presentBoardDimensionsFor(HUMAN_VS_HUMAN);
 
         assertThat(boardPresenterSpy.hasPresentedGridDimensions(), is(true));
@@ -39,12 +35,8 @@ public class GuiGameControllerTest {
 
     @Test
     public void initialisesGameAndDisplaysBoard() {
-        BoardPresenterSpy boardPresenterSpy = new BoardPresenterSpy();
-        TicTacToeRulesSpy gameRulesSpy = new TicTacToeRulesSpy();
+        GuiGameController controller = new GuiGameController(gameRulesSpy, createViewFactory());
 
-        ViewFactory viewFactoryStub = (gameController, gameRules) -> boardPresenterSpy;
-
-        GuiGameController controller = new GuiGameController(gameRulesSpy, viewFactoryStub);
         controller.presentBoard("3");
 
         assertThat(boardPresenterSpy.hasDrawnBoard(), is(true));
@@ -53,12 +45,8 @@ public class GuiGameControllerTest {
 
     @Test
     public void setsGameType() {
-        BoardPresenterSpy boardPresenterSpy = new BoardPresenterSpy();
-        TicTacToeRulesSpy gameRulesSpy = new TicTacToeRulesSpy();
+        GuiGameController controller = new GuiGameController(gameRulesSpy, createViewFactory());
 
-        ViewFactory viewFactoryStub = (gameController, gameRules) -> boardPresenterSpy;
-
-        GuiGameController controller = new GuiGameController(gameRulesSpy, viewFactoryStub);
         controller.presentBoardDimensionsFor(HUMAN_VS_HUMAN);
 
         assertThat(gameRulesSpy.hasStoredGameType(), is(true));
@@ -66,13 +54,9 @@ public class GuiGameControllerTest {
 
     @Test
     public void takesMove() {
-        BoardPresenterSpy boardPresenterSpy = new BoardPresenterSpy();
-        Board board = new Board(3);
-        TicTacToeRulesSpy gameRulesSpy = new TicTacToeRulesSpy(board);
+        gameRulesSpy = new TicTacToeRulesSpy(new Board(3));
+        GuiGameController controller = new GuiGameController(gameRulesSpy, createViewFactory());
 
-        ViewFactory viewFactoryStub = (gameController, gameRules) -> boardPresenterSpy;
-
-        GuiGameController controller = new GuiGameController(gameRulesSpy, viewFactoryStub);
         controller.playMove("1");
 
         assertThat(gameRulesSpy.hasMadeMove(), is(true));
@@ -83,17 +67,14 @@ public class GuiGameControllerTest {
 
     @Test
     public void gameHasWinner() {
-        BoardPresenterSpy boardPresenterSpy = new BoardPresenterSpy();
-
-        Board winningBoard = new Board(
+        Board boardAfterWinningMoveTaken = new Board(
                 X, O, X,
                 X, O, VACANT,
-                X, VACANT, VACANT);
-        TicTacToeRulesSpy gameRulesSpy = new TicTacToeRulesSpy(winningBoard);
+                X, VACANT, VACANT
+        );
+        gameRulesSpy = new TicTacToeRulesSpy(boardAfterWinningMoveTaken);
+        GuiGameController controller = new GuiGameController(gameRulesSpy, createViewFactory());
 
-        ViewFactory viewFactoryStub = (gameController, gameRules) -> boardPresenterSpy;
-
-        GuiGameController controller = new GuiGameController(gameRulesSpy, viewFactoryStub);
         controller.playMove("1");
 
         assertThat(gameRulesSpy.gameCheckedForWin(), is(true));
@@ -104,16 +85,14 @@ public class GuiGameControllerTest {
 
     @Test
     public void gameHasDraw() {
-        BoardPresenterSpy boardPresenterSpy = new BoardPresenterSpy();
-        Board drawnBoard = new Board(
+        Board boardAfterMoveTaken = new Board(
                 X, O, X,
                 VACANT, O, X,
-                X, VACANT, VACANT);
-        TicTacToeRulesSpy gameRulesSpy = new TicTacToeRulesSpy(drawnBoard);
+                X, X, VACANT
+        );
+        gameRulesSpy = new TicTacToeRulesSpy(boardAfterMoveTaken);
+        GuiGameController controller = new GuiGameController(gameRulesSpy, createViewFactory());
 
-        ViewFactory viewFactoryStub = (gameController, gameRules) -> boardPresenterSpy;
-
-        GuiGameController controller = new GuiGameController(gameRulesSpy, viewFactoryStub);
         controller.playMove("7");
 
         assertThat(gameRulesSpy.boardCheckedForFreeSpace(), is(true));
@@ -122,17 +101,14 @@ public class GuiGameControllerTest {
 
     @Test
     public void winningOnLastTurnDisplaysWin() {
-        BoardPresenterSpy boardPresenterSpy = new BoardPresenterSpy();
-
-        Board winningBoard = new Board(
+        Board boardAfterLastMoveTaken = new Board(
                 X, O, X,
                 X, O, O,
-                X, X, O);
-        TicTacToeRulesSpy gameRulesSpy = new TicTacToeRulesSpy(winningBoard);
+                X, X, O
+        );
+        gameRulesSpy = new TicTacToeRulesSpy(boardAfterLastMoveTaken);
+        GuiGameController controller = new GuiGameController(gameRulesSpy, createViewFactory());
 
-        ViewFactory viewFactoryStub = (gameController, gameRules) -> boardPresenterSpy;
-
-        GuiGameController controller = new GuiGameController(gameRulesSpy, viewFactoryStub);
         controller.playMove("6");
 
         assertThat(gameRulesSpy.gameCheckedForWin(), is(true));
@@ -140,5 +116,9 @@ public class GuiGameControllerTest {
         assertThat(boardPresenterSpy.hasIdentifiedAWin(), is(true));
         assertThat(boardPresenterSpy.getWinningSymbol(), is(X));
         assertThat(boardPresenterSpy.hasIdentifiedADraw(), is(false));
+    }
+
+    private ViewFactory createViewFactory() {
+        return (gameController, gameRules) -> boardPresenterSpy;
     }
 }

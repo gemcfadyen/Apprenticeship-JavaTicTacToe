@@ -6,7 +6,6 @@ import ttt.GameType;
 import ttt.PlayerFactoryStub;
 import ttt.board.Board;
 import ttt.board.BoardFactory;
-import ttt.player.HumanPlayer;
 import ttt.player.Player;
 import ttt.player.PlayerFactory;
 import ttt.player.PlayerSymbol;
@@ -19,13 +18,13 @@ import static ttt.player.PlayerSymbol.*;
 
 public class TicTacToeRulesTest {
     private static final Prompt UNUSED_PROMPT = null;
+    private Player[] players = new PlayerFactory().createPlayers(HUMAN_VS_HUMAN, UNUSED_PROMPT, 3);
+    private Board board = new Board(3);
 
     @Test
     public void makesMove() {
-        Board board = new Board(3);
-        Player[] players = new PlayerFactory().createPlayers(HUMAN_VS_HUMAN, UNUSED_PROMPT, 3);
-
         TicTacToeRules ticTacToeRules = new TicTacToeRules(board, players);
+
         ticTacToeRules.playMoveAt("1");
 
         assertThat(board.getSymbolAt(1), is(X));
@@ -33,10 +32,8 @@ public class TicTacToeRulesTest {
 
     @Test
     public void currentPlayersSymbol() {
-        Board board = new Board(3);
-        Player[] players = new PlayerFactory().createPlayers(HUMAN_VS_HUMAN, UNUSED_PROMPT, 3);
-
         TicTacToeRules ticTacToeRules = new TicTacToeRules(board, players);
+
         PlayerSymbol currentPlayerSymbol = ticTacToeRules.getCurrentPlayer();
 
         assertThat(currentPlayerSymbol, is(X));
@@ -44,56 +41,53 @@ public class TicTacToeRulesTest {
 
     @Test
     public void hasWinner() {
-        Board board = new Board(
-                X, O, X,
-                O, X, O,
-                VACANT, VACANT, X
-        );
+        TicTacToeRules ticTacToeRules = new TicTacToeRules(
+                new Board(
+                        X, O, X,
+                        O, X, O,
+                        VACANT, VACANT, X
+                ),
+                players);
 
-        Player[] players = new PlayerFactory().createPlayers(HUMAN_VS_HUMAN, UNUSED_PROMPT, 3);
-
-        TicTacToeRules ticTacToeRules = new TicTacToeRules(board, players);
         assertThat(ticTacToeRules.hasWinner(), is(true));
     }
 
     @Test
     public void hasNoWinner() {
-        Board board = new Board(
-                X, O, X,
-                O, O, X,
-                VACANT, VACANT, VACANT
+        TicTacToeRules ticTacToeRules = new TicTacToeRules(
+                new Board(
+                        X, O, X,
+                        O, O, X,
+                        VACANT, VACANT, VACANT
+                ),
+                players
         );
-
-        Player[] players = new PlayerFactory().createPlayers(HUMAN_VS_HUMAN, UNUSED_PROMPT, 3);
-
-        TicTacToeRules ticTacToeRules = new TicTacToeRules(board, players);
         assertThat(ticTacToeRules.hasWinner(), is(false));
     }
 
     @Test
     public void hasFreeSpace() {
-        Board board = new Board(3);
-        Player[] players = new PlayerFactory().createPlayers(HUMAN_VS_HUMAN, UNUSED_PROMPT, 3);
-
         TicTacToeRules ticTacToeRules = new TicTacToeRules(board, players);
+
         assertThat(ticTacToeRules.hasFreeSpace(), is(true));
     }
 
     @Test
     public void noFreeSpace() {
-        Board board = new Board(
-                X, O, X,
-                O, X, O,
-                X, X, O);
-        Player[] players = new PlayerFactory().createPlayers(HUMAN_VS_HUMAN, UNUSED_PROMPT, 3);
+        TicTacToeRules ticTacToeRules = new TicTacToeRules(
+                new Board(
+                        X, O, X,
+                        O, X, O,
+                        X, X, O),
+                players
+        );
 
-        TicTacToeRules ticTacToeRules = new TicTacToeRules(board, players);
         assertThat(ticTacToeRules.hasFreeSpace(), is(false));
     }
 
     @Test
     public void togglesPlayer() {
-        TicTacToeRules gamesRules = new TicTacToeRules(new Board(3), new PlayerFactory().createPlayers(HUMAN_VS_HUMAN, null, 3));
+        TicTacToeRules gamesRules = new TicTacToeRules(board, players);
 
         PlayerSymbol currentPlayer = gamesRules.getCurrentPlayer();
         gamesRules.togglePlayer();
@@ -117,7 +111,7 @@ public class TicTacToeRulesTest {
 
         String dimension = gamesRules.getDimension(HUMAN_VS_HUMAN);
 
-        assertThat(dimension, is("3"));
+        assertThat(dimension, is("5"));
     }
 
     @Test
@@ -139,7 +133,11 @@ public class TicTacToeRulesTest {
                 VACANT, VACANT, X
         );
 
-        TicTacToeRules ticTacToeRules = new TicTacToeRules(new BoardFactoryStub(board), new PlayerFactoryStub(new HumanPlayer(X, null), new HumanPlayer(O, null)));
+        TicTacToeRules ticTacToeRules = new TicTacToeRules(
+                new BoardFactoryStub(board),
+                new PlayerFactoryStub(
+                        players)
+        );
         ticTacToeRules.initialiseGame("3");
         assertThat(ticTacToeRules.getBoard(), is(board));
     }
@@ -159,25 +157,27 @@ public class TicTacToeRulesTest {
 
     @Test
     public void boardHasFreeSpace() {
-        Board board = new Board(
-                X, O, X,
-                O, X, O,
-                VACANT, VACANT, X
+        TicTacToeRules ticTacToeRules = new TicTacToeRules(
+                new Board(
+                        X, O, X,
+                        O, X, O,
+                        VACANT, VACANT, X
+                ),
+                players
         );
-
-        TicTacToeRules ticTacToeRules = new TicTacToeRules(board, new PlayerFactory().createPlayers(HUMAN_VS_HUMAN, null, 3));
 
         assertThat(ticTacToeRules.boardHasFreeSpace(), is(true));
     }
 
     @Test
     public void boardHasNoFreeSpace() {
-        Board board = new Board(
-                X, O, X,
-                O, X, O,
-                X, O, X);
-
-        TicTacToeRules ticTacToeRules = new TicTacToeRules(board, new PlayerFactory().createPlayers(HUMAN_VS_HUMAN, null, 3));
+        TicTacToeRules ticTacToeRules = new TicTacToeRules(
+                new Board(
+                        X, O, X,
+                        O, X, O,
+                        X, O, X),
+                players
+        );
 
         assertThat(ticTacToeRules.boardHasFreeSpace(), is(false));
     }

@@ -10,10 +10,9 @@ public class RegisterClickEventTest {
     @Test
     public void eventRegisteredWithElement() {
         ClickableElementSpy anyClickableElement = new ClickableElementSpy();
-        ClickEvent anyClickEvent = new ClickEventStub();
         RegisterClickEvent registerClickEvent = new RegisterClickEvent();
 
-        registerClickEvent.register(anyClickableElement, anyClickEvent);
+        registerClickEvent.register(anyClickableElement, new ClickEventStub());
 
         assertThat(anyClickableElement.hasClickEventRegistered(), is(true));
     }

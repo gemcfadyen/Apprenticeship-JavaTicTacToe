@@ -40,11 +40,11 @@ public class TicTacToeBoardPresenter implements BoardPresenter {
     }
 
     @Override
-    public void presentGridDimensionsFor(String dimension) {
+    public void presentGridDimensionsUpTo(String upperBoundaryOfPossibleDimension) {
         GridPane dimensionPane = new GridPane();
         setWelcomeMessage(dimensionPane);
-
-        displayDimensions(dimension, dimensionPane);
+        //this will be updated to use the dimension passed in once the story to deal with multiple dimensions is taken on
+        displayDimensions("3", dimensionPane);
 
         scene.setRoot(dimensionPane);
     }
@@ -199,7 +199,6 @@ public class TicTacToeBoardPresenter implements BoardPresenter {
             return (symbolAtIndex == VACANT)
                     ? String.valueOf(index + 1)
                     : symbolAtIndex.getSymbolForDisplay();
-
         };
 
         return getLabel;

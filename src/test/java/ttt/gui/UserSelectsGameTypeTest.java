@@ -8,11 +8,14 @@ import static org.junit.Assert.assertThat;
 
 public class UserSelectsGameTypeTest {
 
+    private ClickableElementStub selectedRadioBox = new ClickableElementStub();
+    private GuiGameControllerSpy controllerSpy = new GuiGameControllerSpy();
+
     @Test
     public void asksGameControllerForForDimensionWhenGameTypeIsSelected() {
-        GuiGameControllerSpy controllerSpy = new GuiGameControllerSpy();
-        ClickableElement selectedRadioBox = new ClickableElementStub();
-        UserSelectsGameType userSelectsGameType = new UserSelectsGameType(controllerSpy, selectedRadioBox);
+        UserSelectsGameType userSelectsGameType = new UserSelectsGameType(
+                controllerSpy,
+                selectedRadioBox);
 
         userSelectsGameType.action();
 
@@ -21,9 +24,10 @@ public class UserSelectsGameTypeTest {
 
     @Test
     public void capturesGameTypeChosen() {
-        GuiGameControllerSpy controllerSpy = new GuiGameControllerSpy();
-        ClickableElement selectedRadioBox = new ClickableElementStub();
-        UserSelectsGameType userSelectsGameType = new UserSelectsGameType(controllerSpy, selectedRadioBox);
+        UserSelectsGameType userSelectsGameType = new UserSelectsGameType(
+                controllerSpy,
+                selectedRadioBox
+        );
 
         userSelectsGameType.action();
 

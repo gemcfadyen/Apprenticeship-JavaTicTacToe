@@ -17,7 +17,7 @@ public class BoardPresenterSpy implements BoardPresenter {
     }
 
     @Override
-    public void presentGridDimensionsFor(String dimension) {
+    public void presentGridDimensionsUpTo(String dimension) {
         hasPresentedGridDimension = true;
     }
 
