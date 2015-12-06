@@ -58,7 +58,7 @@ public class CommandPromptTest {
         StringReader reader = new StringReader("3\n");
         Prompt prompt = new CommandPrompt(reader, new StringWriter());
 
-        int dimension = prompt.readBoardDimension(HUMAN_VS_HUMAN);
+        int dimension = prompt.readBoardDimension(HUMAN_VS_HUMAN.dimensionUpperBoundary());
 
         assertThat(dimension, is(3));
     }
@@ -69,7 +69,7 @@ public class CommandPromptTest {
         StringWriter writer = new StringWriter();
         Prompt prompt = new CommandPrompt(reader, writer);
 
-        int dimension = prompt.readBoardDimension(HUMAN_VS_HUMAN);
+        int dimension = prompt.readBoardDimension(HUMAN_VS_HUMAN.dimensionUpperBoundary());
 
         assertThat(dimension, is(4));
         assertThat(writer.toString().contains(
@@ -87,7 +87,7 @@ public class CommandPromptTest {
         StringWriter writer = new StringWriter();
         Prompt prompt = new CommandPrompt(reader, writer);
 
-        int dimension = prompt.readBoardDimension(HUMAN_VS_UNBEATABLE);
+        int dimension = prompt.readBoardDimension(HUMAN_VS_UNBEATABLE.dimensionUpperBoundary());
 
         assertThat(dimension, is(4));
         assertThat(writer.toString().contains(

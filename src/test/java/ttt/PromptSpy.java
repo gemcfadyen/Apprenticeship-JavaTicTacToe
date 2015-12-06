@@ -30,7 +30,7 @@ public class PromptSpy implements Prompt {
     }
 
     @Override
-    public int readBoardDimension(GameType gameType) {
+    public int readBoardDimension(int largestDimension) {
         numberOfTimesBoardDimensionRead++;
         return Integer.valueOf(readInput());
     }
@@ -64,7 +64,7 @@ public class PromptSpy implements Prompt {
 
     @Override
     public void presentGridDimensionsUpTo(String dimension) {
-
+        numberOfTimesBoardDimensionsAskedFor++;
     }
 
     @Override

@@ -2,7 +2,6 @@ package ttt;
 
 import org.junit.Test;
 import ttt.board.Board;
-import ttt.board.BoardFactory;
 import ttt.gui.TicTacToeRulesSpy;
 import ttt.player.*;
 import ttt.ui.CommandPrompt;
@@ -26,7 +25,7 @@ public class CommandLineGameControllerTest {
 
 
     @Test
-    public void gameTypeChosen() {
+    public void gameTypePresented() {
         PromptSpy promptSpy = createPromptSpyToReadInput(INPUT_FOR_3x3);
         CommandLineGameController commandLineGameController = new CommandLineGameController(
                 gameRulesSpy,
@@ -37,27 +36,48 @@ public class CommandLineGameControllerTest {
 
         assertThat(gameRulesSpy.hasObtainedGameTypes(), is(true));
         assertThat(promptSpy.getNumberOfTimesPromptedForGameOption(), is(1));
-        assertThat(promptSpy.getNumberOfTimesGameOptionsWereRead(), is(1));
     }
 
-
     @Test
-    public void createsBoardOfSpecifiedDimension() {
-        BoardFactoryStub boardFactoryStub = new BoardFactoryStub();
+    public void gameTypeRead() {
         PromptSpy promptSpy = createPromptSpyToReadInput(INPUT_FOR_3x3);
         CommandLineGameController commandLineGameController = new CommandLineGameController(
                 gameRulesSpy,
-                boardFactoryStub,
-                promptSpy,
-                new PlayerFactory()
+                promptSpy
         );
 
-        int dimension = commandLineGameController.getBoardOfCorrectDimensionFor(HUMAN_VS_UNBEATABLE);
+        commandLineGameController.readGameType();
+
+        assertThat(gameRulesSpy.hasStoredGameType(), is(true));
+        assertThat(promptSpy.getNumberOfTimesGameOptionsWereRead(), is(1));
+    }
+
+    @Test
+    public void presentsBoardDimensionsForGameType() {
+        PromptSpy promptSpy = createPromptSpyToReadInput(INPUT_FOR_3x3);
+        CommandLineGameController commandLineGameController = new CommandLineGameController(
+                gameRulesSpy,
+                promptSpy
+        );
+
+        commandLineGameController.presentBoardDimensionsFor(HUMAN_VS_UNBEATABLE);
 
         assertThat(promptSpy.getNumberOfTimesDimensionsHaveBeenAskedFor(), is(1));
+        assertThat(gameRulesSpy.hasObtainedBoardDimensions(), is(true));
+    }
+
+    @Test
+    public void readsBoardDimension() {
+        PromptSpy promptSpy = createPromptSpyToReadInput(INPUT_FOR_3x3);
+        CommandLineGameController commandLineGameController = new CommandLineGameController(
+                gameRulesSpy,
+                promptSpy
+        );
+
+        int dimension = commandLineGameController.readDimension(4);
+
         assertThat(promptSpy.getNumberOfTimesBoardDimensionRead(), is(1));
         assertThat(dimension, is(3));
-        assertThat(boardFactoryStub.getLatestBoard().getRows().size(), is(3));
     }
 
     @Test
@@ -65,12 +85,12 @@ public class CommandLineGameControllerTest {
         PromptSpy promptSpy = createPromptSpyToReadInput(HUMAN_VS_UNBEATABLE_OPTION + INPUT_FOR_3x3);
         CommandLineGameController commandLineGameController = new CommandLineGameController(
                 gameRulesSpy,
-                new BoardFactory(),
+                new Board(3),
                 promptSpy,
                 new PlayerFactory()
         );
 
-        Player[] players = commandLineGameController.setupPlayers(GameType.HUMAN_VS_HUMAN);
+        Player[] players = commandLineGameController.setupPlayers(GameType.HUMAN_VS_HUMAN, 3);
 
         assertThat(players.length, is(2));
         assertThat(players[0], instanceOf(HumanPlayer.class));
@@ -156,9 +176,10 @@ public class CommandLineGameControllerTest {
                 O, X, O,
                 O, O, X
         );
+        TicTacToeRulesSpy gameRules = new TicTacToeRulesSpy(board);
         CommandLineGameController commandLineGameController = new CommandLineGameController(
-                gameRulesSpy,
-                new BoardFactoryStub(board),
+                gameRules,
+                board,
                 gamePrompt,
                 new PlayerFactoryStub(twoHumanPlayers())
         );
@@ -191,7 +212,7 @@ public class CommandLineGameControllerTest {
         PlayerSpy player2Spy = new PlayerSpy(O, createCommandPromptToReadInput("2\n3\n4\n9\n"));
         CommandLineGameController commandLineGameController = new CommandLineGameController(
                 gameRulesSpy,
-                new BoardFactory(),
+                new Board(3),
                 createCommandPromptToReadInput(HUMAN_VS_HUMAN_ID + INPUT_FOR_3x3 + DO_NOT_REPLAY),
                 new PlayerFactoryStub(player1Spy, player2Spy)
         );
@@ -200,6 +221,7 @@ public class CommandLineGameControllerTest {
 
         assertThat(player1Spy.numberOfTurnsTaken(), is(5));
         assertThat(player2Spy.numberOfTurnsTaken(), is(4));
+        assertThat(gameRulesSpy.hasInitialisedGame(), is(true));
     }
 
     private Board boardWith(PlayerSymbol... layout) {

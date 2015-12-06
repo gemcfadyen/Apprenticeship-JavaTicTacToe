@@ -36,18 +36,20 @@ public class CommandPrompt implements Prompt {
         clear();
     }
 
+    //TODO remove
     @Override
     public void presentBoardDimensionsFor(GameType gameType) {
-        askUserForBoardDimension(gameType);
+        askUserForBoardDimension(gameType.dimensionUpperBoundary());
     }
 
     @Override
-    public int readBoardDimension(GameType gameType) {
-        InputValidator compositeValidator = compositeFor(dimensionValidatorsFor(gameType));
+    public int readBoardDimension(int largestDimension) {
+        InputValidator compositeValidator = compositeFor(dimensionValidatorsFor(largestDimension));
 
-        return asInteger(getValidInput(compositeValidator, input(), functionToRepromptForValidBoardDimension(gameType)));
+        return asInteger(getValidInput(compositeValidator, input(), functionToRepromptForValidBoardDimension(largestDimension)));
     }
 
+    //TODO read needs to take in the valid list of gametypes for validation
     @Override
     public GameType readGameType() {
         InputValidator compositeValidator = compositeFor(gameTypeValidators());
@@ -110,9 +112,9 @@ public class CommandPrompt implements Prompt {
         display(CLEAR_SCREEN_ANSII_CHARACTERS);
     }
 
-    private void askUserForBoardDimension(GameType gameType) {
+    private void askUserForBoardDimension(int largestDimension) {
         display(FONT_COLOUR_ANSII_CHARACTERS
-                + "Please enter the dimension of the board you would like to use [" + gameType.dimensionLowerBoundary() + " to " + gameType.dimensionUpperBoundary() + "]");
+                + "Please enter the dimension of the board you would like to use [" + 1 + " to " + largestDimension + "]");
     }
 
     private void display(String message) {
@@ -161,10 +163,10 @@ public class CommandPrompt implements Prompt {
         return validationResult.userInput();
     }
 
-    private Function<ValidationResult, Void> functionToRepromptForValidBoardDimension(GameType gameType) {
+    private Function<ValidationResult, Void> functionToRepromptForValidBoardDimension(int largestDimension) {
         return validationResult -> {
             display(BOARD_COLOUR_ANSII_CHARACTERS + validationResult.reason());
-            askUserForBoardDimension(gameType);
+            askUserForBoardDimension(largestDimension);
             return null;
         };
     }
@@ -208,10 +210,10 @@ public class CommandPrompt implements Prompt {
         return Arrays.asList(new NumericValidator(), new GameTypeValidator());
     }
 
-    private List<InputValidator> dimensionValidatorsFor(GameType gameType) {
+    private List<InputValidator> dimensionValidatorsFor(int largestDimesion) {
         return Arrays.asList(
                 new NumericValidator(),
-                new WithinGivenRangeValidator(gameType.dimensionUpperBoundary())
+                new WithinGivenRangeValidator(largestDimesion)
         );
     }
 
@@ -303,8 +305,8 @@ public class CommandPrompt implements Prompt {
     }
 
     @Override
-    public void presentGridDimensionsUpTo(String dimension) {
-
+    public void presentGridDimensionsUpTo(String largestDimension) {
+        askUserForBoardDimension(Integer.valueOf(largestDimension));
     }
 
     @Override

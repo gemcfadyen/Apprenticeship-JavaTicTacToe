@@ -2,6 +2,7 @@ package ttt.gui;
 
 import ttt.GameType;
 import ttt.board.Board;
+import ttt.player.Player;
 import ttt.player.PlayerSymbol;
 
 import java.util.Arrays;
@@ -52,6 +53,7 @@ public class TicTacToeRulesSpy implements GameRules {
 
     @Override
     public void initialiseGame(String dimension) {
+        board = new Board(Integer.valueOf(dimension));
         hasInitialisedGame = true;
     }
 

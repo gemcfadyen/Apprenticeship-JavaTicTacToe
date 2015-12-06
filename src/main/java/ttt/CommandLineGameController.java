@@ -15,12 +15,12 @@ import java.util.List;
 
 import static ttt.ReplayOption.Y;
 
+//todo implements gamecontroller
 public class CommandLineGameController {
     private static final int PLAYER_ONE_INDEX = 0;
     private static final int PLAYER_TWO_INDEX = 1;
     private PlayerFactory playerFactory;
     private GameRules gameRules;
-    private BoardFactory boardFactory;
     private Board board;
     private Prompt gamePrompt;
     private int currentPlayerIndex = PLAYER_ONE_INDEX;
@@ -32,18 +32,17 @@ public class CommandLineGameController {
     }
 
     //todo remove factories
-    public CommandLineGameController(GameRules gameRules, BoardFactory boardFactory, Prompt gamePrompt, PlayerFactory playerFactory) {
+    public CommandLineGameController(GameRules gameRules, Prompt gamePrompt, PlayerFactory playerFactory) {
         this.gameRules = gameRules;
-        this.boardFactory = boardFactory;
         this.gamePrompt = gamePrompt;
         this.playerFactory = playerFactory;
+        this.board = new Board(3);
     }
 
     //todo remove factories
     public CommandLineGameController(GameRules gameRules, Board board, Prompt gamePrompt, PlayerFactory playerFactory) {
         this(board, gamePrompt, playerFactory);
         this.gameRules = gameRules;
-
     }
 
     public CommandLineGameController(GameRules gameRules, Prompt commandLinePrompt) {
@@ -55,7 +54,6 @@ public class CommandLineGameController {
         TicTacToeRules gameRules = new TicTacToeRules(new BoardFactory(), new PlayerFactory());
         CommandLineGameController commandLineGameController = new CommandLineGameController(
                 gameRules,
-                new BoardFactory(), //TODO remove once refactoring is ok
                 buildPrompt(),
                 new PlayerFactory()
         );
@@ -66,13 +64,21 @@ public class CommandLineGameController {
         ReplayOption replayOption = Y;
         while (replayOption.equals(Y)) {
             presentGameTypes();
-            Player[] players = setupPlayers(GameType.HUMAN_VS_HUMAN);
+            GameType gameType = readGameType();
+
+            presentBoardDimensionsFor(gameType);
+            int dimension = readDimension(gameType.dimensionUpperBoundary());
+
+            gameRules.initialiseGame(String.valueOf(dimension));
+
+            Player[] players = setupPlayers(GameType.HUMAN_VS_HUMAN, dimension);
             playMatch(players);
             replayOption = gamePrompt.getReplayOption();
         }
     }
 
     void playMatch(Player[] players) {
+
         while (gameInProgress()) {
             updateBoardWithPlayersMove(players[currentPlayerIndex]);
             currentPlayerIndex = toggle(currentPlayerIndex);
@@ -89,34 +95,33 @@ public class CommandLineGameController {
         board.updateAt(nextMove, player.getSymbol());
     }
 
-    Player[] setupPlayers(GameType gameType) {
-        int dimension = getDimension(gameType);
+    Player[] setupPlayers(GameType gameType, int dimension) {
         return createPlayersFor(gameType, dimension);
-    }
-
-    private int getDimension(GameType gameType) {
-        return getBoardOfCorrectDimensionFor(gameType);
     }
 
     void presentGameTypes() {
         List<GameType> allGameTypes = gameRules.getGameTypes();
-
         gamePrompt.presentGameTypes(allGameTypes);
-        GameType gameType = gamePrompt.readGameType();
+    }
 
+    GameType readGameType() {
+        GameType gameType = gamePrompt.readGameType();
         gameRules.storeGameType(gameType);
+        return gameType;
+    }
+
+    void presentBoardDimensionsFor(GameType gameType) {
+        String largestDimension = gameRules.getDimension(gameType);
+        gamePrompt.presentGridDimensionsUpTo(largestDimension);
+    }
+
+    int readDimension(int largestDimension) {
+        return gamePrompt.readBoardDimension(largestDimension);
     }
 
     void displayResultsOfGame() {
         gamePrompt.print(board);
         printExitMessage(board.hasWinningCombination());
-    }
-
-    int getBoardOfCorrectDimensionFor(GameType gameType) {
-        gamePrompt.presentBoardDimensionsFor(gameType);
-        int dimension = gamePrompt.readBoardDimension(gameType);
-        board = boardFactory.createBoardWithSize(dimension);
-        return dimension;
     }
 
     private Player[] createPlayersFor(GameType gameType, int dimension) {

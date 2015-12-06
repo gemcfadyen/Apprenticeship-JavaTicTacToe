@@ -5,7 +5,7 @@ import ttt.ReplayOption;
 import ttt.board.Board;
 
 public interface ReadPrompt {
-    int readBoardDimension(GameType gameType);
+    int readBoardDimension(int largestDimension);
 
     GameType readGameType();
 
