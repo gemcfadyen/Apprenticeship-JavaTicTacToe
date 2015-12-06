@@ -47,11 +47,12 @@ public class CommandLineGameController {
     }
 
     public static void main(String... args) {
-        TicTacToeRules gameRules = new TicTacToeRules(new BoardFactory(), new PlayerFactory());
+        CommandPrompt gamePrompt = buildPrompt();
+        TicTacToeRules gameRules = new TicTacToeRules(new BoardFactory(), new PlayerFactory(gamePrompt));
         CommandLineGameController commandLineGameController = new CommandLineGameController(
                 gameRules,
-                buildPrompt(),
-                new PlayerFactory()
+                gamePrompt
+//                new PlayerFactory()
         );
         commandLineGameController.play();
     }
@@ -118,7 +119,7 @@ public class CommandLineGameController {
     }
 
     private Player[] createPlayersFor(GameType gameType, int dimension) {
-        return playerFactory.createPlayers(gameType, gamePrompt, dimension);
+        return playerFactory.createPlayers(gameType, dimension);
     }
 
     private void printExitMessage() {

@@ -11,6 +11,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import ttt.board.BoardFactory;
 import ttt.player.PlayerFactory;
+import ttt.ui.Prompt;
 
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
@@ -30,7 +31,8 @@ public class GameIsPlayedThroughTheGuiTest {
 
     @Test
     public void playersTakeTurnsUntilGameIsWon() throws Exception {
-        TicTacToeRules ticTacToeRules = new TicTacToeRules(new BoardFactory(), new PlayerFactory());
+        Prompt unusedPrompt = new UnusedPrompt();
+        TicTacToeRules ticTacToeRules = new TicTacToeRules(new BoardFactory(), new PlayerFactory(unusedPrompt));
         GuiGameController controller = new GuiGameController(ticTacToeRules, new JavaFxViewFactory(scene));
         controller.presentGameTypes();
 

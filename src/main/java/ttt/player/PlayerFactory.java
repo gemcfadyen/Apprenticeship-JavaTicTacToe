@@ -9,16 +9,21 @@ import static ttt.player.PlayerSymbol.X;
 
 public class PlayerFactory {
     private static final int THREE = 3;
+    private Prompt playerPrompt;
 
-    public Player[] createPlayers(GameType playerOption, Prompt prompt, int dimension) {
+    public PlayerFactory(Prompt playerPrompt) {
+        this.playerPrompt = playerPrompt;
+    }
+
+    public Player[] createPlayers(GameType playerOption, int dimension) {
         if (HUMAN_VS_HUMAN == playerOption) {
-            return humanVsHuman(prompt);
+            return humanVsHuman(playerPrompt);
         } else if (HUMAN_VS_UNBEATABLE == playerOption) {
-            return humanVsUnbeatable(prompt, dimension);
+            return humanVsUnbeatable(playerPrompt, dimension);
         } else if (UNBEATABLE_VS_HUMAN == playerOption) {
-            return unbeatableVsHuman(prompt, dimension);
+            return unbeatableVsHuman(playerPrompt, dimension);
         }
-        return humanVsHuman(prompt);
+        return humanVsHuman(playerPrompt);
     }
 
     private Player[] humanVsHuman(Prompt prompt) {

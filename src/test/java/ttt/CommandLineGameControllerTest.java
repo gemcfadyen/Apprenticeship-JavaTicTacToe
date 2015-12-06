@@ -89,7 +89,7 @@ public class CommandLineGameControllerTest {
                 gameRulesSpy,
                 new Board(3),
                 promptSpy,
-                new PlayerFactory()
+                new PlayerFactory(promptSpy)
         );
 
         Player[] players = commandLineGameController.setupPlayers(GameType.HUMAN_VS_HUMAN, 3);
@@ -112,7 +112,7 @@ public class CommandLineGameControllerTest {
                 gameRulesSpy,
                 board,
                 commandPrompt(),
-                new PlayerFactory()
+                null
         );
 
         boolean gameInProgress = commandLineGameController.gameInProgress();
@@ -134,7 +134,7 @@ public class CommandLineGameControllerTest {
                 gameRulesSpy,
                 board,
                 gamePrompt,
-                new PlayerFactory()
+                null
         );
 
         commandLineGameController.playMatch();
@@ -154,7 +154,7 @@ public class CommandLineGameControllerTest {
                 gameRulesSpy,
                 board,
                 gamePrompt,
-                new PlayerFactory()
+                null
         );
 
         commandLineGameController.displayResultsOfGame();
@@ -177,7 +177,7 @@ public class CommandLineGameControllerTest {
                 gameRulesSpy,
                 board,
                 gamePrompt,
-                new PlayerFactory()
+                null
         );
 
         commandLineGameController.displayResultsOfGame();
@@ -214,7 +214,7 @@ public class CommandLineGameControllerTest {
         CommandLineGameController commandLineGameController = new CommandLineGameController(
                 gameRulesSpy,
                 commandPrompt(),
-                new PlayerFactory()
+                null
         );
 
         commandLineGameController.updateBoardWithPlayersMove();

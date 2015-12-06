@@ -25,7 +25,7 @@ import static ttt.player.PlayerSymbol.*;
 
 public class TicTacToeRulesTest {
     private static final Prompt UNUSED_PROMPT = null;
-    private Player[] players = new PlayerFactory().createPlayers(HUMAN_VS_HUMAN, UNUSED_PROMPT, 3);
+    private Player[] players = new PlayerFactory(UNUSED_PROMPT).createPlayers(HUMAN_VS_HUMAN, 3);
     private Board board = new Board(3);
 
     @Test
@@ -105,7 +105,7 @@ public class TicTacToeRulesTest {
 
     @Test
     public void getGameTypes() {
-        TicTacToeRules gamesRules = new TicTacToeRules(new BoardFactory(), new PlayerFactory());
+        TicTacToeRules gamesRules = new TicTacToeRules(new BoardFactory(), new PlayerFactory(UNUSED_PROMPT));
 
         List<GameType> gameTypes = gamesRules.getGameTypes();
 
@@ -114,7 +114,7 @@ public class TicTacToeRulesTest {
 
     @Test
     public void getDimensions() {
-        TicTacToeRules gamesRules = new TicTacToeRules(new BoardFactory(), new PlayerFactory());
+        TicTacToeRules gamesRules = new TicTacToeRules(new BoardFactory(), new PlayerFactory(UNUSED_PROMPT));
 
         String dimension = gamesRules.getDimension(HUMAN_VS_HUMAN);
 
@@ -138,8 +138,7 @@ public class TicTacToeRulesTest {
 
         TicTacToeRules ticTacToeRules = new TicTacToeRules(
                 new BoardFactoryStub(board),
-                new PlayerFactoryStub(
-                        players)
+                new PlayerFactoryStub(players)
         );
         ticTacToeRules.initialiseGame("3");
         assertThat(ticTacToeRules.getBoard(), is(board));
@@ -153,7 +152,7 @@ public class TicTacToeRulesTest {
                 VACANT, VACANT, X
         );
 
-        TicTacToeRules ticTacToeRules = new TicTacToeRules(new BoardFactoryStub(board), new PlayerFactory());
+        TicTacToeRules ticTacToeRules = new TicTacToeRules(new BoardFactoryStub(board), new PlayerFactory(UNUSED_PROMPT));
         ticTacToeRules.initialiseGame("3");
         assertThat(ticTacToeRules.getBoard(), is(board));
     }
@@ -188,7 +187,7 @@ public class TicTacToeRulesTest {
     @Test
     public void getCurrentPlayersNextMove() {
         PromptSpy promptSpy = new PromptSpy(new StringReader("1"));
-        players = new PlayerFactory().createPlayers(HUMAN_VS_HUMAN, promptSpy, 3);
+        players = new PlayerFactory(promptSpy).createPlayers(HUMAN_VS_HUMAN, 3);
         TicTacToeRules gamesRules = new TicTacToeRules(board, players);
 
         String move = gamesRules.getCurrentPlayersNextMove();
