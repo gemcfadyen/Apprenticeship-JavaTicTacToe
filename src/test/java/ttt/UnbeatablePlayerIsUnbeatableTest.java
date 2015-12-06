@@ -24,7 +24,7 @@ public class UnbeatablePlayerIsUnbeatableTest {
     public void unbeatablePlayerNeverLoosesWhenTheyOpenTheGameIn3x3() {
         PromptSpy promptSpy = new PromptSpy(new StringReader(setupForGameWithBoardDimensionOf(3)));
         PlayerFactory playerFactory = new PlayerFactoryStub(new UnbeatablePlayer(X), new RandomPlayer(O, promptSpy));
-        Game gameWithManyRounds = new Game(new BoardFactoryStub(emptyGridPerGameWithDimension(3)), promptSpy, playerFactory);
+        CommandLineGameController gameWithManyRounds = new CommandLineGameController(new BoardFactoryStub(emptyGridPerGameWithDimension(3)), promptSpy, playerFactory);
 
         gameWithManyRounds.play();
 
@@ -36,7 +36,7 @@ public class UnbeatablePlayerIsUnbeatableTest {
     public void unbeatablePlayerNeverLoosesWhenTheyDoNotOpenTheGameIn3x3() {
         PromptSpy promptSpy = new PromptSpy(new StringReader(setupForGameWithBoardDimensionOf(3)));
         PlayerFactory playerFactory = new PlayerFactoryStub(new RandomPlayer(O, promptSpy), new UnbeatablePlayer(X));
-        Game gameWithManyRounds = new Game(new BoardFactoryStub(emptyGridPerGameWithDimension(3)), promptSpy, playerFactory);
+        CommandLineGameController gameWithManyRounds = new CommandLineGameController(new BoardFactoryStub(emptyGridPerGameWithDimension(3)), promptSpy, playerFactory);
 
         gameWithManyRounds.play();
 
@@ -48,7 +48,7 @@ public class UnbeatablePlayerIsUnbeatableTest {
     public void unbeatableVsUnbeatableHasNoGamesWonIn3x3() {
         PromptSpy promptSpy = new PromptSpy(new StringReader(setupForGameWithBoardDimensionOf(3)));
         PlayerFactory playerFactory = new PlayerFactoryStub(new UnbeatablePlayer(O), new UnbeatablePlayer(X));
-        Game gameWithManyRounds = new Game(new BoardFactoryStub(emptyGridPerGameWithDimension(3)), promptSpy, playerFactory);
+        CommandLineGameController gameWithManyRounds = new CommandLineGameController(new BoardFactoryStub(emptyGridPerGameWithDimension(3)), promptSpy, playerFactory);
 
         gameWithManyRounds.play();
 
@@ -60,7 +60,7 @@ public class UnbeatablePlayerIsUnbeatableTest {
     public void delayedUnbeatablePlayerNeverLoosesWhenTheyOpenTheGameIn4x4() {
         PromptSpy promptSpy = new PromptSpy(new StringReader(setupForGameWithBoardDimensionOf(4)));
         PlayerFactory playerFactory = new PlayerFactoryStub(new DelayedUnbeatablePlayer(X, new UnbeatablePlayer(X)), new RandomPlayer(O, promptSpy));
-        Game gameWithManyRounds = new Game(new BoardFactoryStub(emptyGridPerGameWithDimension(4)), promptSpy, playerFactory);
+        CommandLineGameController gameWithManyRounds = new CommandLineGameController(new BoardFactoryStub(emptyGridPerGameWithDimension(4)), promptSpy, playerFactory);
 
         gameWithManyRounds.play();
 
@@ -72,7 +72,7 @@ public class UnbeatablePlayerIsUnbeatableTest {
     public void delayedUnbeatablePlayerNeverLoosesWhenTheyDoNotOpenTheGameIn4x4() {
         PromptSpy promptSpy = new PromptSpy(new StringReader(setupForGameWithBoardDimensionOf(4)));
         PlayerFactory playerFactory = new PlayerFactoryStub(new RandomPlayer(O, promptSpy), new DelayedUnbeatablePlayer(X, new UnbeatablePlayer(X)));
-        Game gameWithManyRounds = new Game(new BoardFactoryStub(emptyGridPerGameWithDimension(4)), promptSpy, playerFactory);
+        CommandLineGameController gameWithManyRounds = new CommandLineGameController(new BoardFactoryStub(emptyGridPerGameWithDimension(4)), promptSpy, playerFactory);
 
         gameWithManyRounds.play();
 
@@ -84,7 +84,7 @@ public class UnbeatablePlayerIsUnbeatableTest {
     public void delayedUnbeatableVsDelayedUnbeatableHasNoGamesWonIn4x4() {
         PromptSpy promptSpy = new PromptSpy(new StringReader(setupForGameWithBoardDimensionOf(4)));
         PlayerFactory playerFactory = new PlayerFactoryStub(new DelayedUnbeatablePlayer(O, new UnbeatablePlayer(O)), new DelayedUnbeatablePlayer(X, new UnbeatablePlayer(X)));
-        Game gameWithManyRounds = new Game(new BoardFactoryStub(emptyGridPerGameWithDimension(4)), promptSpy, playerFactory);
+        CommandLineGameController gameWithManyRounds = new CommandLineGameController(new BoardFactoryStub(emptyGridPerGameWithDimension(4)), promptSpy, playerFactory);
 
         gameWithManyRounds.play();
 

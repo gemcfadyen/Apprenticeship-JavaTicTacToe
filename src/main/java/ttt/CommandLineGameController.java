@@ -12,7 +12,7 @@ import java.io.OutputStreamWriter;
 
 import static ttt.ReplayOption.Y;
 
-public class Game {
+public class CommandLineGameController {
     private static final int PLAYER_ONE_INDEX = 0;
     private static final int PLAYER_TWO_INDEX = 1;
     private PlayerFactory playerFactory;
@@ -21,21 +21,21 @@ public class Game {
     private Prompt gamePrompt;
     private int currentPlayerIndex = PLAYER_ONE_INDEX;
 
-    Game(Board board, Prompt gamePrompt, PlayerFactory playerFactory) {
+    CommandLineGameController(Board board, Prompt gamePrompt, PlayerFactory playerFactory) {
         this.board = board;
         this.gamePrompt = gamePrompt;
         this.playerFactory = playerFactory;
     }
 
-    public Game(BoardFactory boardFactory, Prompt gamePrompt, PlayerFactory playerFactory) {
+    public CommandLineGameController(BoardFactory boardFactory, Prompt gamePrompt, PlayerFactory playerFactory) {
         this.boardFactory = boardFactory;
         this.gamePrompt = gamePrompt;
         this.playerFactory = playerFactory;
     }
 
     public static void main(String... args) {
-        Game game = new Game(new BoardFactory(), buildPrompt(), new PlayerFactory());
-        game.play();
+        CommandLineGameController commandLineGameController = new CommandLineGameController(new BoardFactory(), buildPrompt(), new PlayerFactory());
+        commandLineGameController.play();
     }
 
     public void play() {
