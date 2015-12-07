@@ -36,7 +36,7 @@ public class PromptSpy implements Prompt {
     }
 
     @Override
-    public GameType readGameType() {
+    public GameType readGameType(List<GameType> gameTypes) {
         numberOfTimesGameOptionsHaveBeenRead++;
         return GameType.of(Integer.valueOf(readInput()));
     }

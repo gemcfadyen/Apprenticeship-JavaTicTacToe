@@ -47,8 +47,9 @@ public class CommandLineGameController {
     }
 
     GameType getGameTypeFromPlayer() {
-        presentGameTypes();
-        return readGameType();
+        List<GameType> allGameTypes = gameRules.getGameTypes();
+        presentGameTypes(allGameTypes);
+        return readGameType(allGameTypes);
     }
 
     int getDimensionChoiceFromPlayer(GameType gameType) {
@@ -81,13 +82,12 @@ public class CommandLineGameController {
         printExitMessage();
     }
 
-    private void presentGameTypes() {
-        List<GameType> allGameTypes = gameRules.getGameTypes();
+    private void presentGameTypes(List<GameType> allGameTypes) {
         gamePrompt.presentGameTypes(allGameTypes);
     }
 
-    private GameType readGameType() {
-        GameType gameType = gamePrompt.readGameType();
+    private GameType readGameType(List<GameType> gameTypes) {
+        GameType gameType = gamePrompt.readGameType(gameTypes);
         gameRules.storeGameType(gameType);
         return gameType;
     }

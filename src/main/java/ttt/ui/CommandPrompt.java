@@ -38,9 +38,9 @@ public class CommandPrompt implements Prompt {
 
     //TODO read needs to take in the valid list of gametypes for validation
     @Override
-    public GameType readGameType() {
+    public GameType readGameType(List<GameType> gameTypes) {
         InputValidator compositeValidator = compositeFor(gameTypeValidators());
-        return GameType.of(asInteger(getValidInput(compositeValidator, input(), functionToRepromptGameType())));
+        return GameType.of(asInteger(getValidInput(compositeValidator, input(), functionToRepromptGameType(gameTypes))));
     }
 
     @Override
@@ -153,10 +153,10 @@ public class CommandPrompt implements Prompt {
         };
     }
 
-    private Function<ValidationResult, Void> functionToRepromptGameType() {
+    private Function<ValidationResult, Void> functionToRepromptGameType(List<GameType> gameTypes) {
         return validationResult -> {
             display(displayFormatter.applyInvalidColour(validationResult.reason()));
-            askUserForGameType(Arrays.asList(GameType.values())); //TODO pass in from model
+            askUserForGameType(gameTypes);
             return null;
         };
     }

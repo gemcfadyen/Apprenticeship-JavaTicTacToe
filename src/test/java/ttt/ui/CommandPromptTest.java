@@ -213,7 +213,7 @@ public class CommandPromptTest {
     public void readsGameType() {
         Prompt prompt = new CommandPrompt(new StringReader("1\n"), writer, plainFormatter);
 
-        GameType gameType = prompt.readGameType();
+        GameType gameType = prompt.readGameType(Arrays.asList(GameType.values()));
 
         assertThat(gameType, is(HUMAN_VS_HUMAN));
     }
@@ -222,7 +222,7 @@ public class CommandPromptTest {
     public void clearsScreenWhenReadingGameTypeOption() {
         Prompt prompt = new CommandPrompt(new StringReader("1\n"), writer, plainFormatter);
 
-        prompt.readGameType();
+        prompt.readGameType(Arrays.asList(GameType.values()));
 
         assertThat(writer.toString().endsWith(CLEAR_SCREEN_ANSI_CHARACTERS + "\n"), is(true));
     }
@@ -231,7 +231,7 @@ public class CommandPromptTest {
     public void clearsScreenAndRepromptsGameTypeWhenAlphaCharacterEntered() {
         Prompt prompt = new CommandPrompt(new StringReader("a\n1\n"), writer, plainFormatter);
 
-        GameType gameType = prompt.readGameType();
+        GameType gameType = prompt.readGameType(Arrays.asList(GameType.values()));
 
         assertThat(gameType, is(HUMAN_VS_HUMAN));
         assertThat(writer.toString().contains(CLEAR_SCREEN_ANSI_CHARACTERS + "\n\n[a] is not a valid integer\n\nEnter 1 to play Human vs Human"), is(true));
@@ -241,7 +241,7 @@ public class CommandPromptTest {
     public void repromptsWhenInvalidGameTypeEntered() {
         Prompt prompt = new CommandPrompt(new StringReader("7\n1\n"), writer, plainFormatter);
 
-        GameType gameType = prompt.readGameType();
+        GameType gameType = prompt.readGameType(Arrays.asList(GameType.values()));
 
         assertThat(gameType, is(HUMAN_VS_HUMAN));
 

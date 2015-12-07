@@ -11,27 +11,22 @@ import java.util.List;
 public class UnusedPrompt implements Prompt {
     @Override
     public void presentGameTypes(List<GameType> allGameTypes) {
-
     }
 
     @Override
     public void presentGridDimensionsUpTo(String dimension) {
-
     }
 
     @Override
     public void presentsBoard(Board board) {
-
     }
 
     @Override
     public void printsWinningMessage(Board board, PlayerSymbol symbol) {
-
     }
 
     @Override
     public void printsDrawMessage(Board board) {
-
     }
 
     @Override
@@ -40,7 +35,7 @@ public class UnusedPrompt implements Prompt {
     }
 
     @Override
-    public GameType readGameType() {
+    public GameType readGameType(List<GameType> gameTypes) {
         return null;
     }
 
