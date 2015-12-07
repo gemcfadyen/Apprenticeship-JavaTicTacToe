@@ -10,7 +10,7 @@ import static ttt.player.PlayerSymbol.*;
 
 public class GuiGameControllerTest {
 
-    private BoardPresenterSpy boardPresenterSpy = new BoardPresenterSpy();
+    private DisplayPresenterSpy boardPresenterSpy = new DisplayPresenterSpy();
     private TicTacToeRulesSpy gameRulesSpy = new TicTacToeRulesSpy();
 
     @Test

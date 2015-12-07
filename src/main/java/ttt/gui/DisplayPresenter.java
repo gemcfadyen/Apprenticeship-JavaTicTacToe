@@ -6,7 +6,7 @@ import ttt.player.PlayerSymbol;
 
 import java.util.List;
 
-public interface BoardPresenter {
+public interface DisplayPresenter {
     void presentGameTypes(List<GameType> allGameTypes);
     void presentGridDimensionsUpTo(String dimension);
     void presentsBoard(Board board);

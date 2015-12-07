@@ -6,7 +6,7 @@ import ttt.player.PlayerSymbol;
 
 import java.util.List;
 
-public class BoardPresenterSpy implements BoardPresenter {
+public class DisplayPresenterSpy implements DisplayPresenter {
     private boolean hasPresentedGridDimension = false;
     private boolean hasPresentedGameTypes;
     private boolean hasDisplayedBoard = false;

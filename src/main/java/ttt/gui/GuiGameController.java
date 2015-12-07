@@ -8,7 +8,7 @@ import java.util.List;
 public class GuiGameController implements GameController {
 
     private GameRules ticTacToeRules;
-    private BoardPresenter boardView;
+    private DisplayPresenter boardView;
 
     public GuiGameController(GameRules ticTacToeRules, ViewFactory viewFactory) {
         this.ticTacToeRules = ticTacToeRules;

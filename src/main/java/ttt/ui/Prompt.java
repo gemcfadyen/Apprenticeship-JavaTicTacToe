@@ -1,7 +1,7 @@
 package ttt.ui;
 
-import ttt.gui.BoardPresenter;
+import ttt.gui.DisplayPresenter;
 
-public interface Prompt extends ReadPrompt, BoardPresenter {
+public interface Prompt extends ReadPrompt, DisplayPresenter {
 }
 

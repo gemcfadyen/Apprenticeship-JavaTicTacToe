@@ -20,7 +20,7 @@ import static javafx.geometry.Pos.CENTER;
 import static ttt.GameType.HUMAN_VS_HUMAN;
 import static ttt.player.PlayerSymbol.*;
 
-public class TicTacToeBoardPresenter implements BoardPresenter {
+public class TicTacToeBoardPresenter implements DisplayPresenter {
     private Scene scene;
     private RegisterClickEvent registerClickEvent;
     private GuiGameController controller;
