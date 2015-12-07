@@ -30,6 +30,10 @@ public class UnusedPrompt implements Prompt {
     }
 
     @Override
+    public void presentReplayOption() {
+    }
+
+    @Override
     public int readBoardDimension(int largestDimension) {
         return 0;
     }
@@ -40,12 +44,12 @@ public class UnusedPrompt implements Prompt {
     }
 
     @Override
-    public ReplayOption getReplayOption() {
+    public ReplayOption readReplayOption() {
         return null;
     }
 
     @Override
-    public int getNextMove(Board board) {
+    public int readNextMove(Board board) {
         return 0;
     }
 

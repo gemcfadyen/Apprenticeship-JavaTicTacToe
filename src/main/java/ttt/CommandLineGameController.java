@@ -42,7 +42,8 @@ public class CommandLineGameController {
 
             playMatch();
 
-            replayOption = gamePrompt.getReplayOption();
+            gamePrompt.presentReplayOption();
+            replayOption = gamePrompt.readReplayOption();
         }
     }
 

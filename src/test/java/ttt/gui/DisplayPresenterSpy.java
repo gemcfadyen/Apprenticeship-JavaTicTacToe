@@ -12,6 +12,7 @@ public class DisplayPresenterSpy implements DisplayPresenter {
     private boolean hasDisplayedBoard = false;
     private boolean hasPrintedWinningBoard = false;
     private boolean hasPrintedGameIsDrawn = false;
+    private boolean hasAskedForReplay = false;
     private PlayerSymbol winningSymbol;
 
     @Override
@@ -40,6 +41,11 @@ public class DisplayPresenterSpy implements DisplayPresenter {
         hasPrintedGameIsDrawn = true;
     }
 
+    @Override
+    public void presentReplayOption() {
+        hasAskedForReplay = true;
+    }
+
     public boolean hasPresentedGameTypes() {
         return hasPresentedGameTypes;
     }
@@ -62,5 +68,9 @@ public class DisplayPresenterSpy implements DisplayPresenter {
 
     public PlayerSymbol getWinningSymbol() {
         return winningSymbol;
+    }
+
+    public boolean hasAskedForReplay() {
+        return hasAskedForReplay;
     }
 }

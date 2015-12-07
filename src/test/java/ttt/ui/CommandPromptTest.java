@@ -85,7 +85,7 @@ public class CommandPromptTest {
     @Test
     public void displaysBoardWhenPromptingForNextMove() {
         Prompt prompt = new CommandPrompt(new StringReader("1\n"), writer, plainFormatter);
-        prompt.getNextMove(new Board(3));
+        prompt.readNextMove(new Board(3));
 
         assertThat(writer.toString().contains("---------"), is(true));
     }
@@ -94,7 +94,7 @@ public class CommandPromptTest {
     public void repromptClearsScreenBeforePrintingBoard() {
         Prompt prompt = new CommandPrompt(new StringReader("a\n1\n"), writer, plainFormatter);
 
-        prompt.getNextMove(new Board(3));
+        prompt.readNextMove(new Board(3));
 
         assertThat(writer.toString().endsWith("\n" +
                 CLEAR_SCREEN_ANSI_CHARACTERS + "\n\n"
@@ -108,7 +108,7 @@ public class CommandPromptTest {
     public void clearScreenAfterValidMoveRead() {
         Prompt prompt = new CommandPrompt(new StringReader("1\n"), writer, plainFormatter);
 
-        prompt.getNextMove(new Board(3));
+        prompt.readNextMove(new Board(3));
 
         assertThat(writer.toString().endsWith(CLEAR_SCREEN_ANSI_CHARACTERS + "\n"), is(true));
     }
@@ -117,14 +117,14 @@ public class CommandPromptTest {
     public void readsNextMoveAsZeroBasedIndex() {
         Prompt prompt = new CommandPrompt(new StringReader("1\n"), writer, plainFormatter);
 
-        assertThat(prompt.getNextMove(new Board(3)), equalTo(0));
+        assertThat(prompt.readNextMove(new Board(3)), equalTo(0));
     }
 
     @Test
     public void repromptsWhenAlphaCharacterEnteredAsNextMove() {
         Prompt prompt = new CommandPrompt(new StringReader("a\nz\n1\n"), writer, plainFormatter);
 
-        assertThat(prompt.getNextMove(new Board(3)), equalTo(0));
+        assertThat(prompt.readNextMove(new Board(3)), equalTo(0));
         assertThat(writer.toString().contains("[a] is not a valid integer\n\nPlease enter the index for your next move"), is(true));
         assertThat(writer.toString().contains(
                 "[z] is not a valid integer\n\nPlease enter the index for your next move"), is(true));
@@ -134,7 +134,7 @@ public class CommandPromptTest {
     public void repromptsWhenMoveIsOutsideGrid() {
         Prompt prompt = new CommandPrompt(new StringReader("100\n-100\n1\n"), writer, plainFormatter);
 
-        assertThat(prompt.getNextMove(new Board(3)), equalTo(0));
+        assertThat(prompt.readNextMove(new Board(3)), equalTo(0));
 
         assertThat(writer.toString().contains("[100] is outside of the grid boundary\n\nPlease enter the index for your next move"), is(true));
         assertThat(writer.toString().contains("[-100] is outside of the grid boundary\n\nPlease enter the index for your next move"), is(true));
@@ -144,7 +144,7 @@ public class CommandPromptTest {
     public void repromptsWhenMoveIsAlreadyOccupied() {
         Prompt prompt = new CommandPrompt(new StringReader("1\n2\n"), writer, plainFormatter);
 
-        assertThat(prompt.getNextMove(new Board(X, VACANT, VACANT, VACANT, VACANT, VACANT, VACANT, VACANT, VACANT)), equalTo(1));
+        assertThat(prompt.readNextMove(new Board(X, VACANT, VACANT, VACANT, VACANT, VACANT, VACANT, VACANT, VACANT)), equalTo(1));
         assertThat(writer.toString().contains("[1] is already occupied\n\nPlease enter the index for your next move"), is(true));
     }
 
@@ -152,25 +152,26 @@ public class CommandPromptTest {
     public void clearsScreenBeforePromptingForReplay() {
         Prompt prompt = new CommandPrompt(new StringReader("N\n"), writer, plainFormatter);
 
-        prompt.getReplayOption();
+        prompt.readReplayOption();
 
         assertThat(writer.toString().contains("\n" + CLEAR_SCREEN_ANSI_CHARACTERS + "\n"), is(true));
     }
 
     @Test
-    public void promptsUserForReplayOption() {
-        Prompt prompt = new CommandPrompt(new StringReader("N\n"), writer, plainFormatter);
+    public void presentsReplayOption() {
+        Prompt prompt = new CommandPrompt(defaultReader, writer, plainFormatter);
 
-        prompt.getReplayOption();
+        prompt.presentReplayOption();
 
         assertThat(writer.toString().contains("Play again? [Y/N]"), is(true));
     }
+
 
     @Test
     public void readsReplayOption() {
         Prompt prompt = new CommandPrompt(new StringReader("Y\n"), writer, plainFormatter);
 
-        ReplayOption replayOption = prompt.getReplayOption();
+        ReplayOption replayOption = prompt.readReplayOption();
 
         assertThat(replayOption, is(Y));
     }
@@ -179,7 +180,7 @@ public class CommandPromptTest {
     public void clearsScreenWhenReadingReplayOption() {
         Prompt prompt = new CommandPrompt(new StringReader("Y\n"), writer, plainFormatter);
 
-        prompt.getReplayOption();
+        prompt.readReplayOption();
 
         assertThat(writer.toString().endsWith(CLEAR_SCREEN_ANSI_CHARACTERS + "\n"), is(true));
     }
@@ -188,7 +189,7 @@ public class CommandPromptTest {
     public void clearsScreenAndRepromptsWhenReplayOptionIsInvalid() {
         Prompt prompt = new CommandPrompt(new StringReader("A\nN\n"), writer, plainFormatter);
 
-        prompt.getReplayOption();
+        prompt.readReplayOption();
 
         assertThat(writer.toString().contains(
                 CLEAR_SCREEN_ANSI_CHARACTERS + "\n\n[A] is not a valid replay option\n\nPlay again? [Y/N]"), is(true));
@@ -287,7 +288,7 @@ public class CommandPromptTest {
     public void setsFontColourWhenPromptingUser() {
         Prompt commandPrompt = new CommandPrompt(new StringReader("1\n"), writer, plainFormatter);
 
-        commandPrompt.getNextMove(new Board(3));
+        commandPrompt.readNextMove(new Board(3));
 
         assertThat(writer.toString().contains("Please enter the index for your next move\n"), is(true));
     }
@@ -308,6 +309,6 @@ public class CommandPromptTest {
     public void raiseInputExceptionWhenThereIsAProblemReadingFromPrompt() {
         Reader readerWhichThrowsIOException = new ReaderStubWhichThrowsExceptionOnRead();
         Prompt promptWhichHasExceptionOnRead = new CommandPrompt(readerWhichThrowsIOException, writer, plainFormatter);
-        promptWhichHasExceptionOnRead.getReplayOption();
+        promptWhichHasExceptionOnRead.readReplayOption();
     }
 }

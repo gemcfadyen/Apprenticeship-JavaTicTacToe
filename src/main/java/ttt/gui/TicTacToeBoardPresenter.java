@@ -45,7 +45,7 @@ public class TicTacToeBoardPresenter implements DisplayPresenter {
     public void presentGridDimensionsUpTo(String upperBoundaryOfPossibleDimension) {
         GridPane dimensionPane = new GridPane();
         setWelcomeMessage(dimensionPane);
-        //this will be updated to use the dimension passed in once the story to deal with multiple dimensions is taken on
+        //TODO this will be updated to use the dimension passed in once the story to deal with multiple dimensions is taken on
         displayDimensions("3", dimensionPane);
 
         scene.setRoot(dimensionPane);
@@ -97,6 +97,10 @@ public class TicTacToeBoardPresenter implements DisplayPresenter {
         printBoardsOnPane(board, gameOverPane, getCellLabelForDrawnBoard(board), disable());
 
         scene.setRoot(gameOverPane);
+    }
+
+    @Override
+    public void presentReplayOption() {
     }
 
     private void setWelcomeMessage(GridPane gridPane) {

@@ -151,7 +151,8 @@ public class CommandLineGameControllerTest {
         commandLineGameController.startGame();
 
         assertThat(gamePrompt.getNumberOfTimesXHasWon(), is(1));
-        assertThat(gamePrompt.getNumberOfTimesPlayerIsPromptedToPlayAgain(), is(1));
+        assertThat(gamePrompt.getNumberOfTimesReplayPresented(), is(1));
+        assertThat(gamePrompt.getNumberOfTimesReplayOptionRead(), is(1));
     }
 
     @Test

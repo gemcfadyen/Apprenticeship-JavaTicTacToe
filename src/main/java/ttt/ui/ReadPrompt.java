@@ -9,6 +9,6 @@ import java.util.List;
 public interface ReadPrompt {
     int readBoardDimension(int largestDimension);
     GameType readGameType(List<GameType> gameTypes);
-    ReplayOption getReplayOption();
-    int getNextMove(Board board);
+    ReplayOption readReplayOption();
+    int readNextMove(Board board);
 }

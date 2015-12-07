@@ -19,11 +19,12 @@ public class PromptSpy implements Prompt {
     private int numberOfTimesDrawMessageHasBeenPrinted = 0;
     private int numberOfTimesXHasWon = 0;
     private int numberOfTimesOHasWon = 0;
-    private int numberOfTimesPlayerIsReprompted = 0;
+    private int numberOfTimesPlayerIsRead = 0;
     private int numberOfTimesGameOptionsHaveBeenRead = 0;
     private int numberOfTimesBoardDimensionRead = 0;
     private int numberOfTimesBoardDimensionsAskedFor = 0;
     private int numberOfTimesGameOptionsAskedFor = 0;
+    private int numberOfTimesReplayPresented = 0;
 
     public PromptSpy(Reader reader) {
         this.reader = new BufferedReader(reader);
@@ -42,13 +43,13 @@ public class PromptSpy implements Prompt {
     }
 
     @Override
-    public ReplayOption getReplayOption() {
-        numberOfTimesPlayerIsReprompted++;
+    public ReplayOption readReplayOption() {
+        numberOfTimesPlayerIsRead++;
         return ReplayOption.of(readInput());
     }
 
     @Override
-    public int getNextMove(Board board) {
+    public int readNextMove(Board board) {
         return Integer.valueOf(readInput());
     }
 
@@ -85,6 +86,11 @@ public class PromptSpy implements Prompt {
         lastBoardPrinted = board;
     }
 
+    @Override
+    public void presentReplayOption() {
+        numberOfTimesReplayPresented++;
+    }
+
     private String readInput() {
         try {
             return reader.readLine();
@@ -118,8 +124,8 @@ public class PromptSpy implements Prompt {
         return gridFormation.toString();
     }
 
-    public int getNumberOfTimesPlayerIsPromptedToPlayAgain() {
-        return numberOfTimesPlayerIsReprompted;
+    public int getNumberOfTimesReplayOptionRead() {
+        return numberOfTimesPlayerIsRead;
     }
 
     public int getNumberOfTimesPromptedForGameOption() {
@@ -136,5 +142,9 @@ public class PromptSpy implements Prompt {
 
     public int getNumberOfTimesBoardDimensionRead() {
         return numberOfTimesBoardDimensionRead;
+    }
+
+    public int getNumberOfTimesReplayPresented() {
+        return numberOfTimesReplayPresented;
     }
 }

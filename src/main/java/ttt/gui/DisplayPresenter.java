@@ -12,4 +12,5 @@ public interface DisplayPresenter {
     void presentsBoard(Board board);
     void printsWinningMessage(Board board, PlayerSymbol symbol);
     void printsDrawMessage(Board board);
+    void presentReplayOption();
 }

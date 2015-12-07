@@ -36,7 +36,6 @@ public class CommandPrompt implements Prompt {
         return asInteger(getValidInput(compositeValidator, input(), functionToRepromptForValidBoardDimension(largestDimension)));
     }
 
-    //TODO read needs to take in the valid list of gametypes for validation
     @Override
     public GameType readGameType(List<GameType> gameTypes) {
         InputValidator compositeValidator = compositeFor(gameTypeValidators());
@@ -44,15 +43,13 @@ public class CommandPrompt implements Prompt {
     }
 
     @Override
-    public ReplayOption getReplayOption() {
-        askUserToPlayAgain();
+    public ReplayOption readReplayOption() {
         InputValidator compoundValidator = compositeFor(Collections.singletonList(new ReplayOptionValidator()));
-
         return ReplayOption.of(getValidInput(compoundValidator, input(), functionToRepromptReplay()));
     }
 
     @Override
-    public int getNextMove(Board board) {
+    public int readNextMove(Board board) {
         print(board);
         askUserForTheirMove();
 
@@ -85,6 +82,11 @@ public class CommandPrompt implements Prompt {
     public void printsDrawMessage(Board board) {
         print(board);
         printDrawMessage();
+    }
+
+    @Override
+    public void presentReplayOption() {
+        askUserToPlayAgain();
     }
 
     private void print(Board board) {
