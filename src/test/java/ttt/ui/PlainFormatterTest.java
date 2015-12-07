@@ -9,13 +9,13 @@ import static ttt.player.PlayerSymbol.*;
 
 public class PlainFormatterTest {
 
-    BoardFormatter boardFormatter = new PlainFormatter();
+    DisplayFormatter displayFormatter = new PlainFormatter();
 
     @Test
     public void formatEmptyBoard() {
         Board board = new Board(3);
 
-        String formattedBoard = boardFormatter.formatForDisplay(board);
+        String formattedBoard = displayFormatter.formatForDisplay(board);
 
         assertThat(formattedBoard, is("---------"));
     }
@@ -24,27 +24,27 @@ public class PlainFormatterTest {
     public void formatBoardWithMoves() {
         Board board = new Board(X, X, O, VACANT, VACANT, VACANT, VACANT, VACANT, VACANT);
 
-        String formattedBoard = boardFormatter.formatForDisplay(board);
+        String formattedBoard = displayFormatter.formatForDisplay(board);
 
         assertThat(formattedBoard, is("XXO------"));
     }
 
     @Test
     public void formatsWinningMessage() {
-        String formattedMessage = boardFormatter.formatWinningMessage(X);
+        String formattedMessage = displayFormatter.formatWinningMessage(X);
 
         assertThat(formattedMessage, is("Congratulations - X has won"));
     }
 
     @Test
     public void formatsBoardDimensionPrompt() {
-        String formattedMessage = boardFormatter.formatBoardDimensionMessage(5);
+        String formattedMessage = displayFormatter.formatBoardDimensionMessage(5);
         assertThat(formattedMessage, is("Please enter the dimension of the board you would like to use [1 to 5]"));
     }
 
     @Test
     public void formatsInvalidReason(){
-        String formattedMessage = boardFormatter.applyInvalidColour("Invalid");
+        String formattedMessage = displayFormatter.applyInvalidColour("Invalid");
 
         assertThat(formattedMessage, is("Invalid"));
     }

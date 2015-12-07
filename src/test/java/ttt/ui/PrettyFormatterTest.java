@@ -14,7 +14,7 @@ public class PrettyFormatterTest {
     private static final String NUMBER_COLOUR_ANSII_CHARACTERS = "\033[1;30m";
     private static final String X_COLOUR = "\033[1;33m";
     private static final String O_COLOUR = "\033[1;31m";
-    private final BoardFormatter formatter = new PrettyFormatter();
+    private final DisplayFormatter formatter = new PrettyFormatter();
 
     @Test
     public void printsNew3x3Board() {

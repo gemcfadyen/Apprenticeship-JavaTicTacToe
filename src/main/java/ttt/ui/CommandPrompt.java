@@ -19,10 +19,10 @@ public class CommandPrompt implements Prompt {
     private static final String CLEAR_SCREEN_ANSII_CHARACTERS = "\033[H\033[2J";
     private BufferedReader reader;
     private Writer writer;
-    private BoardFormatter boardFormatter;
+    private DisplayFormatter displayFormatter;
 
-    public CommandPrompt(Reader reader, Writer writer, BoardFormatter boardFormatter) {
-        this.boardFormatter = boardFormatter;
+    public CommandPrompt(Reader reader, Writer writer, DisplayFormatter displayFormatter) {
+        this.displayFormatter = displayFormatter;
         this.reader = new BufferedReader(reader);
         this.writer = writer;
 
@@ -88,15 +88,15 @@ public class CommandPrompt implements Prompt {
     }
 
     private void print(Board board) {
-        display(boardFormatter.formatForDisplay(board));
+        display(displayFormatter.formatForDisplay(board));
     }
 
     private void printWinningMessageFor(PlayerSymbol symbol) {
-        display(boardFormatter.formatWinningMessage(symbol));
+        display(displayFormatter.formatWinningMessage(symbol));
     }
 
     private void printDrawMessage() {
-        display(boardFormatter.applyFontColour("No winner this time"));
+        display(displayFormatter.applyFontColour("No winner this time"));
     }
 
     private void clear() {
@@ -104,7 +104,7 @@ public class CommandPrompt implements Prompt {
     }
 
     private void askUserForBoardDimension(int largestDimension) {
-        display(boardFormatter.formatBoardDimensionMessage(largestDimension));
+        display(displayFormatter.formatBoardDimensionMessage(largestDimension));
     }
 
     private void display(String message) {
@@ -123,7 +123,7 @@ public class CommandPrompt implements Prompt {
             gameTypeMessage += "Enter " + gameType.numericRepresentation() + " to play " + gameType.gameNameForDisplay() + newLine();
         }
 
-        display(boardFormatter.applyFontColour(gameTypeMessage));
+        display(displayFormatter.applyFontColour(gameTypeMessage));
     }
 
     private CompositeValidator compositeFor(List<InputValidator> validators) {
@@ -155,7 +155,7 @@ public class CommandPrompt implements Prompt {
 
     private Function<ValidationResult, Void> functionToRepromptForValidBoardDimension(int largestDimension) {
         return validationResult -> {
-            display(boardFormatter.applyInvalidColour(validationResult.reason()));
+            display(displayFormatter.applyInvalidColour(validationResult.reason()));
             askUserForBoardDimension(largestDimension);
             return null;
         };
@@ -163,7 +163,7 @@ public class CommandPrompt implements Prompt {
 
     private Function<ValidationResult, Void> functionToRepromptGameType() {
         return validationResult -> {
-            display(boardFormatter.applyInvalidColour(validationResult.reason()));
+            display(displayFormatter.applyInvalidColour(validationResult.reason()));
             askUserForGameType(Arrays.asList(GameType.values())); //TODO pass in from model
             return null;
         };
@@ -180,18 +180,18 @@ public class CommandPrompt implements Prompt {
 
     private Function<ValidationResult, Void> functionToRepromptReplay() {
         return validationResult -> {
-            display(boardFormatter.applyInvalidColour(validationResult.reason()));
+            display(displayFormatter.applyInvalidColour(validationResult.reason()));
             askUserToPlayAgain();
             return null;
         };
     }
 
     private void askUserToPlayAgain() {
-        display(boardFormatter.applyFontColour("Play again? [Y/N]"));
+        display(displayFormatter.applyFontColour("Play again? [Y/N]"));
     }
 
     private void askUserForTheirMove() {
-        display(boardFormatter.applyFontColour("Please enter the index for your next move"));
+        display(displayFormatter.applyFontColour("Please enter the index for your next move"));
     }
 
     private List<InputValidator> gameTypeValidators() {

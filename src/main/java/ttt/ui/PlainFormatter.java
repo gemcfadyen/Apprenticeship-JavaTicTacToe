@@ -6,7 +6,7 @@ import ttt.player.PlayerSymbol;
 
 import java.util.List;
 
-public class PlainFormatter implements BoardFormatter {
+public class PlainFormatter implements DisplayFormatter {
     @Override
     public String formatForDisplay(Board board) {
         String plainBoard = "";

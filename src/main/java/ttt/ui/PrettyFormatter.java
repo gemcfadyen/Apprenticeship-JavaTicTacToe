@@ -9,7 +9,7 @@ import java.util.List;
 import static ttt.player.PlayerSymbol.VACANT;
 import static ttt.player.PlayerSymbol.X;
 
-public class PrettyFormatter implements BoardFormatter {
+public class PrettyFormatter implements DisplayFormatter {
     private static final String NUMBER_COLOUR_ANSII_CHARACTERS = "\033[1;30m";
     private static final String BOARD_COLOUR_ANSII_CHARACTERS = "\033[1;36m";
     private static final String FONT_COLOUR_ANSII_CHARACTERS = "\033[1;37m";
