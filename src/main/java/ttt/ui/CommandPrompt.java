@@ -69,16 +69,39 @@ public class CommandPrompt implements Prompt {
         return ReplayOption.of(getValidInput(compoundValidator, input(), functionToRepromptReplay()));
     }
 
+    @Override
+    public void presentGameTypes(List<GameType> gameTypes) {
+        askUserForGameType(gameTypes);
+    }
+
+    @Override
+    public void presentGridDimensionsUpTo(String largestDimension) {
+        askUserForBoardDimension(Integer.valueOf(largestDimension));
+    }
+
+    @Override
+    public void presentsBoard(Board board) {
+        print(board);
+    }
+
+    @Override
+    public void printsWinningMessage(Board board, PlayerSymbol symbol) {
+        print(board);
+        printWinningMessageFor(symbol);
+    }
+
+    @Override
+    public void printsDrawMessage(Board board) {
+        print(board);
+        printDrawMessage();
+    }
+
     private void print(Board board) {
         display(boardFormatter.formatForDisplay(board));
     }
 
     private void printWinningMessageFor(PlayerSymbol symbol) {
-        display(FONT_COLOUR_ANSII_CHARACTERS
-                + "Congratulations - "
-                + colour(symbol)
-                + FONT_COLOUR_ANSII_CHARACTERS
-                + " has won");
+        display(boardFormatter.formatWinningMessage(symbol));
     }
 
     private void printDrawMessage() {
@@ -225,36 +248,11 @@ public class CommandPrompt implements Prompt {
         return NUMBER_COLOUR_ANSII_CHARACTERS + String.valueOf(cellOffset + 1);
     }
 
-    private String getBorderFor(int position, int dimension) {
-        String border;
-        if (lastRow(position, dimension)) {
-            border = space();
-        } else if (endOfRow(position, dimension)) {
-            border = dividingHorizontalLine(dimension);
-        } else {
-            border = space() + dividingVerticalLine();
-        }
-        return BOARD_COLOUR_ANSII_CHARACTERS + border;
-    }
-
     private String optionallyPad(int position) {
         if (singleDigit(position)) {
             return space();
         }
         return "";
-    }
-
-    private String dividingVerticalLine() {
-        return "|";
-    }
-
-    private String dividingHorizontalLine(int dimension) {
-        String dividingLine = space() + newLine();
-        for (int i = 0; i < dimension; i++) {
-            dividingLine += "-----";
-        }
-        dividingLine += newLine();
-        return dividingLine;
     }
 
     private String newLine() {
@@ -267,40 +265,5 @@ public class CommandPrompt implements Prompt {
 
     private String space() {
         return " ";
-    }
-
-    private boolean lastRow(int index, int dimension) {
-        return index == (dimension * dimension - 1);
-    }
-
-    private boolean endOfRow(int index, int dimension) {
-        return (index + 1) % dimension == 0;
-    }
-
-    @Override
-    public void presentGameTypes(List<GameType> gameTypes) {
-        askUserForGameType(gameTypes);
-    }
-
-    @Override
-    public void presentGridDimensionsUpTo(String largestDimension) {
-        askUserForBoardDimension(Integer.valueOf(largestDimension));
-    }
-
-    @Override
-    public void presentsBoard(Board board) {
-        print(board);
-    }
-
-    @Override
-    public void printsWinningMessage(Board board, PlayerSymbol symbol) {
-        print(board);
-        printWinningMessageFor(symbol);
-    }
-
-    @Override
-    public void printsDrawMessage(Board board) {
-        print(board);
-        printDrawMessage();
     }
 }

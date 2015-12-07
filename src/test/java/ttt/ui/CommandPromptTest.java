@@ -113,7 +113,7 @@ public class CommandPromptTest {
 
         prompt.getNextMove(new Board(3));
 
-        assertThat(writer.toString().endsWith("\n" + CLEAR_SCREEN_ANSI_CHARACTERS + "\n\n" + "---------"+ "\n\n" + A_IS_NOT_A_NUMBER_REPROMPT + "\n\n" + CLEAR_SCREEN_ANSI_CHARACTERS + "\n"), is(true));
+        assertThat(writer.toString().endsWith("\n" + CLEAR_SCREEN_ANSI_CHARACTERS + "\n\n" + "---------" + "\n\n" + A_IS_NOT_A_NUMBER_REPROMPT + "\n\n" + CLEAR_SCREEN_ANSI_CHARACTERS + "\n"), is(true));
     }
 
     @Test
@@ -293,8 +293,9 @@ public class CommandPromptTest {
                 VACANT, VACANT, VACANT);
 
         prompt.printsWinningMessage(board, X);
-//TODO check that the board is also being printed
-        assertThat(writer.toString().endsWith("\n\n" + FONT_COLOUR_ANSII_CHARACTERS + "Congratulations - " + X_COLOUR + X.name() + FONT_COLOUR_ANSII_CHARACTERS + " has won\n"), is(true));
+
+        assertThat(writer.toString().contains("XXXOO----"), is(true));
+        assertThat(writer.toString().endsWith("\n\n" + "Congratulations - X has won" + "\n"), is(true));
     }
 
     @Test
@@ -310,7 +311,7 @@ public class CommandPromptTest {
 
         prompt.printsDrawMessage(board);
 
-        //TODO check that the board is also being printed
+        assertThat(writer.toString().contains("XOXOXXOXO"), is(true));
         assertThat(writer.toString().endsWith(FONT_COLOUR_ANSII_CHARACTERS + DRAW_MESSAGE + "\n"), is(true));
     }
 

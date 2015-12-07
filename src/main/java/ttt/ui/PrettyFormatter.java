@@ -36,6 +36,15 @@ public class PrettyFormatter implements BoardFormatter {
         return boardForDisplay;
     }
 
+    @Override
+    public String formatWinningMessage(PlayerSymbol symbol) {
+        return FONT_COLOUR_ANSII_CHARACTERS
+                + "Congratulations - "
+                + colour(symbol)
+                + FONT_COLOUR_ANSII_CHARACTERS
+                + " has won";
+    }
+
     private String displayCell(PlayerSymbol symbol, int cellOffset) {
         if (symbol == VACANT) {
             return optionallyPad(cellOffset) + colour(cellOffset);

@@ -28,4 +28,13 @@ public class PlainFormatterTest {
 
         assertThat(formattedBoard, is("XXO------"));
     }
+
+    @Test
+    public void formatsWinningMessage() {
+        BoardFormatter boardFormatter = new PlainFormatter();
+
+        String formattedMessage = boardFormatter.formatWinningMessage(X);
+
+        assertThat(formattedMessage, is("Congratulations - X has won"));
+    }
 }

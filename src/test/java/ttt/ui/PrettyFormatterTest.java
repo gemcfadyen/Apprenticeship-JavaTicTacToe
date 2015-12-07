@@ -113,6 +113,20 @@ public class PrettyFormatterTest {
         assertThat(formattedBoard, is(BOARD_OUTLINE_COLOUR_ANSII_CHARACTERS + expectedFormattedBoard));
     }
 
+    @Test
+    public void formatsWinningMessage() {
+        BoardFormatter boardFormatter = new PrettyFormatter();
+
+        String formattedWinningMessage = boardFormatter.formatWinningMessage(X);
+
+        String expectedMessage = FONT_COLOUR_ANSII_CHARACTERS
+                + "Congratulations - "
+                + X_COLOUR  + "X"
+                + FONT_COLOUR_ANSII_CHARACTERS
+                + " has won";
+        assertThat(formattedWinningMessage, is(expectedMessage));
+    }
+
     private String vacant3x3Board() {
         return BOARD_OUTLINE_COLOUR_ANSII_CHARACTERS + "\n  "
                 + NUMBER_COLOUR_ANSII_CHARACTERS + 1 + BOARD_OUTLINE_COLOUR_ANSII_CHARACTERS + " |  " + NUMBER_COLOUR_ANSII_CHARACTERS + 2 + BOARD_OUTLINE_COLOUR_ANSII_CHARACTERS + " |  " + NUMBER_COLOUR_ANSII_CHARACTERS + 3 + BOARD_OUTLINE_COLOUR_ANSII_CHARACTERS + " \n"

@@ -21,5 +21,10 @@ public class PlainFormatter implements BoardFormatter {
         return plainBoard;
     }
 
+    @Override
+    public String formatWinningMessage(PlayerSymbol symbol) {
+        return "Congratulations - " + symbol.name() + " has won";
+    }
+
 
 }
