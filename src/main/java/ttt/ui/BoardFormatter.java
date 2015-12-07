@@ -9,4 +9,6 @@ public interface BoardFormatter {
     String formatWinningMessage(PlayerSymbol symbol);
 
     String formatPlayAgainMessage();
+
+    String formatDrawMessage(String s);
 }

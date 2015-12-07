@@ -311,7 +311,7 @@ public class CommandPromptTest {
         prompt.printsDrawMessage(board);
 
         assertThat(writer.toString().contains("XOXOXXOXO"), is(true));
-        assertThat(writer.toString().endsWith(FONT_COLOUR_ANSII_CHARACTERS + DRAW_MESSAGE + "\n"), is(true));
+        assertThat(writer.toString().endsWith(DRAW_MESSAGE + "\n"), is(true));
     }
 
     @Test

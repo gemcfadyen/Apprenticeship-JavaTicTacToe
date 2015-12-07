@@ -42,4 +42,10 @@ public class PlainFormatterTest {
 
         assertThat(formattedMessage, is("Play again? [Y/N]"));
     }
+
+    @Test
+    public void formatsDrawMessage() {
+        String formattedMessage = boardFormatter.formatDrawMessage("Draw");
+        assertThat(formattedMessage, is("Draw"));
+    }
 }

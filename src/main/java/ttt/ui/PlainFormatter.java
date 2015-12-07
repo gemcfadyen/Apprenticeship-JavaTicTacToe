@@ -31,5 +31,10 @@ public class PlainFormatter implements BoardFormatter {
         return "Play again? [Y/N]";
     }
 
+    @Override
+    public String formatDrawMessage(String drawMessage) {
+        return drawMessage;
+    }
+
 
 }

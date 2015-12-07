@@ -4,6 +4,7 @@ import org.junit.Test;
 import ttt.board.Board;
 
 import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.stringContainsInOrder;
 import static org.junit.Assert.assertThat;
 import static ttt.player.PlayerSymbol.*;
 
@@ -14,12 +15,11 @@ public class PrettyFormatterTest {
     private static final String NUMBER_COLOUR_ANSII_CHARACTERS = "\033[1;30m";
     private static final String X_COLOUR = "\033[1;33m";
     private static final String O_COLOUR = "\033[1;31m";
+    private final BoardFormatter formatter = new PrettyFormatter();
 
     @Test
     public void printsNew3x3Board() {
         Board board = new Board(3);
-        BoardFormatter formatter = new PrettyFormatter();
-
         String formattedBoard = formatter.formatForDisplay(board);
 
         String expectedFormat = vacant3x3Board();
@@ -30,8 +30,6 @@ public class PrettyFormatterTest {
     @Test
     public void printsNew4x4Board() {
         Board board = new Board(4);
-        BoardFormatter formatter = new PrettyFormatter();
-
         String formattedBoard = formatter.formatForDisplay(board);
 
         String expectedFormat = vacant4x4Board();
@@ -42,9 +40,8 @@ public class PrettyFormatterTest {
     @Test
     public void colourChangesForSymbolOnBoard() {
         Board board = new Board(VACANT, VACANT, VACANT, O, VACANT, VACANT, VACANT, VACANT, VACANT);
-        BoardFormatter boardFormatter = new PrettyFormatter();
 
-        String formattedBoard = boardFormatter.formatForDisplay(board);
+        String formattedBoard = formatter.formatForDisplay(board);
 
         assertThat(formattedBoard.contains(3 + BOARD_OUTLINE_COLOUR_ANSII_CHARACTERS), is(true));
     }
@@ -52,9 +49,8 @@ public class PrettyFormatterTest {
     @Test
     public void setsFontColourWhenPrintingGrid() {
         Board board = new Board(3);
-        BoardFormatter boardFormatter = new PrettyFormatter();
 
-        String formattedBoard = boardFormatter.formatForDisplay(board);
+        String formattedBoard = formatter.formatForDisplay(board);
 
         assertThat(formattedBoard.contains(BOARD_OUTLINE_COLOUR_ANSII_CHARACTERS + "\n"), is(true));
     }
@@ -63,9 +59,7 @@ public class PrettyFormatterTest {
     public void colourChangesForGrid() {
         Board board = new Board(VACANT, VACANT, VACANT, O, VACANT, VACANT, VACANT, VACANT, VACANT);
 
-        BoardFormatter boardFormatter = new PrettyFormatter();
-
-        String formattedBoard = boardFormatter.formatForDisplay(board);
+        String formattedBoard = formatter.formatForDisplay(board);
 
         assertThat(formattedBoard.contains(NUMBER_COLOUR_ANSII_CHARACTERS), is(true));
         assertThat(formattedBoard.contains(BOARD_OUTLINE_COLOUR_ANSII_CHARACTERS), is(true));
@@ -75,11 +69,7 @@ public class PrettyFormatterTest {
     public void prints3x3BoardWithMoves() {
         Board board = new Board(VACANT, X, X, O, VACANT, VACANT, VACANT, VACANT, VACANT);
 
-
-        BoardFormatter boardFormatter = new PrettyFormatter();
-
-        String formattedBoard = boardFormatter.formatForDisplay(board);
-
+        String formattedBoard = formatter.formatForDisplay(board);
 
         assertThat(formattedBoard, is(BOARD_OUTLINE_COLOUR_ANSII_CHARACTERS + "\n  "
                 + NUMBER_COLOUR_ANSII_CHARACTERS + 1 + BOARD_OUTLINE_COLOUR_ANSII_CHARACTERS + " |  " + X_COLOUR + X.name() + BOARD_OUTLINE_COLOUR_ANSII_CHARACTERS + " |  " + X_COLOUR + X.name() + BOARD_OUTLINE_COLOUR_ANSII_CHARACTERS + " \n"
@@ -97,9 +87,7 @@ public class PrettyFormatterTest {
                 VACANT, VACANT, VACANT, X,
                 VACANT, VACANT, VACANT, VACANT);
 
-        BoardFormatter boardFormatter = new PrettyFormatter();
-
-        String formattedBoard = boardFormatter.formatForDisplay(board);
+        String formattedBoard = formatter.formatForDisplay(board);
 
         String expectedFormattedBoard = "\n" +
                 "  " + NUMBER_COLOUR_ANSII_CHARACTERS + 1 + BOARD_OUTLINE_COLOUR_ANSII_CHARACTERS + " |  " + NUMBER_COLOUR_ANSII_CHARACTERS + 2 + BOARD_OUTLINE_COLOUR_ANSII_CHARACTERS + " |  " + NUMBER_COLOUR_ANSII_CHARACTERS + 3 + BOARD_OUTLINE_COLOUR_ANSII_CHARACTERS + " |  " + NUMBER_COLOUR_ANSII_CHARACTERS + 4 + BOARD_OUTLINE_COLOUR_ANSII_CHARACTERS + " \n"
@@ -115,9 +103,7 @@ public class PrettyFormatterTest {
 
     @Test
     public void formatsWinningMessage() {
-        BoardFormatter boardFormatter = new PrettyFormatter();
-
-        String formattedWinningMessage = boardFormatter.formatWinningMessage(X);
+        String formattedWinningMessage = formatter.formatWinningMessage(X);
 
         String expectedMessage = FONT_COLOUR_ANSII_CHARACTERS
                 + "Congratulations - "
@@ -129,13 +115,18 @@ public class PrettyFormatterTest {
 
     @Test
     public void formatsPlayAgainMessage() {
-        BoardFormatter boardFormatter = new PrettyFormatter();
-
-        String formattedPlayAgainMessage = boardFormatter.formatPlayAgainMessage();
-
+        String formattedPlayAgainMessage = formatter.formatPlayAgainMessage();
         String expectedMessage = FONT_COLOUR_ANSII_CHARACTERS + "Play again? [Y/N]";
         assertThat(formattedPlayAgainMessage, is(expectedMessage));
     }
+
+    @Test
+    public void formatsDrawMessage() {
+        String formattedDrawMessage = formatter.formatDrawMessage("No winner");
+
+        assertThat(formattedDrawMessage, is(FONT_COLOUR_ANSII_CHARACTERS  + "No winner"));
+    }
+
 
     private String vacant3x3Board() {
         return BOARD_OUTLINE_COLOUR_ANSII_CHARACTERS + "\n  "

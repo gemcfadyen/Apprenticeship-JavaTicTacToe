@@ -51,6 +51,11 @@ public class PrettyFormatter implements BoardFormatter {
                 + "Play again? [Y/N]";
     }
 
+    @Override
+    public String formatDrawMessage(String drawMessage) {
+        return FONT_COLOUR_ANSII_CHARACTERS + drawMessage;
+    }
+
     private String displayCell(PlayerSymbol symbol, int cellOffset) {
         if (symbol == VACANT) {
             return optionallyPad(cellOffset) + colour(cellOffset);
