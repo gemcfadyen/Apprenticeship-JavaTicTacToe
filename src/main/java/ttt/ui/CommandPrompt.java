@@ -28,8 +28,10 @@ public class CommandPrompt implements Prompt {
     private static final String O_COLOUR_ANSII_CHARACTERS = "\033[1;31m";
     private BufferedReader reader;
     private Writer writer;
+    private BoardFormatter boardFormatter;
 
-    public CommandPrompt(Reader reader, Writer writer) {
+    public CommandPrompt(Reader reader, Writer writer, BoardFormatter boardFormatter) {
+        this.boardFormatter = boardFormatter;
         this.reader = new BufferedReader(reader);
         this.writer = writer;
 
@@ -68,22 +70,7 @@ public class CommandPrompt implements Prompt {
     }
 
     private void print(Board board) {
-        String boardForDisplay = BOARD_COLOUR_ANSII_CHARACTERS + newLine();
-
-        List<Line> rows = board.getRows();
-        int dimension = rows.size();
-        int offset = 0;
-        for (Line row : rows) {
-            for (PlayerSymbol symbol : row.getSymbols()) {
-                boardForDisplay +=
-                        space()
-                                + displayCell(symbol, offset)
-                                + getBorderFor(offset, dimension);
-                offset++;
-            }
-        }
-
-        display(boardForDisplay);
+        display(boardFormatter.formatForDisplay(board));
     }
 
     private void printWinningMessageFor(PlayerSymbol symbol) {

@@ -7,6 +7,7 @@ import ttt.gui.TicTacToeRules;
 import ttt.gui.TicTacToeRulesSpy;
 import ttt.player.*;
 import ttt.ui.CommandPrompt;
+import ttt.ui.PlainFormatter;
 import ttt.ui.Prompt;
 
 import java.io.StringReader;
@@ -214,11 +215,11 @@ public class CommandLineGameControllerTest {
     }
 
     private CommandPrompt commandPrompt() {
-        return new CommandPrompt(new StringReader(""), new StringWriter());
+        return new CommandPrompt(new StringReader(""), new StringWriter(), new PlainFormatter());
     }
 
     private Prompt createCommandPromptToReadInput(String usersInputs) {
-        return new CommandPrompt(new StringReader(usersInputs), new StringWriter());
+        return new CommandPrompt(new StringReader(usersInputs), new StringWriter(), new PlainFormatter());
     }
 
     private PromptSpy createPromptSpyToReadInput(String usersInput) {
