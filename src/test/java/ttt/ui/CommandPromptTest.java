@@ -27,7 +27,6 @@ public class CommandPromptTest {
     private static final String CLEAR_SCREEN_ANSI_CHARACTERS = "\033[H\033[2J";
     private static final String FONT_COLOUR_ANSII_CHARACTERS = "\033[1;37m";
     private static final String BOARD_OUTLINE_COLOUR_ANSII_CHARACTERS = "\033[1;36m";
-    private static final String X_COLOUR = "\033[1;33m";
 
     private static final String PLAY_AGAIN_PROMPT = "Play again? [Y/N]";
     private static final String NEXT_MOVE_PROMPT = "Please enter the index for your next move";
@@ -36,7 +35,7 @@ public class CommandPromptTest {
     private static final String Z_IS_NOT_A_VALID_INTEGER = "[z] is not a valid integer\n\n";
     private static final String Z_IS_NOT_A_NUMBER_MOVE_REPROMPT = Z_IS_NOT_A_VALID_INTEGER + FONT_COLOUR_ANSII_CHARACTERS + NEXT_MOVE_PROMPT;
     private static final String DRAW_MESSAGE = "No winner this time";
-    private static final String A_IS_NOT_REPLAY_OPTION = "[A] is not a valid replay option\n\n" + FONT_COLOUR_ANSII_CHARACTERS + PLAY_AGAIN_PROMPT;
+    private static final String A_IS_NOT_REPLAY_OPTION = BOARD_OUTLINE_COLOUR_ANSII_CHARACTERS + "[A] is not a valid replay option\n\n" + PLAY_AGAIN_PROMPT;
     private static final String ALREADY_OCCUPIED_CELL_MESSAGE = "[1] is already occupied\n\n" + FONT_COLOUR_ANSII_CHARACTERS + NEXT_MOVE_PROMPT;
     private static final String LARGER_THAN_GRID_BOUNDARY_MESSAGE = "[100] is outside of the grid boundary\n\n" + FONT_COLOUR_ANSII_CHARACTERS + NEXT_MOVE_PROMPT;
     private static final String SMALLER_THAN_GRID_BOUNDARY_MESSAGE = "[-100] is outside of the grid boundary\n\n" + FONT_COLOUR_ANSII_CHARACTERS + NEXT_MOVE_PROMPT;
@@ -213,7 +212,7 @@ public class CommandPromptTest {
 
         prompt.getReplayOption();
 
-        assertThat(writer.toString().contains(CLEAR_SCREEN_ANSI_CHARACTERS + "\n\n" + BOARD_OUTLINE_COLOUR_ANSII_CHARACTERS + A_IS_NOT_REPLAY_OPTION), is(true));
+        assertThat(writer.toString().contains(CLEAR_SCREEN_ANSI_CHARACTERS + "\n\n" + A_IS_NOT_REPLAY_OPTION), is(true));
     }
 
     @Test

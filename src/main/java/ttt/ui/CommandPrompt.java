@@ -3,7 +3,6 @@ package ttt.ui;
 import ttt.GameType;
 import ttt.ReplayOption;
 import ttt.board.Board;
-import ttt.board.Line;
 import ttt.inputvalidation.*;
 import ttt.player.PlayerSymbol;
 
@@ -16,16 +15,10 @@ import java.util.Collections;
 import java.util.List;
 import java.util.function.Function;
 
-import static ttt.player.PlayerSymbol.VACANT;
-import static ttt.player.PlayerSymbol.X;
-
 public class CommandPrompt implements Prompt {
     private static final String CLEAR_SCREEN_ANSII_CHARACTERS = "\033[H\033[2J";
-    private static final String NUMBER_COLOUR_ANSII_CHARACTERS = "\033[1;30m";
     private static final String BOARD_COLOUR_ANSII_CHARACTERS = "\033[1;36m";
     private static final String FONT_COLOUR_ANSII_CHARACTERS = "\033[1;37m";
-    private static final String X_COLOUR_ANSII_CHARACTERS = "\033[1;33m";
-    private static final String O_COLOUR_ANSII_CHARACTERS = "\033[1;31m";
     private BufferedReader reader;
     private Writer writer;
     private BoardFormatter boardFormatter;
@@ -198,8 +191,7 @@ public class CommandPrompt implements Prompt {
     }
 
     private void askUserToPlayAgain() {
-        display(FONT_COLOUR_ANSII_CHARACTERS
-                + "Play again? [Y/N]");
+        display(boardFormatter.formatPlayAgainMessage());
     }
 
     private void askUserForTheirMove() {
@@ -229,41 +221,8 @@ public class CommandPrompt implements Prompt {
         return Integer.valueOf(input) - 1;
     }
 
-    private String displayCell(PlayerSymbol symbol, int cellOffset) {
-        if (symbol == VACANT) {
-            return optionallyPad(cellOffset) + colour(cellOffset);
-        } else {
-            return space() + colour(symbol);
-        }
-    }
-
-    private String colour(PlayerSymbol symbol) {
-        if (symbol.equals(X)) {
-            return X_COLOUR_ANSII_CHARACTERS + symbol.getSymbolForDisplay();
-        }
-        return O_COLOUR_ANSII_CHARACTERS + symbol.getSymbolForDisplay();
-    }
-
-    private String colour(int cellOffset) {
-        return NUMBER_COLOUR_ANSII_CHARACTERS + String.valueOf(cellOffset + 1);
-    }
-
-    private String optionallyPad(int position) {
-        if (singleDigit(position)) {
-            return space();
-        }
-        return "";
-    }
-
     private String newLine() {
         return "\n";
     }
 
-    private boolean singleDigit(int position) {
-        return position < 9;
-    }
-
-    private String space() {
-        return " ";
-    }
 }

@@ -9,10 +9,11 @@ import static ttt.player.PlayerSymbol.*;
 
 public class PlainFormatterTest {
 
+    BoardFormatter boardFormatter = new PlainFormatter();
+
     @Test
     public void formatEmptyBoard() {
         Board board = new Board(3);
-        BoardFormatter boardFormatter = new PlainFormatter();
 
         String formattedBoard = boardFormatter.formatForDisplay(board);
 
@@ -22,7 +23,6 @@ public class PlainFormatterTest {
     @Test
     public void formatBoardWithMoves() {
         Board board = new Board(X, X, O, VACANT, VACANT, VACANT, VACANT, VACANT, VACANT);
-        BoardFormatter boardFormatter = new PlainFormatter();
 
         String formattedBoard = boardFormatter.formatForDisplay(board);
 
@@ -31,10 +31,15 @@ public class PlainFormatterTest {
 
     @Test
     public void formatsWinningMessage() {
-        BoardFormatter boardFormatter = new PlainFormatter();
-
         String formattedMessage = boardFormatter.formatWinningMessage(X);
 
         assertThat(formattedMessage, is("Congratulations - X has won"));
+    }
+
+    @Test
+    public void formatsPlayAgainMessage() {
+        String formattedMessage = boardFormatter.formatPlayAgainMessage();
+
+        assertThat(formattedMessage, is("Play again? [Y/N]"));
     }
 }

@@ -26,5 +26,10 @@ public class PlainFormatter implements BoardFormatter {
         return "Congratulations - " + symbol.name() + " has won";
     }
 
+    @Override
+    public String formatPlayAgainMessage() {
+        return "Play again? [Y/N]";
+    }
+
 
 }

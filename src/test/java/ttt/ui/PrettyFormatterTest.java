@@ -127,6 +127,16 @@ public class PrettyFormatterTest {
         assertThat(formattedWinningMessage, is(expectedMessage));
     }
 
+    @Test
+    public void formatsPlayAgainMessage() {
+        BoardFormatter boardFormatter = new PrettyFormatter();
+
+        String formattedPlayAgainMessage = boardFormatter.formatPlayAgainMessage();
+
+        String expectedMessage = FONT_COLOUR_ANSII_CHARACTERS + "Play again? [Y/N]";
+        assertThat(formattedPlayAgainMessage, is(expectedMessage));
+    }
+
     private String vacant3x3Board() {
         return BOARD_OUTLINE_COLOUR_ANSII_CHARACTERS + "\n  "
                 + NUMBER_COLOUR_ANSII_CHARACTERS + 1 + BOARD_OUTLINE_COLOUR_ANSII_CHARACTERS + " |  " + NUMBER_COLOUR_ANSII_CHARACTERS + 2 + BOARD_OUTLINE_COLOUR_ANSII_CHARACTERS + " |  " + NUMBER_COLOUR_ANSII_CHARACTERS + 3 + BOARD_OUTLINE_COLOUR_ANSII_CHARACTERS + " \n"

@@ -7,4 +7,6 @@ public interface BoardFormatter {
     String formatForDisplay(Board board);
 
     String formatWinningMessage(PlayerSymbol symbol);
+
+    String formatPlayAgainMessage();
 }
