@@ -75,6 +75,14 @@ public class CommandPromptTest {
     }
 
     @Test
+    public void printsBoard() {
+        Prompt prompt = new CommandPrompt(new StringReader("1\n"), writer, plainFormatter);
+        prompt.presentsBoard(new Board(3));
+
+        assertThat(writer.toString().contains("---------"), is(true));
+    }
+
+    @Test
     public void displaysBoardWhenPromptingForNextMove() {
         Prompt prompt = new CommandPrompt(new StringReader("1\n"), writer, plainFormatter);
         prompt.getNextMove(new Board(3));

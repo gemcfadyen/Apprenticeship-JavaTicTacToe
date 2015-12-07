@@ -44,6 +44,14 @@ public class CommandPrompt implements Prompt {
     }
 
     @Override
+    public ReplayOption getReplayOption() {
+        askUserToPlayAgain();
+        InputValidator compoundValidator = compositeFor(Collections.singletonList(new ReplayOptionValidator()));
+
+        return ReplayOption.of(getValidInput(compoundValidator, input(), functionToRepromptReplay()));
+    }
+
+    @Override
     public int getNextMove(Board board) {
         print(board);
         askUserForTheirMove();
@@ -53,21 +61,13 @@ public class CommandPrompt implements Prompt {
     }
 
     @Override
-    public ReplayOption getReplayOption() {
-        askUserToPlayAgain();
-        InputValidator compoundValidator = compositeFor(Collections.singletonList(new ReplayOptionValidator()));
-
-        return ReplayOption.of(getValidInput(compoundValidator, input(), functionToRepromptReplay()));
-    }
-
-    @Override
     public void presentGameTypes(List<GameType> gameTypes) {
         askUserForGameType(gameTypes);
     }
 
     @Override
     public void presentGridDimensionsUpTo(String largestDimension) {
-        askUserForBoardDimension(Integer.valueOf(largestDimension));
+        display(displayFormatter.formatBoardDimensionMessage(Integer.valueOf(largestDimension)));
     }
 
     @Override
@@ -78,7 +78,7 @@ public class CommandPrompt implements Prompt {
     @Override
     public void printsWinningMessage(Board board, PlayerSymbol symbol) {
         print(board);
-        printWinningMessageFor(symbol);
+        display(displayFormatter.formatWinningMessage(symbol));
     }
 
     @Override
@@ -91,20 +91,12 @@ public class CommandPrompt implements Prompt {
         display(displayFormatter.formatForDisplay(board));
     }
 
-    private void printWinningMessageFor(PlayerSymbol symbol) {
-        display(displayFormatter.formatWinningMessage(symbol));
-    }
-
     private void printDrawMessage() {
         display(displayFormatter.applyFontColour("No winner this time"));
     }
 
     private void clear() {
         display(CLEAR_SCREEN_ANSII_CHARACTERS);
-    }
-
-    private void askUserForBoardDimension(int largestDimension) {
-        display(displayFormatter.formatBoardDimensionMessage(largestDimension));
     }
 
     private void display(String message) {
@@ -156,7 +148,7 @@ public class CommandPrompt implements Prompt {
     private Function<ValidationResult, Void> functionToRepromptForValidBoardDimension(int largestDimension) {
         return validationResult -> {
             display(displayFormatter.applyInvalidColour(validationResult.reason()));
-            askUserForBoardDimension(largestDimension);
+            display(displayFormatter.formatBoardDimensionMessage(largestDimension));
             return null;
         };
     }
@@ -219,5 +211,4 @@ public class CommandPrompt implements Prompt {
     private String newLine() {
         return "\n";
     }
-
 }

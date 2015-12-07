@@ -25,9 +25,8 @@ public class CommandLineGameController {
 
     public static void main(String... args) {
         CommandPrompt gamePrompt = buildPrompt();
-        TicTacToeRules gameRules = new TicTacToeRules(new BoardFactory(), new PlayerFactory(gamePrompt));
         CommandLineGameController commandLineGameController = new CommandLineGameController(
-                gameRules,
+                buildGameRules(gamePrompt),
                 gamePrompt
         );
         commandLineGameController.startGame();
@@ -35,19 +34,26 @@ public class CommandLineGameController {
 
     public void startGame() {
         ReplayOption replayOption = Y;
+
         while (replayOption.equals(Y)) {
-            presentGameTypes();
-            GameType gameType = readGameType();
-
-            presentBoardDimensionsFor(gameType);
-            int dimension = readDimension(gameType.dimensionUpperBoundary());
-
-            gameRules.initialiseGame(String.valueOf(dimension));
+            GameType gameType = getGameTypeFromPlayer();
+            int dimension = getDimensionChoiceFromPlayer(gameType);
+            initialiseGame(dimension);
 
             playMatch();
 
             replayOption = gamePrompt.getReplayOption();
         }
+    }
+
+    GameType getGameTypeFromPlayer() {
+        presentGameTypes();
+        return readGameType();
+    }
+
+    int getDimensionChoiceFromPlayer(GameType gameType) {
+        presentBoardDimensionsFor(gameType);
+        return readDimension(gameType.dimensionUpperBoundary());
     }
 
     void playMatch() {
@@ -58,41 +64,45 @@ public class CommandLineGameController {
         displayResultsOfGame();
     }
 
-    boolean gameInProgress() {
-        return gameRules.boardHasFreeSpace() && !gameRules.hasWinner();
-    }
-
     void updateBoardWithPlayersMove() {
         String nextMove = gameRules.getCurrentPlayersNextMove();
         playMove(nextMove);
     }
 
-    public void playMove(String nextMove) {
+    void playMove(String nextMove) {
         gameRules.playMoveAt(nextMove);
     }
 
-    public void presentGameTypes() {
+    boolean gameInProgress() {
+        return gameRules.boardHasFreeSpace() && !gameRules.hasWinner();
+    }
+
+    void displayResultsOfGame() {
+        printExitMessage();
+    }
+
+    private void presentGameTypes() {
         List<GameType> allGameTypes = gameRules.getGameTypes();
         gamePrompt.presentGameTypes(allGameTypes);
     }
 
-    GameType readGameType() {
+    private GameType readGameType() {
         GameType gameType = gamePrompt.readGameType();
         gameRules.storeGameType(gameType);
         return gameType;
     }
 
-    public void presentBoardDimensionsFor(GameType gameType) {
+    private void presentBoardDimensionsFor(GameType gameType) {
         String largestDimension = gameRules.getDimension(gameType);
         gamePrompt.presentGridDimensionsUpTo(largestDimension);
     }
 
-    int readDimension(int largestDimension) {
+    private int readDimension(int largestDimension) {
         return gamePrompt.readBoardDimension(largestDimension);
     }
 
-    void displayResultsOfGame() {
-        printExitMessage();
+    private void initialiseGame(int dimension) {
+        gameRules.initialiseGame(String.valueOf(dimension));
     }
 
     private void printExitMessage() {
@@ -109,5 +119,9 @@ public class CommandLineGameController {
                 new OutputStreamWriter(System.out),
                 new PrettyFormatter()
         );
+    }
+
+    private static TicTacToeRules buildGameRules(CommandPrompt gamePrompt) {
+        return new TicTacToeRules(new BoardFactory(), new PlayerFactory(gamePrompt));
     }
 }
