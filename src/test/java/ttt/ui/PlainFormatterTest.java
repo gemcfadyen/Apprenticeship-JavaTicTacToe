@@ -13,18 +13,22 @@ public class PlainFormatterTest {
 
     @Test
     public void formatEmptyBoard() {
-        Board board = new Board(3);
 
-        String formattedBoard = displayFormatter.formatForDisplay(board);
+        String formattedBoard = displayFormatter.formatForDisplay(new Board(3));
 
         assertThat(formattedBoard, is("---------"));
     }
 
     @Test
     public void formatBoardWithMoves() {
-        Board board = new Board(X, X, O, VACANT, VACANT, VACANT, VACANT, VACANT, VACANT);
 
-        String formattedBoard = displayFormatter.formatForDisplay(board);
+        String formattedBoard = displayFormatter.formatForDisplay(
+                new Board(
+                        X, X, O,
+                        VACANT, VACANT, VACANT,
+                        VACANT, VACANT, VACANT
+                )
+        );
 
         assertThat(formattedBoard, is("XXO------"));
     }
@@ -43,7 +47,7 @@ public class PlainFormatterTest {
     }
 
     @Test
-    public void formatsInvalidReason(){
+    public void formatsInvalidReason() {
         String formattedMessage = displayFormatter.applyInvalidColour("Invalid");
 
         assertThat(formattedMessage, is("Invalid"));

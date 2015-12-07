@@ -225,14 +225,4 @@ public class CommandLineGameControllerTest {
     private PromptSpy createPromptSpyToReadInput(String usersInput) {
         return new PromptSpy(new StringReader(usersInput));
     }
-
-    private Player[] twoHumanPlayers() {
-        return new Player[]{
-                createHumanPlayer(X, createCommandPromptToReadInput("2\n")),
-                createHumanPlayer(O, commandPrompt())};
-    }
-
-    private HumanPlayer createHumanPlayer(PlayerSymbol symbol, Prompt prompt) {
-        return new HumanPlayer(symbol, prompt);
-    }
 }
