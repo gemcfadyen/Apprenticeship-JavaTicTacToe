@@ -4,6 +4,8 @@ import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
+import ttt.board.BoardFactory;
+import ttt.player.PlayerFactory;
 
 public class JavaFxGui extends Application {
 
@@ -19,9 +21,8 @@ public class JavaFxGui extends Application {
         primaryStage.setScene(scene);
         primaryStage.show();
 
-        TicTacToeBoardPresenter ticTacToeBoardPresenter = new TicTacToeBoardPresenter(scene);
-
-        GuiPrompt guiPrompt = new GuiPrompt(ticTacToeBoardPresenter);
-        guiPrompt.presentGameTypes();
+        GameRules ticTacToeRules = new TicTacToeRules(new BoardFactory(), new PlayerFactory());
+        GuiGameController guiGameController = new GuiGameController(ticTacToeRules, new JavaFxViewFactory(scene));
+        guiGameController.presentGameTypes();
     }
 }

@@ -40,7 +40,7 @@ public class GameTypeTest {
     @Test
     public void getPossibleDimensionForHumanVsHuman() {
         GameType gameType = GameType.of(1);
-        assertThat(gameType.dimensionUpperBoundary(), is(10));
+        assertThat(gameType.dimensionUpperBoundary(), is(5));
     }
 
     @Test

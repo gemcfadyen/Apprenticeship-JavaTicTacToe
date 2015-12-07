@@ -1,13 +1,12 @@
 package ttt.gui;
 
-import ttt.GameType;
 import ttt.board.Board;
 import ttt.player.PlayerSymbol;
 
 public interface BoardPresenter {
-    void presentGameTypes();
-    void presentGridDimensionsFor(GameType gameType);
+    void presentGameTypes(String gameType);
+    void presentGridDimensionsUpTo(String dimension);
     void presentsBoard(Board board);
-    void printsWinning(Board board, PlayerSymbol symbol);
-    void printsDraw(Board board);
+    void printsWinningMessage(Board board, PlayerSymbol symbol);
+    void printsDrawMessage(Board board);
 }

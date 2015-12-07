@@ -1,38 +1,39 @@
 package ttt.gui;
 
-import ttt.GameType;
 import ttt.board.Board;
 import ttt.player.PlayerSymbol;
 
 public class BoardPresenterSpy implements BoardPresenter {
     private boolean hasPresentedGridDimension = false;
     private boolean hasPresentedGameTypes;
-    private boolean hasDrawnBoard = false;
+    private boolean hasDisplayedBoard = false;
     private boolean hasPrintedWinningBoard = false;
     private boolean hasPrintedGameIsDrawn = false;
+    private PlayerSymbol winningSymbol;
 
     @Override
-    public void presentGameTypes() {
+    public void presentGameTypes(String gameType) {
         hasPresentedGameTypes = true;
     }
 
     @Override
-    public void presentGridDimensionsFor(GameType gameType) {
+    public void presentGridDimensionsUpTo(String dimension) {
         hasPresentedGridDimension = true;
     }
 
     @Override
     public void presentsBoard(Board board) {
-        hasDrawnBoard = true;
+        hasDisplayedBoard = true;
     }
 
     @Override
-    public void printsWinning(Board board, PlayerSymbol symbol) {
+    public void printsWinningMessage(Board board, PlayerSymbol symbol) {
+        winningSymbol = symbol;
         hasPrintedWinningBoard = true;
     }
 
     @Override
-    public void printsDraw(Board board) {
+    public void printsDrawMessage(Board board) {
         hasPrintedGameIsDrawn = true;
     }
 
@@ -45,7 +46,7 @@ public class BoardPresenterSpy implements BoardPresenter {
     }
 
     public boolean hasDrawnBoard() {
-        return hasDrawnBoard;
+        return hasDisplayedBoard;
     }
 
     public boolean hasIdentifiedAWin() {
@@ -54,5 +55,9 @@ public class BoardPresenterSpy implements BoardPresenter {
 
     public boolean hasIdentifiedADraw() {
         return hasPrintedGameIsDrawn;
+    }
+
+    public PlayerSymbol getWinningSymbol() {
+        return winningSymbol;
     }
 }

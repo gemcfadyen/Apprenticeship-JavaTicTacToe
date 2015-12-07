@@ -1,32 +1,37 @@
 package ttt.gui;
 
 import org.junit.Test;
+import ttt.GameType;
 
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
 
 public class UserSelectsGameTypeTest {
 
+    private ClickableElementStub selectedRadioBox = new ClickableElementStub();
+    private GuiGameControllerSpy controllerSpy = new GuiGameControllerSpy();
+
     @Test
-    public void promptsForDimensionWhenGameTypeIsSelected() {
-        GuiPromptSpy guiPromptSpy = new GuiPromptSpy();
-        ClickableElement selectedRadioBox = new ClickableElementStub();
-        UserSelectsGameType userSelectsGameType = new UserSelectsGameType(guiPromptSpy, selectedRadioBox);
+    public void asksGameControllerForForDimensionWhenGameTypeIsSelected() {
+        UserSelectsGameType userSelectsGameType = new UserSelectsGameType(
+                controllerSpy,
+                selectedRadioBox);
 
         userSelectsGameType.action();
 
-        assertThat(guiPromptSpy.hasPresentedGridDimensions(), is(true));
+        assertThat(controllerSpy.hasPresentedBoardDimensions(), is(true));
     }
 
     @Test
     public void capturesGameTypeChosen() {
-        GuiPromptSpy guiPromptSpy = new GuiPromptSpy();
-        ClickableElement selectedRadioBox = new ClickableElementStub();
-        UserSelectsGameType userSelectsGameType = new UserSelectsGameType(guiPromptSpy, selectedRadioBox);
+        UserSelectsGameType userSelectsGameType = new UserSelectsGameType(
+                controllerSpy,
+                selectedRadioBox
+        );
 
         userSelectsGameType.action();
 
-        assertThat(guiPromptSpy.hasPromptedForGameDimensionFor("Human vs Human"), is(true));
+        assertThat(controllerSpy.capturedGameType(), is(GameType.HUMAN_VS_HUMAN));
     }
 
     private class ClickableElementStub implements ClickableElement {
