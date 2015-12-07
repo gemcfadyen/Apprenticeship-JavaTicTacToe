@@ -61,6 +61,11 @@ public class PrettyFormatter implements BoardFormatter {
               + "Please enter the dimension of the board you would like to use [" + 1 + " to " + largestDimension + "]";
     }
 
+    @Override
+    public String formatInvalidReason(String reason) {
+        return BOARD_COLOUR_ANSII_CHARACTERS + reason;
+    }
+
     private String displayCell(PlayerSymbol symbol, int cellOffset) {
         if (symbol == VACANT) {
             return optionallyPad(cellOffset) + colour(cellOffset);

@@ -13,4 +13,6 @@ public interface BoardFormatter {
     String formatDrawMessage();
 
     String formatBoardDimensionMessage(int largestDimension);
+
+    String formatInvalidReason(String reason);
 }

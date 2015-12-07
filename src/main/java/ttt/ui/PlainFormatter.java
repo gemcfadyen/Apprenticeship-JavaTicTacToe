@@ -41,5 +41,10 @@ public class PlainFormatter implements BoardFormatter {
         return "Please enter the dimension of the board you would like to use [" + 1 + " to " + largestDimension + "]";
     }
 
+    @Override
+    public String formatInvalidReason(String reason) {
+        return reason;
+    }
+
 
 }

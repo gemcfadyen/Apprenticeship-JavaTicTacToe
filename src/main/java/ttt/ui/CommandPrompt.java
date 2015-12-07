@@ -17,7 +17,6 @@ import java.util.function.Function;
 
 public class CommandPrompt implements Prompt {
     private static final String CLEAR_SCREEN_ANSII_CHARACTERS = "\033[H\033[2J";
-    private static final String BOARD_COLOUR_ANSII_CHARACTERS = "\033[1;36m";
     private static final String FONT_COLOUR_ANSII_CHARACTERS = "\033[1;37m";
     private BufferedReader reader;
     private Writer writer;
@@ -157,7 +156,7 @@ public class CommandPrompt implements Prompt {
 
     private Function<ValidationResult, Void> functionToRepromptForValidBoardDimension(int largestDimension) {
         return validationResult -> {
-            display(BOARD_COLOUR_ANSII_CHARACTERS + validationResult.reason());
+            display(boardFormatter.formatInvalidReason(validationResult.reason()));
             askUserForBoardDimension(largestDimension);
             return null;
         };
@@ -165,7 +164,7 @@ public class CommandPrompt implements Prompt {
 
     private Function<ValidationResult, Void> functionToRepromptGameType() {
         return validationResult -> {
-            display(BOARD_COLOUR_ANSII_CHARACTERS + validationResult.reason());
+            display(boardFormatter.formatInvalidReason(validationResult.reason()));
             askUserForGameType(Arrays.asList(GameType.values())); //TODO pass in from model
             return null;
         };
@@ -182,7 +181,7 @@ public class CommandPrompt implements Prompt {
 
     private Function<ValidationResult, Void> functionToRepromptReplay() {
         return validationResult -> {
-            display(BOARD_COLOUR_ANSII_CHARACTERS + validationResult.reason());
+            display(boardFormatter.formatInvalidReason(validationResult.reason()));
             askUserToPlayAgain();
             return null;
         };

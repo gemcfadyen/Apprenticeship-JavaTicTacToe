@@ -134,6 +134,12 @@ public class PrettyFormatterTest {
                 + "Please enter the dimension of the board you would like to use [1 to 3]"));
     }
 
+    @Test
+    public void formatsInvalidReason() {
+        String formattedMessage = formatter.formatInvalidReason("Reason");
+
+        assertThat(formattedMessage, is(BOARD_OUTLINE_COLOUR_ANSII_CHARACTERS + "Reason"));
+    }
 
     private String vacant3x3Board() {
         return BOARD_OUTLINE_COLOUR_ANSII_CHARACTERS + "\n  "

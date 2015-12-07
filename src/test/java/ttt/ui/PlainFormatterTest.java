@@ -54,4 +54,11 @@ public class PlainFormatterTest {
         String formattedMessage = boardFormatter.formatBoardDimensionMessage(5);
         assertThat(formattedMessage, is("Please enter the dimension of the board you would like to use [1 to 5]"));
     }
+
+    @Test
+    public void formatsInvalidReason(){
+        String formattedMessage = boardFormatter.formatInvalidReason("Invalid");
+
+        assertThat(formattedMessage, is("Invalid"));
+    }
 }
