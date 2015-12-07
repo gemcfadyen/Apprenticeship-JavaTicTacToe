@@ -4,7 +4,6 @@ import org.junit.Test;
 import ttt.board.Board;
 
 import static org.hamcrest.Matchers.is;
-import static org.hamcrest.Matchers.stringContainsInOrder;
 import static org.junit.Assert.assertThat;
 import static ttt.player.PlayerSymbol.*;
 
@@ -107,7 +106,7 @@ public class PrettyFormatterTest {
 
         String expectedMessage = FONT_COLOUR_ANSII_CHARACTERS
                 + "Congratulations - "
-                + X_COLOUR  + "X"
+                + X_COLOUR + "X"
                 + FONT_COLOUR_ANSII_CHARACTERS
                 + " has won";
         assertThat(formattedWinningMessage, is(expectedMessage));
@@ -124,7 +123,15 @@ public class PrettyFormatterTest {
     public void formatsDrawMessage() {
         String formattedDrawMessage = formatter.formatDrawMessage();
 
-        assertThat(formattedDrawMessage, is(FONT_COLOUR_ANSII_CHARACTERS  + "No winner this time"));
+        assertThat(formattedDrawMessage, is(FONT_COLOUR_ANSII_CHARACTERS + "No winner this time"));
+    }
+
+    @Test
+    public void formatsBoardDimensionMessage() {
+        String formattedBoardDimensionMessage = formatter.formatBoardDimensionMessage(3);
+
+        assertThat(formattedBoardDimensionMessage, is(FONT_COLOUR_ANSII_CHARACTERS
+                + "Please enter the dimension of the board you would like to use [1 to 3]"));
     }
 
 

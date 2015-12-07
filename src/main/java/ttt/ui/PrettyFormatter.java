@@ -55,6 +55,12 @@ public class PrettyFormatter implements BoardFormatter {
         return FONT_COLOUR_ANSII_CHARACTERS + "No winner this time";
     }
 
+    @Override
+    public String formatBoardDimensionMessage(int largestDimension) {
+       return FONT_COLOUR_ANSII_CHARACTERS
+              + "Please enter the dimension of the board you would like to use [" + 1 + " to " + largestDimension + "]";
+    }
+
     private String displayCell(PlayerSymbol symbol, int cellOffset) {
         if (symbol == VACANT) {
             return optionallyPad(cellOffset) + colour(cellOffset);

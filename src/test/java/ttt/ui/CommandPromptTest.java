@@ -72,7 +72,6 @@ public class CommandPromptTest {
         assertThat(writer.toString().contains(
                 BOARD_OUTLINE_COLOUR_ANSII_CHARACTERS
                         + Z_IS_NOT_A_VALID_INTEGER
-                        + FONT_COLOUR_ANSII_CHARACTERS
                         + "Please enter the dimension of the board you would like to use [1 to 5]\n\n"
                         + CLEAR_SCREEN_ANSI_CHARACTERS + "\n"), is(true));
     }
@@ -90,7 +89,6 @@ public class CommandPromptTest {
         assertThat(writer.toString().contains(
                 BOARD_OUTLINE_COLOUR_ANSII_CHARACTERS
                         + "[100] is outside of the range 1 to 4\n\n"
-                        + FONT_COLOUR_ANSII_CHARACTERS
                         + "Please enter the dimension of the board you would like to use [1 to 4]\n\n"
                         + CLEAR_SCREEN_ANSI_CHARACTERS + "\n"), is(true));
     }

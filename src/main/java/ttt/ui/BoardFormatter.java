@@ -11,4 +11,6 @@ public interface BoardFormatter {
     String formatPlayAgainMessage();
 
     String formatDrawMessage();
+
+    String formatBoardDimensionMessage(int largestDimension);
 }

@@ -36,5 +36,10 @@ public class PlainFormatter implements BoardFormatter {
         return "No winner this time";
     }
 
+    @Override
+    public String formatBoardDimensionMessage(int largestDimension) {
+        return "Please enter the dimension of the board you would like to use [" + 1 + " to " + largestDimension + "]";
+    }
+
 
 }

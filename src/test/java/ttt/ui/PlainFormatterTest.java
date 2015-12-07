@@ -48,4 +48,10 @@ public class PlainFormatterTest {
         String formattedMessage = boardFormatter.formatDrawMessage();
         assertThat(formattedMessage, is("No winner this time"));
     }
+
+    @Test
+    public void formatsBoardDimensionPrompt() {
+        String formattedMessage = boardFormatter.formatBoardDimensionMessage(5);
+        assertThat(formattedMessage, is("Please enter the dimension of the board you would like to use [1 to 5]"));
+    }
 }

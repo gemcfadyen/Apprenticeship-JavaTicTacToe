@@ -106,8 +106,7 @@ public class CommandPrompt implements Prompt {
     }
 
     private void askUserForBoardDimension(int largestDimension) {
-        display(FONT_COLOUR_ANSII_CHARACTERS
-                + "Please enter the dimension of the board you would like to use [" + 1 + " to " + largestDimension + "]");
+        display(boardFormatter.formatBoardDimensionMessage(largestDimension));
     }
 
     private void display(String message) {
