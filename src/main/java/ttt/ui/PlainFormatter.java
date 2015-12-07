@@ -27,24 +27,17 @@ public class PlainFormatter implements BoardFormatter {
     }
 
     @Override
-    public String formatPlayAgainMessage() {
-        return "Play again? [Y/N]";
-    }
-
-    @Override
-    public String formatDrawMessage() {
-        return "No winner this time";
-    }
-
-    @Override
     public String formatBoardDimensionMessage(int largestDimension) {
         return "Please enter the dimension of the board you would like to use [" + 1 + " to " + largestDimension + "]";
     }
 
     @Override
-    public String formatInvalidReason(String reason) {
-        return reason;
+    public String applyFontColour(String message) {
+        return message;
     }
 
-
+    @Override
+    public String applyInvalidColour(String message) {
+        return message;
+    }
 }

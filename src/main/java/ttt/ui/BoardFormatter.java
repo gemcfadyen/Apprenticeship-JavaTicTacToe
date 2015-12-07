@@ -8,11 +8,9 @@ public interface BoardFormatter {
 
     String formatWinningMessage(PlayerSymbol symbol);
 
-    String formatPlayAgainMessage();
-
-    String formatDrawMessage();
-
     String formatBoardDimensionMessage(int largestDimension);
 
-    String formatInvalidReason(String reason);
+    String applyFontColour(String message);
+
+    String applyInvalidColour(String message);
 }

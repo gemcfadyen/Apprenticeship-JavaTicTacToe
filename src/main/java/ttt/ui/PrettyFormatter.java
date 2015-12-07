@@ -45,25 +45,20 @@ public class PrettyFormatter implements BoardFormatter {
     }
 
     @Override
-    public String formatPlayAgainMessage() {
-        return FONT_COLOUR_ANSII_CHARACTERS
-                + "Play again? [Y/N]";
-    }
-
-    @Override
-    public String formatDrawMessage() {
-        return FONT_COLOUR_ANSII_CHARACTERS + "No winner this time";
-    }
-
-    @Override
     public String formatBoardDimensionMessage(int largestDimension) {
        return FONT_COLOUR_ANSII_CHARACTERS
               + "Please enter the dimension of the board you would like to use [" + 1 + " to " + largestDimension + "]";
     }
 
     @Override
-    public String formatInvalidReason(String reason) {
-        return BOARD_COLOUR_ANSII_CHARACTERS + reason;
+    public String applyInvalidColour(String message) {
+        return BOARD_COLOUR_ANSII_CHARACTERS + message;
+    }
+
+    @Override
+    public String applyFontColour(String message) {
+        return FONT_COLOUR_ANSII_CHARACTERS + message;
+
     }
 
     private String displayCell(PlayerSymbol symbol, int cellOffset) {

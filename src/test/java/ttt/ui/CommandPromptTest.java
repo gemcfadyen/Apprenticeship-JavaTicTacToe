@@ -25,19 +25,18 @@ import static ttt.player.PlayerSymbol.*;
 
 public class CommandPromptTest {
     private static final String CLEAR_SCREEN_ANSI_CHARACTERS = "\033[H\033[2J";
-    private static final String FONT_COLOUR_ANSII_CHARACTERS = "\033[1;37m";
 
     private static final String PLAY_AGAIN_PROMPT = "Play again? [Y/N]";
     private static final String NEXT_MOVE_PROMPT = "Please enter the index for your next move";
     private static final String A_IS_NOT_A_VALID_NUMBER = "[a] is not a valid integer\n\n";
-    private static final String A_IS_NOT_A_NUMBER_REPROMPT = A_IS_NOT_A_VALID_NUMBER + FONT_COLOUR_ANSII_CHARACTERS + NEXT_MOVE_PROMPT;
+    private static final String A_IS_NOT_A_NUMBER_REPROMPT = A_IS_NOT_A_VALID_NUMBER + NEXT_MOVE_PROMPT;
     private static final String Z_IS_NOT_A_VALID_INTEGER = "[z] is not a valid integer\n\n";
-    private static final String Z_IS_NOT_A_NUMBER_MOVE_REPROMPT = Z_IS_NOT_A_VALID_INTEGER + FONT_COLOUR_ANSII_CHARACTERS + NEXT_MOVE_PROMPT;
+    private static final String Z_IS_NOT_A_NUMBER_MOVE_REPROMPT = Z_IS_NOT_A_VALID_INTEGER +  NEXT_MOVE_PROMPT;
     private static final String DRAW_MESSAGE = "No winner this time";
     private static final String A_IS_NOT_REPLAY_OPTION = "[A] is not a valid replay option\n\n" + PLAY_AGAIN_PROMPT;
-    private static final String ALREADY_OCCUPIED_CELL_MESSAGE = "[1] is already occupied\n\n" + FONT_COLOUR_ANSII_CHARACTERS + NEXT_MOVE_PROMPT;
-    private static final String LARGER_THAN_GRID_BOUNDARY_MESSAGE = "[100] is outside of the grid boundary\n\n" + FONT_COLOUR_ANSII_CHARACTERS + NEXT_MOVE_PROMPT;
-    private static final String SMALLER_THAN_GRID_BOUNDARY_MESSAGE = "[-100] is outside of the grid boundary\n\n" + FONT_COLOUR_ANSII_CHARACTERS + NEXT_MOVE_PROMPT;
+    private static final String ALREADY_OCCUPIED_CELL_MESSAGE = "[1] is already occupied\n\n" + NEXT_MOVE_PROMPT;
+    private static final String LARGER_THAN_GRID_BOUNDARY_MESSAGE = "[100] is outside of the grid boundary\n\n" + NEXT_MOVE_PROMPT;
+    private static final String SMALLER_THAN_GRID_BOUNDARY_MESSAGE = "[-100] is outside of the grid boundary\n\n" + NEXT_MOVE_PROMPT;
 
     @Test
     public void askUserForBoardDimension() {
@@ -221,7 +220,6 @@ public class CommandPromptTest {
         assertThat(writer.toString(), is(
                 "\n"
                         + CLEAR_SCREEN_ANSI_CHARACTERS + "\n\n"
-                        + FONT_COLOUR_ANSII_CHARACTERS
                         + "Enter 1 to play Human vs Human\n"
                         + "Enter 2 to play Human vs Unbeatable\n"
                         + "Enter 3 to play Unbeatable vs Human\n\n"));
@@ -257,7 +255,6 @@ public class CommandPromptTest {
         assertThat(gameType, is(HUMAN_VS_HUMAN));
         assertThat(writer.toString().contains(CLEAR_SCREEN_ANSI_CHARACTERS + "\n\n"
                 + A_IS_NOT_A_VALID_NUMBER
-                + FONT_COLOUR_ANSII_CHARACTERS
                 + "Enter 1 to play Human vs Human"), is(true));
     }
 
@@ -271,7 +268,6 @@ public class CommandPromptTest {
         assertThat(gameType, is(HUMAN_VS_HUMAN));
 
         assertThat(writer.toString().contains("[7] is not a valid game type\n\n"
-                + FONT_COLOUR_ANSII_CHARACTERS
                 + "Enter 1 to play Human vs Human\n"), is(true));
     }
 
@@ -323,7 +319,7 @@ public class CommandPromptTest {
 
         commandPrompt.getNextMove(new Board(3));
 
-        assertThat(writer.toString().contains(FONT_COLOUR_ANSII_CHARACTERS + NEXT_MOVE_PROMPT + "\n"), is(true));
+        assertThat(writer.toString().contains(NEXT_MOVE_PROMPT + "\n"), is(true));
     }
 
     @Test(expected = WriteToPromptException.class)

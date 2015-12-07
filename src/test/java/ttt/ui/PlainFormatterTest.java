@@ -37,19 +37,6 @@ public class PlainFormatterTest {
     }
 
     @Test
-    public void formatsPlayAgainMessage() {
-        String formattedMessage = boardFormatter.formatPlayAgainMessage();
-
-        assertThat(formattedMessage, is("Play again? [Y/N]"));
-    }
-
-    @Test
-    public void formatsDrawMessage() {
-        String formattedMessage = boardFormatter.formatDrawMessage();
-        assertThat(formattedMessage, is("No winner this time"));
-    }
-
-    @Test
     public void formatsBoardDimensionPrompt() {
         String formattedMessage = boardFormatter.formatBoardDimensionMessage(5);
         assertThat(formattedMessage, is("Please enter the dimension of the board you would like to use [1 to 5]"));
@@ -57,7 +44,7 @@ public class PlainFormatterTest {
 
     @Test
     public void formatsInvalidReason(){
-        String formattedMessage = boardFormatter.formatInvalidReason("Invalid");
+        String formattedMessage = boardFormatter.applyInvalidColour("Invalid");
 
         assertThat(formattedMessage, is("Invalid"));
     }

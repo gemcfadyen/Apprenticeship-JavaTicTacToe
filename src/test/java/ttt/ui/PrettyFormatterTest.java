@@ -113,20 +113,6 @@ public class PrettyFormatterTest {
     }
 
     @Test
-    public void formatsPlayAgainMessage() {
-        String formattedPlayAgainMessage = formatter.formatPlayAgainMessage();
-        String expectedMessage = FONT_COLOUR_ANSII_CHARACTERS + "Play again? [Y/N]";
-        assertThat(formattedPlayAgainMessage, is(expectedMessage));
-    }
-
-    @Test
-    public void formatsDrawMessage() {
-        String formattedDrawMessage = formatter.formatDrawMessage();
-
-        assertThat(formattedDrawMessage, is(FONT_COLOUR_ANSII_CHARACTERS + "No winner this time"));
-    }
-
-    @Test
     public void formatsBoardDimensionMessage() {
         String formattedBoardDimensionMessage = formatter.formatBoardDimensionMessage(3);
 
@@ -135,8 +121,15 @@ public class PrettyFormatterTest {
     }
 
     @Test
-    public void formatsInvalidReason() {
-        String formattedMessage = formatter.formatInvalidReason("Reason");
+    public void coloursText() {
+        String formattedMessage = formatter.applyFontColour("Reason");
+
+        assertThat(formattedMessage, is(FONT_COLOUR_ANSII_CHARACTERS + "Reason"));
+    }
+
+    @Test
+    public void coloursInvalidText() {
+        String formattedMessage = formatter.applyInvalidColour("Reason");
 
         assertThat(formattedMessage, is(BOARD_OUTLINE_COLOUR_ANSII_CHARACTERS + "Reason"));
     }
