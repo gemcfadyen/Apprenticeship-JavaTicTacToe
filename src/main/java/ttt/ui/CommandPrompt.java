@@ -45,7 +45,7 @@ public class CommandPrompt implements Prompt {
     @Override
     public ReplayOption readReplayOption() {
         InputValidator compoundValidator = compositeFor(Collections.singletonList(new ReplayOptionValidator()));
-        return ReplayOption.of(getValidInput(compoundValidator, input(), functionToRepromptReplay()));
+        return ReplayOption.of(getValidInput(compoundValidator, input(), functionToRepromptReplay()).toUpperCase());
     }
 
     @Override

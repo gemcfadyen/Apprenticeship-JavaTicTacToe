@@ -177,6 +177,16 @@ public class CommandPromptTest {
     }
 
     @Test
+    public void readsLowerCaseReplayOption() {
+        Prompt prompt = new CommandPrompt(new StringReader("y\n"), writer, plainFormatter);
+
+        ReplayOption replayOption = prompt.readReplayOption();
+
+        assertThat(replayOption, is(Y));
+    }
+
+
+    @Test
     public void clearsScreenWhenReadingReplayOption() {
         Prompt prompt = new CommandPrompt(new StringReader("Y\n"), writer, plainFormatter);
 
