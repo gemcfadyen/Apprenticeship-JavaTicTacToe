@@ -122,9 +122,9 @@ public class PrettyFormatterTest {
 
     @Test
     public void formatsDrawMessage() {
-        String formattedDrawMessage = formatter.formatDrawMessage("No winner");
+        String formattedDrawMessage = formatter.formatDrawMessage();
 
-        assertThat(formattedDrawMessage, is(FONT_COLOUR_ANSII_CHARACTERS  + "No winner"));
+        assertThat(formattedDrawMessage, is(FONT_COLOUR_ANSII_CHARACTERS  + "No winner this time"));
     }
 
 

@@ -32,8 +32,8 @@ public class PlainFormatter implements BoardFormatter {
     }
 
     @Override
-    public String formatDrawMessage(String drawMessage) {
-        return drawMessage;
+    public String formatDrawMessage() {
+        return "No winner this time";
     }
 
 

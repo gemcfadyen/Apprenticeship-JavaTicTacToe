@@ -45,7 +45,7 @@ public class PlainFormatterTest {
 
     @Test
     public void formatsDrawMessage() {
-        String formattedMessage = boardFormatter.formatDrawMessage("Draw");
-        assertThat(formattedMessage, is("Draw"));
+        String formattedMessage = boardFormatter.formatDrawMessage();
+        assertThat(formattedMessage, is("No winner this time"));
     }
 }

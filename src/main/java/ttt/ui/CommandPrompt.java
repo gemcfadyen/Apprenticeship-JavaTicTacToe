@@ -98,8 +98,7 @@ public class CommandPrompt implements Prompt {
     }
 
     private void printDrawMessage() {
-        display(boardFormatter.formatDrawMessage("No winner this time"));/*FONT_COLOUR_ANSII_CHARACTERS
-                + "No winner this time");*/
+        display(boardFormatter.formatDrawMessage());
     }
 
     private void clear() {

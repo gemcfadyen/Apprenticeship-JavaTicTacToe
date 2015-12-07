@@ -10,5 +10,5 @@ public interface BoardFormatter {
 
     String formatPlayAgainMessage();
 
-    String formatDrawMessage(String s);
+    String formatDrawMessage();
 }

@@ -10,7 +10,6 @@ import static ttt.player.PlayerSymbol.VACANT;
 import static ttt.player.PlayerSymbol.X;
 
 public class PrettyFormatter implements BoardFormatter {
-    private static final String CLEAR_SCREEN_ANSII_CHARACTERS = "\033[H\033[2J";
     private static final String NUMBER_COLOUR_ANSII_CHARACTERS = "\033[1;30m";
     private static final String BOARD_COLOUR_ANSII_CHARACTERS = "\033[1;36m";
     private static final String FONT_COLOUR_ANSII_CHARACTERS = "\033[1;37m";
@@ -52,8 +51,8 @@ public class PrettyFormatter implements BoardFormatter {
     }
 
     @Override
-    public String formatDrawMessage(String drawMessage) {
-        return FONT_COLOUR_ANSII_CHARACTERS + drawMessage;
+    public String formatDrawMessage() {
+        return FONT_COLOUR_ANSII_CHARACTERS + "No winner this time";
     }
 
     private String displayCell(PlayerSymbol symbol, int cellOffset) {
