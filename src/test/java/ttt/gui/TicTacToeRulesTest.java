@@ -18,9 +18,7 @@ import java.util.List;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
-import static ttt.GameType.HUMAN_VS_HUMAN;
-import static ttt.GameType.HUMAN_VS_UNBEATABLE;
-import static ttt.GameType.UNBEATABLE_VS_HUMAN;
+import static ttt.GameType.*;
 import static ttt.player.PlayerSymbol.*;
 
 public class TicTacToeRulesTest {
@@ -70,26 +68,6 @@ public class TicTacToeRulesTest {
                 players
         );
         assertThat(ticTacToeRules.hasWinner(), is(false));
-    }
-
-    @Test
-    public void hasFreeSpace() {
-        TicTacToeRules ticTacToeRules = new TicTacToeRules(board, players);
-
-        assertThat(ticTacToeRules.hasFreeSpace(), is(true));
-    }
-
-    @Test
-    public void noFreeSpace() {
-        TicTacToeRules ticTacToeRules = new TicTacToeRules(
-                new Board(
-                        X, O, X,
-                        O, X, O,
-                        X, X, O),
-                players
-        );
-
-        assertThat(ticTacToeRules.hasFreeSpace(), is(false));
     }
 
     @Test

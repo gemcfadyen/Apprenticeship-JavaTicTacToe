@@ -18,6 +18,7 @@ import static org.junit.Assert.assertThat;
 
 public class GameIsPlayedThroughTheGuiTest {
     private Scene scene;
+    private GuiGameController controller;
 
     @BeforeClass
     public static void setUp() throws Exception {
@@ -27,13 +28,13 @@ public class GameIsPlayedThroughTheGuiTest {
     @Before
     public void setup() {
         scene = new Scene(new GridPane(), 700, 700);
+        Prompt unusedPrompt = new UnusedPrompt();
+        TicTacToeRules ticTacToeRules = new TicTacToeRules(new BoardFactory(), new PlayerFactory(unusedPrompt));
+        controller = new GuiGameController(ticTacToeRules, new JavaFxViewFactory(scene));
     }
 
     @Test
     public void playersTakeTurnsUntilGameIsWon() {
-        Prompt unusedPrompt = new UnusedPrompt();
-        TicTacToeRules ticTacToeRules = new TicTacToeRules(new BoardFactory(), new PlayerFactory(unusedPrompt));
-        GuiGameController controller = new GuiGameController(ticTacToeRules, new JavaFxViewFactory(scene));
         controller.presentGameTypes();
 
         selectHumanVsHumanGameType(scene);
@@ -50,9 +51,6 @@ public class GameIsPlayedThroughTheGuiTest {
 
     @Test
     public void playersTakeTurnsUntilGameIsDrawn() {
-        Prompt unusedPrompt = new UnusedPrompt();
-        TicTacToeRules ticTacToeRules = new TicTacToeRules(new BoardFactory(), new PlayerFactory(unusedPrompt));
-        GuiGameController controller = new GuiGameController(ticTacToeRules, new JavaFxViewFactory(scene));
         controller.presentGameTypes();
 
         selectHumanVsHumanGameType(scene);

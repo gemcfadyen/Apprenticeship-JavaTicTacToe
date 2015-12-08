@@ -30,32 +30,15 @@ public class TicTacToeRules implements GameRules {
         this.playerFactory = playerFactory;
     }
 
-    public void playMoveAt(String move) {
-        board.updateAt(Integer.valueOf(move), players[currentPlayerIndex].getSymbol());
-    }
-
-    public PlayerSymbol getCurrentPlayerSymbol() {
-        return players[currentPlayerIndex].getSymbol();
+    @Override
+    public List<GameType> getGameTypes() {
+        //Will return list of game types when gui is expanded to deal with multiple gametypes
+        return Arrays.asList(GameType.values());
     }
 
     @Override
-    public PlayerSymbol getWinningSymbol() {
-        return board.getWinningSymbol();
-    }
-
-    public boolean hasWinner() {
-        return board.hasWinningCombination();
-    }
-
-    public boolean hasFreeSpace() {
-        return board.hasFreeSpace();
-    }
-
-    public void togglePlayer() {
-        currentPlayerIndex =
-                currentPlayerIndex == PLAYER_ONE_INDEX
-                        ? PLAYER_TWO_INDEX
-                        : PLAYER_ONE_INDEX;
+    public String getDimension(GameType gameType) {
+        return String.valueOf(gameType.dimensionUpperBoundary());
     }
 
     @Override
@@ -66,8 +49,18 @@ public class TicTacToeRules implements GameRules {
     }
 
     @Override
-    public String getDimension(GameType gameType) {
-        return String.valueOf(gameType.dimensionUpperBoundary());
+    public void playMoveAt(String move) {
+        board.updateAt(Integer.valueOf(move), players[currentPlayerIndex].getSymbol());
+    }
+
+    @Override
+    public PlayerSymbol getCurrentPlayerSymbol() {
+        return players[currentPlayerIndex].getSymbol();
+    }
+
+    @Override
+    public PlayerSymbol getWinningSymbol() {
+        return board.getWinningSymbol();
     }
 
     @Override
@@ -90,8 +83,16 @@ public class TicTacToeRules implements GameRules {
         return String.valueOf(players[currentPlayerIndex].chooseNextMoveFrom(board));
     }
 
-    public List<GameType> getGameTypes() {
-        //Will return list of game types when gui is expanded to deal with multiple gametypes
-        return Arrays.asList(GameType.values());
+    @Override
+    public boolean hasWinner() {
+        return board.hasWinningCombination();
+    }
+
+    @Override
+    public void togglePlayer() {
+        currentPlayerIndex =
+                currentPlayerIndex == PLAYER_ONE_INDEX
+                        ? PLAYER_TWO_INDEX
+                        : PLAYER_ONE_INDEX;
     }
 }
