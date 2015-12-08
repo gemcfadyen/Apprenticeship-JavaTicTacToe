@@ -32,7 +32,6 @@ public class TicTacToeRules implements GameRules {
 
     @Override
     public List<GameType> getGameTypes() {
-        //Will return list of game types when gui is expanded to deal with multiple gametypes
         return Arrays.asList(GameType.values());
     }
 

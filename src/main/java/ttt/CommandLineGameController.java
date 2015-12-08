@@ -42,8 +42,7 @@ public class CommandLineGameController {
 
             playMatch();
 
-            gamePrompt.presentReplayOption();
-            replayOption = gamePrompt.readReplayOption();
+            replayOption = getReplayOptionFromPlayer();
         }
     }
 
@@ -53,9 +52,32 @@ public class CommandLineGameController {
         return readGameType(allGameTypes);
     }
 
+    private void presentGameTypes(List<GameType> allGameTypes) {
+        gamePrompt.presentGameTypes(allGameTypes);
+    }
+
+    private GameType readGameType(List<GameType> gameTypes) {
+        GameType gameType = gamePrompt.readGameType(gameTypes);
+        gameRules.storeGameType(gameType);
+        return gameType;
+    }
+
     int getDimensionChoiceFromPlayer(GameType gameType) {
         presentBoardDimensionsFor(gameType);
         return readDimension(gameType.dimensionUpperBoundary());
+    }
+
+    private void presentBoardDimensionsFor(GameType gameType) {
+        String largestDimension = gameRules.getDimension(gameType);
+        gamePrompt.presentGridDimensionsUpTo(largestDimension);
+    }
+
+    private int readDimension(int largestDimension) {
+        return gamePrompt.readBoardDimension(largestDimension);
+    }
+
+    private void initialiseGame(int dimension) {
+        gameRules.initialiseGame(String.valueOf(dimension));
     }
 
     void playMatch() {
@@ -64,6 +86,13 @@ public class CommandLineGameController {
             gameRules.togglePlayer();
         }
         displayResultsOfGame();
+    }
+
+    private ReplayOption getReplayOptionFromPlayer() {
+        ReplayOption replayOption;
+        gamePrompt.presentReplayOption();
+        replayOption = gamePrompt.readReplayOption();
+        return replayOption;
     }
 
     void updateBoardWithPlayersMove() {
@@ -81,29 +110,6 @@ public class CommandLineGameController {
 
     void displayResultsOfGame() {
         printExitMessage();
-    }
-
-    private void presentGameTypes(List<GameType> allGameTypes) {
-        gamePrompt.presentGameTypes(allGameTypes);
-    }
-
-    private GameType readGameType(List<GameType> gameTypes) {
-        GameType gameType = gamePrompt.readGameType(gameTypes);
-        gameRules.storeGameType(gameType);
-        return gameType;
-    }
-
-    private void presentBoardDimensionsFor(GameType gameType) {
-        String largestDimension = gameRules.getDimension(gameType);
-        gamePrompt.presentGridDimensionsUpTo(largestDimension);
-    }
-
-    private int readDimension(int largestDimension) {
-        return gamePrompt.readBoardDimension(largestDimension);
-    }
-
-    private void initialiseGame(int dimension) {
-        gameRules.initialiseGame(String.valueOf(dimension));
     }
 
     private void printExitMessage() {
