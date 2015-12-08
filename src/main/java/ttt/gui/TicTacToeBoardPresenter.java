@@ -3,6 +3,7 @@ package ttt.gui;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.RadioButton;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
@@ -152,21 +153,21 @@ public class TicTacToeBoardPresenter implements DisplayPresenter {
     }
 
     private void winningStatus(PlayerSymbol symbol, GridPane gameOverPane) {
-        Text gameOverTarget = new Text("Game Over - " + symbol.getSymbolForDisplay() + " won");
+        Label gameOverTarget = new Label("Game Over - " + symbol.getSymbolForDisplay() + " won");
         gameOverTarget.setId("gameOverTargetId");
-        positionTextUnderBoard(gameOverPane, gameOverTarget);
+        positionLabelUnderBoard(gameOverPane, gameOverTarget);
     }
 
     private void drawStatus(GridPane gameOverPane) {
-        Text gameOverTarget = new Text("Game Over - No winner");
+        Label gameOverTarget = new Label("Game Over - No winner");
         gameOverTarget.setId("gameOverTargetId");
-        positionTextUnderBoard(gameOverPane, gameOverTarget);
+        positionLabelUnderBoard(gameOverPane, gameOverTarget);
     }
 
     private void unusedTextBoxForConsistantLayout(GridPane boardPane) {
-        Text unusedTextForStableLayout = new Text("");
+        Label unusedTextForStableLayout = new Label("");
         unusedTextForStableLayout.setId("unusedId");
-        positionTextUnderBoard(boardPane, unusedTextForStableLayout);
+        positionLabelUnderBoard(boardPane, unusedTextForStableLayout);
     }
 
     private void registerActionForSelectingGameType(RadioButton radioButton) {
@@ -181,10 +182,10 @@ public class TicTacToeBoardPresenter implements DisplayPresenter {
         registerClickEvent.register(dimensionSelectionButton, gameSelectionOnClick);
     }
 
-    private void positionTextUnderBoard(GridPane boardPane, Text unusedTextForStableLayout) {
-        boardPane.add(unusedTextForStableLayout, 2, 8, 3, 1);
+    private void positionLabelUnderBoard(GridPane boardPane, Label label) {
+        label.setPrefSize(300, 100);
+        boardPane.add(label, 2, 8, 3, 1);
     }
-
     private Button createButton(String text, String value) {
         Button cell = new Button(text);
         cell.setId(value);
