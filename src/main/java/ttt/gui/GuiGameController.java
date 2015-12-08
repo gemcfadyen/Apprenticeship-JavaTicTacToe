@@ -3,10 +3,12 @@ package ttt.gui;
 import ttt.GameType;
 import ttt.board.Board;
 
+import java.util.List;
+
 public class GuiGameController implements GameController {
 
     private GameRules ticTacToeRules;
-    private BoardPresenter boardView;
+    private DisplayPresenter boardView;
 
     public GuiGameController(GameRules ticTacToeRules, ViewFactory viewFactory) {
         this.ticTacToeRules = ticTacToeRules;
@@ -15,8 +17,8 @@ public class GuiGameController implements GameController {
 
     @Override
     public void presentGameTypes() {
-        GameType gameTypes = ticTacToeRules.getGameTypes();
-        boardView.presentGameTypes(gameTypes.gameNameForDisplay());
+        List<GameType> allGameTypes = ticTacToeRules.getGameTypes();
+        boardView.presentGameTypes(allGameTypes);
     }
 
     @Override
@@ -40,7 +42,7 @@ public class GuiGameController implements GameController {
         boardView.presentsBoard(board);
 
         if (ticTacToeRules.hasWinner()) {
-            boardView.printsWinningMessage(board, ticTacToeRules.getCurrentPlayer());
+            boardView.printsWinningMessage(board, ticTacToeRules.getCurrentPlayerSymbol());
         }
         else if(!ticTacToeRules.boardHasFreeSpace()) {
             boardView.printsDrawMessage(board);

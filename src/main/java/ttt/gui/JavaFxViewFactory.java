@@ -9,7 +9,7 @@ public class JavaFxViewFactory implements ViewFactory {
         this.scene = scene;
     }
 
-    public BoardPresenter createView(GuiGameController controller, GameRules gameRules) {
+    public DisplayPresenter createView(GuiGameController controller, GameRules gameRules) {
         return new TicTacToeBoardPresenter(controller, scene);
     }
 }

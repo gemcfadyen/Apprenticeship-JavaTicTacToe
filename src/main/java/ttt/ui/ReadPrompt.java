@@ -4,12 +4,11 @@ import ttt.GameType;
 import ttt.ReplayOption;
 import ttt.board.Board;
 
+import java.util.List;
+
 public interface ReadPrompt {
-    int readBoardDimension(GameType gameType);
-
-    GameType readGameType();
-
-    ReplayOption getReplayOption();
-
-    int getNextMove(Board board);
+    int readBoardDimension(int largestDimension);
+    GameType readGameType(List<GameType> gameTypes);
+    ReplayOption readReplayOption();
+    int readNextMove(Board board);
 }

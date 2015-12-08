@@ -11,6 +11,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import ttt.board.BoardFactory;
 import ttt.player.PlayerFactory;
+import ttt.ui.Prompt;
 
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
@@ -24,13 +25,14 @@ public class GameIsPlayedThroughTheGuiTest {
     }
 
     @Before
-    public void setup(){
+    public void setup() {
         scene = new Scene(new GridPane(), 700, 700);
     }
 
     @Test
-    public void playersTakeTurnsUntilGameIsWon() throws Exception {
-        TicTacToeRules ticTacToeRules = new TicTacToeRules(new BoardFactory(), new PlayerFactory());
+    public void playersTakeTurnsUntilGameIsWon() {
+        Prompt unusedPrompt = new UnusedPrompt();
+        TicTacToeRules ticTacToeRules = new TicTacToeRules(new BoardFactory(), new PlayerFactory(unusedPrompt));
         GuiGameController controller = new GuiGameController(ticTacToeRules, new JavaFxViewFactory(scene));
         controller.presentGameTypes();
 
@@ -45,6 +47,30 @@ public class GameIsPlayedThroughTheGuiTest {
 
         assertThat(getWinningMessage(scene).getText(), is("Game Over - X won"));
     }
+
+    @Test
+    public void playersTakeTurnsUntilGameIsDrawn() {
+        Prompt unusedPrompt = new UnusedPrompt();
+        TicTacToeRules ticTacToeRules = new TicTacToeRules(new BoardFactory(), new PlayerFactory(unusedPrompt));
+        GuiGameController controller = new GuiGameController(ticTacToeRules, new JavaFxViewFactory(scene));
+        controller.presentGameTypes();
+
+        selectHumanVsHumanGameType(scene);
+        select3x3Grid(scene);
+
+        playerXTakesMove(scene, "#0");
+        playerOTakesMove(scene, "#1");
+        playerXTakesMove(scene, "#2");
+        playerOTakesMove(scene, "#4");
+        playerXTakesMove(scene, "#3");
+        playerOTakesMove(scene, "#5");
+        playerXTakesMove(scene, "#7");
+        playerOTakesMove(scene, "#6");
+        playerXTakesMove(scene, "#8");
+
+        assertThat(getWinningMessage(scene).getText(), is("Game Over - No winner"));
+    }
+
 
     private void selectHumanVsHumanGameType(Scene scene) {
         pressRadioButton(scene, "#gameSetupSelectionId");

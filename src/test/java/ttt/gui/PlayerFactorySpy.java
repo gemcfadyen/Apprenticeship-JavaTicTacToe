@@ -3,17 +3,17 @@ package ttt.gui;
 import ttt.GameType;
 import ttt.player.Player;
 import ttt.player.PlayerFactory;
-import ttt.ui.Prompt;
 
 public class PlayerFactorySpy extends PlayerFactory {
     private Player[] players;
     private GameType gameType;
 
     PlayerFactorySpy(Player... players) {
+        super(new UnusedPrompt());
         this.players = players;
     }
 
-    public Player[] createPlayers(GameType gameType, Prompt prompt, int dimension) {
+    public Player[] createPlayers(GameType gameType, int dimension) {
         this.gameType = gameType;
         return players;
     }

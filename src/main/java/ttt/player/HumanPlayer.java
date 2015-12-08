@@ -13,6 +13,6 @@ public class HumanPlayer extends Player {
 
     @Override
     public int chooseNextMoveFrom(Board board) {
-        return prompt.getNextMove(board);
+        return prompt.readNextMove(board);
     }
 }

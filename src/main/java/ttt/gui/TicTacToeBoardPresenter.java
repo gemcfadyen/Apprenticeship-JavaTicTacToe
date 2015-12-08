@@ -7,6 +7,7 @@ import javafx.scene.control.RadioButton;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.text.Text;
+import ttt.GameType;
 import ttt.board.Board;
 import ttt.board.Line;
 import ttt.player.PlayerSymbol;
@@ -16,9 +17,10 @@ import java.util.Objects;
 import java.util.function.Function;
 
 import static javafx.geometry.Pos.CENTER;
+import static ttt.GameType.HUMAN_VS_HUMAN;
 import static ttt.player.PlayerSymbol.*;
 
-public class TicTacToeBoardPresenter implements BoardPresenter {
+public class TicTacToeBoardPresenter implements DisplayPresenter {
     private Scene scene;
     private RegisterClickEvent registerClickEvent;
     private GuiGameController controller;
@@ -30,11 +32,11 @@ public class TicTacToeBoardPresenter implements BoardPresenter {
     }
 
     @Override
-    public void presentGameTypes(String gameType) {
+    public void presentGameTypes(List<GameType> gameTypes) {
         GridPane gameTypePane = new GridPane();
         setWelcomeMessage(gameTypePane);
 
-        displayGameTypes(gameTypePane, gameType);
+        displayGameTypes(gameTypePane, gameTypes);
 
         scene.setRoot(gameTypePane);
     }
@@ -43,7 +45,7 @@ public class TicTacToeBoardPresenter implements BoardPresenter {
     public void presentGridDimensionsUpTo(String upperBoundaryOfPossibleDimension) {
         GridPane dimensionPane = new GridPane();
         setWelcomeMessage(dimensionPane);
-        //this will be updated to use the dimension passed in once the story to deal with multiple dimensions is taken on
+        //TODO this will be updated to use the dimension passed in once the story to deal with multiple dimensions is taken on
         displayDimensions("3", dimensionPane);
 
         scene.setRoot(dimensionPane);
@@ -97,6 +99,10 @@ public class TicTacToeBoardPresenter implements BoardPresenter {
         scene.setRoot(gameOverPane);
     }
 
+    @Override
+    public void presentReplayOption() {
+    }
+
     private void setWelcomeMessage(GridPane gridPane) {
         Text gameTitle = new Text("Tic Tac Toe");
         gameTitle.setId("gameTitleId");
@@ -104,11 +110,12 @@ public class TicTacToeBoardPresenter implements BoardPresenter {
         gridPaneSetup(gridPane);
     }
 
-    private void displayGameTypes(GridPane gridPane, String gameType) {
+    private void displayGameTypes(GridPane gridPane, List<GameType> gameType) {
         Text gameSelectionPrompt = new Text("Choose a game type");
         gameSelectionPrompt.setId("gameSetupId");
         gridPane.add(gameSelectionPrompt, 2, 2, 4, 1);
-        RadioButton humanVsHumanRadioButton = new RadioButton(gameType);
+        //TODO the list input will be used here when multiple gametypes handled
+        RadioButton humanVsHumanRadioButton = new RadioButton(HUMAN_VS_HUMAN.gameNameForDisplay());
         humanVsHumanRadioButton.setId("gameSetupSelectionId");
         gridPane.add(humanVsHumanRadioButton, 2, 4, 4, 1);
 

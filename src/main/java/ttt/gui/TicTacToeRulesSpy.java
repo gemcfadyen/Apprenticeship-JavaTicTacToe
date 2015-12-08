@@ -4,6 +4,9 @@ import ttt.GameType;
 import ttt.board.Board;
 import ttt.player.PlayerSymbol;
 
+import java.util.Arrays;
+import java.util.List;
+
 public class TicTacToeRulesSpy implements GameRules {
     private Board board;
     private boolean hasGotGameTypes = false;
@@ -16,24 +19,34 @@ public class TicTacToeRulesSpy implements GameRules {
     private boolean winnerChecked = false;
     private boolean boardCheckedForFreeSpaces = false;
     private boolean hasGotCurrentPlayer = false;
+    private String nextMove;
+    private boolean hasGotWinnersSymbol = false;
 
     public TicTacToeRulesSpy() {
     }
 
-    public TicTacToeRulesSpy(Board board) {
+    public TicTacToeRulesSpy(Board board, String nextMove) {
         this.board = board;
+        this.nextMove = nextMove;
     }
 
     @Override
     public void playMoveAt(String move) {
         positionOfMove = move;
         hasMadeMove = true;
+        board.updateAt(Integer.valueOf(nextMove), getCurrentPlayerSymbol());
     }
 
     @Override
-    public PlayerSymbol getCurrentPlayer() {
+    public PlayerSymbol getCurrentPlayerSymbol() {
         hasGotCurrentPlayer = true;
         return PlayerSymbol.X;
+    }
+
+    @Override
+    public PlayerSymbol getWinningSymbol() {
+        hasGotWinnersSymbol = true;
+        return board.getWinningSymbol();
     }
 
     @Override
@@ -49,13 +62,16 @@ public class TicTacToeRulesSpy implements GameRules {
 
     @Override
     public void initialiseGame(String dimension) {
+        if (board == null) {
+            board = new Board(Integer.valueOf(dimension));
+        }
         hasInitialisedGame = true;
     }
 
     @Override
-    public GameType getGameTypes() {
+    public List<GameType> getGameTypes() {
         hasGotGameTypes = true;
-        return GameType.HUMAN_VS_HUMAN;
+        return Arrays.asList(GameType.HUMAN_VS_HUMAN);
     }
 
     @Override
@@ -78,6 +94,11 @@ public class TicTacToeRulesSpy implements GameRules {
     public boolean boardHasFreeSpace() {
         boardCheckedForFreeSpaces = true;
         return board.hasFreeSpace();
+    }
+
+    @Override
+    public String getCurrentPlayersNextMove() {
+        return nextMove;
     }
 
     public boolean hasObtainedGameTypes() {
@@ -118,5 +139,9 @@ public class TicTacToeRulesSpy implements GameRules {
 
     public boolean boardCheckedForFreeSpace() {
         return boardCheckedForFreeSpaces;
+    }
+
+    public boolean hasGotWinnersSymbol() {
+        return hasGotWinnersSymbol;
     }
 }
