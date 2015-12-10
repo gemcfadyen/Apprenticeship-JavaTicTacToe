@@ -3,9 +3,9 @@ package ttt.gui;
 import javafx.embed.swing.JFXPanel;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.RadioButton;
 import javafx.scene.layout.GridPane;
-import javafx.scene.text.Text;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -69,17 +69,16 @@ public class GameIsPlayedThroughTheGuiTest {
         assertThat(getWinningMessage(scene).getText(), is("Game Over - No winner"));
     }
 
-
     private void selectHumanVsHumanGameType(Scene scene) {
-        pressRadioButton(scene, "#gameSetupSelectionId");
+        pressRadioButton(scene, "#HUMAN_VS_HUMAN");
     }
 
     private void select3x3Grid(Scene scene) {
         pressRadioButton(scene, "#gameSetupSelectionId");
     }
 
-    private Text getWinningMessage(Scene scene) {
-        return (Text) scene.lookup("#gameOverTargetId");
+    private Label getWinningMessage(Scene scene) {
+        return (Label) scene.lookup("#gameOverTargetId");
     }
 
     private void playerXTakesMove(Scene scene, String selector) {

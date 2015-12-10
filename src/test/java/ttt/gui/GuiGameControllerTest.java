@@ -78,7 +78,7 @@ public class GuiGameControllerTest {
         controller.playMove("0");
 
         assertThat(gameRulesSpy.gameCheckedForWin(), is(true));
-        assertThat(gameRulesSpy.hasGotCurrentPlayer(), is(true));
+        assertThat(gameRulesSpy.hasGotWinnersSymbol(), is(true));
         assertThat(boardPresenterSpy.hasIdentifiedAWin(), is(true));
         assertThat(boardPresenterSpy.getWinningSymbol(), is(X));
     }
@@ -112,7 +112,7 @@ public class GuiGameControllerTest {
         controller.playMove("6");
 
         assertThat(gameRulesSpy.gameCheckedForWin(), is(true));
-        assertThat(gameRulesSpy.hasGotCurrentPlayer(), is(true));
+        assertThat(gameRulesSpy.hasGotWinnersSymbol(), is(true));
         assertThat(boardPresenterSpy.hasIdentifiedAWin(), is(true));
         assertThat(boardPresenterSpy.getWinningSymbol(), is(X));
         assertThat(boardPresenterSpy.hasIdentifiedADraw(), is(false));

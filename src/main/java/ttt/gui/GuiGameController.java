@@ -51,7 +51,7 @@ public class GuiGameController implements GameController {
 
     private void displayExitMessage(Board board) {
         if (ticTacToeRules.hasWinner()) {
-            boardView.printsWinningMessage(board, ticTacToeRules.getCurrentPlayerSymbol());
+            boardView.printsWinningMessage(board, ticTacToeRules.getWinningSymbol());
         } else if (!ticTacToeRules.boardHasFreeSpace()) {
             boardView.printsDrawMessage(board);
         }

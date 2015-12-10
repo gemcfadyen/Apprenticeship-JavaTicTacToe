@@ -68,7 +68,7 @@ public class TicTacToeBoardPresenter implements DisplayPresenter {
     public void presentsBoard(Board board) {
         GridPane boardPane = new GridPane();
         gridPaneSetup(boardPane);
-        unusedTextBoxForConsistantLayout(boardPane);
+        unusedLabelForConsistantLayout(boardPane);
 
         gridPaneSetup(boardPane);
         printBoardsOnPane(board, boardPane, getCellLabelForActiveBoard(board), registerEvent());
@@ -118,7 +118,7 @@ public class TicTacToeBoardPresenter implements DisplayPresenter {
         int rowIndex = 4;
         for (GameType gameType : gameTypes) {
             RadioButton gameTypeSelectionButton = new RadioButton(gameType.gameNameForDisplay());
-            gameTypeSelectionButton.setId(gameType.gameNameForDisplay());
+            gameTypeSelectionButton.setId(gameType.name());
             gridPane.add(gameTypeSelectionButton, 2, rowIndex++, 4, 1);
             registerActionForSelectingGameType(gameTypeSelectionButton);
         }
@@ -165,7 +165,7 @@ public class TicTacToeBoardPresenter implements DisplayPresenter {
         positionLabelUnderBoard(gameOverPane, gameOverTarget);
     }
 
-    private void unusedTextBoxForConsistantLayout(GridPane boardPane) {
+    private void unusedLabelForConsistantLayout(GridPane boardPane) {
         Label unusedTextForStableLayout = new Label("");
         unusedTextForStableLayout.setId("unusedId");
         positionLabelUnderBoard(boardPane, unusedTextForStableLayout);

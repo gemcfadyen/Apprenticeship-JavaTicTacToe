@@ -7,6 +7,8 @@ import ttt.player.PlayerSymbol;
 import java.util.Arrays;
 import java.util.List;
 
+import static ttt.player.PlayerSymbol.*;
+
 public class TicTacToeRulesSpy implements GameRules {
     private Board board;
     private boolean hasGotGameTypes = false;
@@ -34,13 +36,13 @@ public class TicTacToeRulesSpy implements GameRules {
     public void playMoveAt(String move) {
         positionOfMove = move;
         hasMadeMove = true;
-        board.updateAt(Integer.valueOf(nextMove), getCurrentPlayerSymbol());
+        board.updateAt(Integer.valueOf(nextMove), X);
     }
 
     @Override
     public PlayerSymbol getCurrentPlayerSymbol() {
         hasGotCurrentPlayer = true;
-        return PlayerSymbol.X;
+        return X;
     }
 
     @Override
@@ -131,10 +133,6 @@ public class TicTacToeRulesSpy implements GameRules {
 
     public boolean gameCheckedForWin() {
         return winnerChecked;
-    }
-
-    public boolean hasGotCurrentPlayer() {
-        return hasGotCurrentPlayer;
     }
 
     public boolean boardCheckedForFreeSpace() {
