@@ -6,6 +6,7 @@ import ttt.board.Board;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 import static ttt.GameType.HUMAN_VS_HUMAN;
+import static ttt.GameType.UNBEATABLE_VS_HUMAN;
 import static ttt.player.PlayerSymbol.*;
 
 public class GuiGameControllerTest {
@@ -35,13 +36,32 @@ public class GuiGameControllerTest {
     }
 
     @Test
-    public void initialisesGameAndDisplaysBoard() {
-        GuiGameController controller = new GuiGameController(gameConfigurationSpy, gameRulesSpy, createViewFactory());
+    public void initialisesAndDisplaysEmptyBoard() {
+        GameConfigurationSpy humanVsHumanGameConfiguration = new GameConfigurationSpy(HUMAN_VS_HUMAN);
+        GuiGameController controller = new GuiGameController(humanVsHumanGameConfiguration, gameRulesSpy, createViewFactory());
+        controller.setGameType(HUMAN_VS_HUMAN);
 
         controller.presentBoard("3");
 
         assertThat(boardPresenterSpy.hasDrawnBoard(), is(true));
         assertThat(gameRulesSpy.hasInitialisedGame(), is(true));
+        assertThat(gameRulesSpy.hasToggledPlayers(), is(false));
+    }
+
+    @Test
+    public void initialisesGameAndDisplaysBoardWithFirstAutomatedMove() {
+        GameConfigurationSpy unbeatableVsHumanGameConfiguration = new GameConfigurationSpy(UNBEATABLE_VS_HUMAN);
+        gameRulesSpy = new TicTacToeRulesSpy(new Board(3), "1");
+        GuiGameController controller = new GuiGameController(unbeatableVsHumanGameConfiguration, gameRulesSpy, createViewFactory());
+        controller.setGameType(UNBEATABLE_VS_HUMAN);
+
+        controller.presentBoard("3");
+
+        assertThat(boardPresenterSpy.hasDrawnBoard(), is(true));
+        assertThat(gameRulesSpy.hasInitialisedGame(), is(true));
+        assertThat(gameRulesSpy.hasToggledPlayers(), is(true));
+        assertThat(gameRulesSpy.getCurrentPlayersNextMove(), is("1"));
+        assertThat(gameRulesSpy.hasMadeMove(), is(true));
     }
 
     @Test
@@ -57,6 +77,7 @@ public class GuiGameControllerTest {
     public void takesMove() {
         gameRulesSpy = new TicTacToeRulesSpy(new Board(3), "1");
         GuiGameController controller = new GuiGameController(gameConfigurationSpy, gameRulesSpy, createViewFactory());
+        controller.setGameType(HUMAN_VS_HUMAN);
 
         controller.playMove("1");
 
@@ -75,6 +96,7 @@ public class GuiGameControllerTest {
         );
         gameRulesSpy = new TicTacToeRulesSpy(board, "0");
         GuiGameController controller = new GuiGameController(gameConfigurationSpy, gameRulesSpy, createViewFactory());
+        controller.setGameType(HUMAN_VS_HUMAN);
 
         controller.playMove("0");
 
@@ -93,6 +115,7 @@ public class GuiGameControllerTest {
         );
         gameRulesSpy = new TicTacToeRulesSpy(board, "7");
         GuiGameController controller = new GuiGameController(gameConfigurationSpy, gameRulesSpy, createViewFactory());
+        controller.setGameType(HUMAN_VS_HUMAN);
 
         controller.playMove("7");
 
@@ -109,6 +132,7 @@ public class GuiGameControllerTest {
         );
         gameRulesSpy = new TicTacToeRulesSpy(board, "6");
         GuiGameController controller = new GuiGameController(gameConfigurationSpy, gameRulesSpy, createViewFactory());
+        controller.setGameType(HUMAN_VS_HUMAN);
 
         controller.playMove("6");
 

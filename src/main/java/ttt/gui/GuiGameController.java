@@ -26,7 +26,7 @@ public class GuiGameController implements GameController {
 
     @Override
     public void presentBoardDimensionsFor(GameType gameType) {
-        this.gameType = gameType;
+        setGameType(gameType);
         String dimension = gameConfiguration.getDimension(gameType);
         boardView.presentGridDimensionsUpTo(dimension);
     }
@@ -35,6 +35,13 @@ public class GuiGameController implements GameController {
     public void presentBoard(String dimension) {
         ticTacToeRules.initialiseGame(gameType, dimension);
         Board board = ticTacToeRules.getBoard();
+
+        if (gameType == GameType.UNBEATABLE_VS_HUMAN) {
+            String automatedMove = ticTacToeRules.getCurrentPlayersNextMove();
+            ticTacToeRules.playMoveAt(automatedMove);
+            ticTacToeRules.togglePlayer();
+        }
+
         boardView.presentsBoard(board);
     }
 
@@ -62,5 +69,9 @@ public class GuiGameController implements GameController {
         } else if (!ticTacToeRules.boardHasFreeSpace()) {
             boardView.printsDrawMessage(board);
         }
+    }
+
+    public void setGameType(GameType gameType) {
+        this.gameType = gameType;
     }
 }
