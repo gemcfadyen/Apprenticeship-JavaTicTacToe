@@ -39,11 +39,6 @@ public class TicTacToeRules implements GameRules {
     }
 
     @Override
-    public PlayerSymbol getCurrentPlayerSymbol() {
-        return players[currentPlayerIndex].getSymbol();
-    }
-
-    @Override
     public PlayerSymbol getWinningSymbol() {
         return board.getWinningSymbol();
     }
@@ -74,5 +69,9 @@ public class TicTacToeRules implements GameRules {
                 currentPlayerIndex == PLAYER_ONE_INDEX
                         ? PLAYER_TWO_INDEX
                         : PLAYER_ONE_INDEX;
+    }
+
+    int getCurrentPlayerIndex() {
+        return currentPlayerIndex;
     }
 }

@@ -39,11 +39,6 @@ public class TicTacToeRulesSpy implements GameRules {
     }
 
     @Override
-    public PlayerSymbol getCurrentPlayerSymbol() {
-        return X;
-    }
-
-    @Override
     public PlayerSymbol getWinningSymbol() {
         hasGotWinnersSymbol = true;
         return board.getWinningSymbol();

@@ -8,7 +8,6 @@ import ttt.board.Board;
 import ttt.board.BoardFactory;
 import ttt.player.Player;
 import ttt.player.PlayerFactory;
-import ttt.player.PlayerSymbol;
 import ttt.ui.Prompt;
 
 import java.io.StringReader;
@@ -30,15 +29,6 @@ public class TicTacToeRulesTest {
         ticTacToeRules.playMoveAt("1");
 
         assertThat(board.getSymbolAt(1), is(X));
-    }
-
-    @Test
-    public void currentPlayersSymbol() {
-        TicTacToeRules ticTacToeRules = new TicTacToeRules(board, players);
-
-        PlayerSymbol currentPlayerSymbol = ticTacToeRules.getCurrentPlayerSymbol();
-
-        assertThat(currentPlayerSymbol, is(X));
     }
 
     @Test
@@ -71,9 +61,9 @@ public class TicTacToeRulesTest {
     public void togglesPlayer() {
         TicTacToeRules gamesRules = new TicTacToeRules(board, players);
 
-        PlayerSymbol currentPlayer = gamesRules.getCurrentPlayerSymbol();
+        int currentPlayer = gamesRules.getCurrentPlayerIndex();
         gamesRules.togglePlayer();
-        PlayerSymbol toggledPlayer = gamesRules.getCurrentPlayerSymbol();
+        int toggledPlayer = gamesRules.getCurrentPlayerIndex();
 
         assertThat(currentPlayer, is(not(equalTo(toggledPlayer))));
     }

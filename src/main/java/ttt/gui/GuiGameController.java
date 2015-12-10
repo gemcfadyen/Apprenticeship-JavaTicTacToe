@@ -58,12 +58,16 @@ public class GuiGameController implements GameController {
     }
 
     private void playSingleMove(String currentPlayersNextMove) {
-        Board board;
         ticTacToeRules.playMoveAt(currentPlayersNextMove);
-        board = ticTacToeRules.getBoard();
-        boardView.presentsBoard(board);
+        Board board = presentBoard();
         displayExitMessage(board);
         togglePlayer();
+    }
+
+    private Board presentBoard() {
+        Board board = ticTacToeRules.getBoard();
+        boardView.presentsBoard(board);
+        return board;
     }
 
     GameType getGameType() {
