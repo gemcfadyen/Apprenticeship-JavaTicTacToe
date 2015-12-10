@@ -139,8 +139,28 @@ public class GuiGameControllerTest {
 
         assertThat(gameRulesSpy.hasMadeMove(), is(true));
         assertThat(gameRulesSpy.numberOfMoves(), is(1));
+        assertThat(gameRulesSpy.numberOfTimesBoardIsObtained(), is(1));
         assertThat(gameRulesSpy.numberOfTimesBoardCheckedForWin(), is(2));
         assertThat(boardPresenterSpy.hasIdentifiedAWin(), is(true));
+    }
+
+    @Test
+    public void playersTakeTurnsWhenGameTypeIsUnbeatableVsHuman() {
+        GameConfigurationSpy humanVsUnbeatableGameConfiguration = new GameConfigurationSpy(UNBEATABLE_VS_HUMAN);
+        gameRulesSpy = new TicTacToeRulesSpy(new Board(3), "1");
+        GuiGameController controller = new GuiGameController(humanVsUnbeatableGameConfiguration, gameRulesSpy, createViewFactory());
+        controller.setGameType(UNBEATABLE_VS_HUMAN);
+
+        controller.playMove("3");
+
+        assertThat(gameRulesSpy.hasMadeMove(), is(true));
+        assertThat(gameRulesSpy.numberOfTimesBoardIsObtained(), is(2));
+        assertThat(gameRulesSpy.numberOfMoves(), is(2));
+        assertThat(gameRulesSpy.numberOfTimesPlayerAskedForMove(), is(1));
+        assertThat(gameRulesSpy.numberOfTimesPlayerHasToggled(), is(2));
+        assertThat(gameRulesSpy.boardCheckedForFreeSpace(), is(true));
+        assertThat(gameRulesSpy.numberOfTimesBoardCheckedForWin(), is(3));
+        assertThat(boardPresenterSpy.numberOfTimesBoardIsDrawn(), is(2));
     }
 
     @Test

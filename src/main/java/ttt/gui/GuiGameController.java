@@ -5,6 +5,9 @@ import ttt.board.Board;
 
 import java.util.List;
 
+import static ttt.GameType.HUMAN_VS_HUMAN;
+import static ttt.GameType.UNBEATABLE_VS_HUMAN;
+
 public class GuiGameController implements GameController {
 
     private final GameConfiguration gameConfiguration;
@@ -36,7 +39,7 @@ public class GuiGameController implements GameController {
         ticTacToeRules.initialiseGame(gameType, dimension);
         Board board = ticTacToeRules.getBoard();
 
-        if (gameType == GameType.UNBEATABLE_VS_HUMAN) {
+        if (gameType == UNBEATABLE_VS_HUMAN) {
             String automatedMove = ticTacToeRules.getCurrentPlayersNextMove();
             ticTacToeRules.playMoveAt(automatedMove);
             ticTacToeRules.togglePlayer();
@@ -47,18 +50,20 @@ public class GuiGameController implements GameController {
 
     @Override
     public void playMove(String position) {
-        ticTacToeRules.playMoveAt(position);
-        Board board = ticTacToeRules.getBoard();
+        playSingleMove(position);
+        if ((!gameType.equals(HUMAN_VS_HUMAN)) && ticTacToeRules.boardHasFreeSpace() && !ticTacToeRules.hasWinner()) {
+            String currentPlayersNextMove = ticTacToeRules.getCurrentPlayersNextMove();
+            playSingleMove(currentPlayersNextMove);
+        }
+    }
+
+    private void playSingleMove(String currentPlayersNextMove) {
+        Board board;
+        ticTacToeRules.playMoveAt(currentPlayersNextMove);
+        board = ticTacToeRules.getBoard();
         boardView.presentsBoard(board);
         displayExitMessage(board);
         togglePlayer();
-        if (gameType.equals(GameType.HUMAN_VS_UNBEATABLE) && ticTacToeRules.boardHasFreeSpace() && !ticTacToeRules.hasWinner()) {
-            String currentPlayersNextMove = ticTacToeRules.getCurrentPlayersNextMove();
-            ticTacToeRules.playMoveAt(currentPlayersNextMove);
-            boardView.presentsBoard(board);
-            displayExitMessage(board);
-            togglePlayer();
-        }
     }
 
     GameType getGameType() {

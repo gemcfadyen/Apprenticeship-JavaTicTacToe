@@ -20,6 +20,7 @@ public class TicTacToeRulesSpy implements GameRules {
     private int numberOfMovesMadeAtSpecificPosition = 0;
     private int numberOfTimesPlayerAskedForMove = 0;
     private int numberOfTimesBoardCheckedForWin = 0;
+    private int numberOfTimesBoardObtained = 0;
 
     public TicTacToeRulesSpy() {
     }
@@ -71,6 +72,7 @@ public class TicTacToeRulesSpy implements GameRules {
 
     @Override
     public Board getBoard() {
+        numberOfTimesBoardObtained++;
         return board;
     }
 
@@ -128,5 +130,9 @@ public class TicTacToeRulesSpy implements GameRules {
 
     public int numberOfTimesBoardCheckedForWin() {
         return numberOfTimesBoardCheckedForWin;
+    }
+
+    public int numberOfTimesBoardIsObtained() {
+        return numberOfTimesBoardObtained;
     }
 }
