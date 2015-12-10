@@ -22,6 +22,7 @@ public class CommandLineGameController {
     private Prompt gamePrompt;
     private GameType gameType;
 
+//    public CommandLineGameController(GameConfiguration gameConfiguration{
     public CommandLineGameController(GameConfiguration gameConfiguration, GameRules gameRules, Prompt commandLinePrompt) {
         this.gameConfiguration = gameConfiguration;
         this.gameRules = gameRules;

@@ -6,6 +6,7 @@ import ttt.board.Board;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 import static ttt.GameType.HUMAN_VS_HUMAN;
+import static ttt.GameType.HUMAN_VS_UNBEATABLE;
 import static ttt.GameType.UNBEATABLE_VS_HUMAN;
 import static ttt.player.PlayerSymbol.*;
 
@@ -74,7 +75,7 @@ public class GuiGameControllerTest {
     }
 
     @Test
-    public void takesMove() {
+    public void humanTakesMove() {
         gameRulesSpy = new TicTacToeRulesSpy(new Board(3), "1");
         GuiGameController controller = new GuiGameController(gameConfigurationSpy, gameRulesSpy, createViewFactory());
         controller.setGameType(HUMAN_VS_HUMAN);
@@ -85,6 +86,61 @@ public class GuiGameControllerTest {
         assertThat(gameRulesSpy.hasToggledPlayers(), is(true));
         assertThat(gameRulesSpy.getPositionOfMove(), is("1"));
         assertThat(boardPresenterSpy.hasDrawnBoard(), is(true));
+    }
+
+    @Test
+    public void humanVsComputerGameMeansBothPlayersTakeTurn() {
+        GameConfigurationSpy humanVsUnbeatableGameConfiguration = new GameConfigurationSpy(HUMAN_VS_UNBEATABLE);
+        gameRulesSpy = new TicTacToeRulesSpy(new Board(3), "1");
+        GuiGameController controller = new GuiGameController(humanVsUnbeatableGameConfiguration, gameRulesSpy, createViewFactory());
+        controller.setGameType(HUMAN_VS_UNBEATABLE);
+
+        controller.playMove("3");
+
+        assertThat(gameRulesSpy.hasMadeMove(), is(true));
+        assertThat(gameRulesSpy.numberOfMoves(), is(2));
+        assertThat(gameRulesSpy.numberOfTimesPlayerAskedForMove(), is(1));
+        assertThat(gameRulesSpy.numberOfTimesPlayerHasToggled(), is(2));
+        assertThat(gameRulesSpy.boardCheckedForFreeSpace(), is(true));
+        assertThat(gameRulesSpy.numberOfTimesBoardCheckedForWin(), is(3));
+        assertThat(boardPresenterSpy.numberOfTimesBoardIsDrawn(), is(2));
+    }
+
+    @Test
+    public void unbeatablePlayerStopsWhenBoardIsFull() {
+        GameConfigurationSpy humanVsUnbeatableGameConfiguration = new GameConfigurationSpy(HUMAN_VS_UNBEATABLE);
+        gameRulesSpy = new TicTacToeRulesSpy(new Board(
+                VACANT, O, X,
+                X, O, X,
+                O, X, O), "0");
+        GuiGameController controller = new GuiGameController(humanVsUnbeatableGameConfiguration, gameRulesSpy, createViewFactory());
+        controller.setGameType(HUMAN_VS_UNBEATABLE);
+
+        controller.playMove("0");
+
+        assertThat(gameRulesSpy.hasMadeMove(), is(true));
+        assertThat(gameRulesSpy.numberOfMoves(), is(1));
+        assertThat(gameRulesSpy.numberOfTimesBoardCheckedForWin(), is(1));
+        assertThat(boardPresenterSpy.hasIdentifiedAWin(), is(false));
+        assertThat(boardPresenterSpy.numberOfTimesBoardIsDrawn(), is(1));
+    }
+    @Test
+
+    public void unbeatablePlayerStopsWhenBoardHasWinner() {
+        GameConfigurationSpy humanVsUnbeatableGameConfiguration = new GameConfigurationSpy(HUMAN_VS_UNBEATABLE);
+        gameRulesSpy = new TicTacToeRulesSpy(new Board(
+                VACANT, VACANT, O,
+                X, O, O,
+                X, X, VACANT), "8");
+        GuiGameController controller = new GuiGameController(humanVsUnbeatableGameConfiguration, gameRulesSpy, createViewFactory());
+        controller.setGameType(HUMAN_VS_UNBEATABLE);
+
+        controller.playMove("8");
+
+        assertThat(gameRulesSpy.hasMadeMove(), is(true));
+        assertThat(gameRulesSpy.numberOfMoves(), is(1));
+        assertThat(gameRulesSpy.numberOfTimesBoardCheckedForWin(), is(2));
+        assertThat(boardPresenterSpy.hasIdentifiedAWin(), is(true));
     }
 
     @Test

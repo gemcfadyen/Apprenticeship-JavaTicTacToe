@@ -41,8 +41,8 @@ public class GuiGameController implements GameController {
             ticTacToeRules.playMoveAt(automatedMove);
             ticTacToeRules.togglePlayer();
         }
-
         boardView.presentsBoard(board);
+
     }
 
     @Override
@@ -50,9 +50,15 @@ public class GuiGameController implements GameController {
         ticTacToeRules.playMoveAt(position);
         Board board = ticTacToeRules.getBoard();
         boardView.presentsBoard(board);
-
         displayExitMessage(board);
         togglePlayer();
+        if (gameType.equals(GameType.HUMAN_VS_UNBEATABLE) && ticTacToeRules.boardHasFreeSpace() && !ticTacToeRules.hasWinner()) {
+            String currentPlayersNextMove = ticTacToeRules.getCurrentPlayersNextMove();
+            ticTacToeRules.playMoveAt(currentPlayersNextMove);
+            boardView.presentsBoard(board);
+            displayExitMessage(board);
+            togglePlayer();
+        }
     }
 
     GameType getGameType() {
