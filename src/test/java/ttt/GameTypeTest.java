@@ -14,6 +14,24 @@ public class GameTypeTest {
     }
 
     @Test
+    public void getHumanVsUnbeatableTypeFromDisplayName() {
+        GameType gameType = GameType.of("Human vs Unbeatable");
+        assertThat(gameType, is(GameType.HUMAN_VS_UNBEATABLE));
+    }
+
+    @Test
+    public void getUnbeatableVsHumanTypeFromDisplayName() {
+        GameType gameType = GameType.of("Unbeatable vs Human");
+        assertThat(gameType, is(GameType.UNBEATABLE_VS_HUMAN));
+    }
+
+    @Test
+    public void getDefaultGameTypeFromDisplayName() {
+        GameType gameType = GameType.of("Another");
+        assertThat(gameType, is(GameType.HUMAN_VS_HUMAN));
+    }
+
+    @Test
     public void getsHumanVsHumanGameType() {
         GameType gameType = GameType.of(1);
         assertThat(gameType, is(GameType.HUMAN_VS_HUMAN));
