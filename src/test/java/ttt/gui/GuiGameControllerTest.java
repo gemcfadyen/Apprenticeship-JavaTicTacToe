@@ -12,30 +12,31 @@ public class GuiGameControllerTest {
 
     private DisplayPresenterSpy boardPresenterSpy = new DisplayPresenterSpy();
     private TicTacToeRulesSpy gameRulesSpy = new TicTacToeRulesSpy();
+    private GameConfigurationSpy gameConfigurationSpy = new GameConfigurationSpy();
 
     @Test
     public void getsGameTypesFromGameAndDisplaysThemToUser() {
-        GuiGameController controller = new GuiGameController(gameRulesSpy, createViewFactory());
+        GuiGameController controller = new GuiGameController(gameConfigurationSpy, gameRulesSpy, createViewFactory());
 
         controller.presentGameTypes();
 
         assertThat(boardPresenterSpy.hasPresentedGameTypes(), is(true));
-        assertThat(gameRulesSpy.hasObtainedGameTypes(), is(true));
+        assertThat(gameConfigurationSpy.hasObtainedGameTypes(), is(true));
     }
 
     @Test
     public void getsDimensionsForGametypeAndDisplaysToUser() {
-        GuiGameController controller = new GuiGameController(gameRulesSpy, createViewFactory());
+        GuiGameController controller = new GuiGameController(gameConfigurationSpy, gameRulesSpy, createViewFactory());
 
         controller.presentBoardDimensionsFor(HUMAN_VS_HUMAN);
 
         assertThat(boardPresenterSpy.hasPresentedGridDimensions(), is(true));
-        assertThat(gameRulesSpy.hasObtainedBoardDimensions(), is(true));
+        assertThat(gameConfigurationSpy.hasObtainedBoardDimensions(), is(true));
     }
 
     @Test
     public void initialisesGameAndDisplaysBoard() {
-        GuiGameController controller = new GuiGameController(gameRulesSpy, createViewFactory());
+        GuiGameController controller = new GuiGameController(gameConfigurationSpy, gameRulesSpy, createViewFactory());
 
         controller.presentBoard("3");
 
@@ -45,17 +46,17 @@ public class GuiGameControllerTest {
 
     @Test
     public void setsGameType() {
-        GuiGameController controller = new GuiGameController(gameRulesSpy, createViewFactory());
+        GuiGameController controller = new GuiGameController(gameConfigurationSpy, gameRulesSpy, createViewFactory());
 
         controller.presentBoardDimensionsFor(HUMAN_VS_HUMAN);
 
-        assertThat(gameRulesSpy.hasStoredGameType(), is(true));
+        assertThat(controller.getGameType(), is(HUMAN_VS_HUMAN));
     }
 
     @Test
     public void takesMove() {
         gameRulesSpy = new TicTacToeRulesSpy(new Board(3), "1");
-        GuiGameController controller = new GuiGameController(gameRulesSpy, createViewFactory());
+        GuiGameController controller = new GuiGameController(gameConfigurationSpy, gameRulesSpy, createViewFactory());
 
         controller.playMove("1");
 
@@ -73,7 +74,7 @@ public class GuiGameControllerTest {
                 X, VACANT, VACANT
         );
         gameRulesSpy = new TicTacToeRulesSpy(board, "0");
-        GuiGameController controller = new GuiGameController(gameRulesSpy, createViewFactory());
+        GuiGameController controller = new GuiGameController(gameConfigurationSpy, gameRulesSpy, createViewFactory());
 
         controller.playMove("0");
 
@@ -91,7 +92,7 @@ public class GuiGameControllerTest {
                 X, VACANT, O
         );
         gameRulesSpy = new TicTacToeRulesSpy(board, "7");
-        GuiGameController controller = new GuiGameController(gameRulesSpy, createViewFactory());
+        GuiGameController controller = new GuiGameController(gameConfigurationSpy, gameRulesSpy, createViewFactory());
 
         controller.playMove("7");
 
@@ -107,7 +108,7 @@ public class GuiGameControllerTest {
                 VACANT, X, O
         );
         gameRulesSpy = new TicTacToeRulesSpy(board, "6");
-        GuiGameController controller = new GuiGameController(gameRulesSpy, createViewFactory());
+        GuiGameController controller = new GuiGameController(gameConfigurationSpy, gameRulesSpy, createViewFactory());
 
         controller.playMove("6");
 

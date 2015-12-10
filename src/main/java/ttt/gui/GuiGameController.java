@@ -7,30 +7,33 @@ import java.util.List;
 
 public class GuiGameController implements GameController {
 
+    private final GameConfiguration gameConfiguration;
     private GameRules ticTacToeRules;
     private DisplayPresenter boardView;
+    private GameType gameType;
 
-    public GuiGameController(GameRules ticTacToeRules, ViewFactory viewFactory) {
+    public GuiGameController(GameConfiguration gameConfiguration, GameRules ticTacToeRules, ViewFactory viewFactory) {
+        this.gameConfiguration = gameConfiguration;
         this.ticTacToeRules = ticTacToeRules;
         this.boardView = viewFactory.createView(this, ticTacToeRules);
     }
 
     @Override
     public void presentGameTypes() {
-        List<GameType> allGameTypes = ticTacToeRules.getGameTypes();
+        List<GameType> allGameTypes = gameConfiguration.getGameTypes();
         boardView.presentGameTypes(allGameTypes);
     }
 
     @Override
     public void presentBoardDimensionsFor(GameType gameType) {
-        ticTacToeRules.storeGameType(gameType);
-        String dimension = ticTacToeRules.getDimension(gameType);
+        this.gameType = gameType;
+        String dimension = gameConfiguration.getDimension(gameType);
         boardView.presentGridDimensionsUpTo(dimension);
     }
 
     @Override
     public void presentBoard(String dimension) {
-        ticTacToeRules.initialiseGame(dimension);
+        ticTacToeRules.initialiseGame(gameType, dimension);
         Board board = ticTacToeRules.getBoard();
         boardView.presentsBoard(board);
     }
@@ -43,6 +46,10 @@ public class GuiGameController implements GameController {
 
         displayExitMessage(board);
         togglePlayer();
+    }
+
+    GameType getGameType() {
+        return gameType;
     }
 
     private void togglePlayer() {

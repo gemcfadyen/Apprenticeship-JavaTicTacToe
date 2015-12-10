@@ -1,9 +1,7 @@
 package ttt.gui;
 
-import org.hamcrest.Matchers;
 import org.junit.Test;
 import ttt.BoardFactoryStub;
-import ttt.GameType;
 import ttt.PlayerFactoryStub;
 import ttt.PromptSpy;
 import ttt.board.Board;
@@ -14,11 +12,10 @@ import ttt.player.PlayerSymbol;
 import ttt.ui.Prompt;
 
 import java.io.StringReader;
-import java.util.List;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
-import static ttt.GameType.*;
+import static ttt.GameType.HUMAN_VS_HUMAN;
 import static ttt.player.PlayerSymbol.*;
 
 public class TicTacToeRulesTest {
@@ -82,30 +79,11 @@ public class TicTacToeRulesTest {
     }
 
     @Test
-    public void getGameTypes() {
-        TicTacToeRules gamesRules = new TicTacToeRules(new BoardFactory(), new PlayerFactory(UNUSED_PROMPT));
-
-        List<GameType> gameTypes = gamesRules.getGameTypes();
-
-        assertThat(gameTypes, Matchers.contains(HUMAN_VS_HUMAN, HUMAN_VS_UNBEATABLE, UNBEATABLE_VS_HUMAN));
-    }
-
-    @Test
-    public void getDimensions() {
-        TicTacToeRules gamesRules = new TicTacToeRules(new BoardFactory(), new PlayerFactory(UNUSED_PROMPT));
-
-        String dimension = gamesRules.getDimension(HUMAN_VS_HUMAN);
-
-        assertThat(dimension, is("5"));
-    }
-
-    @Test
     public void gameTypeIsSet() {
         PlayerFactorySpy playerFactorySpy = new PlayerFactorySpy();
         TicTacToeRules gamesRules = new TicTacToeRules(new BoardFactory(), playerFactorySpy);
 
-        gamesRules.storeGameType(HUMAN_VS_HUMAN);
-        gamesRules.initialiseGame("3");
+        gamesRules.initialiseGame(HUMAN_VS_HUMAN, "3");
 
         assertThat(playerFactorySpy.getGameTypeUsed(), is(HUMAN_VS_HUMAN));
     }
@@ -118,7 +96,7 @@ public class TicTacToeRulesTest {
                 new BoardFactoryStub(board),
                 new PlayerFactoryStub(players)
         );
-        ticTacToeRules.initialiseGame("3");
+        ticTacToeRules.initialiseGame(HUMAN_VS_HUMAN, "3");
         assertThat(ticTacToeRules.getBoard(), is(board));
     }
 
@@ -131,7 +109,7 @@ public class TicTacToeRulesTest {
         );
 
         TicTacToeRules ticTacToeRules = new TicTacToeRules(new BoardFactoryStub(board), new PlayerFactory(UNUSED_PROMPT));
-        ticTacToeRules.initialiseGame("3");
+        ticTacToeRules.initialiseGame(HUMAN_VS_HUMAN, "3");
         assertThat(ticTacToeRules.getBoard(), is(board));
     }
 

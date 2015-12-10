@@ -4,23 +4,16 @@ import ttt.GameType;
 import ttt.board.Board;
 import ttt.player.PlayerSymbol;
 
-import java.util.Arrays;
-import java.util.List;
-
-import static ttt.player.PlayerSymbol.*;
+import static ttt.player.PlayerSymbol.X;
 
 public class TicTacToeRulesSpy implements GameRules {
     private Board board;
-    private boolean hasGotGameTypes = false;
-    private boolean hasGotBoardDimensions = false;
     private boolean hasInitialisedGame = false;
-    private boolean hasStoredGameType = false;
     private boolean hasMadeMove = false;
     private String positionOfMove;
     private boolean hasToggledPlayer = false;
     private boolean winnerChecked = false;
     private boolean boardCheckedForFreeSpaces = false;
-    private boolean hasGotCurrentPlayer = false;
     private String nextMove;
     private boolean hasGotWinnersSymbol = false;
 
@@ -41,7 +34,6 @@ public class TicTacToeRulesSpy implements GameRules {
 
     @Override
     public PlayerSymbol getCurrentPlayerSymbol() {
-        hasGotCurrentPlayer = true;
         return X;
     }
 
@@ -63,7 +55,7 @@ public class TicTacToeRulesSpy implements GameRules {
     }
 
     @Override
-    public void initialiseGame(String dimension) {
+    public void initialiseGame(GameType gameType, String dimension) {
         if (board == null) {
             board = new Board(Integer.valueOf(dimension));
         }
@@ -71,25 +63,8 @@ public class TicTacToeRulesSpy implements GameRules {
     }
 
     @Override
-    public List<GameType> getGameTypes() {
-        hasGotGameTypes = true;
-        return Arrays.asList(GameType.HUMAN_VS_HUMAN);
-    }
-
-    @Override
-    public String getDimension(GameType gameType) {
-        hasGotBoardDimensions = true;
-        return String.valueOf(gameType.dimensionUpperBoundary());
-    }
-
-    @Override
     public Board getBoard() {
         return board;
-    }
-
-    @Override
-    public void storeGameType(GameType gameType) {
-        hasStoredGameType = true;
     }
 
     @Override
@@ -103,20 +78,8 @@ public class TicTacToeRulesSpy implements GameRules {
         return nextMove;
     }
 
-    public boolean hasObtainedGameTypes() {
-        return hasGotGameTypes;
-    }
-
-    public boolean hasObtainedBoardDimensions() {
-        return hasGotBoardDimensions;
-    }
-
     public boolean hasInitialisedGame() {
         return hasInitialisedGame;
-    }
-
-    public boolean hasStoredGameType() {
-        return hasStoredGameType;
     }
 
     public boolean hasMadeMove() {
