@@ -18,7 +18,6 @@ import java.util.Objects;
 import java.util.function.Function;
 
 import static javafx.geometry.Pos.CENTER;
-import static ttt.GameType.HUMAN_VS_HUMAN;
 import static ttt.player.PlayerSymbol.*;
 
 public class TicTacToeBoardPresenter implements DisplayPresenter {
@@ -69,7 +68,7 @@ public class TicTacToeBoardPresenter implements DisplayPresenter {
     public void presentsBoard(Board board) {
         GridPane boardPane = new GridPane();
         gridPaneSetup(boardPane);
-        unusedTextBoxForConsistantLayout(boardPane);
+        unusedLabelForConsistantLayout(boardPane);
 
         gridPaneSetup(boardPane);
         printBoardsOnPane(board, boardPane, getCellLabelForActiveBoard(board), registerEvent());
@@ -111,16 +110,18 @@ public class TicTacToeBoardPresenter implements DisplayPresenter {
         gridPaneSetup(gridPane);
     }
 
-    private void displayGameTypes(GridPane gridPane, List<GameType> gameType) {
+    private void displayGameTypes(GridPane gridPane, List<GameType> gameTypes) {
         Text gameSelectionPrompt = new Text("Choose a game type");
         gameSelectionPrompt.setId("gameSetupId");
         gridPane.add(gameSelectionPrompt, 2, 2, 4, 1);
-        //TODO the list input will be used here when multiple gametypes handled
-        RadioButton humanVsHumanRadioButton = new RadioButton(HUMAN_VS_HUMAN.gameNameForDisplay());
-        humanVsHumanRadioButton.setId("gameSetupSelectionId");
-        gridPane.add(humanVsHumanRadioButton, 2, 4, 4, 1);
 
-        registerActionForSelectingGameType(humanVsHumanRadioButton);
+        int rowIndex = 4;
+        for (GameType gameType : gameTypes) {
+            RadioButton gameTypeSelectionButton = new RadioButton(gameType.gameNameForDisplay());
+            gameTypeSelectionButton.setId(gameType.name());
+            gridPane.add(gameTypeSelectionButton, 2, rowIndex++, 4, 1);
+            registerActionForSelectingGameType(gameTypeSelectionButton);
+        }
     }
 
     private void printBoardsOnPane(Board board, GridPane boardPane, Function<Integer, String> labelForCell, Function<Button, Void> actionOnCell) {
@@ -164,7 +165,7 @@ public class TicTacToeBoardPresenter implements DisplayPresenter {
         positionLabelUnderBoard(gameOverPane, gameOverTarget);
     }
 
-    private void unusedTextBoxForConsistantLayout(GridPane boardPane) {
+    private void unusedLabelForConsistantLayout(GridPane boardPane) {
         Label unusedTextForStableLayout = new Label("");
         unusedTextForStableLayout.setId("unusedId");
         positionLabelUnderBoard(boardPane, unusedTextForStableLayout);
@@ -186,6 +187,7 @@ public class TicTacToeBoardPresenter implements DisplayPresenter {
         label.setPrefSize(300, 100);
         boardPane.add(label, 2, 8, 3, 1);
     }
+
     private Button createButton(String text, String value) {
         Button cell = new Button(text);
         cell.setId(value);

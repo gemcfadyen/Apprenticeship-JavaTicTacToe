@@ -21,8 +21,4 @@ public class BoardFactoryStub extends BoardFactory {
             boards = new Board[]{new Board(dimension)};
         }
     }
-
-    public Board getLatestBoard() {
-        return boards[boardIndex - 1];
-    }
 }

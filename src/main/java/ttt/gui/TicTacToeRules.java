@@ -7,54 +7,27 @@ import ttt.player.Player;
 import ttt.player.PlayerFactory;
 import ttt.player.PlayerSymbol;
 
-import java.util.Arrays;
-import java.util.List;
-
 public class TicTacToeRules implements GameRules {
     private static final int PLAYER_ONE_INDEX = 0;
     private static final int PLAYER_TWO_INDEX = 1;
-    private BoardFactory boardFactory;
-    private PlayerFactory playerFactory;
     private Board board;
     private Player[] players;
     private int currentPlayerIndex = PLAYER_ONE_INDEX;
-    private GameType gameType;
 
     public TicTacToeRules(Board board, Player[] players) {
         this.board = board;
         this.players = players;
     }
 
-    public TicTacToeRules(BoardFactory boardFactory, PlayerFactory playerFactory) {
-        this.boardFactory = boardFactory;
-        this.playerFactory = playerFactory;
-    }
-
-    @Override
-    public List<GameType> getGameTypes() {
-        return Arrays.asList(GameType.values());
-    }
-
-    @Override
-    public String getDimension(GameType gameType) {
-        return String.valueOf(gameType.dimensionUpperBoundary());
-    }
-
-    @Override
-    public void initialiseGame(String dimension) {
-        Integer boardDimension = Integer.valueOf(dimension);
-        board = boardFactory.createBoardWithSize(boardDimension);
-        players = playerFactory.createPlayers(gameType, boardDimension);
+    public TicTacToeRules(BoardFactory boardFactory, PlayerFactory playerFactory,
+                          GameType gameType, int dimension) {
+        board = boardFactory.createBoardWithSize(dimension);
+        players = playerFactory.createPlayers(gameType, dimension);
     }
 
     @Override
     public void playMoveAt(String move) {
         board.updateAt(Integer.valueOf(move), players[currentPlayerIndex].getSymbol());
-    }
-
-    @Override
-    public PlayerSymbol getCurrentPlayerSymbol() {
-        return players[currentPlayerIndex].getSymbol();
     }
 
     @Override
@@ -65,11 +38,6 @@ public class TicTacToeRules implements GameRules {
     @Override
     public Board getBoard() {
         return board;
-    }
-
-    @Override
-    public void storeGameType(GameType gameType) {
-        this.gameType = gameType;
     }
 
     @Override
@@ -93,5 +61,9 @@ public class TicTacToeRules implements GameRules {
                 currentPlayerIndex == PLAYER_ONE_INDEX
                         ? PLAYER_TWO_INDEX
                         : PLAYER_ONE_INDEX;
+    }
+
+    int getCurrentPlayerIndex() {
+        return currentPlayerIndex;
     }
 }

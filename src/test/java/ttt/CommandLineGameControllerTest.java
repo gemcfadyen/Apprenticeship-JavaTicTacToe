@@ -3,9 +3,10 @@ package ttt;
 import org.junit.Test;
 import ttt.board.Board;
 import ttt.board.BoardFactory;
+import ttt.gui.GameConfigurationSpy;
 import ttt.gui.TicTacToeRules;
 import ttt.gui.TicTacToeRulesSpy;
-import ttt.player.*;
+import ttt.player.PlayerSymbol;
 import ttt.ui.CommandPrompt;
 import ttt.ui.PlainFormatter;
 import ttt.ui.Prompt;
@@ -15,6 +16,7 @@ import java.io.StringWriter;
 
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
+import static ttt.GameType.HUMAN_VS_HUMAN;
 import static ttt.GameType.HUMAN_VS_UNBEATABLE;
 import static ttt.player.PlayerSymbol.*;
 
@@ -24,20 +26,21 @@ public class CommandLineGameControllerTest {
     private static final String DO_NOT_REPLAY = "N\n";
     private static final String NO_NEXT_MOVE_REQUIRED = "no-next-move-required";
     private TicTacToeRulesSpy gameRulesSpy = new TicTacToeRulesSpy();
+    private GameConfigurationSpy gameConfigurationSpy = new GameConfigurationSpy();
 
     @Test
     public void getGameType() {
-        PromptSpy promptSpy = createPromptSpyToReadInput(INPUT_FOR_3x3);
+        PromptSpy promptSpy = createPromptSpyToReadInput(HUMAN_VS_HUMAN_ID);
         CommandLineGameController commandLineGameController = new CommandLineGameController(
-                gameRulesSpy,
+                gameConfigurationSpy,
                 promptSpy
         );
 
         commandLineGameController.getGameTypeFromPlayer();
 
-        assertThat(gameRulesSpy.hasObtainedGameTypes(), is(true));
+        assertThat(gameConfigurationSpy.hasObtainedGameTypes(), is(true));
         assertThat(promptSpy.getNumberOfTimesPromptedForGameOption(), is(1));
-        assertThat(gameRulesSpy.hasStoredGameType(), is(true));
+        assertThat(commandLineGameController.getGameType(), is(HUMAN_VS_HUMAN));
         assertThat(promptSpy.getNumberOfTimesGameOptionsWereRead(), is(1));
     }
 
@@ -45,14 +48,14 @@ public class CommandLineGameControllerTest {
     public void getBoardDimensionsForGameType() {
         PromptSpy promptSpy = createPromptSpyToReadInput(INPUT_FOR_3x3);
         CommandLineGameController commandLineGameController = new CommandLineGameController(
-                gameRulesSpy,
+                gameConfigurationSpy,
                 promptSpy
         );
 
         int dimension = commandLineGameController.getDimensionChoiceFromPlayer(HUMAN_VS_UNBEATABLE);
 
         assertThat(promptSpy.getNumberOfTimesDimensionsHaveBeenAskedFor(), is(1));
-        assertThat(gameRulesSpy.hasObtainedBoardDimensions(), is(true));
+        assertThat(gameConfigurationSpy.hasObtainedBoardDimensions(), is(true));
         assertThat(promptSpy.getNumberOfTimesBoardDimensionRead(), is(1));
         assertThat(dimension, is(3));
     }
@@ -67,6 +70,7 @@ public class CommandLineGameControllerTest {
                 ), NO_NEXT_MOVE_REQUIRED
         );
         CommandLineGameController commandLineGameController = new CommandLineGameController(
+                gameConfigurationSpy,
                 gameRulesSpy,
                 commandPrompt()
         );
@@ -79,13 +83,15 @@ public class CommandLineGameControllerTest {
 
     @Test
     public void gameIsWonWhenPlayerPlacesWinningMove() {
+        gameRulesSpy = new TicTacToeRulesSpy(
+                boardWith(
+                        X, VACANT, X,
+                        O, X, O,
+                        O, X, O), "1");
         PromptSpy gamePrompt = new PromptSpy(new StringReader(""));
-        Board board = boardWith(
-                X, VACANT, X,
-                O, X, O,
-                O, X, O);
         CommandLineGameController commandLineGameController = new CommandLineGameController(
-                new TicTacToeRulesSpy(board, "1"),
+                gameConfigurationSpy,
+                gameRulesSpy,
                 gamePrompt
         );
 
@@ -103,6 +109,7 @@ public class CommandLineGameControllerTest {
                 O, VACANT, VACANT);
         TicTacToeRulesSpy gameRulesSpy = new TicTacToeRulesSpy(board, NO_NEXT_MOVE_REQUIRED);
         CommandLineGameController commandLineGameController = new CommandLineGameController(
+                gameConfigurationSpy,
                 gameRulesSpy,
                 gamePrompt
         );
@@ -118,12 +125,13 @@ public class CommandLineGameControllerTest {
     @Test
     public void printsDrawMessageAndBoardWhenThereIsADraw() {
         PromptSpy gamePrompt = createPromptSpyToReadInput("");
-        Board board = boardWith(
-                X, O, X,
-                O, O, X,
-                O, X, O);
-        TicTacToeRulesSpy gameRulesSpy = new TicTacToeRulesSpy(board, NO_NEXT_MOVE_REQUIRED);
+        TicTacToeRulesSpy gameRulesSpy = new TicTacToeRulesSpy(
+                boardWith(
+                        X, O, X,
+                        O, O, X,
+                        O, X, O), NO_NEXT_MOVE_REQUIRED);
         CommandLineGameController commandLineGameController = new CommandLineGameController(
+                gameConfigurationSpy,
                 gameRulesSpy,
                 gamePrompt
         );
@@ -143,8 +151,9 @@ public class CommandLineGameControllerTest {
                 O, O, X
         );
         TicTacToeRulesSpy gameRules = new TicTacToeRulesSpy(board, "1");
+        gameConfigurationSpy = new GameConfigurationSpy(HUMAN_VS_HUMAN, gameRules);
         CommandLineGameController commandLineGameController = new CommandLineGameController(
-                gameRules,
+                gameConfigurationSpy,
                 gamePrompt
         );
 
@@ -153,13 +162,16 @@ public class CommandLineGameControllerTest {
         assertThat(gamePrompt.getNumberOfTimesXHasWon(), is(1));
         assertThat(gamePrompt.getNumberOfTimesReplayPresented(), is(1));
         assertThat(gamePrompt.getNumberOfTimesReplayOptionRead(), is(1));
+        assertThat(gameConfigurationSpy.hasInitialisedGame(), is(true));
     }
 
     @Test
     public void boardIsUpdatedWithPlayersMove() {
         Board board = new Board(3);
+        gameRulesSpy = new TicTacToeRulesSpy(board, "1");
         CommandLineGameController commandLineGameController = new CommandLineGameController(
-                new TicTacToeRulesSpy(board, "1"),
+                gameConfigurationSpy,
+                gameRulesSpy,
                 commandPrompt()
         );
 
@@ -173,8 +185,10 @@ public class CommandLineGameControllerTest {
     public void playersTakeTurnsUntilTheBoardIsFull() {
         PlayerSpy player1Spy = new PlayerSpy(X, createCommandPromptToReadInput("1\n5\n6\n7\n8\n"));
         PlayerSpy player2Spy = new PlayerSpy(O, createCommandPromptToReadInput("2\n3\n4\n9\n"));
+        TicTacToeRules ticTacToeRules = createTicTacToeRules(player1Spy, player2Spy);
+        gameConfigurationSpy = new GameConfigurationSpy(HUMAN_VS_HUMAN, ticTacToeRules);
         CommandLineGameController commandLineGameController = new CommandLineGameController(
-                createTicTacToeRules(player1Spy, player2Spy),
+                gameConfigurationSpy,
                 createCommandPromptToReadInput(HUMAN_VS_HUMAN_ID + INPUT_FOR_3x3 + DO_NOT_REPLAY)
         );
 
@@ -201,6 +215,6 @@ public class CommandLineGameControllerTest {
     }
 
     private TicTacToeRules createTicTacToeRules(PlayerSpy player1Spy, PlayerSpy player2Spy) {
-        return new TicTacToeRules(new BoardFactory(), new PlayerFactoryStub(player1Spy, player2Spy));
+        return new TicTacToeRules(new BoardFactory(), new PlayerFactoryStub(player1Spy, player2Spy), HUMAN_VS_HUMAN, 3);
     }
 }

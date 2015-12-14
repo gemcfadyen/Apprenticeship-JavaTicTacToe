@@ -7,6 +7,7 @@ import ttt.player.PlayerSymbol;
 import java.util.List;
 
 public class DisplayPresenterSpy implements DisplayPresenter {
+    private int numberOfTimesBoardIsDrawn = 0;
     private boolean hasPresentedGridDimension = false;
     private boolean hasPresentedGameTypes;
     private boolean hasDisplayedBoard = false;
@@ -27,6 +28,7 @@ public class DisplayPresenterSpy implements DisplayPresenter {
 
     @Override
     public void presentsBoard(Board board) {
+        numberOfTimesBoardIsDrawn++;
         hasDisplayedBoard = true;
     }
 
@@ -72,5 +74,9 @@ public class DisplayPresenterSpy implements DisplayPresenter {
 
     public boolean hasAskedForReplay() {
         return hasAskedForReplay;
+    }
+
+    public int numberOfTimesBoardIsDrawn() {
+        return numberOfTimesBoardIsDrawn;
     }
 }

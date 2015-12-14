@@ -1,26 +1,24 @@
 package ttt.gui;
 
-import ttt.GameType;
 import ttt.board.Board;
 import ttt.player.PlayerSymbol;
 
-import java.util.Arrays;
-import java.util.List;
+import static ttt.player.PlayerSymbol.X;
 
 public class TicTacToeRulesSpy implements GameRules {
     private Board board;
-    private boolean hasGotGameTypes = false;
-    private boolean hasGotBoardDimensions = false;
-    private boolean hasInitialisedGame = false;
-    private boolean hasStoredGameType = false;
     private boolean hasMadeMove = false;
     private String positionOfMove;
     private boolean hasToggledPlayer = false;
     private boolean winnerChecked = false;
     private boolean boardCheckedForFreeSpaces = false;
-    private boolean hasGotCurrentPlayer = false;
     private String nextMove;
     private boolean hasGotWinnersSymbol = false;
+    private int toggled = 0;
+    private int numberOfMovesMadeAtSpecificPosition = 0;
+    private int numberOfTimesPlayerAskedForMove = 0;
+    private int numberOfTimesBoardCheckedForWin = 0;
+    private int numberOfTimesBoardObtained = 0;
 
     public TicTacToeRulesSpy() {
     }
@@ -32,15 +30,10 @@ public class TicTacToeRulesSpy implements GameRules {
 
     @Override
     public void playMoveAt(String move) {
+        numberOfMovesMadeAtSpecificPosition++;
         positionOfMove = move;
         hasMadeMove = true;
-        board.updateAt(Integer.valueOf(nextMove), getCurrentPlayerSymbol());
-    }
-
-    @Override
-    public PlayerSymbol getCurrentPlayerSymbol() {
-        hasGotCurrentPlayer = true;
-        return PlayerSymbol.X;
+        board.updateAt(Integer.valueOf(nextMove), X);
     }
 
     @Override
@@ -51,43 +44,21 @@ public class TicTacToeRulesSpy implements GameRules {
 
     @Override
     public boolean hasWinner() {
+        numberOfTimesBoardCheckedForWin++;
         winnerChecked = true;
         return board.hasWinningCombination();
     }
 
     @Override
     public void togglePlayer() {
+        toggled++;
         hasToggledPlayer = true;
     }
 
     @Override
-    public void initialiseGame(String dimension) {
-        if (board == null) {
-            board = new Board(Integer.valueOf(dimension));
-        }
-        hasInitialisedGame = true;
-    }
-
-    @Override
-    public List<GameType> getGameTypes() {
-        hasGotGameTypes = true;
-        return Arrays.asList(GameType.HUMAN_VS_HUMAN);
-    }
-
-    @Override
-    public String getDimension(GameType gameType) {
-        hasGotBoardDimensions = true;
-        return String.valueOf(gameType.dimensionUpperBoundary());
-    }
-
-    @Override
     public Board getBoard() {
+        numberOfTimesBoardObtained++;
         return board;
-    }
-
-    @Override
-    public void storeGameType(GameType gameType) {
-        hasStoredGameType = true;
     }
 
     @Override
@@ -98,23 +69,8 @@ public class TicTacToeRulesSpy implements GameRules {
 
     @Override
     public String getCurrentPlayersNextMove() {
+        numberOfTimesPlayerAskedForMove++;
         return nextMove;
-    }
-
-    public boolean hasObtainedGameTypes() {
-        return hasGotGameTypes;
-    }
-
-    public boolean hasObtainedBoardDimensions() {
-        return hasGotBoardDimensions;
-    }
-
-    public boolean hasInitialisedGame() {
-        return hasInitialisedGame;
-    }
-
-    public boolean hasStoredGameType() {
-        return hasStoredGameType;
     }
 
     public boolean hasMadeMove() {
@@ -133,15 +89,31 @@ public class TicTacToeRulesSpy implements GameRules {
         return winnerChecked;
     }
 
-    public boolean hasGotCurrentPlayer() {
-        return hasGotCurrentPlayer;
-    }
-
     public boolean boardCheckedForFreeSpace() {
         return boardCheckedForFreeSpaces;
     }
 
     public boolean hasGotWinnersSymbol() {
         return hasGotWinnersSymbol;
+    }
+
+    public int numberOfTimesPlayerHasToggled() {
+        return toggled;
+    }
+
+    public int numberOfMoves() {
+        return numberOfMovesMadeAtSpecificPosition;
+    }
+
+    public int numberOfTimesPlayerAskedForMove() {
+        return numberOfTimesPlayerAskedForMove;
+    }
+
+    public int numberOfTimesBoardCheckedForWin() {
+        return numberOfTimesBoardCheckedForWin;
+    }
+
+    public int numberOfTimesBoardIsObtained() {
+        return numberOfTimesBoardObtained;
     }
 }
