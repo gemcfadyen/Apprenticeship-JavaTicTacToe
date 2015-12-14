@@ -5,7 +5,7 @@ import javafx.scene.Scene;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 import ttt.board.BoardFactory;
-import ttt.player.PlayerFactory;
+import ttt.player.GuiPlayerFactory;
 
 public class JavaFxGui extends Application {
 
@@ -22,7 +22,7 @@ public class JavaFxGui extends Application {
         primaryStage.show();
 
 
-        GameRules ticTacToeRules = new TicTacToeRules(new BoardFactory(), new PlayerFactory(new UnusedPrompt()));
+        GameRules ticTacToeRules = new TicTacToeRules(new BoardFactory(), new GuiPlayerFactory());
         GuiGameController guiGameController = new GuiGameController(
                 new TicTacToeGameConfiguration(),
                 ticTacToeRules,

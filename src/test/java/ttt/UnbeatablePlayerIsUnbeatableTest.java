@@ -7,7 +7,7 @@ import ttt.gui.GameRules;
 import ttt.gui.TicTacToeGameConfiguration;
 import ttt.gui.TicTacToeRules;
 import ttt.player.DelayedUnbeatablePlayer;
-import ttt.player.PlayerFactory;
+import ttt.player.CommandLinePlayerFactory;
 import ttt.player.UnbeatablePlayer;
 
 import java.io.StringReader;
@@ -27,7 +27,7 @@ public class UnbeatablePlayerIsUnbeatableTest {
     @Test
     public void unbeatablePlayerNeverLoosesWhenTheyOpenTheGameIn3x3() {
         PromptSpy promptSpy = new PromptSpy(new StringReader(setupForGameWithBoardDimensionOf(3)));
-        PlayerFactory playerFactory = new PlayerFactoryStub(new UnbeatablePlayer(X), new RandomPlayer(O, promptSpy));
+        CommandLinePlayerFactory playerFactory = new CommandLinePlayerFactoryStub(new UnbeatablePlayer(X), new RandomPlayer(O, promptSpy));
         BoardFactoryStub boardFactory = new BoardFactoryStub(emptyGridPerGameWithDimension(3));
         GameConfiguration gameConfiguration = new TicTacToeGameConfiguration();
         GameRules gameRules = new TicTacToeRules(boardFactory, playerFactory);
@@ -42,7 +42,7 @@ public class UnbeatablePlayerIsUnbeatableTest {
     @Test
     public void unbeatablePlayerNeverLoosesWhenTheyDoNotOpenTheGameIn3x3() {
         PromptSpy promptSpy = new PromptSpy(new StringReader(setupForGameWithBoardDimensionOf(3)));
-        PlayerFactory playerFactory = new PlayerFactoryStub(new RandomPlayer(O, promptSpy), new UnbeatablePlayer(X));
+        CommandLinePlayerFactory playerFactory = new CommandLinePlayerFactoryStub(new RandomPlayer(O, promptSpy), new UnbeatablePlayer(X));
         BoardFactoryStub boardFactory = new BoardFactoryStub(emptyGridPerGameWithDimension(3));
         GameConfiguration gameConfiguration = new TicTacToeGameConfiguration();
         GameRules gameRules = new TicTacToeRules(boardFactory, playerFactory);
@@ -57,7 +57,7 @@ public class UnbeatablePlayerIsUnbeatableTest {
     @Test
     public void unbeatableVsUnbeatableHasNoGamesWonIn3x3() {
         PromptSpy promptSpy = new PromptSpy(new StringReader(setupForGameWithBoardDimensionOf(3)));
-        PlayerFactory playerFactory = new PlayerFactoryStub(new UnbeatablePlayer(O), new UnbeatablePlayer(X));
+        CommandLinePlayerFactory playerFactory = new CommandLinePlayerFactoryStub(new UnbeatablePlayer(O), new UnbeatablePlayer(X));
         BoardFactoryStub boardFactory = new BoardFactoryStub(emptyGridPerGameWithDimension(3));
         GameConfiguration gameConfiguration = new TicTacToeGameConfiguration();
         GameRules gameRules = new TicTacToeRules(boardFactory, playerFactory);
@@ -72,7 +72,7 @@ public class UnbeatablePlayerIsUnbeatableTest {
     @Test
     public void delayedUnbeatablePlayerNeverLoosesWhenTheyOpenTheGameIn4x4() {
         PromptSpy promptSpy = new PromptSpy(new StringReader(setupForGameWithBoardDimensionOf(4)));
-        PlayerFactory playerFactory = new PlayerFactoryStub(new DelayedUnbeatablePlayer(X, new UnbeatablePlayer(X)), new RandomPlayer(O, promptSpy));
+        CommandLinePlayerFactory playerFactory = new CommandLinePlayerFactoryStub(new DelayedUnbeatablePlayer(X, new UnbeatablePlayer(X)), new RandomPlayer(O, promptSpy));
         BoardFactoryStub boardFactory = new BoardFactoryStub(emptyGridPerGameWithDimension(4));
         GameConfiguration gameConfiguration = new TicTacToeGameConfiguration();
         GameRules gameRules = new TicTacToeRules(boardFactory, playerFactory);
@@ -87,7 +87,7 @@ public class UnbeatablePlayerIsUnbeatableTest {
     @Test
     public void delayedUnbeatablePlayerNeverLoosesWhenTheyDoNotOpenTheGameIn4x4() {
         PromptSpy promptSpy = new PromptSpy(new StringReader(setupForGameWithBoardDimensionOf(4)));
-        PlayerFactory playerFactory = new PlayerFactoryStub(new RandomPlayer(O, promptSpy), new DelayedUnbeatablePlayer(X, new UnbeatablePlayer(X)));
+        CommandLinePlayerFactory playerFactory = new CommandLinePlayerFactoryStub(new RandomPlayer(O, promptSpy), new DelayedUnbeatablePlayer(X, new UnbeatablePlayer(X)));
         BoardFactoryStub boardFactory = new BoardFactoryStub(emptyGridPerGameWithDimension(4));
         GameConfiguration gameConfiguration = new TicTacToeGameConfiguration();
         GameRules gameRules = new TicTacToeRules(boardFactory, playerFactory);
@@ -102,7 +102,7 @@ public class UnbeatablePlayerIsUnbeatableTest {
     @Test
     public void delayedUnbeatableVsDelayedUnbeatableHasNoGamesWonIn4x4() {
         PromptSpy promptSpy = new PromptSpy(new StringReader(setupForGameWithBoardDimensionOf(4)));
-        PlayerFactory playerFactory = new PlayerFactoryStub(new DelayedUnbeatablePlayer(O, new UnbeatablePlayer(O)), new DelayedUnbeatablePlayer(X, new UnbeatablePlayer(X)));
+        CommandLinePlayerFactory playerFactory = new CommandLinePlayerFactoryStub(new DelayedUnbeatablePlayer(O, new UnbeatablePlayer(O)), new DelayedUnbeatablePlayer(X, new UnbeatablePlayer(X)));
         BoardFactoryStub boardFactory = new BoardFactoryStub(emptyGridPerGameWithDimension(4));
         GameConfiguration gameConfiguration = new TicTacToeGameConfiguration();
         GameRules gameRules = new TicTacToeRules(boardFactory, playerFactory);

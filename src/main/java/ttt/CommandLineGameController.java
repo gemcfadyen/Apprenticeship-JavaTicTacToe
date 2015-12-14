@@ -5,7 +5,7 @@ import ttt.gui.GameConfiguration;
 import ttt.gui.GameRules;
 import ttt.gui.TicTacToeGameConfiguration;
 import ttt.gui.TicTacToeRules;
-import ttt.player.PlayerFactory;
+import ttt.player.CommandLinePlayerFactory;
 import ttt.ui.CommandPrompt;
 import ttt.ui.PrettyFormatter;
 import ttt.ui.Prompt;
@@ -139,6 +139,6 @@ public class CommandLineGameController {
     }
 
     private static TicTacToeRules buildGameRules(CommandPrompt gamePrompt) {
-        return new TicTacToeRules(new BoardFactory(), new PlayerFactory(gamePrompt));
+        return new TicTacToeRules(new BoardFactory(), new CommandLinePlayerFactory(gamePrompt));
     }
 }

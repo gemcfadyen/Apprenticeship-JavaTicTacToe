@@ -39,6 +39,7 @@ public class GuiGameControllerTest {
     @Test
     public void initialisesAndDisplaysEmptyBoard() {
         GameConfigurationSpy humanVsHumanGameConfiguration = new GameConfigurationSpy(HUMAN_VS_HUMAN);
+        gameRulesSpy = new TicTacToeRulesSpy(new Board(3), "-1");
         GuiGameController controller = new GuiGameController(humanVsHumanGameConfiguration, gameRulesSpy, createViewFactory());
         controller.setGameType(HUMAN_VS_HUMAN);
 
@@ -46,6 +47,8 @@ public class GuiGameControllerTest {
 
         assertThat(boardPresenterSpy.hasDrawnBoard(), is(true));
         assertThat(gameRulesSpy.hasInitialisedGame(), is(true));
+        assertThat(gameRulesSpy.numberOfTimesPlayerAskedForMove(), is(1));
+        assertThat(gameRulesSpy.hasMadeMove(), is(false));
     }
 
     @Test
@@ -74,15 +77,18 @@ public class GuiGameControllerTest {
 
     @Test
     public void humanTakesMove() {
-        gameRulesSpy = new TicTacToeRulesSpy(new Board(3), "1");
+        gameRulesSpy = new TicTacToeRulesSpy(new Board(3), "-1");
         GuiGameController controller = new GuiGameController(gameConfigurationSpy, gameRulesSpy, createViewFactory());
         controller.setGameType(HUMAN_VS_HUMAN);
 
         controller.playMove("1");
 
         assertThat(gameRulesSpy.hasMadeMove(), is(true));
+        assertThat(gameRulesSpy.gameInProgressCheck(), is(true));
         assertThat(gameRulesSpy.getPositionOfMove(), is("1"));
         assertThat(boardPresenterSpy.hasDrawnBoard(), is(true));
+        assertThat(gameRulesSpy.numberOfTimesPlayerAskedForMove(), is(1));
+        assertThat(gameRulesSpy.numberOfMoves(), is(1));
     }
 
     @Test

@@ -3,7 +3,6 @@ package ttt;
 import org.junit.Test;
 import ttt.board.Board;
 import ttt.board.BoardFactory;
-import ttt.gui.GameConfiguration;
 import ttt.gui.GameConfigurationSpy;
 import ttt.gui.TicTacToeRules;
 import ttt.gui.TicTacToeRulesSpy;
@@ -214,6 +213,6 @@ public class CommandLineGameControllerTest {
     }
 
     private TicTacToeRules createTicTacToeRules(PlayerSpy player1Spy, PlayerSpy player2Spy) {
-        return new TicTacToeRules(new BoardFactory(), new PlayerFactoryStub(player1Spy, player2Spy));
+        return new TicTacToeRules(new BoardFactory(), new CommandLinePlayerFactoryStub(player1Spy, player2Spy));
     }
 }

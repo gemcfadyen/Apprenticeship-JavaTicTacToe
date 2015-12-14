@@ -2,11 +2,11 @@ package ttt.gui;
 
 import ttt.GameType;
 import ttt.board.Board;
+import ttt.player.GuiHumanPlayer;
 
 import java.util.List;
 
 import static ttt.GameType.HUMAN_VS_HUMAN;
-import static ttt.GameType.UNBEATABLE_VS_HUMAN;
 
 public class GuiGameController implements GameController {
 
@@ -39,24 +39,30 @@ public class GuiGameController implements GameController {
         ticTacToeRules.initialiseGame(gameType, dimension);
         Board board = ticTacToeRules.getBoard();
 
-        if (gameType == UNBEATABLE_VS_HUMAN) {
-            String automatedMove = ticTacToeRules.getCurrentPlayersNextMove();
+        String automatedMove = ticTacToeRules.getCurrentPlayersNextMove();
+        if (Integer.valueOf(automatedMove) != GuiHumanPlayer.FAKE_MOVE) {
             ticTacToeRules.takeTurn(automatedMove);
         }
         boardView.presentsBoard(board);
-
     }
 
     @Override
     public void playMove(String position) {
-        playSingleMove(position);
-        if ((!gameType.equals(HUMAN_VS_HUMAN)) && ticTacToeRules.gameInProgress()) {
-            String currentPlayersNextMove = ticTacToeRules.getCurrentPlayersNextMove();
-            playSingleMove(currentPlayersNextMove);
+        playMoveIfSpaceOnBoard(position);
+
+        String automatedMove = ticTacToeRules.getCurrentPlayersNextMove();
+        if (Integer.valueOf(automatedMove) != GuiHumanPlayer.FAKE_MOVE) {
+            playMoveIfSpaceOnBoard(automatedMove);
         }
     }
 
-    private void playSingleMove(String currentPlayersNextMove) {
+    private void playMoveIfSpaceOnBoard(String currentPlayersNextMove) {
+        if (ticTacToeRules.gameInProgress()) {
+            playTurn(currentPlayersNextMove);
+        }
+    }
+
+    private void playTurn(String currentPlayersNextMove) {
         ticTacToeRules.takeTurn(currentPlayersNextMove);
         Board board = presentBoard();
         displayExitMessage(board);

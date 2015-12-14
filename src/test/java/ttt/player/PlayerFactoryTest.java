@@ -17,7 +17,7 @@ public class PlayerFactoryTest {
     @Test
     public void createsHumanPlayers() {
         Prompt commandPrompt = new CommandPrompt(new StringReader(""), new StringWriter(), new PlainFormatter());
-        PlayerFactory playerFactory = new PlayerFactory(commandPrompt);
+        PlayerFactory playerFactory = new CommandLinePlayerFactory(commandPrompt);
 
         Player[] player = playerFactory.createPlayers(HUMAN_VS_HUMAN, 3);
 
@@ -29,7 +29,7 @@ public class PlayerFactoryTest {
     @Test
     public void createsHumanAndUnbeatablePlayerFor3x3() {
         Prompt commandPrompt = new CommandPrompt(new StringReader(""), new StringWriter(), new PlainFormatter());
-        PlayerFactory playerFactory = new PlayerFactory(commandPrompt);
+        PlayerFactory playerFactory = new CommandLinePlayerFactory(commandPrompt);
 
         Player[] player = playerFactory.createPlayers(HUMAN_VS_UNBEATABLE, 3);
 
@@ -41,7 +41,7 @@ public class PlayerFactoryTest {
     @Test
     public void createsUnbeatableAndHumanPlayerFor3x3() {
         Prompt commandPrompt = new CommandPrompt(new StringReader(""), new StringWriter(), new PlainFormatter());
-        PlayerFactory playerFactory = new PlayerFactory(commandPrompt);
+        PlayerFactory playerFactory = new CommandLinePlayerFactory(commandPrompt);
 
         Player[] player = playerFactory.createPlayers(UNBEATABLE_VS_HUMAN, 3);
 
@@ -53,7 +53,7 @@ public class PlayerFactoryTest {
     @Test
     public void createsUnbeatableAndHumanFor4x4() {
         Prompt commandPrompt = new CommandPrompt(new StringReader(""), new StringWriter(), new PlainFormatter());
-        PlayerFactory playerFactory = new PlayerFactory(commandPrompt);
+        PlayerFactory playerFactory = new CommandLinePlayerFactory(commandPrompt);
 
         Player[] player = playerFactory.createPlayers(UNBEATABLE_VS_HUMAN, 4);
 

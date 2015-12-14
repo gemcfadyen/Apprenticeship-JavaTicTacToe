@@ -2,13 +2,13 @@ package ttt.gui;
 
 import ttt.GameType;
 import ttt.player.Player;
-import ttt.player.PlayerFactory;
+import ttt.player.CommandLinePlayerFactory;
 
-public class PlayerFactorySpy extends PlayerFactory {
+public class CommandLinePlayerFactorySpy extends CommandLinePlayerFactory {
     private Player[] players;
     private GameType gameType;
 
-    PlayerFactorySpy(Player... players) {
+    CommandLinePlayerFactorySpy(Player... players) {
         super(new UnusedPrompt());
         this.players = players;
     }

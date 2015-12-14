@@ -11,7 +11,6 @@ public class TicTacToeRulesSpy implements GameRules {
     private boolean hasInitialisedGame = false;
     private boolean hasMadeMove = false;
     private String positionOfMove;
-    private boolean hasToggledPlayer = false;
     private boolean winnerChecked = false;
     private boolean boardCheckedForFreeSpaces = false;
     private String nextMove;
@@ -35,7 +34,7 @@ public class TicTacToeRulesSpy implements GameRules {
         numberOfMovesMadeAtSpecificPosition++;
         positionOfMove = move;
         hasMadeMove = true;
-        board.updateAt(Integer.valueOf(nextMove), X);
+        board.updateAt(Integer.valueOf(move), X);
     }
 
     @Override
