@@ -41,8 +41,7 @@ public class GuiGameController implements GameController {
 
         if (gameType == UNBEATABLE_VS_HUMAN) {
             String automatedMove = ticTacToeRules.getCurrentPlayersNextMove();
-            ticTacToeRules.playMoveAt(automatedMove);
-            ticTacToeRules.togglePlayer();
+            ticTacToeRules.takeTurn(automatedMove);
         }
         boardView.presentsBoard(board);
 
@@ -58,10 +57,9 @@ public class GuiGameController implements GameController {
     }
 
     private void playSingleMove(String currentPlayersNextMove) {
-        ticTacToeRules.playMoveAt(currentPlayersNextMove);
+        ticTacToeRules.takeTurn(currentPlayersNextMove);
         Board board = presentBoard();
         displayExitMessage(board);
-        togglePlayer();
     }
 
     private Board presentBoard() {
@@ -72,10 +70,6 @@ public class GuiGameController implements GameController {
 
     GameType getGameType() {
         return gameType;
-    }
-
-    private void togglePlayer() {
-        ticTacToeRules.togglePlayer();
     }
 
     private void displayExitMessage(Board board) {

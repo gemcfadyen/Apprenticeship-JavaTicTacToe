@@ -90,7 +90,6 @@ public class CommandLineGameController {
     void playMatch() {
         while (gameInProgress()) {
             updateBoardWithPlayersMove();
-            gameRules.togglePlayer();
         }
         displayResultsOfGame();
     }
@@ -108,7 +107,7 @@ public class CommandLineGameController {
     }
 
     void playMove(String nextMove) {
-        gameRules.playMoveAt(nextMove);
+        gameRules.takeTurn(nextMove);
     }
 
     boolean gameInProgress() {

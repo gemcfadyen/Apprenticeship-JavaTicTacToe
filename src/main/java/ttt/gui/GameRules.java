@@ -6,10 +6,9 @@ import ttt.player.PlayerSymbol;
 
 public interface GameRules {
     void initialiseGame(GameType gameType, String dimension);
-    void playMoveAt(String move);
+    void takeTurn(String move);
     PlayerSymbol getWinningSymbol();
     boolean hasWinner();
-    void togglePlayer();
     Board getBoard();
     boolean gameInProgress();
     boolean boardHasFreeSpace();

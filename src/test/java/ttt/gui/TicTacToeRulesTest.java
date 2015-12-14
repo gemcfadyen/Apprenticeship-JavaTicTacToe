@@ -25,10 +25,12 @@ public class TicTacToeRulesTest {
     @Test
     public void makesMove() {
         TicTacToeRules ticTacToeRules = new TicTacToeRules(board, players);
+        int firstPlayer = ticTacToeRules.getCurrentPlayerIndex();
 
-        ticTacToeRules.playMoveAt("1");
+        ticTacToeRules.takeTurn("1");
 
         assertThat(board.getSymbolAt(1), is(X));
+        assertThat(firstPlayer, is(not(ticTacToeRules.getCurrentPlayerIndex())));
     }
 
     @Test
@@ -55,17 +57,6 @@ public class TicTacToeRulesTest {
                 players
         );
         assertThat(ticTacToeRules.hasWinner(), is(false));
-    }
-
-    @Test
-    public void togglesPlayer() {
-        TicTacToeRules gamesRules = new TicTacToeRules(board, players);
-
-        int currentPlayer = gamesRules.getCurrentPlayerIndex();
-        gamesRules.togglePlayer();
-        int toggledPlayer = gamesRules.getCurrentPlayerIndex();
-
-        assertThat(currentPlayer, is(not(equalTo(toggledPlayer))));
     }
 
     @Test
@@ -132,7 +123,7 @@ public class TicTacToeRulesTest {
 
     @Test
     public void gameInProgressWhenThereIsNoWinner() {
-         TicTacToeRules ticTacToeRules = new TicTacToeRules(
+        TicTacToeRules ticTacToeRules = new TicTacToeRules(
                 new Board(
                         VACANT, O, X,
                         O, X, O,
@@ -141,12 +132,11 @@ public class TicTacToeRulesTest {
         );
 
         assertThat(ticTacToeRules.gameInProgress(), is(true));
-
     }
 
     @Test
     public void gameNotInProgressWhenThereIsAWinner() {
-         TicTacToeRules ticTacToeRules = new TicTacToeRules(
+        TicTacToeRules ticTacToeRules = new TicTacToeRules(
                 new Board(
                         X, O, X,
                         O, O, X,

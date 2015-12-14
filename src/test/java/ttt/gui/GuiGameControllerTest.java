@@ -46,7 +46,6 @@ public class GuiGameControllerTest {
 
         assertThat(boardPresenterSpy.hasDrawnBoard(), is(true));
         assertThat(gameRulesSpy.hasInitialisedGame(), is(true));
-        assertThat(gameRulesSpy.hasToggledPlayers(), is(false));
     }
 
     @Test
@@ -60,7 +59,6 @@ public class GuiGameControllerTest {
 
         assertThat(boardPresenterSpy.hasDrawnBoard(), is(true));
         assertThat(gameRulesSpy.hasInitialisedGame(), is(true));
-        assertThat(gameRulesSpy.hasToggledPlayers(), is(true));
         assertThat(gameRulesSpy.getCurrentPlayersNextMove(), is("1"));
         assertThat(gameRulesSpy.hasMadeMove(), is(true));
     }
@@ -83,7 +81,6 @@ public class GuiGameControllerTest {
         controller.playMove("1");
 
         assertThat(gameRulesSpy.hasMadeMove(), is(true));
-        assertThat(gameRulesSpy.hasToggledPlayers(), is(true));
         assertThat(gameRulesSpy.getPositionOfMove(), is("1"));
         assertThat(boardPresenterSpy.hasDrawnBoard(), is(true));
     }
@@ -100,7 +97,6 @@ public class GuiGameControllerTest {
         assertThat(gameRulesSpy.hasMadeMove(), is(true));
         assertThat(gameRulesSpy.numberOfMoves(), is(2));
         assertThat(gameRulesSpy.numberOfTimesPlayerAskedForMove(), is(1));
-        assertThat(gameRulesSpy.numberOfTimesPlayerHasToggled(), is(2));
         assertThat(gameRulesSpy.gameInProgressCheck(), is(true));
         assertThat(gameRulesSpy.numberOfTimesBoardCheckedForWin(), is(2));
         assertThat(boardPresenterSpy.numberOfTimesBoardIsDrawn(), is(2));
@@ -158,7 +154,6 @@ public class GuiGameControllerTest {
         assertThat(gameRulesSpy.numberOfTimesBoardIsObtained(), is(2));
         assertThat(gameRulesSpy.numberOfMoves(), is(2));
         assertThat(gameRulesSpy.numberOfTimesPlayerAskedForMove(), is(1));
-        assertThat(gameRulesSpy.numberOfTimesPlayerHasToggled(), is(2));
         assertThat(gameRulesSpy.boardCheckedForFreeSpace(), is(true));
         assertThat(gameRulesSpy.gameInProgressCheck(), is(true));
         assertThat(gameRulesSpy.numberOfTimesBoardCheckedForWin(), is(2));

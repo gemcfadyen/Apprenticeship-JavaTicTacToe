@@ -16,7 +16,6 @@ public class TicTacToeRulesSpy implements GameRules {
     private boolean boardCheckedForFreeSpaces = false;
     private String nextMove;
     private boolean hasGotWinnersSymbol = false;
-    private int toggled = 0;
     private int numberOfMovesMadeAtSpecificPosition = 0;
     private int numberOfTimesPlayerAskedForMove = 0;
     private int numberOfTimesBoardCheckedForWin = 0;
@@ -32,7 +31,7 @@ public class TicTacToeRulesSpy implements GameRules {
     }
 
     @Override
-    public void playMoveAt(String move) {
+    public void takeTurn(String move) {
         numberOfMovesMadeAtSpecificPosition++;
         positionOfMove = move;
         hasMadeMove = true;
@@ -50,12 +49,6 @@ public class TicTacToeRulesSpy implements GameRules {
         numberOfTimesBoardCheckedForWin++;
         winnerChecked = true;
         return board.hasWinningCombination();
-    }
-
-    @Override
-    public void togglePlayer() {
-        toggled++;
-        hasToggledPlayer = true;
     }
 
     @Override
@@ -102,10 +95,6 @@ public class TicTacToeRulesSpy implements GameRules {
         return positionOfMove;
     }
 
-    public boolean hasToggledPlayers() {
-        return hasToggledPlayer;
-    }
-
     public boolean gameCheckedForWin() {
         return winnerChecked;
     }
@@ -116,10 +105,6 @@ public class TicTacToeRulesSpy implements GameRules {
 
     public boolean hasGotWinnersSymbol() {
         return hasGotWinnersSymbol;
-    }
-
-    public int numberOfTimesPlayerHasToggled() {
-        return toggled;
     }
 
     public int numberOfMoves() {
