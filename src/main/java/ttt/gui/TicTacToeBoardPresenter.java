@@ -1,13 +1,16 @@
 package ttt.gui;
 
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.ContentDisplay;
 import javafx.scene.control.Label;
 import javafx.scene.control.RadioButton;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.text.Text;
+import javafx.scene.text.TextAlignment;
 import ttt.GameType;
 import ttt.board.Board;
 import ttt.board.Line;
@@ -23,12 +26,14 @@ import static ttt.player.PlayerSymbol.*;
 public class TicTacToeBoardPresenter implements DisplayPresenter {
     private Scene scene;
     private RegisterClickEvent registerClickEvent;
+    private RegisterRollEvent registerRollEvent;
     private GuiGameController controller;
 
     public TicTacToeBoardPresenter(GuiGameController controller, Scene scene) {
         this.scene = scene;
         this.controller = controller;
         this.registerClickEvent = new RegisterClickEvent();
+        this.registerRollEvent = new RegisterRollEvent();
     }
 
     @Override
@@ -54,7 +59,7 @@ public class TicTacToeBoardPresenter implements DisplayPresenter {
     public void presentsBoard(Board board) {
         GridPane boardPane = new GridPane();
         gridPaneSetup(boardPane);
-        unusedLabelForConsistantLayout(boardPane);
+        unusedLabelForConsistentLayout(boardPane);
 
         gridPaneSetup(boardPane);
         printBoardsOnPane(board, boardPane, getCellLabelForActiveBoard(board), registerEvent());
@@ -155,8 +160,7 @@ public class TicTacToeBoardPresenter implements DisplayPresenter {
     }
 
     private void winningStatus(PlayerSymbol symbol, GridPane gameOverPane) {
-        Label gameOverTarget = new Label("Game Over - " + symbol.getSymbolForDisplay() + " won");
-        gameOverTarget.setId("gameOverTargetId");
+        Label gameOverTarget = createLabel("Game Over - " + symbol.getSymbolForDisplay() + " won");
 
         registerActionForReplay(gameOverTarget);
 
@@ -164,8 +168,7 @@ public class TicTacToeBoardPresenter implements DisplayPresenter {
     }
 
     private void drawStatus(GridPane gameOverPane) {
-        Label gameOverTarget = new Label("Game Over - No winner");
-        gameOverTarget.setId("gameOverTargetId");
+        Label gameOverTarget = createLabel("Game Over - No winner");
 
         registerActionForReplay(gameOverTarget);
 
@@ -173,7 +176,7 @@ public class TicTacToeBoardPresenter implements DisplayPresenter {
 
     }
 
-    private void unusedLabelForConsistantLayout(GridPane boardPane) {
+    private void unusedLabelForConsistentLayout(GridPane boardPane) {
         Label unusedTextForStableLayout = new Label("");
         unusedTextForStableLayout.setId("unusedId");
         positionLabelUnderBoard(boardPane, unusedTextForStableLayout);
@@ -191,10 +194,23 @@ public class TicTacToeBoardPresenter implements DisplayPresenter {
         registerClickEvent.register(dimensionSelectionButton, gameSelectionOnClick);
     }
 
+    private Label createLabel(String text) {
+        Label gameOverTarget = new Label(text);
+        gameOverTarget.setAlignment(Pos.CENTER);
+        gameOverTarget.setId("gameOverTargetId");
+        return gameOverTarget;
+    }
+
     private void registerActionForReplay(Label gameOverStatus) {
-        ClickableElement replay = new JavaFxLabel(gameOverStatus);
+        JavaFxLabel replay = new JavaFxLabel(gameOverStatus);
         ClickEvent replayOnClick = new UserSelectsReplay(controller);
         registerClickEvent.register(replay, replayOnClick);
+
+        RollOn textChangesWhenMouseRolledOn = new UserRollsMouseOnGameStatus(replay, "Click To Replay");
+        registerRollEvent.register(replay, textChangesWhenMouseRolledOn);
+
+        RollOff textChangesWhenMouseRolledOff = new UserRollsMouseOffGameStatus(replay, replay.getText());
+        registerRollEvent.register(replay, textChangesWhenMouseRolledOff);
     }
 
     private void positionLabelUnderBoard(GridPane boardPane, Label label) {

@@ -2,7 +2,7 @@ package ttt.gui;
 
 import javafx.scene.control.Label;
 
-public class JavaFxLabel implements ClickableElement {
+public class JavaFxLabel implements ClickableElement, RollableElement {
     private Label label;
 
     public JavaFxLabel(Label javaFxLabel) {
@@ -17,5 +17,20 @@ public class JavaFxLabel implements ClickableElement {
     @Override
     public String getText() {
         return label.getText();
+    }
+
+    @Override
+    public void setOnMouseRollOver(RollOn rollEvent) {
+        label.setOnMouseEntered(event -> rollEvent.action());
+    }
+
+    @Override
+    public void setOnMouseRollOff(RollOff rollEvent) {
+        label.setOnMouseExited(event -> rollEvent.action());
+    }
+
+    @Override
+    public void setText(String text) {
+        label.setText(text);
     }
 }
