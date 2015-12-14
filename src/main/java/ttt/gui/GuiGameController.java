@@ -5,7 +5,7 @@ import ttt.board.Board;
 
 import java.util.List;
 
-import static ttt.player.GuiHumanPlayer.PLACEHOLDER_UNUSED_MOVE;
+import static ttt.player.GuiHumanPlayer.IGNORE_AS_MOVE_WILL_COME_FROM_DISPLAY;
 
 public class GuiGameController implements GameController {
 
@@ -44,7 +44,7 @@ public class GuiGameController implements GameController {
 
     @Override
     public void playMove(String position) {
-        playMoveIfSpaceOnBoard(position);
+        playMoveIfSpaceOnBoard(Integer.valueOf(position));
         playAutomatedMoveIfAppropriate();
     }
 
@@ -53,19 +53,19 @@ public class GuiGameController implements GameController {
     }
 
     private void playAutomatedMoveIfAppropriate() {
-        String automatedMove = ticTacToeRules.getCurrentPlayersNextMove();
-        if (Integer.valueOf(automatedMove) != PLACEHOLDER_UNUSED_MOVE) {
+        int automatedMove = ticTacToeRules.getCurrentPlayersNextMove();
+        if (automatedMove != IGNORE_AS_MOVE_WILL_COME_FROM_DISPLAY) {
             playMoveIfSpaceOnBoard(automatedMove);
         }
     }
 
-    private void playMoveIfSpaceOnBoard(String currentPlayersNextMove) {
+    private void playMoveIfSpaceOnBoard(int currentPlayersNextMove) {
         if (ticTacToeRules.gameInProgress()) {
             playTurn(currentPlayersNextMove);
         }
     }
 
-    private void playTurn(String currentPlayersNextMove) {
+    private void playTurn(int currentPlayersNextMove) {
         ticTacToeRules.takeTurn(currentPlayersNextMove);
         Board board = presentBoard();
         displayExitMessage(board);

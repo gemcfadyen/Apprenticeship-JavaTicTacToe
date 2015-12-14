@@ -10,10 +10,10 @@ public class TicTacToeRulesSpy implements GameRules {
     private Board board;
     private boolean hasInitialisedGame = false;
     private boolean hasMadeMove = false;
-    private String positionOfMove;
+    private int positionOfMove;
     private boolean winnerChecked = false;
     private boolean boardCheckedForFreeSpaces = false;
-    private String nextMove;
+    private int nextMove;
     private boolean hasGotWinnersSymbol = false;
     private int numberOfMovesMadeAtSpecificPosition = 0;
     private int numberOfTimesPlayerAskedForMove = 0;
@@ -24,17 +24,17 @@ public class TicTacToeRulesSpy implements GameRules {
     public TicTacToeRulesSpy() {
     }
 
-    public TicTacToeRulesSpy(Board board, String nextMove) {
+    public TicTacToeRulesSpy(Board board, int nextMove) {
         this.board = board;
         this.nextMove = nextMove;
     }
 
     @Override
-    public void takeTurn(String move) {
+    public void takeTurn(int move) {
         numberOfMovesMadeAtSpecificPosition++;
         positionOfMove = move;
         hasMadeMove = true;
-        board.updateAt(Integer.valueOf(move), X);
+        board.updateAt(move, X);
     }
 
     @Override
@@ -71,7 +71,7 @@ public class TicTacToeRulesSpy implements GameRules {
     }
 
     @Override
-    public String getCurrentPlayersNextMove() {
+    public int getCurrentPlayersNextMove() {
         numberOfTimesPlayerAskedForMove++;
         return nextMove;
     }
@@ -90,7 +90,7 @@ public class TicTacToeRulesSpy implements GameRules {
         return hasMadeMove;
     }
 
-    public String getPositionOfMove() {
+    public int getPositionOfMove() {
         return positionOfMove;
     }
 

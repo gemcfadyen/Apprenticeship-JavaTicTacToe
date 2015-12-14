@@ -24,7 +24,7 @@ public class CommandLineGameControllerTest {
     private static final String HUMAN_VS_HUMAN_ID = "1\n";
     private static final String INPUT_FOR_3x3 = "3\n";
     private static final String DO_NOT_REPLAY = "N\n";
-    private static final String NO_NEXT_MOVE_REQUIRED = "no-next-move-required";
+    private static final int NO_NEXT_MOVE_REQUIRED = -1;
     private TicTacToeRulesSpy gameRulesSpy = new TicTacToeRulesSpy();
     private GameConfigurationSpy gameConfigurationSpy = new GameConfigurationSpy();
 
@@ -92,7 +92,7 @@ public class CommandLineGameControllerTest {
                 O, X, O);
         CommandLineGameController commandLineGameController = new CommandLineGameController(
                 gameConfigurationSpy,
-                new TicTacToeRulesSpy(board, "1"),
+                new TicTacToeRulesSpy(board, 1),
                 gamePrompt
         );
 
@@ -151,7 +151,7 @@ public class CommandLineGameControllerTest {
                 O, X, O,
                 O, O, X
         );
-        TicTacToeRulesSpy gameRules = new TicTacToeRulesSpy(board, "1");
+        TicTacToeRulesSpy gameRules = new TicTacToeRulesSpy(board, 1);
         CommandLineGameController commandLineGameController = new CommandLineGameController(
                 gameConfigurationSpy,
                 gameRules,
@@ -170,7 +170,7 @@ public class CommandLineGameControllerTest {
         Board board = new Board(3);
         CommandLineGameController commandLineGameController = new CommandLineGameController(
                 gameConfigurationSpy,
-                new TicTacToeRulesSpy(board, "1"),
+                new TicTacToeRulesSpy(board, 1),
                 commandPrompt()
         );
 

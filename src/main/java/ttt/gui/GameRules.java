@@ -6,11 +6,11 @@ import ttt.player.PlayerSymbol;
 
 public interface GameRules {
     void initialiseGame(GameType gameType, String dimension);
-    void takeTurn(String move);
+    void takeTurn(int move);
     PlayerSymbol getWinningSymbol();
     boolean hasWinner();
     Board getBoard();
     boolean gameInProgress();
     boolean boardHasFreeSpace();
-    String getCurrentPlayersNextMove();
+    int getCurrentPlayersNextMove();
 }

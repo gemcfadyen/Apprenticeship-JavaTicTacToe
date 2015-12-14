@@ -102,11 +102,11 @@ public class CommandLineGameController {
     }
 
     void updateBoardWithPlayersMove() {
-        String nextMove = gameRules.getCurrentPlayersNextMove();
+        int nextMove = gameRules.getCurrentPlayersNextMove();
         playMove(nextMove);
     }
 
-    void playMove(String nextMove) {
+    void playMove(int nextMove) {
         gameRules.takeTurn(nextMove);
     }
 
@@ -138,7 +138,7 @@ public class CommandLineGameController {
         );
     }
 
-    private static TicTacToeRules buildGameRules(CommandPrompt gamePrompt) {
+    private static GameRules buildGameRules(CommandPrompt gamePrompt) {
         return new TicTacToeRules(new BoardFactory(), new CommandLinePlayerFactory(gamePrompt));
     }
 }

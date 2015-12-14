@@ -5,9 +5,8 @@ import ttt.board.Board;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
-import static ttt.GameType.HUMAN_VS_HUMAN;
-import static ttt.GameType.HUMAN_VS_UNBEATABLE;
-import static ttt.GameType.UNBEATABLE_VS_HUMAN;
+import static ttt.GameType.*;
+import static ttt.player.GuiHumanPlayer.IGNORE_AS_MOVE_WILL_COME_FROM_DISPLAY;
 import static ttt.player.PlayerSymbol.*;
 
 public class GuiGameControllerTest {
@@ -39,7 +38,7 @@ public class GuiGameControllerTest {
     @Test
     public void initialisesAndDisplaysEmptyBoard() {
         GameConfigurationSpy humanVsHumanGameConfiguration = new GameConfigurationSpy(HUMAN_VS_HUMAN);
-        gameRulesSpy = new TicTacToeRulesSpy(new Board(3), "-1");
+        gameRulesSpy = new TicTacToeRulesSpy(new Board(3), IGNORE_AS_MOVE_WILL_COME_FROM_DISPLAY);
         GuiGameController controller = new GuiGameController(humanVsHumanGameConfiguration, gameRulesSpy, createViewFactory());
         controller.setGameType(HUMAN_VS_HUMAN);
 
@@ -54,7 +53,7 @@ public class GuiGameControllerTest {
     @Test
     public void initialisesGameAndDisplaysBoardWithFirstAutomatedMove() {
         GameConfigurationSpy unbeatableVsHumanGameConfiguration = new GameConfigurationSpy(UNBEATABLE_VS_HUMAN);
-        gameRulesSpy = new TicTacToeRulesSpy(new Board(3), "1");
+        gameRulesSpy = new TicTacToeRulesSpy(new Board(3), 1);
         GuiGameController controller = new GuiGameController(unbeatableVsHumanGameConfiguration, gameRulesSpy, createViewFactory());
         controller.setGameType(UNBEATABLE_VS_HUMAN);
 
@@ -62,7 +61,7 @@ public class GuiGameControllerTest {
 
         assertThat(boardPresenterSpy.hasDrawnBoard(), is(true));
         assertThat(gameRulesSpy.hasInitialisedGame(), is(true));
-        assertThat(gameRulesSpy.getCurrentPlayersNextMove(), is("1"));
+        assertThat(gameRulesSpy.getCurrentPlayersNextMove(), is(1));
         assertThat(gameRulesSpy.hasMadeMove(), is(true));
         assertThat(gameRulesSpy.gameInProgressCheck(), is(true));
     }
@@ -78,7 +77,7 @@ public class GuiGameControllerTest {
 
     @Test
     public void humanTakesMove() {
-        gameRulesSpy = new TicTacToeRulesSpy(new Board(3), "-1");
+        gameRulesSpy = new TicTacToeRulesSpy(new Board(3), IGNORE_AS_MOVE_WILL_COME_FROM_DISPLAY);
         GuiGameController controller = new GuiGameController(gameConfigurationSpy, gameRulesSpy, createViewFactory());
         controller.setGameType(HUMAN_VS_HUMAN);
 
@@ -86,7 +85,7 @@ public class GuiGameControllerTest {
 
         assertThat(gameRulesSpy.hasMadeMove(), is(true));
         assertThat(gameRulesSpy.gameInProgressCheck(), is(true));
-        assertThat(gameRulesSpy.getPositionOfMove(), is("1"));
+        assertThat(gameRulesSpy.getPositionOfMove(), is(1));
         assertThat(boardPresenterSpy.hasDrawnBoard(), is(true));
         assertThat(gameRulesSpy.numberOfTimesPlayerAskedForMove(), is(1));
         assertThat(gameRulesSpy.numberOfMoves(), is(1));
@@ -95,7 +94,7 @@ public class GuiGameControllerTest {
     @Test
     public void humanVsComputerGameMeansBothPlayersTakeTurn() {
         GameConfigurationSpy humanVsUnbeatableGameConfiguration = new GameConfigurationSpy(HUMAN_VS_UNBEATABLE);
-        gameRulesSpy = new TicTacToeRulesSpy(new Board(3), "1");
+        gameRulesSpy = new TicTacToeRulesSpy(new Board(3), 1);
         GuiGameController controller = new GuiGameController(humanVsUnbeatableGameConfiguration, gameRulesSpy, createViewFactory());
         controller.setGameType(HUMAN_VS_UNBEATABLE);
 
@@ -115,7 +114,7 @@ public class GuiGameControllerTest {
         gameRulesSpy = new TicTacToeRulesSpy(new Board(
                 VACANT, O, X,
                 X, O, X,
-                O, X, O), "0");
+                O, X, O), 0);
         GuiGameController controller = new GuiGameController(humanVsUnbeatableGameConfiguration, gameRulesSpy, createViewFactory());
         controller.setGameType(HUMAN_VS_UNBEATABLE);
 
@@ -134,7 +133,7 @@ public class GuiGameControllerTest {
         gameRulesSpy = new TicTacToeRulesSpy(new Board(
                 VACANT, VACANT, O,
                 X, O, O,
-                X, X, VACANT), "8");
+                X, X, VACANT), 8);
         GuiGameController controller = new GuiGameController(humanVsUnbeatableGameConfiguration, gameRulesSpy, createViewFactory());
         controller.setGameType(HUMAN_VS_UNBEATABLE);
 
@@ -151,7 +150,7 @@ public class GuiGameControllerTest {
     @Test
     public void playersTakeTurnsWhenGameTypeIsUnbeatableVsHuman() {
         GameConfigurationSpy humanVsUnbeatableGameConfiguration = new GameConfigurationSpy(UNBEATABLE_VS_HUMAN);
-        gameRulesSpy = new TicTacToeRulesSpy(new Board(3), "1");
+        gameRulesSpy = new TicTacToeRulesSpy(new Board(3), 1);
         GuiGameController controller = new GuiGameController(humanVsUnbeatableGameConfiguration, gameRulesSpy, createViewFactory());
         controller.setGameType(UNBEATABLE_VS_HUMAN);
 
@@ -174,7 +173,7 @@ public class GuiGameControllerTest {
                 X, O, VACANT,
                 X, VACANT, VACANT
         );
-        gameRulesSpy = new TicTacToeRulesSpy(board, "0");
+        gameRulesSpy = new TicTacToeRulesSpy(board, 0);
         GuiGameController controller = new GuiGameController(gameConfigurationSpy, gameRulesSpy, createViewFactory());
         controller.setGameType(HUMAN_VS_HUMAN);
 
@@ -193,7 +192,7 @@ public class GuiGameControllerTest {
                 O, O, X,
                 X, VACANT, O
         );
-        gameRulesSpy = new TicTacToeRulesSpy(board, "7");
+        gameRulesSpy = new TicTacToeRulesSpy(board, 7);
         GuiGameController controller = new GuiGameController(gameConfigurationSpy, gameRulesSpy, createViewFactory());
         controller.setGameType(HUMAN_VS_HUMAN);
 
@@ -210,7 +209,7 @@ public class GuiGameControllerTest {
                 X, O, O,
                 VACANT, X, O
         );
-        gameRulesSpy = new TicTacToeRulesSpy(board, "6");
+        gameRulesSpy = new TicTacToeRulesSpy(board, 6);
         GuiGameController controller = new GuiGameController(gameConfigurationSpy, gameRulesSpy, createViewFactory());
         controller.setGameType(HUMAN_VS_HUMAN);
 

@@ -27,7 +27,7 @@ public class TicTacToeRulesTest {
         TicTacToeRules ticTacToeRules = new TicTacToeRules(board, players);
         int firstPlayer = ticTacToeRules.getCurrentPlayerIndex();
 
-        ticTacToeRules.takeTurn("1");
+        ticTacToeRules.takeTurn(1);
 
         assertThat(board.getSymbolAt(1), is(X));
         assertThat(firstPlayer, is(not(ticTacToeRules.getCurrentPlayerIndex())));
@@ -154,9 +154,9 @@ public class TicTacToeRulesTest {
         players = new CommandLinePlayerFactory(promptSpy).createPlayers(HUMAN_VS_HUMAN, 3);
         TicTacToeRules gamesRules = new TicTacToeRules(board, players);
 
-        String move = gamesRules.getCurrentPlayersNextMove();
+        int move = gamesRules.getCurrentPlayersNextMove();
 
-        assertThat(move, is("1"));
+        assertThat(move, is(1));
     }
 }
 
