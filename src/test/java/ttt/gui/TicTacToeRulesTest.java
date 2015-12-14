@@ -2,10 +2,8 @@ package ttt.gui;
 
 import org.junit.Test;
 import ttt.BoardFactoryStub;
-import ttt.PlayerFactoryStub;
 import ttt.PromptSpy;
 import ttt.board.Board;
-import ttt.board.BoardFactory;
 import ttt.player.Player;
 import ttt.player.PlayerFactory;
 import ttt.ui.Prompt;
@@ -69,28 +67,6 @@ public class TicTacToeRulesTest {
     }
 
     @Test
-    public void gameTypeIsSet() {
-        PlayerFactorySpy playerFactorySpy = new PlayerFactorySpy();
-        TicTacToeRules gamesRules = new TicTacToeRules(new BoardFactory(), playerFactorySpy);
-
-        gamesRules.initialiseGame(HUMAN_VS_HUMAN, "3");
-
-        assertThat(playerFactorySpy.getGameTypeUsed(), is(HUMAN_VS_HUMAN));
-    }
-
-    @Test
-    public void initialisesGame() {
-        Board board = new Board(3);
-
-        TicTacToeRules ticTacToeRules = new TicTacToeRules(
-                new BoardFactoryStub(board),
-                new PlayerFactoryStub(players)
-        );
-        ticTacToeRules.initialiseGame(HUMAN_VS_HUMAN, "3");
-        assertThat(ticTacToeRules.getBoard(), is(board));
-    }
-
-    @Test
     public void getBoard() {
         Board board = new Board(
                 X, O, X,
@@ -98,8 +74,8 @@ public class TicTacToeRulesTest {
                 VACANT, VACANT, X
         );
 
-        TicTacToeRules ticTacToeRules = new TicTacToeRules(new BoardFactoryStub(board), new PlayerFactory(UNUSED_PROMPT));
-        ticTacToeRules.initialiseGame(HUMAN_VS_HUMAN, "3");
+        TicTacToeRules ticTacToeRules = new TicTacToeRules(new BoardFactoryStub(board), new PlayerFactory(UNUSED_PROMPT), HUMAN_VS_HUMAN, 3);
+
         assertThat(ticTacToeRules.getBoard(), is(board));
     }
 

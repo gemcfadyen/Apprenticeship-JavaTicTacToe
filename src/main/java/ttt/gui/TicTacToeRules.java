@@ -10,8 +10,6 @@ import ttt.player.PlayerSymbol;
 public class TicTacToeRules implements GameRules {
     private static final int PLAYER_ONE_INDEX = 0;
     private static final int PLAYER_TWO_INDEX = 1;
-    private BoardFactory boardFactory;
-    private PlayerFactory playerFactory;
     private Board board;
     private Player[] players;
     private int currentPlayerIndex = PLAYER_ONE_INDEX;
@@ -21,23 +19,10 @@ public class TicTacToeRules implements GameRules {
         this.players = players;
     }
 
-    public TicTacToeRules(BoardFactory boardFactory, PlayerFactory playerFactory) {
-        this.boardFactory = boardFactory;
-        this.playerFactory = playerFactory;
-    }
-
     public TicTacToeRules(BoardFactory boardFactory, PlayerFactory playerFactory,
                           GameType gameType, int dimension) {
-        Integer boardDimension = dimension;
-        board = boardFactory.createBoardWithSize(boardDimension);
-        players = playerFactory.createPlayers(gameType, boardDimension);
-    }
-
-    @Override
-    public void initialiseGame(GameType gameType, String dimension) {
-        Integer boardDimension = Integer.valueOf(dimension);
-        board = boardFactory.createBoardWithSize(boardDimension);
-        players = playerFactory.createPlayers(gameType, boardDimension);
+        board = boardFactory.createBoardWithSize(dimension);
+        players = playerFactory.createPlayers(gameType, dimension);
     }
 
     @Override

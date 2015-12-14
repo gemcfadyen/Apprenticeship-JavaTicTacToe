@@ -1,6 +1,5 @@
 package ttt.gui;
 
-import ttt.GameType;
 import ttt.board.Board;
 import ttt.player.PlayerSymbol;
 
@@ -8,7 +7,6 @@ import static ttt.player.PlayerSymbol.X;
 
 public class TicTacToeRulesSpy implements GameRules {
     private Board board;
-    private boolean hasInitialisedGame = false;
     private boolean hasMadeMove = false;
     private String positionOfMove;
     private boolean hasToggledPlayer = false;
@@ -58,14 +56,6 @@ public class TicTacToeRulesSpy implements GameRules {
     }
 
     @Override
-    public void initialiseGame(GameType gameType, String dimension) {
-        if (board == null) {
-            board = new Board(Integer.valueOf(dimension));
-        }
-        hasInitialisedGame = true;
-    }
-
-    @Override
     public Board getBoard() {
         numberOfTimesBoardObtained++;
         return board;
@@ -81,10 +71,6 @@ public class TicTacToeRulesSpy implements GameRules {
     public String getCurrentPlayersNextMove() {
         numberOfTimesPlayerAskedForMove++;
         return nextMove;
-    }
-
-    public boolean hasInitialisedGame() {
-        return hasInitialisedGame;
     }
 
     public boolean hasMadeMove() {

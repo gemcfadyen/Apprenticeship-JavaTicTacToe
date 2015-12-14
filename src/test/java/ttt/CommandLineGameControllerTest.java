@@ -33,7 +33,6 @@ public class CommandLineGameControllerTest {
         PromptSpy promptSpy = createPromptSpyToReadInput(HUMAN_VS_HUMAN_ID);
         CommandLineGameController commandLineGameController = new CommandLineGameController(
                 gameConfigurationSpy,
-                gameRulesSpy,
                 promptSpy
         );
 
@@ -50,7 +49,6 @@ public class CommandLineGameControllerTest {
         PromptSpy promptSpy = createPromptSpyToReadInput(INPUT_FOR_3x3);
         CommandLineGameController commandLineGameController = new CommandLineGameController(
                 gameConfigurationSpy,
-                gameRulesSpy,
                 promptSpy
         );
 
@@ -85,14 +83,15 @@ public class CommandLineGameControllerTest {
 
     @Test
     public void gameIsWonWhenPlayerPlacesWinningMove() {
+        gameRulesSpy = new TicTacToeRulesSpy(
+                boardWith(
+                        X, VACANT, X,
+                        O, X, O,
+                        O, X, O), "1");
         PromptSpy gamePrompt = new PromptSpy(new StringReader(""));
-        Board board = boardWith(
-                X, VACANT, X,
-                O, X, O,
-                O, X, O);
         CommandLineGameController commandLineGameController = new CommandLineGameController(
                 gameConfigurationSpy,
-                new TicTacToeRulesSpy(board, "1"),
+                gameRulesSpy,
                 gamePrompt
         );
 
@@ -126,11 +125,11 @@ public class CommandLineGameControllerTest {
     @Test
     public void printsDrawMessageAndBoardWhenThereIsADraw() {
         PromptSpy gamePrompt = createPromptSpyToReadInput("");
-        Board board = boardWith(
-                X, O, X,
-                O, O, X,
-                O, X, O);
-        TicTacToeRulesSpy gameRulesSpy = new TicTacToeRulesSpy(board, NO_NEXT_MOVE_REQUIRED);
+        TicTacToeRulesSpy gameRulesSpy = new TicTacToeRulesSpy(
+                boardWith(
+                        X, O, X,
+                        O, O, X,
+                        O, X, O), NO_NEXT_MOVE_REQUIRED);
         CommandLineGameController commandLineGameController = new CommandLineGameController(
                 gameConfigurationSpy,
                 gameRulesSpy,
@@ -155,7 +154,6 @@ public class CommandLineGameControllerTest {
         gameConfigurationSpy = new GameConfigurationSpy(HUMAN_VS_HUMAN, gameRules);
         CommandLineGameController commandLineGameController = new CommandLineGameController(
                 gameConfigurationSpy,
-                gameRules,
                 gamePrompt
         );
 
@@ -170,9 +168,10 @@ public class CommandLineGameControllerTest {
     @Test
     public void boardIsUpdatedWithPlayersMove() {
         Board board = new Board(3);
+        gameRulesSpy = new TicTacToeRulesSpy(board, "1");
         CommandLineGameController commandLineGameController = new CommandLineGameController(
                 gameConfigurationSpy,
-                new TicTacToeRulesSpy(board, "1"),
+                gameRulesSpy,
                 commandPrompt()
         );
 
@@ -190,7 +189,6 @@ public class CommandLineGameControllerTest {
         gameConfigurationSpy = new GameConfigurationSpy(HUMAN_VS_HUMAN, ticTacToeRules);
         CommandLineGameController commandLineGameController = new CommandLineGameController(
                 gameConfigurationSpy,
-                ticTacToeRules,
                 createCommandPromptToReadInput(HUMAN_VS_HUMAN_ID + INPUT_FOR_3x3 + DO_NOT_REPLAY)
         );
 

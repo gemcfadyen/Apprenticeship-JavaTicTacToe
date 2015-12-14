@@ -4,7 +4,6 @@ import ttt.board.BoardFactory;
 import ttt.gui.GameConfiguration;
 import ttt.gui.GameRules;
 import ttt.gui.TicTacToeGameConfiguration;
-import ttt.gui.TicTacToeRules;
 import ttt.player.PlayerFactory;
 import ttt.ui.CommandPrompt;
 import ttt.ui.PrettyFormatter;
@@ -22,9 +21,14 @@ public class CommandLineGameController {
     private Prompt gamePrompt;
     private GameType gameType;
 
+
     public CommandLineGameController(GameConfiguration gameConfiguration, GameRules gameRules, Prompt commandLinePrompt) {
-        this.gameConfiguration = gameConfiguration;
+        this(gameConfiguration, commandLinePrompt);
         this.gameRules = gameRules;
+    }
+
+    public CommandLineGameController(GameConfiguration gameConfiguration, Prompt commandLinePrompt) {
+        this.gameConfiguration = gameConfiguration;
         this.gamePrompt = commandLinePrompt;
     }
 
@@ -32,7 +36,6 @@ public class CommandLineGameController {
         CommandPrompt gamePrompt = buildPrompt();
         CommandLineGameController commandLineGameController = new CommandLineGameController(
                 new TicTacToeGameConfiguration(new BoardFactory(), new PlayerFactory(gamePrompt)),
-                buildGameRules(gamePrompt),
                 gamePrompt
         );
         commandLineGameController.startGame();
@@ -82,8 +85,6 @@ public class CommandLineGameController {
         return gamePrompt.readBoardDimension(largestDimension);
     }
 
-//    private void initialiseGame(int dimension) {
-
     void playMatch() {
         while (gameInProgress()) {
             updateBoardWithPlayersMove();
@@ -93,10 +94,8 @@ public class CommandLineGameController {
     }
 
     private ReplayOption getReplayOptionFromPlayer() {
-        ReplayOption replayOption;
         gamePrompt.presentReplayOption();
-        replayOption = gamePrompt.readReplayOption();
-        return replayOption;
+        return gamePrompt.readReplayOption();
     }
 
     void updateBoardWithPlayersMove() {
@@ -116,8 +115,6 @@ public class CommandLineGameController {
         printExitMessage();
     }
 
-    //    }
-//        gameRules.initialiseGame(gameType, String.valueOf(dimension));
     private void setGameType(GameType gameType) {
         this.gameType = gameType;
     }
@@ -140,9 +137,5 @@ public class CommandLineGameController {
                 new OutputStreamWriter(System.out),
                 new PrettyFormatter()
         );
-    }
-
-    private static TicTacToeRules buildGameRules(CommandPrompt gamePrompt) {
-        return new TicTacToeRules(new BoardFactory(), new PlayerFactory(gamePrompt));
     }
 }

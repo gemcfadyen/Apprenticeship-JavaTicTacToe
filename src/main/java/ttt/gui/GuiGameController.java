@@ -50,7 +50,6 @@ public class GuiGameController implements GameController {
             ticTacToeRules.togglePlayer();
         }
         boardView.presentsBoard(board);
-
     }
 
     @Override
