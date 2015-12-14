@@ -15,6 +15,6 @@ public class GuiHumanPlayerTest {
 
         int move = guiHuman.chooseNextMoveFrom(new Board(3));
 
-        assertThat(move, is(GuiHumanPlayer.FAKE_MOVE));
+        assertThat(move, is(GuiHumanPlayer.PLACEHOLDER_UNUSED_MOVE));
     }
 }

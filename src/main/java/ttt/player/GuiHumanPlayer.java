@@ -4,7 +4,7 @@ import ttt.board.Board;
 
 public class GuiHumanPlayer extends Player {
 
-    public static final int FAKE_MOVE = -1;
+    public static final int PLACEHOLDER_UNUSED_MOVE = -1;
 
     public GuiHumanPlayer(PlayerSymbol symbol) {
         super(symbol);
@@ -12,6 +12,6 @@ public class GuiHumanPlayer extends Player {
 
     @Override
     public int chooseNextMoveFrom(Board board) {
-        return FAKE_MOVE;
+        return PLACEHOLDER_UNUSED_MOVE;
     }
 }

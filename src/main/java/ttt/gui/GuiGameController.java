@@ -2,11 +2,10 @@ package ttt.gui;
 
 import ttt.GameType;
 import ttt.board.Board;
-import ttt.player.GuiHumanPlayer;
 
 import java.util.List;
 
-import static ttt.GameType.HUMAN_VS_HUMAN;
+import static ttt.player.GuiHumanPlayer.PLACEHOLDER_UNUSED_MOVE;
 
 public class GuiGameController implements GameController {
 
@@ -39,19 +38,23 @@ public class GuiGameController implements GameController {
         ticTacToeRules.initialiseGame(gameType, dimension);
         Board board = ticTacToeRules.getBoard();
 
-        String automatedMove = ticTacToeRules.getCurrentPlayersNextMove();
-        if (Integer.valueOf(automatedMove) != GuiHumanPlayer.FAKE_MOVE) {
-            ticTacToeRules.takeTurn(automatedMove);
-        }
+        playAutomatedMoveIfAppropriate();
         boardView.presentsBoard(board);
     }
 
     @Override
     public void playMove(String position) {
         playMoveIfSpaceOnBoard(position);
+        playAutomatedMoveIfAppropriate();
+    }
 
+    public void setGameType(GameType gameType) {
+        this.gameType = gameType;
+    }
+
+    private void playAutomatedMoveIfAppropriate() {
         String automatedMove = ticTacToeRules.getCurrentPlayersNextMove();
-        if (Integer.valueOf(automatedMove) != GuiHumanPlayer.FAKE_MOVE) {
+        if (Integer.valueOf(automatedMove) != PLACEHOLDER_UNUSED_MOVE) {
             playMoveIfSpaceOnBoard(automatedMove);
         }
     }
@@ -84,9 +87,5 @@ public class GuiGameController implements GameController {
         } else if (!ticTacToeRules.boardHasFreeSpace()) {
             boardView.printsDrawMessage(board);
         }
-    }
-
-    public void setGameType(GameType gameType) {
-        this.gameType = gameType;
     }
 }

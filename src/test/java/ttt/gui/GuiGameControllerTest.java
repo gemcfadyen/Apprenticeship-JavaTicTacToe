@@ -64,6 +64,7 @@ public class GuiGameControllerTest {
         assertThat(gameRulesSpy.hasInitialisedGame(), is(true));
         assertThat(gameRulesSpy.getCurrentPlayersNextMove(), is("1"));
         assertThat(gameRulesSpy.hasMadeMove(), is(true));
+        assertThat(gameRulesSpy.gameInProgressCheck(), is(true));
     }
 
     @Test
