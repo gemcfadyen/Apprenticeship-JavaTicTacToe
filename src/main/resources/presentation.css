@@ -33,6 +33,10 @@
    -fx-text-fill: LIGHTBLUE;
 }
 
+.label:hover {
+    -fx-background-color: linear-gradient(#fffaf0, #61a2b1);
+}
+
 .button {
     -fx-text-fill: blue;
     -fx-font-size: 20px;

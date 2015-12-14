@@ -59,7 +59,6 @@ public class TicTacToeBoardPresenter implements DisplayPresenter {
         gridPaneSetup(boardPane);
         printBoardsOnPane(board, boardPane, getCellLabelForActiveBoard(board), registerEvent());
 
-
         scene.setRoot(boardPane);
     }
 
@@ -158,13 +157,20 @@ public class TicTacToeBoardPresenter implements DisplayPresenter {
     private void winningStatus(PlayerSymbol symbol, GridPane gameOverPane) {
         Label gameOverTarget = new Label("Game Over - " + symbol.getSymbolForDisplay() + " won");
         gameOverTarget.setId("gameOverTargetId");
+
+        registerActionForReplay(gameOverTarget);
+
         positionLabelUnderBoard(gameOverPane, gameOverTarget);
     }
 
     private void drawStatus(GridPane gameOverPane) {
         Label gameOverTarget = new Label("Game Over - No winner");
         gameOverTarget.setId("gameOverTargetId");
+
+        registerActionForReplay(gameOverTarget);
+
         positionLabelUnderBoard(gameOverPane, gameOverTarget);
+
     }
 
     private void unusedLabelForConsistantLayout(GridPane boardPane) {
@@ -183,6 +189,12 @@ public class TicTacToeBoardPresenter implements DisplayPresenter {
         ClickableElement dimensionSelectionButton = new JavaFxRadioButton(radioButton);
         ClickEvent gameSelectionOnClick = new UserSelectsBoardDimension(controller, dimensionSelectionButton);
         registerClickEvent.register(dimensionSelectionButton, gameSelectionOnClick);
+    }
+
+    private void registerActionForReplay(Label gameOverStatus) {
+        ClickableElement replay = new JavaFxLabel(gameOverStatus);
+        ClickEvent replayOnClick = new UserSelectsReplay(controller, replay);
+        registerClickEvent.register(replay, replayOnClick);
     }
 
     private void positionLabelUnderBoard(GridPane boardPane, Label label) {
