@@ -81,7 +81,7 @@ public class CommandLineGameControllerTest {
         boolean gameInProgress = commandLineGameController.gameInProgress();
 
         assertThat(gameInProgress, is(false));
-        assertThat(gameRulesSpy.boardCheckedForFreeSpace(), is(true));
+        assertThat(gameRulesSpy.gameInProgressCheck(), is(true));
     }
 
     @Test

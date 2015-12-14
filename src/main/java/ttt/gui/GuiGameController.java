@@ -51,7 +51,7 @@ public class GuiGameController implements GameController {
     @Override
     public void playMove(String position) {
         playSingleMove(position);
-        if ((!gameType.equals(HUMAN_VS_HUMAN)) && ticTacToeRules.boardHasFreeSpace() && !ticTacToeRules.hasWinner()) {
+        if ((!gameType.equals(HUMAN_VS_HUMAN)) && ticTacToeRules.gameInProgress()) {
             String currentPlayersNextMove = ticTacToeRules.getCurrentPlayersNextMove();
             playSingleMove(currentPlayersNextMove);
         }

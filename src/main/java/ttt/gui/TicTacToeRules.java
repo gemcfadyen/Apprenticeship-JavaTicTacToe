@@ -71,6 +71,12 @@ public class TicTacToeRules implements GameRules {
                         : PLAYER_ONE_INDEX;
     }
 
+
+   @Override
+   public boolean gameInProgress() {
+      return boardHasFreeSpace() && !hasWinner();
+   }
+
     int getCurrentPlayerIndex() {
         return currentPlayerIndex;
     }

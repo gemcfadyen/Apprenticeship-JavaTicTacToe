@@ -112,7 +112,7 @@ public class CommandLineGameController {
     }
 
     boolean gameInProgress() {
-        return gameRules.boardHasFreeSpace() && !gameRules.hasWinner();
+        return gameRules.gameInProgress();
     }
 
     void displayResultsOfGame() {

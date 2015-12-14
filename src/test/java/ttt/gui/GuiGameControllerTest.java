@@ -101,8 +101,8 @@ public class GuiGameControllerTest {
         assertThat(gameRulesSpy.numberOfMoves(), is(2));
         assertThat(gameRulesSpy.numberOfTimesPlayerAskedForMove(), is(1));
         assertThat(gameRulesSpy.numberOfTimesPlayerHasToggled(), is(2));
-        assertThat(gameRulesSpy.boardCheckedForFreeSpace(), is(true));
-        assertThat(gameRulesSpy.numberOfTimesBoardCheckedForWin(), is(3));
+        assertThat(gameRulesSpy.gameInProgressCheck(), is(true));
+        assertThat(gameRulesSpy.numberOfTimesBoardCheckedForWin(), is(2));
         assertThat(boardPresenterSpy.numberOfTimesBoardIsDrawn(), is(2));
     }
 
@@ -140,7 +140,8 @@ public class GuiGameControllerTest {
         assertThat(gameRulesSpy.hasMadeMove(), is(true));
         assertThat(gameRulesSpy.numberOfMoves(), is(1));
         assertThat(gameRulesSpy.numberOfTimesBoardIsObtained(), is(1));
-        assertThat(gameRulesSpy.numberOfTimesBoardCheckedForWin(), is(2));
+        assertThat(gameRulesSpy.gameInProgressCheck(), is(true));
+        assertThat(gameRulesSpy.numberOfTimesBoardCheckedForWin(), is(1));
         assertThat(boardPresenterSpy.hasIdentifiedAWin(), is(true));
     }
 
@@ -159,7 +160,8 @@ public class GuiGameControllerTest {
         assertThat(gameRulesSpy.numberOfTimesPlayerAskedForMove(), is(1));
         assertThat(gameRulesSpy.numberOfTimesPlayerHasToggled(), is(2));
         assertThat(gameRulesSpy.boardCheckedForFreeSpace(), is(true));
-        assertThat(gameRulesSpy.numberOfTimesBoardCheckedForWin(), is(3));
+        assertThat(gameRulesSpy.gameInProgressCheck(), is(true));
+        assertThat(gameRulesSpy.numberOfTimesBoardCheckedForWin(), is(2));
         assertThat(boardPresenterSpy.numberOfTimesBoardIsDrawn(), is(2));
     }
 

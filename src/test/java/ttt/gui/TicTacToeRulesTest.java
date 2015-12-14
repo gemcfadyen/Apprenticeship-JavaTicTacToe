@@ -104,21 +104,21 @@ public class TicTacToeRulesTest {
     }
 
     @Test
-    public void boardHasFreeSpace() {
+    public void gameInProgressWhenBoardHasFreeSpace() {
         TicTacToeRules ticTacToeRules = new TicTacToeRules(
                 new Board(
                         X, O, X,
                         O, X, O,
-                        VACANT, VACANT, X
+                        VACANT, VACANT, VACANT
                 ),
                 players
         );
 
-        assertThat(ticTacToeRules.boardHasFreeSpace(), is(true));
+        assertThat(ticTacToeRules.gameInProgress(), is(true));
     }
 
     @Test
-    public void boardHasNoFreeSpace() {
+    public void gameInProgressWhenBoardHasNoFreeSpace() {
         TicTacToeRules ticTacToeRules = new TicTacToeRules(
                 new Board(
                         X, O, X,
@@ -127,8 +127,36 @@ public class TicTacToeRulesTest {
                 players
         );
 
-        assertThat(ticTacToeRules.boardHasFreeSpace(), is(false));
+        assertThat(ticTacToeRules.gameInProgress(), is(false));
     }
+
+    @Test
+    public void gameInProgressWhenThereIsNoWinner() {
+         TicTacToeRules ticTacToeRules = new TicTacToeRules(
+                new Board(
+                        VACANT, O, X,
+                        O, X, O,
+                        VACANT, O, X),
+                players
+        );
+
+        assertThat(ticTacToeRules.gameInProgress(), is(true));
+
+    }
+
+    @Test
+    public void gameNotInProgressWhenThereIsAWinner() {
+         TicTacToeRules ticTacToeRules = new TicTacToeRules(
+                new Board(
+                        X, O, X,
+                        O, O, X,
+                        VACANT, VACANT, X
+                ),
+                players
+        );
+        assertThat(ticTacToeRules.gameInProgress(), is(false));
+    }
+
 
     @Test
     public void getCurrentPlayersNextMove() {

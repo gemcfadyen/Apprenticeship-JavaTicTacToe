@@ -21,6 +21,7 @@ public class TicTacToeRulesSpy implements GameRules {
     private int numberOfTimesPlayerAskedForMove = 0;
     private int numberOfTimesBoardCheckedForWin = 0;
     private int numberOfTimesBoardObtained = 0;
+    private boolean checkedGameIsInProgress = false;
 
     public TicTacToeRulesSpy() {
     }
@@ -83,6 +84,12 @@ public class TicTacToeRulesSpy implements GameRules {
         return nextMove;
     }
 
+    @Override
+    public boolean gameInProgress() {
+        checkedGameIsInProgress = true;
+        return board.hasFreeSpace() && !board.hasWinningCombination();
+    }
+
     public boolean hasInitialisedGame() {
         return hasInitialisedGame;
     }
@@ -129,5 +136,9 @@ public class TicTacToeRulesSpy implements GameRules {
 
     public int numberOfTimesBoardIsObtained() {
         return numberOfTimesBoardObtained;
+    }
+
+    public boolean gameInProgressCheck() {
+        return checkedGameIsInProgress;
     }
 }
