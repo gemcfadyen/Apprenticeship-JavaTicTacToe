@@ -8,10 +8,11 @@ public class GuiGameControllerSpy implements GameController {
     private boolean hasPresentedBoard = false;
     private int boardDimension = 0;
     private boolean hasTakenMove = false;
+    private boolean hasPresentedGameTypes = false;
 
     @Override
     public void presentGameTypes() {
-
+        hasPresentedGameTypes = true;
     }
 
     @Override
@@ -29,6 +30,10 @@ public class GuiGameControllerSpy implements GameController {
     @Override
     public void playMove(String position) {
         hasTakenMove = true;
+    }
+
+    public boolean hasPresentedGameTypes() {
+        return hasPresentedGameTypes;
     }
 
     public boolean hasPresentedBoardDimensions() {

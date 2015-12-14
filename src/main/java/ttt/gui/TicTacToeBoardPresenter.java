@@ -193,7 +193,7 @@ public class TicTacToeBoardPresenter implements DisplayPresenter {
 
     private void registerActionForReplay(Label gameOverStatus) {
         ClickableElement replay = new JavaFxLabel(gameOverStatus);
-        ClickEvent replayOnClick = new UserSelectsReplay(controller, replay);
+        ClickEvent replayOnClick = new UserSelectsReplay(controller);
         registerClickEvent.register(replay, replayOnClick);
     }
 
