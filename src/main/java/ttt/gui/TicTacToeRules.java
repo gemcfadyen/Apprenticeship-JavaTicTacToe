@@ -26,6 +26,13 @@ public class TicTacToeRules implements GameRules {
         this.playerFactory = playerFactory;
     }
 
+    public TicTacToeRules(BoardFactory boardFactory, PlayerFactory playerFactory,
+                          GameType gameType, int dimension) {
+        Integer boardDimension = dimension;
+        board = boardFactory.createBoardWithSize(boardDimension);
+        players = playerFactory.createPlayers(gameType, boardDimension);
+    }
+
     @Override
     public void initialiseGame(GameType gameType, String dimension) {
         Integer boardDimension = Integer.valueOf(dimension);

@@ -29,7 +29,7 @@ public class UnbeatablePlayerIsUnbeatableTest {
         PromptSpy promptSpy = new PromptSpy(new StringReader(setupForGameWithBoardDimensionOf(3)));
         PlayerFactory playerFactory = new PlayerFactoryStub(new UnbeatablePlayer(X), new RandomPlayer(O, promptSpy));
         BoardFactoryStub boardFactory = new BoardFactoryStub(emptyGridPerGameWithDimension(3));
-        GameConfiguration gameConfiguration = new TicTacToeGameConfiguration();
+        GameConfiguration gameConfiguration = new TicTacToeGameConfiguration(boardFactory, playerFactory);
         GameRules gameRules = new TicTacToeRules(boardFactory, playerFactory);
         CommandLineGameController gameWithManyRounds = new CommandLineGameController(gameConfiguration, gameRules, promptSpy);
 
@@ -44,7 +44,7 @@ public class UnbeatablePlayerIsUnbeatableTest {
         PromptSpy promptSpy = new PromptSpy(new StringReader(setupForGameWithBoardDimensionOf(3)));
         PlayerFactory playerFactory = new PlayerFactoryStub(new RandomPlayer(O, promptSpy), new UnbeatablePlayer(X));
         BoardFactoryStub boardFactory = new BoardFactoryStub(emptyGridPerGameWithDimension(3));
-        GameConfiguration gameConfiguration = new TicTacToeGameConfiguration();
+        GameConfiguration gameConfiguration = new TicTacToeGameConfiguration(boardFactory, playerFactory);
         GameRules gameRules = new TicTacToeRules(boardFactory, playerFactory);
         CommandLineGameController gameWithManyRounds = new CommandLineGameController(gameConfiguration, gameRules, promptSpy);
 
@@ -59,7 +59,7 @@ public class UnbeatablePlayerIsUnbeatableTest {
         PromptSpy promptSpy = new PromptSpy(new StringReader(setupForGameWithBoardDimensionOf(3)));
         PlayerFactory playerFactory = new PlayerFactoryStub(new UnbeatablePlayer(O), new UnbeatablePlayer(X));
         BoardFactoryStub boardFactory = new BoardFactoryStub(emptyGridPerGameWithDimension(3));
-        GameConfiguration gameConfiguration = new TicTacToeGameConfiguration();
+        GameConfiguration gameConfiguration = new TicTacToeGameConfiguration(boardFactory, playerFactory);
         GameRules gameRules = new TicTacToeRules(boardFactory, playerFactory);
         CommandLineGameController gameWithManyRounds = new CommandLineGameController(gameConfiguration, gameRules, promptSpy);
 
@@ -74,7 +74,7 @@ public class UnbeatablePlayerIsUnbeatableTest {
         PromptSpy promptSpy = new PromptSpy(new StringReader(setupForGameWithBoardDimensionOf(4)));
         PlayerFactory playerFactory = new PlayerFactoryStub(new DelayedUnbeatablePlayer(X, new UnbeatablePlayer(X)), new RandomPlayer(O, promptSpy));
         BoardFactoryStub boardFactory = new BoardFactoryStub(emptyGridPerGameWithDimension(4));
-        GameConfiguration gameConfiguration = new TicTacToeGameConfiguration();
+        GameConfiguration gameConfiguration = new TicTacToeGameConfiguration(boardFactory, playerFactory);
         GameRules gameRules = new TicTacToeRules(boardFactory, playerFactory);
         CommandLineGameController gameWithManyRounds = new CommandLineGameController(gameConfiguration, gameRules, promptSpy);
 
@@ -89,7 +89,7 @@ public class UnbeatablePlayerIsUnbeatableTest {
         PromptSpy promptSpy = new PromptSpy(new StringReader(setupForGameWithBoardDimensionOf(4)));
         PlayerFactory playerFactory = new PlayerFactoryStub(new RandomPlayer(O, promptSpy), new DelayedUnbeatablePlayer(X, new UnbeatablePlayer(X)));
         BoardFactoryStub boardFactory = new BoardFactoryStub(emptyGridPerGameWithDimension(4));
-        GameConfiguration gameConfiguration = new TicTacToeGameConfiguration();
+        GameConfiguration gameConfiguration = new TicTacToeGameConfiguration(boardFactory, playerFactory);
         GameRules gameRules = new TicTacToeRules(boardFactory, playerFactory);
         CommandLineGameController gameWithManyRounds = new CommandLineGameController(gameConfiguration, gameRules, promptSpy);
 
@@ -104,7 +104,7 @@ public class UnbeatablePlayerIsUnbeatableTest {
         PromptSpy promptSpy = new PromptSpy(new StringReader(setupForGameWithBoardDimensionOf(4)));
         PlayerFactory playerFactory = new PlayerFactoryStub(new DelayedUnbeatablePlayer(O, new UnbeatablePlayer(O)), new DelayedUnbeatablePlayer(X, new UnbeatablePlayer(X)));
         BoardFactoryStub boardFactory = new BoardFactoryStub(emptyGridPerGameWithDimension(4));
-        GameConfiguration gameConfiguration = new TicTacToeGameConfiguration();
+        GameConfiguration gameConfiguration = new TicTacToeGameConfiguration(boardFactory, playerFactory);
         GameRules gameRules = new TicTacToeRules(boardFactory, playerFactory);
         CommandLineGameController gameWithManyRounds = new CommandLineGameController(gameConfiguration, gameRules, promptSpy);
 

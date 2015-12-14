@@ -3,11 +3,10 @@ package ttt;
 import org.junit.Test;
 import ttt.board.Board;
 import ttt.board.BoardFactory;
-import ttt.gui.GameConfiguration;
 import ttt.gui.GameConfigurationSpy;
 import ttt.gui.TicTacToeRules;
 import ttt.gui.TicTacToeRulesSpy;
-import ttt.player.*;
+import ttt.player.PlayerSymbol;
 import ttt.ui.CommandPrompt;
 import ttt.ui.PlainFormatter;
 import ttt.ui.Prompt;
@@ -153,6 +152,7 @@ public class CommandLineGameControllerTest {
                 O, O, X
         );
         TicTacToeRulesSpy gameRules = new TicTacToeRulesSpy(board, "1");
+        gameConfigurationSpy = new GameConfigurationSpy(HUMAN_VS_HUMAN, gameRules);
         CommandLineGameController commandLineGameController = new CommandLineGameController(
                 gameConfigurationSpy,
                 gameRules,
@@ -164,6 +164,7 @@ public class CommandLineGameControllerTest {
         assertThat(gamePrompt.getNumberOfTimesXHasWon(), is(1));
         assertThat(gamePrompt.getNumberOfTimesReplayPresented(), is(1));
         assertThat(gamePrompt.getNumberOfTimesReplayOptionRead(), is(1));
+        assertThat(gameConfigurationSpy.hasInitialisedGame(), is(true));
     }
 
     @Test
@@ -185,9 +186,11 @@ public class CommandLineGameControllerTest {
     public void playersTakeTurnsUntilTheBoardIsFull() {
         PlayerSpy player1Spy = new PlayerSpy(X, createCommandPromptToReadInput("1\n5\n6\n7\n8\n"));
         PlayerSpy player2Spy = new PlayerSpy(O, createCommandPromptToReadInput("2\n3\n4\n9\n"));
+        TicTacToeRules ticTacToeRules = createTicTacToeRules(player1Spy, player2Spy);
+        gameConfigurationSpy = new GameConfigurationSpy(HUMAN_VS_HUMAN, ticTacToeRules);
         CommandLineGameController commandLineGameController = new CommandLineGameController(
                 gameConfigurationSpy,
-                createTicTacToeRules(player1Spy, player2Spy),
+                ticTacToeRules,
                 createCommandPromptToReadInput(HUMAN_VS_HUMAN_ID + INPUT_FOR_3x3 + DO_NOT_REPLAY)
         );
 
@@ -214,6 +217,6 @@ public class CommandLineGameControllerTest {
     }
 
     private TicTacToeRules createTicTacToeRules(PlayerSpy player1Spy, PlayerSpy player2Spy) {
-        return new TicTacToeRules(new BoardFactory(), new PlayerFactoryStub(player1Spy, player2Spy));
+        return new TicTacToeRules(new BoardFactory(), new PlayerFactoryStub(player1Spy, player2Spy), HUMAN_VS_HUMAN, 3);
     }
 }

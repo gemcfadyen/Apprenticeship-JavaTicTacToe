@@ -31,7 +31,7 @@ public class GameIsPlayedThroughTheGuiTest {
         Prompt unusedPrompt = new UnusedPrompt();
         TicTacToeRules ticTacToeRules = new TicTacToeRules(new BoardFactory(), new PlayerFactory(unusedPrompt));
         controller = new GuiGameController(
-                new TicTacToeGameConfiguration(),
+                new TicTacToeGameConfiguration(new BoardFactory(), new PlayerFactory(unusedPrompt)),
                 ticTacToeRules,
                 new JavaFxViewFactory(scene)
         );

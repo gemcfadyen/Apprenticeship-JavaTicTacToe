@@ -22,7 +22,6 @@ public class CommandLineGameController {
     private Prompt gamePrompt;
     private GameType gameType;
 
-//    public CommandLineGameController(GameConfiguration gameConfiguration{
     public CommandLineGameController(GameConfiguration gameConfiguration, GameRules gameRules, Prompt commandLinePrompt) {
         this.gameConfiguration = gameConfiguration;
         this.gameRules = gameRules;
@@ -32,7 +31,7 @@ public class CommandLineGameController {
     public static void main(String... args) {
         CommandPrompt gamePrompt = buildPrompt();
         CommandLineGameController commandLineGameController = new CommandLineGameController(
-                new TicTacToeGameConfiguration(),
+                new TicTacToeGameConfiguration(new BoardFactory(), new PlayerFactory(gamePrompt)),
                 buildGameRules(gamePrompt),
                 gamePrompt
         );
@@ -45,7 +44,7 @@ public class CommandLineGameController {
         while (replayOption.equals(Y)) {
             GameType gameType = getGameTypeFromPlayer();
             int dimension = getDimensionChoiceFromPlayer(gameType);
-            initialiseGame(dimension);
+            gameRules = gameConfiguration.initialiseGame(gameType, dimension);
 
             playMatch();
 
@@ -65,7 +64,7 @@ public class CommandLineGameController {
 
     private GameType readGameType(List<GameType> gameTypes) {
         GameType gameType = gamePrompt.readGameType(gameTypes);
-        this.gameType = gameType;
+        setGameType(gameType);
         return gameType;
     }
 
@@ -83,9 +82,7 @@ public class CommandLineGameController {
         return gamePrompt.readBoardDimension(largestDimension);
     }
 
-    private void initialiseGame(int dimension) {
-        gameRules.initialiseGame(gameType, String.valueOf(dimension));
-    }
+//    private void initialiseGame(int dimension) {
 
     void playMatch() {
         while (gameInProgress()) {
@@ -117,6 +114,12 @@ public class CommandLineGameController {
 
     void displayResultsOfGame() {
         printExitMessage();
+    }
+
+    //    }
+//        gameRules.initialiseGame(gameType, String.valueOf(dimension));
+    private void setGameType(GameType gameType) {
+        this.gameType = gameType;
     }
 
     GameType getGameType() {

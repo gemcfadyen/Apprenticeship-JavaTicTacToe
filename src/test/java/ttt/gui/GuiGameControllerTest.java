@@ -38,28 +38,29 @@ public class GuiGameControllerTest {
 
     @Test
     public void initialisesAndDisplaysEmptyBoard() {
-        GameConfigurationSpy humanVsHumanGameConfiguration = new GameConfigurationSpy(HUMAN_VS_HUMAN);
-        GuiGameController controller = new GuiGameController(humanVsHumanGameConfiguration, gameRulesSpy, createViewFactory());
+        gameRulesSpy = new TicTacToeRulesSpy(new Board(3), "");
+        GameConfigurationSpy humanVsHumanGameConfiguration = new GameConfigurationSpy(HUMAN_VS_HUMAN, gameRulesSpy);
+        GuiGameController controller = new GuiGameController(humanVsHumanGameConfiguration, createViewFactory());
         controller.setGameType(HUMAN_VS_HUMAN);
 
         controller.presentBoard("3");
 
         assertThat(boardPresenterSpy.hasDrawnBoard(), is(true));
-        assertThat(gameRulesSpy.hasInitialisedGame(), is(true));
+        assertThat(humanVsHumanGameConfiguration.hasInitialisedGame(), is(true));
         assertThat(gameRulesSpy.hasToggledPlayers(), is(false));
     }
 
     @Test
     public void initialisesGameAndDisplaysBoardWithFirstAutomatedMove() {
-        GameConfigurationSpy unbeatableVsHumanGameConfiguration = new GameConfigurationSpy(UNBEATABLE_VS_HUMAN);
         gameRulesSpy = new TicTacToeRulesSpy(new Board(3), "1");
+        GameConfigurationSpy unbeatableVsHumanGameConfiguration = new GameConfigurationSpy(UNBEATABLE_VS_HUMAN, gameRulesSpy);
         GuiGameController controller = new GuiGameController(unbeatableVsHumanGameConfiguration, gameRulesSpy, createViewFactory());
         controller.setGameType(UNBEATABLE_VS_HUMAN);
 
         controller.presentBoard("3");
 
         assertThat(boardPresenterSpy.hasDrawnBoard(), is(true));
-        assertThat(gameRulesSpy.hasInitialisedGame(), is(true));
+        assertThat(unbeatableVsHumanGameConfiguration.hasInitialisedGame(), is(true));
         assertThat(gameRulesSpy.hasToggledPlayers(), is(true));
         assertThat(gameRulesSpy.getCurrentPlayersNextMove(), is("1"));
         assertThat(gameRulesSpy.hasMadeMove(), is(true));

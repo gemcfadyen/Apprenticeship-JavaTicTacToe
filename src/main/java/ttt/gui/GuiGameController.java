@@ -15,6 +15,11 @@ public class GuiGameController implements GameController {
     private DisplayPresenter boardView;
     private GameType gameType;
 
+    public GuiGameController(GameConfiguration gameConfiguration, ViewFactory viewFactory) {
+        this.gameConfiguration = gameConfiguration;
+        this.boardView = viewFactory.createView(this, ticTacToeRules);
+    }
+
     public GuiGameController(GameConfiguration gameConfiguration, GameRules ticTacToeRules, ViewFactory viewFactory) {
         this.gameConfiguration = gameConfiguration;
         this.ticTacToeRules = ticTacToeRules;
@@ -36,7 +41,7 @@ public class GuiGameController implements GameController {
 
     @Override
     public void presentBoard(String dimension) {
-        ticTacToeRules.initialiseGame(gameType, dimension);
+        ticTacToeRules = gameConfiguration.initialiseGame(gameType, Integer.valueOf(dimension));
         Board board = ticTacToeRules.getBoard();
 
         if (gameType == UNBEATABLE_VS_HUMAN) {
