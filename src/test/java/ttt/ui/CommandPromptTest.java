@@ -33,7 +33,7 @@ public class CommandPromptTest {
     public void askUserForBoardDimension() {
         Prompt prompt = new CommandPrompt(new StringReader("1\n"), writer, new PlainFormatter());
 
-        prompt.presentGridDimensionsUpTo("5");
+        prompt.presentGridDimensionsBetween(1, 5);
 
         assertThat(writer.toString().contains("Please enter the dimension of the board you would like to use [1 to 5]\n"), is(true));
     }
@@ -42,7 +42,7 @@ public class CommandPromptTest {
     public void readsDimensionFromCommandLine() {
         Prompt prompt = new CommandPrompt(new StringReader("3\n"), writer, plainFormatter);
 
-        int dimension = prompt.readBoardDimension(HUMAN_VS_HUMAN.dimensionUpperBoundary());
+        int dimension = prompt.readBoardDimension(HUMAN_VS_HUMAN.dimensionLowerBoundary(), HUMAN_VS_HUMAN.dimensionUpperBoundary());
 
         assertThat(dimension, is(3));
     }
@@ -51,7 +51,7 @@ public class CommandPromptTest {
     public void repromptsUserWhenNonNumericEnteredForBoardDimension() {
         Prompt prompt = new CommandPrompt(new StringReader("z\n4\n"), writer, plainFormatter);
 
-        int dimension = prompt.readBoardDimension(HUMAN_VS_HUMAN.dimensionUpperBoundary());
+        int dimension = prompt.readBoardDimension(HUMAN_VS_HUMAN.dimensionLowerBoundary(), HUMAN_VS_HUMAN.dimensionUpperBoundary());
 
         assertThat(dimension, is(4));
         assertThat(writer.toString().contains(
@@ -65,7 +65,7 @@ public class CommandPromptTest {
     public void repromptsUserWhenInvalidDimensionEnteredForGameType() {
         Prompt prompt = new CommandPrompt(new StringReader("100\n4\n"), writer, plainFormatter);
 
-        int dimension = prompt.readBoardDimension(HUMAN_VS_UNBEATABLE.dimensionUpperBoundary());
+        int dimension = prompt.readBoardDimension(HUMAN_VS_HUMAN.dimensionLowerBoundary(), HUMAN_VS_UNBEATABLE.dimensionUpperBoundary());
 
         assertThat(dimension, is(4));
         assertThat(writer.toString().contains(

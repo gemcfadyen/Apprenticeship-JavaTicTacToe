@@ -76,7 +76,7 @@ public class GameIsPlayedThroughTheGuiTest {
     }
 
     private void select3x3Grid(Scene scene) {
-        pressRadioButton(scene, "#gameSetupSelectionId");
+        pressRadioButton(scene, "#3");
     }
 
     private Label getWinningMessage(Scene scene) {

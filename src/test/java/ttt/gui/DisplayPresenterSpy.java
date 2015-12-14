@@ -22,7 +22,7 @@ public class DisplayPresenterSpy implements DisplayPresenter {
     }
 
     @Override
-    public void presentGridDimensionsUpTo(String dimension) {
+    public void presentGridDimensionsBetween(int lowerBoundary, int highestBoundary) {
         hasPresentedGridDimension = true;
     }
 

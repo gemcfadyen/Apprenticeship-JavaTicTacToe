@@ -23,7 +23,6 @@ public enum GameType {
         return gameName;
     }
 
-
     public int dimensionLowerBoundary() {
         return 1;
     }

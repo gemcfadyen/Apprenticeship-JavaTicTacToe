@@ -32,7 +32,6 @@ public class GuiGameControllerTest {
         controller.presentBoardDimensionsFor(HUMAN_VS_HUMAN);
 
         assertThat(boardPresenterSpy.hasPresentedGridDimensions(), is(true));
-        assertThat(gameConfigurationSpy.hasObtainedBoardDimensions(), is(true));
     }
 
     @Test

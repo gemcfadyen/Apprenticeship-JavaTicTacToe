@@ -101,7 +101,7 @@ public class PrettyFormatterTest {
 
     @Test
     public void formatsBoardDimensionMessage() {
-        String formattedBoardDimensionMessage = formatter.formatBoardDimensionMessage(3);
+        String formattedBoardDimensionMessage = formatter.formatBoardDimensionMessage(1, 3);
 
         assertThat(formattedBoardDimensionMessage, is(FONT_COLOUR_ANSII_CHARACTERS
                 + "Please enter the dimension of the board you would like to use [1 to 3]"));

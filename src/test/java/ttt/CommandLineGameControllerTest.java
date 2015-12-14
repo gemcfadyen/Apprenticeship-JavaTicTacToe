@@ -57,7 +57,6 @@ public class CommandLineGameControllerTest {
         int dimension = commandLineGameController.getDimensionChoiceFromPlayer(HUMAN_VS_UNBEATABLE);
 
         assertThat(promptSpy.getNumberOfTimesDimensionsHaveBeenAskedFor(), is(1));
-        assertThat(gameConfigurationSpy.hasObtainedBoardDimensions(), is(true));
         assertThat(promptSpy.getNumberOfTimesBoardDimensionRead(), is(1));
         assertThat(dimension, is(3));
     }

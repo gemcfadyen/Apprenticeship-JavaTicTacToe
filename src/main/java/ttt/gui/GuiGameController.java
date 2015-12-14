@@ -29,8 +29,7 @@ public class GuiGameController implements GameController {
     @Override
     public void presentBoardDimensionsFor(GameType gameType) {
         setGameType(gameType);
-        String dimension = gameConfiguration.getDimension(gameType);
-        boardView.presentGridDimensionsUpTo(dimension);
+        boardView.presentGridDimensionsBetween(gameType.dimensionLowerBoundary(), gameType.dimensionUpperBoundary());
     }
 
     @Override

@@ -30,10 +30,10 @@ public class CommandPrompt implements Prompt {
     }
 
     @Override
-    public int readBoardDimension(int largestDimension) {
+    public int readBoardDimension(int lowerDimension, int largestDimension) {
         InputValidator compositeValidator = compositeFor(dimensionValidatorsFor(largestDimension));
 
-        return asInteger(getValidInput(compositeValidator, input(), functionToRepromptForValidBoardDimension(largestDimension)));
+        return asInteger(getValidInput(compositeValidator, input(), functionToRepromptForValidBoardDimension(lowerDimension, largestDimension)));
     }
 
     @Override
@@ -63,8 +63,8 @@ public class CommandPrompt implements Prompt {
     }
 
     @Override
-    public void presentGridDimensionsUpTo(String largestDimension) {
-        display(displayFormatter.formatBoardDimensionMessage(Integer.valueOf(largestDimension)));
+    public void presentGridDimensionsBetween(int lowerBoundary, int upperBoundary) {
+        display(displayFormatter.formatBoardDimensionMessage(lowerBoundary, upperBoundary));
     }
 
     @Override
@@ -147,10 +147,10 @@ public class CommandPrompt implements Prompt {
         return validationResult.userInput();
     }
 
-    private Function<ValidationResult, Void> functionToRepromptForValidBoardDimension(int largestDimension) {
+    private Function<ValidationResult, Void> functionToRepromptForValidBoardDimension(int lowerDimension, int largestDimension) {
         return validationResult -> {
             display(displayFormatter.applyInvalidColour(validationResult.reason()));
-            display(displayFormatter.formatBoardDimensionMessage(largestDimension));
+            display(displayFormatter.formatBoardDimensionMessage(lowerDimension, largestDimension));
             return null;
         };
     }

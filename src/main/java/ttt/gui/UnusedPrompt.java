@@ -14,7 +14,7 @@ public class UnusedPrompt implements Prompt {
     }
 
     @Override
-    public void presentGridDimensionsUpTo(String dimension) {
+    public void presentGridDimensionsBetween(int lower, int upper) {
     }
 
     @Override
@@ -34,7 +34,7 @@ public class UnusedPrompt implements Prompt {
     }
 
     @Override
-    public int readBoardDimension(int largestDimension) {
+    public int readBoardDimension(int lowerDimension, int largestDimension) {
         return 0;
     }
 
