@@ -65,20 +65,25 @@ public class TicTacToeRules implements GameRules {
         return board.hasWinningCombination();
     }
 
+    @Override
+    public boolean noWinnerYet() {
+        return !hasWinner();
+    }
+
+    @Override
+    public boolean gameInProgress() {
+        return boardHasFreeSpace() && noWinnerYet();
+    }
+
+
+    int getCurrentPlayerIndex() {
+        return currentPlayerIndex;
+    }
+
     private void togglePlayer() {
         currentPlayerIndex =
                 currentPlayerIndex == PLAYER_ONE_INDEX
                         ? PLAYER_TWO_INDEX
                         : PLAYER_ONE_INDEX;
-    }
-
-
-    @Override
-    public boolean gameInProgress() {
-        return boardHasFreeSpace() && !hasWinner();
-    }
-
-    int getCurrentPlayerIndex() {
-        return currentPlayerIndex;
     }
 }

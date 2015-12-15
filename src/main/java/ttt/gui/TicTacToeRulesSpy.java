@@ -51,6 +51,11 @@ public class TicTacToeRulesSpy implements GameRules {
     }
 
     @Override
+    public boolean noWinnerYet() {
+        return !hasWinner();
+    }
+
+    @Override
     public void initialiseGame(GameType gameType, String dimension) {
         if (board == null) {
             board = new Board(Integer.valueOf(dimension));
