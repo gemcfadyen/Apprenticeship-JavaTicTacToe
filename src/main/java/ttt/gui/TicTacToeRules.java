@@ -31,6 +31,7 @@ public class TicTacToeRules implements GameRules {
         Integer boardDimension = Integer.valueOf(dimension);
         board = boardFactory.createBoardWithSize(boardDimension);
         players = playerFactory.createPlayers(gameType, boardDimension);
+        currentPlayerIndex = PLAYER_ONE_INDEX;
     }
 
     @Override
@@ -64,7 +65,7 @@ public class TicTacToeRules implements GameRules {
         return board.hasWinningCombination();
     }
 
-   private void togglePlayer() {
+    private void togglePlayer() {
         currentPlayerIndex =
                 currentPlayerIndex == PLAYER_ONE_INDEX
                         ? PLAYER_TWO_INDEX
@@ -72,10 +73,10 @@ public class TicTacToeRules implements GameRules {
     }
 
 
-   @Override
-   public boolean gameInProgress() {
-      return boardHasFreeSpace() && !hasWinner();
-   }
+    @Override
+    public boolean gameInProgress() {
+        return boardHasFreeSpace() && !hasWinner();
+    }
 
     int getCurrentPlayerIndex() {
         return currentPlayerIndex;

@@ -6,15 +6,17 @@ import ttt.CommandLinePlayerFactoryStub;
 import ttt.PromptSpy;
 import ttt.board.Board;
 import ttt.board.BoardFactory;
-import ttt.player.Player;
 import ttt.player.CommandLinePlayerFactory;
+import ttt.player.Player;
 import ttt.ui.Prompt;
 
 import java.io.StringReader;
 
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.*;
+import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.not;
 import static ttt.GameType.HUMAN_VS_HUMAN;
+import static ttt.GameType.HUMAN_VS_UNBEATABLE;
 import static ttt.player.PlayerSymbol.*;
 
 public class TicTacToeRulesTest {
@@ -78,7 +80,24 @@ public class TicTacToeRulesTest {
                 new CommandLinePlayerFactoryStub(players)
         );
         ticTacToeRules.initialiseGame(HUMAN_VS_HUMAN, "3");
+
         assertThat(ticTacToeRules.getBoard(), is(board));
+    }
+
+    @Test
+    public void currentPlayerReinitialisedWhenNewGameStarted(){
+        Board board = new Board(3);
+
+        TicTacToeRules ticTacToeRules = new TicTacToeRules(
+                new BoardFactoryStub(board, board),
+                new CommandLinePlayerFactoryStub(players)
+        );
+
+        ticTacToeRules.initialiseGame(HUMAN_VS_HUMAN, "3");
+        ticTacToeRules.takeTurn(1);
+        ticTacToeRules.initialiseGame(HUMAN_VS_UNBEATABLE, "3");
+
+        assertThat(ticTacToeRules.getCurrentPlayerIndex(), is(0));
     }
 
     @Test
