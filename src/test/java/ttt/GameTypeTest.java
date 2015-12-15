@@ -76,6 +76,6 @@ public class GameTypeTest {
     @Test
     public void getsLowerBoundaryForDimension() {
         GameType gameType = GameType.of(3);
-        assertThat(gameType.dimensionLowerBoundary(), is(1));
+        assertThat(gameType.dimensionLowerBoundary(), is(2));
     }
 }

@@ -24,7 +24,7 @@ public enum GameType {
     }
 
     public int dimensionLowerBoundary() {
-        return 1;
+        return 2;
     }
 
     public int dimensionUpperBoundary() {

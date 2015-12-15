@@ -56,7 +56,7 @@ public class CommandPromptTest {
         assertThat(dimension, is(4));
         assertThat(writer.toString().contains(
                 "[z] is not a valid integer\n\n"
-                        + "Please enter the dimension of the board you would like to use [1 to 5]\n\n"
+                        + "Please enter the dimension of the board you would like to use [2 to 5]\n\n"
                         + CLEAR_SCREEN_ANSI_CHARACTERS + "\n"), is(true));
     }
 
@@ -70,7 +70,7 @@ public class CommandPromptTest {
         assertThat(dimension, is(4));
         assertThat(writer.toString().contains(
                 "[100] is outside of the range 1 to 4\n\n"
-                        + "Please enter the dimension of the board you would like to use [1 to 4]\n\n"
+                        + "Please enter the dimension of the board you would like to use [2 to 4]\n\n"
                         + CLEAR_SCREEN_ANSI_CHARACTERS + "\n"), is(true));
     }
 
