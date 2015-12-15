@@ -11,13 +11,11 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import ttt.board.BoardFactory;
 import ttt.player.GuiPlayerFactory;
-import ttt.ui.Prompt;
 
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
 
 public class GameIsPlayedThroughTheGuiTest {
-    private static final Prompt UNUSED_PROMPT = null;
     private Scene scene;
     private GuiGameController controller;
 
@@ -29,7 +27,7 @@ public class GameIsPlayedThroughTheGuiTest {
     @Before
     public void setup() {
         scene = new Scene(new GridPane(), 700, 700);
-        TicTacToeRules ticTacToeRules = new TicTacToeRules(new BoardFactory(), new GuiPlayerFactory(UNUSED_PROMPT));
+        TicTacToeRules ticTacToeRules = new TicTacToeRules(new BoardFactory(), new GuiPlayerFactory());
         controller = new GuiGameController(
                 new TicTacToeGameConfiguration(),
                 ticTacToeRules,

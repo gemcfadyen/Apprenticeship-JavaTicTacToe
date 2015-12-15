@@ -4,8 +4,8 @@ import ttt.ui.Prompt;
 
 public class GuiPlayerFactory extends PlayerFactory {
 
-    public GuiPlayerFactory(Prompt unused) {
-        super(unused);
+    public GuiPlayerFactory() {
+        super(null);
     }
 
     @Override
