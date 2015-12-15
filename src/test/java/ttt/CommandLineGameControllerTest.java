@@ -114,7 +114,7 @@ public class CommandLineGameControllerTest {
                 gamePrompt
         );
 
-        commandLineGameController.displayResultsOfGame();
+        commandLineGameController.printExitMessage();
 
         assertThat(gamePrompt.getNumberOfTimesXHasWon(), is(1));
         assertThat(gamePrompt.getNumberOfTimesOHasWon(), is(0));
@@ -136,7 +136,7 @@ public class CommandLineGameControllerTest {
                 gamePrompt
         );
 
-        commandLineGameController.displayResultsOfGame();
+        commandLineGameController.printExitMessage();
 
         assertThat(gamePrompt.getNumberOfTimesDrawMessageHasBeenPrinted(), is(1));
         assertThat(gamePrompt.getLastBoardThatWasPrinted(), is("XOXOOXOXO"));

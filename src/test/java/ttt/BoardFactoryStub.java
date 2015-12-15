@@ -22,7 +22,4 @@ public class BoardFactoryStub extends BoardFactory {
         }
     }
 
-    public Board getLatestBoard() {
-        return boards[boardIndex - 1];
-    }
 }

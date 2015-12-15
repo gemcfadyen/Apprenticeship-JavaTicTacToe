@@ -89,7 +89,7 @@ public class CommandLineGameController {
         while (gameInProgress()) {
             updateBoardWithPlayersMove();
         }
-        displayResultsOfGame();
+        printExitMessage();
     }
 
     private ReplayOption getReplayOptionFromPlayer() {
@@ -112,16 +112,12 @@ public class CommandLineGameController {
         return gameRules.gameInProgress();
     }
 
-    void displayResultsOfGame() {
-        printExitMessage();
-    }
-
     GameType getGameType() {
         return gameType;
     }
 
-    private void printExitMessage() {
-        if (!gameRules.hasWinner()) {
+    void printExitMessage() {
+        if (gameRules.noWinnerYet()) {
             gamePrompt.printsDrawMessage(gameRules.getBoard());
         } else {
             gamePrompt.printsWinningMessage(gameRules.getBoard(), gameRules.getWinningSymbol());

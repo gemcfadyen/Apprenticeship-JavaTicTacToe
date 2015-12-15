@@ -9,6 +9,7 @@ public interface GameRules {
     void takeTurn(int move);
     PlayerSymbol getWinningSymbol();
     boolean hasWinner();
+    boolean noWinnerYet();
     Board getBoard();
     boolean gameInProgress();
     boolean boardHasFreeSpace();
