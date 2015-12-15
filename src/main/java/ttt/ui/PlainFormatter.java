@@ -27,8 +27,8 @@ public class PlainFormatter implements DisplayFormatter {
     }
 
     @Override
-    public String formatBoardDimensionMessage(int largestDimension) {
-        return "Please enter the dimension of the board you would like to use [" + 1 + " to " + largestDimension + "]";
+    public String formatBoardDimensionMessage(int lowerDimension, int largestDimension) {
+        return "Please enter the dimension of the board you would like to use [" + lowerDimension + " to " + largestDimension + "]";
     }
 
     @Override

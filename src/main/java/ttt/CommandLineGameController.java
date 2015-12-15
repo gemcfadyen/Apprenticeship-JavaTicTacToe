@@ -22,7 +22,6 @@ public class CommandLineGameController {
     private Prompt gamePrompt;
     private GameType gameType;
 
-//    public CommandLineGameController(GameConfiguration gameConfiguration{
     public CommandLineGameController(GameConfiguration gameConfiguration, GameRules gameRules, Prompt commandLinePrompt) {
         this.gameConfiguration = gameConfiguration;
         this.gameRules = gameRules;
@@ -71,16 +70,15 @@ public class CommandLineGameController {
 
     int getDimensionChoiceFromPlayer(GameType gameType) {
         presentBoardDimensionsFor(gameType);
-        return readDimension(gameType.dimensionUpperBoundary());
+        return readDimension(gameType.dimensionLowerBoundary(), gameType.dimensionUpperBoundary());
     }
 
     private void presentBoardDimensionsFor(GameType gameType) {
-        String largestDimension = gameConfiguration.getDimension(gameType);
-        gamePrompt.presentGridDimensionsUpTo(largestDimension);
+        gamePrompt.presentGridDimensionsBetween(gameType.dimensionLowerBoundary(), gameType.dimensionUpperBoundary());
     }
 
-    private int readDimension(int largestDimension) {
-        return gamePrompt.readBoardDimension(largestDimension);
+    private int readDimension(int lowerDimension, int largestDimension) {
+        return gamePrompt.readBoardDimension(lowerDimension, largestDimension);
     }
 
     private void initialiseGame(int dimension) {

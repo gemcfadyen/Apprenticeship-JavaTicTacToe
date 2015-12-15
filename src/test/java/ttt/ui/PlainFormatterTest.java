@@ -42,7 +42,7 @@ public class PlainFormatterTest {
 
     @Test
     public void formatsBoardDimensionPrompt() {
-        String formattedMessage = displayFormatter.formatBoardDimensionMessage(5);
+        String formattedMessage = displayFormatter.formatBoardDimensionMessage(1, 5);
         assertThat(formattedMessage, is("Please enter the dimension of the board you would like to use [1 to 5]"));
     }
 

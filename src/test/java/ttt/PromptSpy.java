@@ -31,7 +31,7 @@ public class PromptSpy implements Prompt {
     }
 
     @Override
-    public int readBoardDimension(int largestDimension) {
+    public int readBoardDimension(int lowerDimension, int largestDimension) {
         numberOfTimesBoardDimensionRead++;
         return Integer.valueOf(readInput());
     }
@@ -59,7 +59,7 @@ public class PromptSpy implements Prompt {
     }
 
     @Override
-    public void presentGridDimensionsUpTo(String dimension) {
+    public void presentGridDimensionsBetween(int lowerDimension, int highestDimension) {
         numberOfTimesBoardDimensionsAskedFor++;
     }
 

@@ -42,26 +42,12 @@ public class TicTacToeBoardPresenter implements DisplayPresenter {
     }
 
     @Override
-    public void presentGridDimensionsUpTo(String upperBoundaryOfPossibleDimension) {
+    public void presentGridDimensionsBetween(int lowerBoundary, int upperBoundary) {
         GridPane dimensionPane = new GridPane();
         setWelcomeMessage(dimensionPane);
-        //TODO this will be updated to use the dimension passed in once the story to deal with multiple dimensions is taken on
-        displayDimensions("3", dimensionPane);
+        displayDimensions(lowerBoundary, upperBoundary, dimensionPane);
 
         scene.setRoot(dimensionPane);
-    }
-
-    private void displayDimensions(String dimension, GridPane dimensionPane) {
-        Text dimensionPrompt = new Text("Choose a board dimension");
-        dimensionPrompt.setId("gameSetupId");
-
-        RadioButton boardDimension = new RadioButton(dimension);
-        boardDimension.setId("gameSetupSelectionId");
-
-        dimensionPane.add(dimensionPrompt, 2, 2, 4, 1);
-        dimensionPane.add(boardDimension, 2, 4, 4, 1);
-
-        registerActionForSelectingDimension(boardDimension);
     }
 
     @Override
@@ -121,6 +107,22 @@ public class TicTacToeBoardPresenter implements DisplayPresenter {
             gameTypeSelectionButton.setId(gameType.name());
             gridPane.add(gameTypeSelectionButton, 2, rowIndex++, 4, 1);
             registerActionForSelectingGameType(gameTypeSelectionButton);
+        }
+    }
+
+    private void displayDimensions(int lowerBoundary, int upperBoundary, GridPane dimensionPane) {
+        Text dimensionPrompt = new Text("Choose a board dimension");
+        dimensionPrompt.setId("gameSetupId");
+        dimensionPane.add(dimensionPrompt, 2, 2, 4, 1);
+
+        int rowIndex = 4;
+        for (int dimension = lowerBoundary; dimension <= upperBoundary; dimension++) {
+            RadioButton boardDimension = new RadioButton(String.valueOf(dimension));
+            boardDimension.setId(String.valueOf(dimension));
+
+            dimensionPane.add(boardDimension, 2, rowIndex++, 4, 1);
+
+            registerActionForSelectingDimension(boardDimension);
         }
     }
 

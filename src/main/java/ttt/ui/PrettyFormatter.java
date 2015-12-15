@@ -45,9 +45,9 @@ public class PrettyFormatter implements DisplayFormatter {
     }
 
     @Override
-    public String formatBoardDimensionMessage(int largestDimension) {
+    public String formatBoardDimensionMessage(int lowerBoundary, int largestDimension) {
        return FONT_COLOUR_ANSII_CHARACTERS
-              + "Please enter the dimension of the board you would like to use [" + 1 + " to " + largestDimension + "]";
+              + "Please enter the dimension of the board you would like to use [" + lowerBoundary + " to " + largestDimension + "]";
     }
 
     @Override
