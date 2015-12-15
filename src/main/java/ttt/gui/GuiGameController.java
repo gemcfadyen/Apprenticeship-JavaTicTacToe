@@ -52,10 +52,14 @@ public class GuiGameController implements GameController {
     }
 
     private void playAutomatedMoveIfAppropriate() {
-        int automatedMove = ticTacToeRules.getCurrentPlayersNextMove();
-        if (automatedMove != IGNORE_AS_MOVE_WILL_COME_FROM_DISPLAY) {
-            playMoveIfSpaceOnBoard(automatedMove);
+        int move = ticTacToeRules.getCurrentPlayersNextMove();
+        if (nonInteractiveMove(move)) {
+            playMoveIfSpaceOnBoard(move);
         }
+    }
+
+    private boolean nonInteractiveMove(int automatedMove) {
+        return automatedMove != IGNORE_AS_MOVE_WILL_COME_FROM_DISPLAY;
     }
 
     private void playMoveIfSpaceOnBoard(int currentPlayersNextMove) {
