@@ -33,7 +33,7 @@
    -fx-text-fill: LIGHTBLUE;
 }
 
-.label:hover {
+#gameOverTargetId:hover {
     -fx-background-color: linear-gradient(#fffaf0, #61a2b1);
 }
 
