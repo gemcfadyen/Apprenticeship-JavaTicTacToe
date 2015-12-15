@@ -33,8 +33,8 @@ public enum GameType {
     }
 
     public static GameType of(int numericRepresentation) {
-        for(GameType gameType : GameType.values()) {
-            if(gameType.numericRepresentation() == numericRepresentation) {
+        for (GameType gameType : values()) {
+            if (gameType.numericRepresentation() == numericRepresentation) {
                 return gameType;
             }
         }
@@ -42,6 +42,12 @@ public enum GameType {
     }
 
     public static GameType of(String displayName) {
+        for (GameType gameType : values()) {
+            if (gameType.gameNameForDisplay().equals(displayName)) {
+                return gameType;
+            }
+        }
         return HUMAN_VS_HUMAN;
     }
 }
+

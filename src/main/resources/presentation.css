@@ -15,17 +15,22 @@
  -fx-fill: WHITE;
 }
 
-#gameSetupSelectionId {
- -fx-font-size: 13px;
- -fx-font-family: "Arial";
- -fx-text-fill: WHITE;
-}
-
 #gameOverTargetId {
 -fx-text-fill:WHITE;
 -fx-font-family: "Arial";
 -fx-font-size: 20px;
 -fx-font-weight:bold;
+}
+
+.radio-button {
+ -fx-font-size: 15px;
+ -fx-font-family: "Arial";
+ -fx-text-fill: WHITE;
+}
+
+.radio-button:hover {
+   -fx-background-color: #3a3a3a;
+   -fx-text-fill: LIGHTBLUE;
 }
 
 .button {

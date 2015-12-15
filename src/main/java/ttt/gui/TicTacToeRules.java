@@ -7,9 +7,6 @@ import ttt.player.Player;
 import ttt.player.PlayerFactory;
 import ttt.player.PlayerSymbol;
 
-import java.util.Arrays;
-import java.util.List;
-
 public class TicTacToeRules implements GameRules {
     private static final int PLAYER_ONE_INDEX = 0;
     private static final int PLAYER_TWO_INDEX = 1;
@@ -18,7 +15,6 @@ public class TicTacToeRules implements GameRules {
     private Board board;
     private Player[] players;
     private int currentPlayerIndex = PLAYER_ONE_INDEX;
-    private GameType gameType;
 
     public TicTacToeRules(Board board, Player[] players) {
         this.board = board;
@@ -31,30 +27,16 @@ public class TicTacToeRules implements GameRules {
     }
 
     @Override
-    public List<GameType> getGameTypes() {
-        return Arrays.asList(GameType.values());
-    }
-
-    @Override
-    public String getDimension(GameType gameType) {
-        return String.valueOf(gameType.dimensionUpperBoundary());
-    }
-
-    @Override
-    public void initialiseGame(String dimension) {
+    public void initialiseGame(GameType gameType, String dimension) {
         Integer boardDimension = Integer.valueOf(dimension);
         board = boardFactory.createBoardWithSize(boardDimension);
         players = playerFactory.createPlayers(gameType, boardDimension);
     }
 
     @Override
-    public void playMoveAt(String move) {
-        board.updateAt(Integer.valueOf(move), players[currentPlayerIndex].getSymbol());
-    }
-
-    @Override
-    public PlayerSymbol getCurrentPlayerSymbol() {
-        return players[currentPlayerIndex].getSymbol();
+    public void takeTurn(int move) {
+        board.updateAt(move, players[currentPlayerIndex].getSymbol());
+        togglePlayer();
     }
 
     @Override
@@ -68,18 +50,13 @@ public class TicTacToeRules implements GameRules {
     }
 
     @Override
-    public void storeGameType(GameType gameType) {
-        this.gameType = gameType;
-    }
-
-    @Override
     public boolean boardHasFreeSpace() {
         return board.hasFreeSpace();
     }
 
     @Override
-    public String getCurrentPlayersNextMove() {
-        return String.valueOf(players[currentPlayerIndex].chooseNextMoveFrom(board));
+    public int getCurrentPlayersNextMove() {
+        return players[currentPlayerIndex].chooseNextMoveFrom(board);
     }
 
     @Override
@@ -87,11 +64,20 @@ public class TicTacToeRules implements GameRules {
         return board.hasWinningCombination();
     }
 
-    @Override
-    public void togglePlayer() {
+   private void togglePlayer() {
         currentPlayerIndex =
                 currentPlayerIndex == PLAYER_ONE_INDEX
                         ? PLAYER_TWO_INDEX
                         : PLAYER_ONE_INDEX;
+    }
+
+
+   @Override
+   public boolean gameInProgress() {
+      return boardHasFreeSpace() && !hasWinner();
+   }
+
+    int getCurrentPlayerIndex() {
+        return currentPlayerIndex;
     }
 }

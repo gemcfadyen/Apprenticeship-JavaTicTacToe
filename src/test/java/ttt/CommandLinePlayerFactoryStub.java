@@ -2,12 +2,12 @@ package ttt;
 
 import ttt.gui.UnusedPrompt;
 import ttt.player.Player;
-import ttt.player.PlayerFactory;
+import ttt.player.CommandLinePlayerFactory;
 
-public class PlayerFactoryStub extends PlayerFactory {
+public class CommandLinePlayerFactoryStub extends CommandLinePlayerFactory {
     private Player[] players;
 
-    public PlayerFactoryStub(Player... players) {
+    public CommandLinePlayerFactoryStub(Player... players) {
         super(new UnusedPrompt());
         this.players = players;
     }

@@ -1,9 +1,11 @@
 package ttt;
 
 import ttt.board.BoardFactory;
+import ttt.gui.GameConfiguration;
 import ttt.gui.GameRules;
+import ttt.gui.TicTacToeGameConfiguration;
 import ttt.gui.TicTacToeRules;
-import ttt.player.PlayerFactory;
+import ttt.player.CommandLinePlayerFactory;
 import ttt.ui.CommandPrompt;
 import ttt.ui.PrettyFormatter;
 import ttt.ui.Prompt;
@@ -15,10 +17,14 @@ import java.util.List;
 import static ttt.ReplayOption.Y;
 
 public class CommandLineGameController {
+    private final GameConfiguration gameConfiguration;
     private GameRules gameRules;
     private Prompt gamePrompt;
+    private GameType gameType;
 
-    public CommandLineGameController(GameRules gameRules, Prompt commandLinePrompt) {
+//    public CommandLineGameController(GameConfiguration gameConfiguration{
+    public CommandLineGameController(GameConfiguration gameConfiguration, GameRules gameRules, Prompt commandLinePrompt) {
+        this.gameConfiguration = gameConfiguration;
         this.gameRules = gameRules;
         this.gamePrompt = commandLinePrompt;
     }
@@ -26,6 +32,7 @@ public class CommandLineGameController {
     public static void main(String... args) {
         CommandPrompt gamePrompt = buildPrompt();
         CommandLineGameController commandLineGameController = new CommandLineGameController(
+                new TicTacToeGameConfiguration(),
                 buildGameRules(gamePrompt),
                 gamePrompt
         );
@@ -47,7 +54,7 @@ public class CommandLineGameController {
     }
 
     GameType getGameTypeFromPlayer() {
-        List<GameType> allGameTypes = gameRules.getGameTypes();
+        List<GameType> allGameTypes = gameConfiguration.getGameTypes();
         presentGameTypes(allGameTypes);
         return readGameType(allGameTypes);
     }
@@ -58,7 +65,7 @@ public class CommandLineGameController {
 
     private GameType readGameType(List<GameType> gameTypes) {
         GameType gameType = gamePrompt.readGameType(gameTypes);
-        gameRules.storeGameType(gameType);
+        this.gameType = gameType;
         return gameType;
     }
 
@@ -68,7 +75,7 @@ public class CommandLineGameController {
     }
 
     private void presentBoardDimensionsFor(GameType gameType) {
-        String largestDimension = gameRules.getDimension(gameType);
+        String largestDimension = gameConfiguration.getDimension(gameType);
         gamePrompt.presentGridDimensionsUpTo(largestDimension);
     }
 
@@ -77,13 +84,12 @@ public class CommandLineGameController {
     }
 
     private void initialiseGame(int dimension) {
-        gameRules.initialiseGame(String.valueOf(dimension));
+        gameRules.initialiseGame(gameType, String.valueOf(dimension));
     }
 
     void playMatch() {
         while (gameInProgress()) {
             updateBoardWithPlayersMove();
-            gameRules.togglePlayer();
         }
         displayResultsOfGame();
     }
@@ -96,20 +102,24 @@ public class CommandLineGameController {
     }
 
     void updateBoardWithPlayersMove() {
-        String nextMove = gameRules.getCurrentPlayersNextMove();
+        int nextMove = gameRules.getCurrentPlayersNextMove();
         playMove(nextMove);
     }
 
-    void playMove(String nextMove) {
-        gameRules.playMoveAt(nextMove);
+    void playMove(int nextMove) {
+        gameRules.takeTurn(nextMove);
     }
 
     boolean gameInProgress() {
-        return gameRules.boardHasFreeSpace() && !gameRules.hasWinner();
+        return gameRules.gameInProgress();
     }
 
     void displayResultsOfGame() {
         printExitMessage();
+    }
+
+    GameType getGameType() {
+        return gameType;
     }
 
     private void printExitMessage() {
@@ -128,7 +138,7 @@ public class CommandLineGameController {
         );
     }
 
-    private static TicTacToeRules buildGameRules(CommandPrompt gamePrompt) {
-        return new TicTacToeRules(new BoardFactory(), new PlayerFactory(gamePrompt));
+    private static GameRules buildGameRules(CommandPrompt gamePrompt) {
+        return new TicTacToeRules(new BoardFactory(), new CommandLinePlayerFactory(gamePrompt));
     }
 }

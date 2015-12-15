@@ -4,19 +4,13 @@ import ttt.GameType;
 import ttt.board.Board;
 import ttt.player.PlayerSymbol;
 
-import java.util.List;
-
 public interface GameRules {
-    void playMoveAt(String move);
-    PlayerSymbol getCurrentPlayerSymbol();
+    void initialiseGame(GameType gameType, String dimension);
+    void takeTurn(int move);
     PlayerSymbol getWinningSymbol();
     boolean hasWinner();
-    void togglePlayer();
-    void initialiseGame(String dimension);
-    List<GameType> getGameTypes();
-    String getDimension(GameType gameType);
     Board getBoard();
-    void storeGameType(GameType gameType);
+    boolean gameInProgress();
     boolean boardHasFreeSpace();
-    String getCurrentPlayersNextMove();
+    int getCurrentPlayersNextMove();
 }
