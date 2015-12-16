@@ -2,6 +2,7 @@ package ttt.gui;
 
 import ttt.GameType;
 import ttt.board.Board;
+import ttt.player.GuiHumanPlayer;
 
 import java.util.List;
 
@@ -37,14 +38,23 @@ public class GuiGameController implements GameController {
         ticTacToeRules.initialiseGame(gameType, dimension);
         Board board = ticTacToeRules.getBoard();
 
-        playAutomatedMoveIfAppropriate();
+        //playAutomatedMoveIfAppropriate();
+        ticTacToeRules.takeTurns();
         boardView.presentsBoard(board);
     }
 
     @Override
     public void playMove(String position) {
-        playMoveIfSpaceOnBoard(Integer.valueOf(position));
-        playAutomatedMoveIfAppropriate();
+        GuiHumanPlayer player = (GuiHumanPlayer) ticTacToeRules.getCurrentPlayer();
+        if (player != null) {
+            player.setNextMove(Integer.valueOf(position));
+
+            ticTacToeRules.takeTurns();
+            Board board = presentBoard();
+            displayExitMessage(board);
+        }
+       // playMoveIfSpaceOnBoard(Integer.valueOf(position));
+      //  playAutomatedMoveIfAppropriate();
     }
 
     public void setGameType(GameType gameType) {

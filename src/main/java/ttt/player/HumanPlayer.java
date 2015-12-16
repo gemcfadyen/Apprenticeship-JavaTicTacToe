@@ -15,4 +15,5 @@ public class HumanPlayer extends Player {
     public int chooseNextMoveFrom(Board board) {
         return prompt.readNextMove(board);
     }
+
 }

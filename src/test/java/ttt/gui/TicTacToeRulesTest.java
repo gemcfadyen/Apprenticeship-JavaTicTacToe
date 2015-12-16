@@ -8,15 +8,22 @@ import ttt.board.Board;
 import ttt.board.BoardFactory;
 import ttt.player.CommandLinePlayerFactory;
 import ttt.player.Player;
+import ttt.player.PlayerSymbol;
+import ttt.player.UnbeatablePlayer;
 import ttt.ui.Prompt;
 
 import java.io.StringReader;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.instanceOf;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.not;
 import static ttt.GameType.HUMAN_VS_HUMAN;
 import static ttt.GameType.HUMAN_VS_UNBEATABLE;
+import static ttt.GameType.UNBEATABLE_VS_HUMAN;
 import static ttt.player.PlayerSymbol.*;
 
 public class TicTacToeRulesTest {
@@ -178,6 +185,53 @@ public class TicTacToeRulesTest {
         int move = gamesRules.getCurrentPlayersNextMove();
 
         assertThat(move, is(1));
+    }
+
+    @Test
+    public void knowsTheCurrentPlayer() {
+        PromptSpy promptSpy = new PromptSpy(new StringReader("1"));
+        TicTacToeRules gamesRules = initialiseRules(
+                board,
+                new CommandLinePlayerFactory(promptSpy).createPlayers(UNBEATABLE_VS_HUMAN, 3)
+        );
+
+        Player currentPlayer = gamesRules.getCurrentPlayer();
+
+        assertThat(currentPlayer, instanceOf(UnbeatablePlayer.class));
+
+    }
+
+    @Test
+    public void takeTurnsUntilPlayerNotReady() {
+        TicTacToeRules gamesRules = initialiseRules(
+                board,
+                new Player[] {new FakePlayer(X, 0), new FakePlayer(O, 2)}
+        );
+
+        gamesRules.takeTurns();
+
+        assertThat(board.getSymbolAt(0), is(X));
+        assertThat(board.getSymbolAt(2), is(O));
+    }
+
+    private class FakePlayer extends Player {
+        private List<Integer> moves;
+
+        public FakePlayer(PlayerSymbol symbol, Integer ... moves) {
+            super(symbol);
+            this.moves = new ArrayList<>();
+            this.moves.addAll(Arrays.asList(moves));
+        }
+
+        @Override
+        public int chooseNextMoveFrom(Board board) {
+            return moves.remove(0);
+        }
+
+        @Override
+        public boolean isReady() {
+            return moves.size() > 0;
+        }
     }
 
     private TicTacToeRules initialiseRulesWithFactories(BoardFactory boardFactory, CommandLinePlayerFactory playerFactory) {

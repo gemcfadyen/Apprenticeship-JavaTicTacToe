@@ -2,6 +2,7 @@ package ttt.gui;
 
 import ttt.GameType;
 import ttt.board.Board;
+import ttt.player.Player;
 import ttt.player.PlayerSymbol;
 
 import static ttt.player.PlayerSymbol.X;
@@ -79,6 +80,16 @@ public class TicTacToeRulesSpy implements GameRules {
     public int getCurrentPlayersNextMove() {
         numberOfTimesPlayerAskedForMove++;
         return nextMove;
+    }
+
+    @Override
+    public Player getCurrentPlayer() {
+        return null;
+    }
+
+    @Override
+    public void takeTurns() {
+
     }
 
     @Override

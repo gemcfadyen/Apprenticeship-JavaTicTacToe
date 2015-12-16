@@ -22,4 +22,5 @@ public class DelayedUnbeatablePlayer extends Player {
         }
         return vacantPositions.get(0);
     }
+
 }

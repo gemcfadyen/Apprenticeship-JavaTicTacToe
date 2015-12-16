@@ -18,6 +18,7 @@ public class GuiHumanPlayer extends Player {
         return move;
     }
 
+    @Override
     public boolean isReady() {
         return nextMove != -1;
     }

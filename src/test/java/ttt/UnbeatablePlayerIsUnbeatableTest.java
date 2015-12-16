@@ -1,5 +1,6 @@
 package ttt;
 
+import org.junit.Ignore;
 import org.junit.Test;
 import ttt.board.Board;
 import ttt.gui.GameConfiguration;
@@ -17,7 +18,7 @@ import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
 import static ttt.player.PlayerSymbol.O;
 import static ttt.player.PlayerSymbol.X;
-
+@Ignore
 public class UnbeatablePlayerIsUnbeatableTest {
     private static final int NUMBER_OF_GAMES = 100;
     private static final String PLAYER_CHOICE = "1\n";

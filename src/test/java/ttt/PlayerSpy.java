@@ -19,6 +19,11 @@ public class PlayerSpy extends Player {
         return prompt.readNextMove(board);
     }
 
+    @Override
+    public boolean isReady() {
+        return false;
+    }
+
     public int numberOfTurnsTaken() {
         return numberOfTurnsTaken;
     }

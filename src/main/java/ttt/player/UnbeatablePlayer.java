@@ -28,6 +28,11 @@ public class UnbeatablePlayer extends Player {
         return bestMove.getMove();
     }
 
+    @Override
+    public boolean isReady() {
+        return true;
+    }
+
     private ValuedPosition alphaBetaMinimax(Board board, int remainingDepth, PlayerSymbol currentPlayer, boolean isMaxPlayer, int alpha, int beta) {
         ValuedPosition bestPosition = isMaxPlayer
                 ? new MaxPlayerInitialScore()
