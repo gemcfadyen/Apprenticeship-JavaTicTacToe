@@ -8,6 +8,7 @@ import static org.junit.Assert.assertThat;
 import static ttt.GameType.*;
 
 public class GuiPlayerFactoryTest {
+
     @Test
     public void createsGuiHumanPlayers() {
         GuiPlayerFactory playerFactory = new GuiPlayerFactory();
