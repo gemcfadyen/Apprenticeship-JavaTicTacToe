@@ -10,11 +10,35 @@ import static ttt.player.PlayerSymbol.X;
 public class GuiHumanPlayerTest {
 
     @Test
-    public void playerMakesNoMove() {
+    public void playerMakesPredefinedMove() {
         GuiHumanPlayer guiHuman = new GuiHumanPlayer(X);
-
+        guiHuman.setNextMove(2);
         int move = guiHuman.chooseNextMoveFrom(new Board(3));
 
-        assertThat(move, is(GuiHumanPlayer.IGNORE_AS_MOVE_WILL_COME_FROM_DISPLAY));
+        assertThat(move, is(2));
+    }
+
+    @Test
+    public void isNotReadyByDefault() {
+        GuiHumanPlayer guiHuman = new GuiHumanPlayer(X);
+        assertThat(guiHuman.isReady(), is(false));
+    }
+
+    @Test
+    public void isReadyToMakeMove() {
+        GuiHumanPlayer guiHumanPlayer = new GuiHumanPlayer(X);
+        guiHumanPlayer.setNextMove(3);
+
+        assertThat(guiHumanPlayer.isReady(), is(true));
+    }
+
+
+    @Test
+    public void isNotReadyAnymoreAfterAMove() {
+        GuiHumanPlayer guiHuman = new GuiHumanPlayer(X);
+        guiHuman.setNextMove(2);
+        guiHuman.chooseNextMoveFrom(new Board(3));
+
+        assertThat(guiHuman.isReady(), is(false));
     }
 }
