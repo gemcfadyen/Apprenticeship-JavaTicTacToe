@@ -31,7 +31,7 @@ public class GameIsPlayedThroughTheGuiTest {
         controller = GuiGameController.createGuiGameController(
                 new TicTacToeGameConfiguration(),
                 ticTacToeRules,
-                new JavaFxViewFactory(scene)
+                new JavaFxViewFactory(scene), new PawelController()
         );
     }
 

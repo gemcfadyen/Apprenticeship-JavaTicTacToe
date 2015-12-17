@@ -26,7 +26,7 @@ public class JavaFxGui extends Application {
         GuiGameController guiGameController = GuiGameController.createGuiGameController(
                 new TicTacToeGameConfiguration(),
                 ticTacToeRules,
-                new JavaFxViewFactory(scene)
+                new JavaFxViewFactory(scene), new PawelController()
         );
         guiGameController.presentGameTypes();
     }

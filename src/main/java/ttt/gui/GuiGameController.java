@@ -3,24 +3,24 @@ package ttt.gui;
 import ttt.GameType;
 import ttt.board.Board;
 
-import java.util.List;
-
 import static ttt.player.GuiHumanPlayer.IGNORE_AS_MOVE_WILL_COME_FROM_DISPLAY;
 
 public class GuiGameController implements GameController {
 
     private final GameConfiguration gameConfiguration;
+    private final PawelController pawelController;
     private GameRules ticTacToeRules;
     private DisplayPresenter boardView;
     private GameType gameType;
 
-    private GuiGameController(GameConfiguration gameConfiguration, GameRules ticTacToeRules, ViewFactory viewFactory) {
+    private GuiGameController(GameConfiguration gameConfiguration, GameRules ticTacToeRules, ViewFactory viewFactory, PawelController pawelController) {
         this.gameConfiguration = gameConfiguration;
         this.ticTacToeRules = ticTacToeRules;
+        this.pawelController = pawelController;
     }
 
-    public static GuiGameController createGuiGameController(GameConfiguration gameConfiguration, GameRules ticTacToeRules, ViewFactory viewFactory) {
-        GuiGameController guiGameController = new GuiGameController(gameConfiguration, ticTacToeRules, viewFactory);
+    public static GuiGameController createGuiGameController(GameConfiguration gameConfiguration, GameRules ticTacToeRules, ViewFactory viewFactory, PawelController pawelController) {
+        GuiGameController guiGameController = new GuiGameController(gameConfiguration, ticTacToeRules, viewFactory, pawelController);
         DisplayPresenter view = viewFactory.createView(guiGameController, ticTacToeRules);
         guiGameController.setBoardPresenter(view);
 
@@ -33,8 +33,7 @@ public class GuiGameController implements GameController {
 
     @Override
     public void presentGameTypes() {
-        List<GameType> allGameTypes = gameConfiguration.getGameTypes();
-        boardView.presentGameTypes(allGameTypes);
+        pawelController.pawel(boardView, gameConfiguration);
     }
 
     @Override
@@ -102,4 +101,5 @@ public class GuiGameController implements GameController {
             boardView.printsDrawMessage(board);
         }
     }
+
 }

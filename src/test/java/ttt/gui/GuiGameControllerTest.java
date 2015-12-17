@@ -17,7 +17,7 @@ public class GuiGameControllerTest {
 
     @Test
     public void getsGameTypesFromGameAndDisplaysThemToUser() {
-        GuiGameController controller = GuiGameController.createGuiGameController(gameConfigurationSpy, gameRulesSpy, createViewFactory());
+        GuiGameController controller = GuiGameController.createGuiGameController(gameConfigurationSpy, gameRulesSpy, createViewFactory(), new PawelController());
 
         controller.presentGameTypes();
 
@@ -27,7 +27,7 @@ public class GuiGameControllerTest {
 
     @Test
     public void getsDimensionsForGametypeAndDisplaysToUser() {
-        GuiGameController controller = GuiGameController.createGuiGameController(gameConfigurationSpy, gameRulesSpy, createViewFactory());
+        GuiGameController controller = GuiGameController.createGuiGameController(gameConfigurationSpy, gameRulesSpy, createViewFactory(), new PawelController());
 
         controller.presentBoardDimensionsFor(HUMAN_VS_HUMAN);
 
@@ -38,7 +38,7 @@ public class GuiGameControllerTest {
     public void initialisesAndDisplaysEmptyBoard() {
         GameConfigurationSpy humanVsHumanGameConfiguration = new GameConfigurationSpy(HUMAN_VS_HUMAN);
         gameRulesSpy = new TicTacToeRulesSpy(new Board(3), IGNORE_AS_MOVE_WILL_COME_FROM_DISPLAY);
-        GuiGameController controller = GuiGameController.createGuiGameController(humanVsHumanGameConfiguration, gameRulesSpy, createViewFactory());
+        GuiGameController controller = GuiGameController.createGuiGameController(humanVsHumanGameConfiguration, gameRulesSpy, createViewFactory(), new PawelController());
         controller.setGameType(HUMAN_VS_HUMAN);
 
         controller.presentBoard("3");
@@ -53,7 +53,7 @@ public class GuiGameControllerTest {
     public void initialisesGameAndDisplaysBoardWithFirstAutomatedMove() {
         GameConfigurationSpy unbeatableVsHumanGameConfiguration = new GameConfigurationSpy(UNBEATABLE_VS_HUMAN);
         gameRulesSpy = new TicTacToeRulesSpy(new Board(3), 1);
-        GuiGameController controller = GuiGameController.createGuiGameController(unbeatableVsHumanGameConfiguration, gameRulesSpy, createViewFactory());
+        GuiGameController controller = GuiGameController.createGuiGameController(unbeatableVsHumanGameConfiguration, gameRulesSpy, createViewFactory(), new PawelController());
         controller.setGameType(UNBEATABLE_VS_HUMAN);
 
         controller.presentBoard("3");
@@ -67,7 +67,7 @@ public class GuiGameControllerTest {
 
     @Test
     public void setsGameType() {
-        GuiGameController controller = GuiGameController.createGuiGameController(gameConfigurationSpy, gameRulesSpy, createViewFactory());
+        GuiGameController controller = GuiGameController.createGuiGameController(gameConfigurationSpy, gameRulesSpy, createViewFactory(), new PawelController());
 
         controller.presentBoardDimensionsFor(HUMAN_VS_HUMAN);
 
@@ -77,7 +77,7 @@ public class GuiGameControllerTest {
     @Test
     public void humanTakesMove() {
         gameRulesSpy = new TicTacToeRulesSpy(new Board(3), IGNORE_AS_MOVE_WILL_COME_FROM_DISPLAY);
-        GuiGameController controller = GuiGameController.createGuiGameController(gameConfigurationSpy, gameRulesSpy, createViewFactory());
+        GuiGameController controller = GuiGameController.createGuiGameController(gameConfigurationSpy, gameRulesSpy, createViewFactory(), new PawelController());
         controller.setGameType(HUMAN_VS_HUMAN);
 
         controller.playMove("1");
@@ -94,7 +94,7 @@ public class GuiGameControllerTest {
     public void humanVsComputerGameMeansBothPlayersTakeTurn() {
         GameConfigurationSpy humanVsUnbeatableGameConfiguration = new GameConfigurationSpy(HUMAN_VS_UNBEATABLE);
         gameRulesSpy = new TicTacToeRulesSpy(new Board(3), 1);
-        GuiGameController controller = GuiGameController.createGuiGameController(humanVsUnbeatableGameConfiguration, gameRulesSpy, createViewFactory());
+        GuiGameController controller = GuiGameController.createGuiGameController(humanVsUnbeatableGameConfiguration, gameRulesSpy, createViewFactory(), new PawelController());
         controller.setGameType(HUMAN_VS_UNBEATABLE);
 
         controller.playMove("3");
@@ -114,7 +114,7 @@ public class GuiGameControllerTest {
                 VACANT, O, X,
                 X, O, X,
                 O, X, O), 0);
-        GuiGameController controller = GuiGameController.createGuiGameController(humanVsUnbeatableGameConfiguration, gameRulesSpy, createViewFactory());
+        GuiGameController controller = GuiGameController.createGuiGameController(humanVsUnbeatableGameConfiguration, gameRulesSpy, createViewFactory(), new PawelController());
         controller.setGameType(HUMAN_VS_UNBEATABLE);
 
         controller.playMove("0");
@@ -133,7 +133,7 @@ public class GuiGameControllerTest {
                 VACANT, VACANT, O,
                 X, O, O,
                 X, X, VACANT), 8);
-        GuiGameController controller = GuiGameController.createGuiGameController(humanVsUnbeatableGameConfiguration, gameRulesSpy, createViewFactory());
+        GuiGameController controller = GuiGameController.createGuiGameController(humanVsUnbeatableGameConfiguration, gameRulesSpy, createViewFactory(), new PawelController());
         controller.setGameType(HUMAN_VS_UNBEATABLE);
 
         controller.playMove("8");
@@ -150,7 +150,7 @@ public class GuiGameControllerTest {
     public void playersTakeTurnsWhenGameTypeIsUnbeatableVsHuman() {
         GameConfigurationSpy humanVsUnbeatableGameConfiguration = new GameConfigurationSpy(UNBEATABLE_VS_HUMAN);
         gameRulesSpy = new TicTacToeRulesSpy(new Board(3), 1);
-        GuiGameController controller = GuiGameController.createGuiGameController(humanVsUnbeatableGameConfiguration, gameRulesSpy, createViewFactory());
+        GuiGameController controller = GuiGameController.createGuiGameController(humanVsUnbeatableGameConfiguration, gameRulesSpy, createViewFactory(), new PawelController());
         controller.setGameType(UNBEATABLE_VS_HUMAN);
 
         controller.playMove("3");
@@ -173,7 +173,7 @@ public class GuiGameControllerTest {
                 X, VACANT, VACANT
         );
         gameRulesSpy = new TicTacToeRulesSpy(board, 0);
-        GuiGameController controller = GuiGameController.createGuiGameController(gameConfigurationSpy, gameRulesSpy, createViewFactory());
+        GuiGameController controller = GuiGameController.createGuiGameController(gameConfigurationSpy, gameRulesSpy, createViewFactory(), new PawelController());
         controller.setGameType(HUMAN_VS_HUMAN);
 
         controller.playMove("0");
@@ -192,7 +192,7 @@ public class GuiGameControllerTest {
                 X, VACANT, O
         );
         gameRulesSpy = new TicTacToeRulesSpy(board, 7);
-        GuiGameController controller = GuiGameController.createGuiGameController(gameConfigurationSpy, gameRulesSpy, createViewFactory());
+        GuiGameController controller = GuiGameController.createGuiGameController(gameConfigurationSpy, gameRulesSpy, createViewFactory(), new PawelController());
         controller.setGameType(HUMAN_VS_HUMAN);
 
         controller.playMove("7");
@@ -209,7 +209,7 @@ public class GuiGameControllerTest {
                 VACANT, X, O
         );
         gameRulesSpy = new TicTacToeRulesSpy(board, 6);
-        GuiGameController controller = GuiGameController.createGuiGameController(gameConfigurationSpy, gameRulesSpy, createViewFactory());
+        GuiGameController controller = GuiGameController.createGuiGameController(gameConfigurationSpy, gameRulesSpy, createViewFactory(), new PawelController());
         controller.setGameType(HUMAN_VS_HUMAN);
 
         controller.playMove("6");
