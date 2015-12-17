@@ -23,7 +23,7 @@ public class JavaFxGui extends Application {
 
 
         GameRules ticTacToeRules = new TicTacToeRules(new BoardFactory(), new GuiPlayerFactory());
-        GuiGameController guiGameController = new GuiGameController(
+        GuiGameController guiGameController = GuiGameController.createGuiGameController(
                 new TicTacToeGameConfiguration(),
                 ticTacToeRules,
                 new JavaFxViewFactory(scene)

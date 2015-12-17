@@ -14,10 +14,21 @@ public class GuiGameController implements GameController {
     private DisplayPresenter boardView;
     private GameType gameType;
 
-    public GuiGameController(GameConfiguration gameConfiguration, GameRules ticTacToeRules, ViewFactory viewFactory) {
+    private GuiGameController(GameConfiguration gameConfiguration, GameRules ticTacToeRules, ViewFactory viewFactory) {
         this.gameConfiguration = gameConfiguration;
         this.ticTacToeRules = ticTacToeRules;
-        this.boardView = viewFactory.createView(this, ticTacToeRules);
+    }
+
+    public static GuiGameController createGuiGameController(GameConfiguration gameConfiguration, GameRules ticTacToeRules, ViewFactory viewFactory) {
+        GuiGameController guiGameController = new GuiGameController(gameConfiguration, ticTacToeRules, viewFactory);
+        DisplayPresenter view = viewFactory.createView(guiGameController, ticTacToeRules);
+        guiGameController.setBoardPresenter(view);
+
+        return guiGameController;
+    }
+
+    private void setBoardPresenter(DisplayPresenter view) {
+        this.boardView = view;
     }
 
     @Override
