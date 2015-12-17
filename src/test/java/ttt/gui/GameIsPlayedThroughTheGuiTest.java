@@ -28,11 +28,14 @@ public class GameIsPlayedThroughTheGuiTest {
     public void setup() {
         scene = new Scene(new GridPane(), 700, 700);
         TicTacToeRules ticTacToeRules = new TicTacToeRules(new BoardFactory(), new GuiPlayerFactory());
+        TicTacToeGameConfiguration gameConfiguration = new TicTacToeGameConfiguration();
         controller = GuiGameController.createGuiGameController(
-                new TicTacToeGameConfiguration(),
+                gameConfiguration,
                 ticTacToeRules,
                 new JavaFxViewFactory(scene), new GameTypeController()
         );
+        GameTypeController gameTypeController = new GameTypeController();
+        gameTypeController.presentGameTypes(controller.getBoardPresenter(), gameConfiguration);
     }
 
     @Test

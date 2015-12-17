@@ -30,7 +30,7 @@ public class JavaFxGui extends Application {
                 ticTacToeRules,
                 new JavaFxViewFactory(scene), gameTypeController
         );
-        
+
         gameTypeController.presentGameTypes(guiGameController.getBoardPresenter(), gameConfiguration);
     }
 }

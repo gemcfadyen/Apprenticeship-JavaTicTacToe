@@ -16,16 +16,6 @@ public class GuiGameControllerTest {
     private GameConfigurationSpy gameConfigurationSpy = new GameConfigurationSpy();
 
     @Test
-    public void getsGameTypesFromGameAndDisplaysThemToUser() {
-        GuiGameController controller = GuiGameController.createGuiGameController(gameConfigurationSpy, gameRulesSpy, createViewFactory(), new GameTypeController());
-
-        controller.presentGameTypes();
-
-        assertThat(boardPresenterSpy.hasPresentedGameTypes(), is(true));
-        assertThat(gameConfigurationSpy.hasObtainedGameTypes(), is(true));
-    }
-
-    @Test
     public void getsDimensionsForGametypeAndDisplaysToUser() {
         GuiGameController controller = GuiGameController.createGuiGameController(gameConfigurationSpy, gameRulesSpy, createViewFactory(), new GameTypeController());
 
