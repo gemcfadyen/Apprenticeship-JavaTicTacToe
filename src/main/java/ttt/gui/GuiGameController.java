@@ -8,22 +8,21 @@ import static ttt.player.GuiHumanPlayer.IGNORE_AS_MOVE_WILL_COME_FROM_DISPLAY;
 public class GuiGameController implements GameController {
 
     private final GameConfiguration gameConfiguration;
-    private final PawelController pawelController;
+    private final GameTypeController gameTypeController;
     private GameRules ticTacToeRules;
     private DisplayPresenter boardView;
     private GameType gameType;
 
-    private GuiGameController(GameConfiguration gameConfiguration, GameRules ticTacToeRules, ViewFactory viewFactory, PawelController pawelController) {
+    private GuiGameController(GameConfiguration gameConfiguration, GameRules ticTacToeRules, ViewFactory viewFactory, GameTypeController gameTypeController) {
         this.gameConfiguration = gameConfiguration;
         this.ticTacToeRules = ticTacToeRules;
-        this.pawelController = pawelController;
+        this.gameTypeController = gameTypeController;
     }
 
-    public static GuiGameController createGuiGameController(GameConfiguration gameConfiguration, GameRules ticTacToeRules, ViewFactory viewFactory, PawelController pawelController) {
-        GuiGameController guiGameController = new GuiGameController(gameConfiguration, ticTacToeRules, viewFactory, pawelController);
+    public static GuiGameController createGuiGameController(GameConfiguration gameConfiguration, GameRules ticTacToeRules, ViewFactory viewFactory, GameTypeController gameTypeController) {
+        GuiGameController guiGameController = new GuiGameController(gameConfiguration, ticTacToeRules, viewFactory, gameTypeController);
         DisplayPresenter view = viewFactory.createView(guiGameController, ticTacToeRules);
         guiGameController.setBoardPresenter(view);
-
         return guiGameController;
     }
 
@@ -31,9 +30,13 @@ public class GuiGameController implements GameController {
         this.boardView = view;
     }
 
+    public DisplayPresenter getBoardPresenter() {
+        return boardView;
+    }
+
     @Override
     public void presentGameTypes() {
-        pawelController.pawel(boardView, gameConfiguration);
+        gameTypeController.presentGameTypes(boardView, gameConfiguration);
     }
 
     @Override
