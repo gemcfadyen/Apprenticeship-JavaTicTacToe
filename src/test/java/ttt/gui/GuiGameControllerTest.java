@@ -212,6 +212,6 @@ public class GuiGameControllerTest {
     }
 
     private ViewFactory createViewFactory() {
-        return (gameController, gameRules) -> boardPresenterSpy;
+        return (gameController, gameTypeController, gameRules) -> boardPresenterSpy;
     }
 }

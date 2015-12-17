@@ -10,7 +10,7 @@ public class UserSelectsReplayTest {
     @Test
     public void replayRepresentsGameTypes() {
         GuiGameControllerSpy controller = new GuiGameControllerSpy();
-        UserSelectsReplay userSelectsReplay = new UserSelectsReplay(controller);
+        UserSelectsReplay userSelectsReplay = new UserSelectsReplay(controller, null);
 
         userSelectsReplay.action();
 

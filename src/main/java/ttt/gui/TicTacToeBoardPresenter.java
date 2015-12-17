@@ -22,12 +22,14 @@ import static javafx.geometry.Pos.CENTER;
 import static ttt.player.PlayerSymbol.*;
 
 public class TicTacToeBoardPresenter implements DisplayPresenter {
+    private GameTypeController gameTypeController;
     private Scene scene;
     private RegisterClickEvent registerClickEvent;
     private RegisterRollEvent registerRollEvent;
     private GuiGameController controller;
 
-    public TicTacToeBoardPresenter(GuiGameController controller, Scene scene) {
+    public TicTacToeBoardPresenter(GuiGameController controller, GameTypeController gameTypeController, Scene scene) {
+        this.gameTypeController = gameTypeController;
         this.scene = scene;
         this.controller = controller;
         this.registerClickEvent = new RegisterClickEvent();
@@ -201,7 +203,7 @@ public class TicTacToeBoardPresenter implements DisplayPresenter {
 
     private void registerActionForReplay(Label gameOverStatus) {
         JavaFxLabel replay = new JavaFxLabel(gameOverStatus);
-        ClickEvent replayOnClick = new UserSelectsReplay(controller);
+        ClickEvent replayOnClick = new UserSelectsReplay(controller, gameTypeController);
         registerClickEvent.register(replay, replayOnClick);
 
         RollOn textChangesWhenMouseRolledOn = new UserRollsMouseOnGameStatus(replay, "Click To Replay");

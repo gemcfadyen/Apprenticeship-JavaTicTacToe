@@ -21,7 +21,7 @@ public class GuiGameController implements GameController {
 
     public static GuiGameController createGuiGameController(GameConfiguration gameConfiguration, GameRules ticTacToeRules, ViewFactory viewFactory, GameTypeController gameTypeController) {
         GuiGameController guiGameController = new GuiGameController(gameConfiguration, ticTacToeRules, viewFactory, gameTypeController);
-        DisplayPresenter view = viewFactory.createView(guiGameController, ticTacToeRules);
+        DisplayPresenter view = viewFactory.createView(guiGameController, gameTypeController, ticTacToeRules);
         guiGameController.setBoardPresenter(view);
         return guiGameController;
     }
