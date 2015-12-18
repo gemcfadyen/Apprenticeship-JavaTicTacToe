@@ -27,23 +27,20 @@ public class TicTacToeBoardPresenter implements DisplayPresenter {
     private RegisterClickEvent registerClickEvent;
     private RegisterRollEvent registerRollEvent;
     private GuiGameController controller;
+    private final GameTypesPresenter gameTypePresenter;
 
-    public TicTacToeBoardPresenter(GuiGameController controller, GameTypeController gameTypeController, Scene scene) {
+    public TicTacToeBoardPresenter(GuiGameController controller, GameTypeController gameTypeController, Scene scene, RegisterClickEvent registerClickEvent, RegisterRollEvent registerRollEvent, GameTypesPresenter gameTypePresenter) {
         this.gameTypeController = gameTypeController;
         this.scene = scene;
         this.controller = controller;
-        this.registerClickEvent = new RegisterClickEvent();
-        this.registerRollEvent = new RegisterRollEvent();
+        this.registerClickEvent = registerClickEvent;
+        this.registerRollEvent = registerRollEvent;
+        this.gameTypePresenter = gameTypePresenter;
     }
 
     @Override
     public void presentGameTypes(List<GameType> gameTypes) {
-        GridPane gameTypePane = new GridPane();
-        setWelcomeMessage(gameTypePane);
-
-        displayGameTypes(gameTypePane, gameTypes);
-
-        scene.setRoot(gameTypePane);
+        gameTypePresenter.presentGameTypes(gameTypes);
     }
 
     @Override
@@ -98,20 +95,6 @@ public class TicTacToeBoardPresenter implements DisplayPresenter {
         gameTitle.setId("gameTitleId");
         gridPane.add(gameTitle, 0, 0, 4, 1);
         gridPaneSetup(gridPane);
-    }
-
-    private void displayGameTypes(GridPane gridPane, List<GameType> gameTypes) {
-        Text gameSelectionPrompt = new Text("Choose a game type");
-        gameSelectionPrompt.setId("gameSetupId");
-        gridPane.add(gameSelectionPrompt, 2, 2, 4, 1);
-
-        int rowIndex = 4;
-        for (GameType gameType : gameTypes) {
-            RadioButton gameTypeSelectionButton = new RadioButton(gameType.gameNameForDisplay());
-            gameTypeSelectionButton.setId(gameType.name());
-            gridPane.add(gameTypeSelectionButton, 2, rowIndex++, 4, 1);
-            registerActionForSelectingGameType(gameTypeSelectionButton);
-        }
     }
 
     private void displayDimensions(int lowerBoundary, int upperBoundary, GridPane dimensionPane) {
@@ -182,7 +165,7 @@ public class TicTacToeBoardPresenter implements DisplayPresenter {
         positionLabelUnderBoard(boardPane, unusedTextForStableLayout);
     }
 
-    private void registerActionForSelectingGameType(RadioButton radioButton) {
+    private void registerActionForSelectingGameType(RadioButton radioButton, RegisterClickEvent registerClickEvent, GuiGameController controller) {
         ClickableElement gameSelectionButton = new JavaFxRadioButton(radioButton);
         ClickEvent gameSelectionOnClick = new UserSelectsGameType(controller, gameSelectionButton);
         registerClickEvent.register(gameSelectionButton, gameSelectionOnClick);
@@ -274,4 +257,5 @@ public class TicTacToeBoardPresenter implements DisplayPresenter {
             return null;
         };
     }
+
 }

@@ -6,8 +6,7 @@ import ttt.player.PlayerSymbol;
 
 import java.util.List;
 
-public interface DisplayPresenter {
-    void presentGameTypes(List<GameType> allGameTypes);
+public interface DisplayPresenter extends GeorginaDisplayPresenter {
     void presentGridDimensionsBetween(int lowerBoundary, int upperBoundary);
     void presentsBoard(Board board);
     void printsWinningMessage(Board board, PlayerSymbol symbol);
