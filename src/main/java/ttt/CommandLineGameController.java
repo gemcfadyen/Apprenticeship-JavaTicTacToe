@@ -86,9 +86,7 @@ public class CommandLineGameController {
     }
 
     void playMatch() {
-        while (gameInProgress()) {
-            updateBoardWithPlayersMove();
-        }
+        gameRules.playGame();
         printExitMessage();
     }
 

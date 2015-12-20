@@ -82,6 +82,14 @@ public class TicTacToeRulesSpy implements GameRules {
     }
 
     @Override
+    public void playGame() {
+        numberOfMovesMadeAtSpecificPosition++;
+        positionOfMove = nextMove;
+        hasMadeMove = true;
+        board.updateAt(nextMove, X);
+    }
+
+    @Override
     public boolean gameInProgress() {
         checkedGameIsInProgress = true;
         return board.hasFreeSpace() && !board.hasWinningCombination();

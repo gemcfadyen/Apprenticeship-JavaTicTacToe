@@ -14,4 +14,6 @@ public interface GameRules {
     boolean gameInProgress();
     boolean boardHasFreeSpace();
     int getCurrentPlayersNextMove();
+
+    void playGame();
 }

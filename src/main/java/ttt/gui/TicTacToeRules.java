@@ -87,8 +87,10 @@ public class TicTacToeRules implements GameRules {
                         : PLAYER_ONE_INDEX;
     }
 
+    @Override
     public void playGame() {
-        while (getCurrentPlayer().isReady() && gameInProgress()) {
+        while (getCurrentPlayer().isReady()
+                && gameInProgress()) {
             int currentPlayersNextMove = getCurrentPlayersNextMove();
             takeTurn(currentPlayersNextMove);
         }
