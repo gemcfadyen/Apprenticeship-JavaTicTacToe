@@ -165,21 +165,6 @@ public class CommandLineGameControllerTest {
     }
 
     @Test
-    public void boardIsUpdatedWithPlayersMove() {
-        Board board = new Board(3);
-        CommandLineGameController commandLineGameController = new CommandLineGameController(
-                gameConfigurationSpy,
-                new TicTacToeRulesSpy(board, 1),
-                commandPrompt()
-        );
-
-        commandLineGameController.updateBoardWithPlayersMove();
-
-        assertThat(board.getSymbolAt(1), is(X));
-        assertThat(board.getVacantPositions().size(), is(8));
-    }
-
-    @Test
     public void playersTakeTurnsUntilTheBoardIsFull() {
         PlayerSpy player1Spy = new PlayerSpy(X, createCommandPromptToReadInput("1\n5\n6\n7\n8\n"));
         PlayerSpy player2Spy = new PlayerSpy(O, createCommandPromptToReadInput("2\n3\n4\n9\n"));

@@ -35,6 +35,15 @@ public class TicTacToeRules implements GameRules {
     }
 
     @Override
+    public void playGame() {
+        while (getCurrentPlayer().isReady()
+                && gameInProgress()) {
+            int currentPlayersNextMove = getCurrentPlayersNextMove();
+            takeTurn(currentPlayersNextMove);
+        }
+    }
+
+    @Override
     public void takeTurn(int move) {
         board.updateAt(move, getCurrentPlayer().getSymbol());
         togglePlayer();
@@ -70,11 +79,11 @@ public class TicTacToeRules implements GameRules {
         return !hasWinner();
     }
 
+
     @Override
     public boolean gameInProgress() {
         return boardHasFreeSpace() && noWinnerYet();
     }
-
 
     int getCurrentPlayerIndex() {
         return currentPlayerIndex;
@@ -85,15 +94,6 @@ public class TicTacToeRules implements GameRules {
                 currentPlayerIndex == PLAYER_ONE_INDEX
                         ? PLAYER_TWO_INDEX
                         : PLAYER_ONE_INDEX;
-    }
-
-    @Override
-    public void playGame() {
-        while (getCurrentPlayer().isReady()
-                && gameInProgress()) {
-            int currentPlayersNextMove = getCurrentPlayersNextMove();
-            takeTurn(currentPlayersNextMove);
-        }
     }
 
     private Player getCurrentPlayer() {

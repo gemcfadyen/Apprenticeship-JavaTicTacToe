@@ -97,15 +97,6 @@ public class CommandLineGameController {
         return replayOption;
     }
 
-    void updateBoardWithPlayersMove() {
-        int nextMove = gameRules.getCurrentPlayersNextMove();
-        playMove(nextMove);
-    }
-
-    void playMove(int nextMove) {
-        gameRules.takeTurn(nextMove);
-    }
-
     boolean gameInProgress() {
         return gameRules.gameInProgress();
     }
