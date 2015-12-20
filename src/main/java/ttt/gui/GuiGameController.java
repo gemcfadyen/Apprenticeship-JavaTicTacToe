@@ -33,7 +33,7 @@ public class GuiGameController implements GameController {
     }
 
     @Override
-    public void presentBoard(String dimension) {
+    public void presentBoard(int dimension) {
         ticTacToeRules.initialiseGame(gameType, dimension);
         Board board = ticTacToeRules.getBoard();
         ticTacToeRules.playGame();

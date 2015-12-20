@@ -48,7 +48,7 @@ public class TicTacToeRulesSpy implements GameRules {
     }
 
     @Override
-    public void initialiseGame(GameType gameType, String dimension) {
+    public void initialiseGame(GameType gameType, int dimension) {
         if (board == null) {
             board = new Board(Integer.valueOf(dimension));
         }

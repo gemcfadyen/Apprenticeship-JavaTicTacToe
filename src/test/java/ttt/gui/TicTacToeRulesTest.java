@@ -57,7 +57,7 @@ public class TicTacToeRulesTest {
         CommandLinePlayerFactorySpy playerFactorySpy = new CommandLinePlayerFactorySpy();
         TicTacToeRules gamesRules = initialiseRulesWithFactories(new BoardFactory(), playerFactorySpy);
 
-        gamesRules.initialiseGame(HUMAN_VS_HUMAN, "3");
+        gamesRules.initialiseGame(HUMAN_VS_HUMAN, 3);
 
         assertThat(playerFactorySpy.getGameTypeUsed(), is(HUMAN_VS_HUMAN));
     }
@@ -69,7 +69,7 @@ public class TicTacToeRulesTest {
                 new CommandLinePlayerFactoryStub(players)
         );
 
-        ticTacToeRules.initialiseGame(HUMAN_VS_HUMAN, "3");
+        ticTacToeRules.initialiseGame(HUMAN_VS_HUMAN, 3);
 
         assertThat(ticTacToeRules.getBoard(), is(board));
     }
@@ -81,9 +81,9 @@ public class TicTacToeRulesTest {
                 new CommandLinePlayerFactoryStub(new Player[] {new FakePlayer(X, 0, 1, 2), new FakePlayer(O, 3, 4)})
         );
 
-        ticTacToeRules.initialiseGame(HUMAN_VS_HUMAN, "3");
+        ticTacToeRules.initialiseGame(HUMAN_VS_HUMAN, 3);
         ticTacToeRules.playGame();
-        ticTacToeRules.initialiseGame(HUMAN_VS_UNBEATABLE, "3");
+        ticTacToeRules.initialiseGame(HUMAN_VS_UNBEATABLE, 3);
 
         assertThat(ticTacToeRules.getCurrentPlayerIndex(), is(0));
     }
@@ -100,7 +100,7 @@ public class TicTacToeRulesTest {
                 new CommandLinePlayerFactory(UNUSED_PROMPT)
         );
 
-        ticTacToeRules.initialiseGame(HUMAN_VS_HUMAN, "3");
+        ticTacToeRules.initialiseGame(HUMAN_VS_HUMAN, 3);
 
         assertThat(ticTacToeRules.getBoard(), is(board));
     }

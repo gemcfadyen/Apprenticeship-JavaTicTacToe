@@ -6,7 +6,7 @@ import ttt.player.Player;
 import ttt.player.PlayerSymbol;
 
 public interface GameRules {
-    void initialiseGame(GameType gameType, String dimension);
+    void initialiseGame(GameType gameType, int dimension);
     PlayerSymbol getWinningSymbol();
     boolean hasWinner();
     boolean noWinnerYet();

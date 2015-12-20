@@ -40,7 +40,7 @@ public class GuiGameControllerTest {
         GuiGameController controller = new GuiGameController(humanVsHumanGameConfiguration, gameRulesSpy, createViewFactory());
         controller.setGameType(HUMAN_VS_HUMAN);
 
-        controller.presentBoard("3");
+        controller.presentBoard(3);
 
         assertThat(gameRulesSpy.hasInitialisedGame(), is(true));
         assertThat(gameRulesSpy.hasGameBeenPlayed(), is(true));

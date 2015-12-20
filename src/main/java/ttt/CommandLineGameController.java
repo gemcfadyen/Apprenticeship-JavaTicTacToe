@@ -82,7 +82,7 @@ public class CommandLineGameController {
     }
 
     private void initialiseGame(int dimension) {
-        gameRules.initialiseGame(gameType, String.valueOf(dimension));
+        gameRules.initialiseGame(gameType, dimension);
     }
 
     void playMatch() {

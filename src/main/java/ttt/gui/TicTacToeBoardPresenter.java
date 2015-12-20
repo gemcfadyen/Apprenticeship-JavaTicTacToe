@@ -171,7 +171,6 @@ public class TicTacToeBoardPresenter implements DisplayPresenter {
         registerActionForReplay(gameOverTarget);
 
         positionLabelUnderBoard(gameOverPane, gameOverTarget);
-
     }
 
     private void unusedLabelForConsistentLayout(GridPane boardPane) {

@@ -22,7 +22,7 @@ public class GuiGameControllerSpy implements GameController {
     }
 
     @Override
-    public void presentBoard(String dimensionForBoard) {
+    public void presentBoard(int dimensionForBoard) {
         hasPresentedBoard = true;
         boardDimension = Integer.valueOf(dimensionForBoard);
     }

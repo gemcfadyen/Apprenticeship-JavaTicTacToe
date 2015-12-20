@@ -27,10 +27,9 @@ public class TicTacToeRules implements GameRules {
     }
 
     @Override
-    public void initialiseGame(GameType gameType, String dimension) {
-        Integer boardDimension = Integer.valueOf(dimension);
-        board = boardFactory.createBoardWithSize(boardDimension);
-        players = playerFactory.createPlayers(gameType, boardDimension);
+    public void initialiseGame(GameType gameType, int dimension) {
+        board = boardFactory.createBoardWithSize(dimension);
+        players = playerFactory.createPlayers(gameType, dimension);
         currentPlayerIndex = PLAYER_ONE_INDEX;
     }
 
