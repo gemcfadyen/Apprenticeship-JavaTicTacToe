@@ -10,15 +10,6 @@ import static ttt.player.PlayerSymbol.X;
 public class GuiHumanPlayerTest {
 
     @Test
-    public void playerMakesNoMove() {
-        GuiHumanPlayer guiHuman = new GuiHumanPlayer(X);
-
-        int move = guiHuman.chooseNextMoveFrom(new Board(3));
-
-        assertThat(move, is(GuiHumanPlayer.IGNORE_AS_MOVE_WILL_COME_FROM_DISPLAY));
-    }
-
-    @Test
     public void playerIsReadyToMove() {
         GuiHumanPlayer guiHuman = new GuiHumanPlayer(X);
         guiHuman.setMove(3);

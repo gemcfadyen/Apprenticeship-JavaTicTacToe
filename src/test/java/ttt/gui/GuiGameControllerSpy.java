@@ -28,7 +28,7 @@ public class GuiGameControllerSpy implements GameController {
     }
 
     @Override
-    public void playMove(String position) {
+    public void playMove(int position) {
         hasTakenMove = true;
     }
 

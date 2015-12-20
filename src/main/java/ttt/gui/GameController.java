@@ -6,5 +6,5 @@ public interface GameController {
     void presentGameTypes();
     void presentBoardDimensionsFor(GameType gameType);
     void presentBoard(String dimension);
-    void playMove(String position);
+    void playMove(int position);
 }

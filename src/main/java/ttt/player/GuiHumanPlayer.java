@@ -3,8 +3,8 @@ package ttt.player;
 import ttt.board.Board;
 
 public class GuiHumanPlayer extends Player implements ConfigurableMovePlayer {
-    public static final int IGNORE_AS_MOVE_WILL_COME_FROM_DISPLAY = -1;
-    private int moveFromGui = IGNORE_AS_MOVE_WILL_COME_FROM_DISPLAY;
+    private static final int UNSET_MOVE = -1;
+    private int moveFromGui = UNSET_MOVE;
 
     public GuiHumanPlayer(PlayerSymbol symbol) {
         super(symbol);
@@ -13,13 +13,13 @@ public class GuiHumanPlayer extends Player implements ConfigurableMovePlayer {
     @Override
     public int chooseNextMoveFrom(Board board) {
         int preloadedMove = moveFromGui;
-        moveFromGui = IGNORE_AS_MOVE_WILL_COME_FROM_DISPLAY;
+        moveFromGui = UNSET_MOVE;
         return preloadedMove;
     }
 
     @Override
     public boolean isReady() {
-        return moveFromGui != IGNORE_AS_MOVE_WILL_COME_FROM_DISPLAY;
+        return moveFromGui != UNSET_MOVE;
     }
 
     @Override
