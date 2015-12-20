@@ -17,4 +17,30 @@ public class GuiHumanPlayerTest {
 
         assertThat(move, is(GuiHumanPlayer.IGNORE_AS_MOVE_WILL_COME_FROM_DISPLAY));
     }
+
+    @Test
+    public void playerIsReadyToMove() {
+        GuiHumanPlayer guiHuman = new GuiHumanPlayer(X);
+        guiHuman.setMove(3);
+
+        assertThat(guiHuman.isReady(), is(true));
+    }
+
+    @Test
+    public void whenNoMoveSetPlayerIsNotReady() {
+        GuiHumanPlayer guiHuman = new GuiHumanPlayer(X);
+
+        assertThat(guiHuman.isReady(), is(false));
+    }
+
+
+    @Test
+    public void onceMoveIsMadePlayerIsNotReady() {
+        GuiHumanPlayer guiHuman = new GuiHumanPlayer(X);
+        guiHuman.setMove(4);
+
+        guiHuman.chooseNextMoveFrom(new Board(3));
+
+        assertThat(guiHuman.isReady(), is(false));
+    }
 }

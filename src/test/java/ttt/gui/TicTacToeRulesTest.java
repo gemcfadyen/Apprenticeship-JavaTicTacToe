@@ -6,8 +6,7 @@ import ttt.CommandLinePlayerFactoryStub;
 import ttt.PromptSpy;
 import ttt.board.Board;
 import ttt.board.BoardFactory;
-import ttt.player.CommandLinePlayerFactory;
-import ttt.player.Player;
+import ttt.player.*;
 import ttt.ui.Prompt;
 
 import java.io.StringReader;
@@ -178,6 +177,55 @@ public class TicTacToeRulesTest {
         int move = gamesRules.getCurrentPlayersNextMove();
 
         assertThat(move, is(1));
+    }
+
+    @Test
+    public void gameLoopsUntilThereIsAWinner() {
+        TicTacToeRules ticTacToeRules = new TicTacToeRules(board, new Player[]{
+                new FakePlayer(X, 0, 1, 2), new FakePlayer(O, 3, 4)});
+
+        ticTacToeRules.playGame();
+
+        assertThat(board.getSymbolAt(0), is(X));
+        assertThat(board.getSymbolAt(3), is(O));
+        assertThat(board.getSymbolAt(1), is(X));
+        assertThat(board.getSymbolAt(4), is(O));
+        assertThat(board.getSymbolAt(2), is(X));
+        assertThat(ticTacToeRules.hasWinner(), is(true));
+    }
+
+    @Test
+    public void gameLoopsUntilNoSpaceOnBoard() {
+        TicTacToeRules ticTacToeRules = new TicTacToeRules(board, new Player[]{
+                new FakePlayer(X, 0, 2, 4, 5, 7), new FakePlayer(O, 1, 3, 6, 8)});
+
+        ticTacToeRules.playGame();
+
+        assertThat(board.getSymbolAt(0), is(X));
+        assertThat(board.getSymbolAt(1), is(O));
+        assertThat(board.getSymbolAt(2), is(X));
+        assertThat(board.getSymbolAt(3), is(O));
+        assertThat(board.getSymbolAt(4), is(X));
+        assertThat(board.getSymbolAt(6), is(O));
+        assertThat(board.getSymbolAt(5), is(X));
+        assertThat(board.getSymbolAt(8), is(O));
+        assertThat(board.getSymbolAt(7), is(X));
+        assertThat(ticTacToeRules.boardHasFreeSpace(), is(false));
+    }
+
+    @Test
+    public void gameLoopsUntilPlayerIsNotReady() {
+        GuiHumanPlayer testPlayer = new GuiHumanPlayer(X);
+        testPlayer.setMove(0);
+        FakePlayer fakePlayer = new FakePlayer(O, 3, 7);
+        TicTacToeRules ticTacToeRules = new TicTacToeRules(board, new Player[]{
+                testPlayer, fakePlayer});
+
+        ticTacToeRules.playGame();
+
+        assertThat(board.getSymbolAt(0), is(X));
+        assertThat(board.getSymbolAt(3), is(O));
+        assertThat(board.getSymbolAt(7), is(VACANT));
     }
 
     private TicTacToeRules initialiseRulesWithFactories(BoardFactory boardFactory, CommandLinePlayerFactory playerFactory) {
