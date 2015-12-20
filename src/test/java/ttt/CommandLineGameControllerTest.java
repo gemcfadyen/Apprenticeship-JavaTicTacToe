@@ -85,13 +85,13 @@ public class CommandLineGameControllerTest {
     @Test
     public void gameIsWonWhenPlayerPlacesWinningMove() {
         PromptSpy gamePrompt = new PromptSpy(new StringReader(""));
-        Board board = boardWith(
-                X, VACANT, X,
+        Board finalBoard = boardWith(
+                X, X, X,
                 O, X, O,
                 O, X, O);
         CommandLineGameController commandLineGameController = new CommandLineGameController(
                 gameConfigurationSpy,
-                new TicTacToeRulesSpy(board, 1),
+                new TicTacToeRulesSpy(finalBoard, 1),
                 gamePrompt
         );
 

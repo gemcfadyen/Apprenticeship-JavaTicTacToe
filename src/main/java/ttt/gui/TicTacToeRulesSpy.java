@@ -2,11 +2,14 @@ package ttt.gui;
 
 import ttt.GameType;
 import ttt.board.Board;
+import ttt.player.GuiHumanPlayer;
+import ttt.player.Player;
 import ttt.player.PlayerSymbol;
 
 import static ttt.player.PlayerSymbol.X;
 
 public class TicTacToeRulesSpy implements GameRules {
+    private Player currentPlayer;
     private Board board;
     private boolean hasInitialisedGame = false;
     private boolean hasMadeMove = false;
@@ -20,6 +23,8 @@ public class TicTacToeRulesSpy implements GameRules {
     private int numberOfTimesBoardCheckedForWin = 0;
     private int numberOfTimesBoardObtained = 0;
     private boolean checkedGameIsInProgress = false;
+    private boolean gameIsPlayed = false;
+    private boolean gotCurrentPlayer = false;
 
     public TicTacToeRulesSpy() {
     }
@@ -27,6 +32,11 @@ public class TicTacToeRulesSpy implements GameRules {
     public TicTacToeRulesSpy(Board board, int nextMove) {
         this.board = board;
         this.nextMove = nextMove;
+    }
+
+    public TicTacToeRulesSpy(Board board, Player currentPlayer) {
+        this.board = board;
+        this.currentPlayer = currentPlayer;
     }
 
     @Override
@@ -83,16 +93,23 @@ public class TicTacToeRulesSpy implements GameRules {
 
     @Override
     public void playGame() {
-        numberOfMovesMadeAtSpecificPosition++;
-        positionOfMove = nextMove;
-        hasMadeMove = true;
-        board.updateAt(nextMove, X);
+        gameIsPlayed = true;
+//        numberOfMovesMadeAtSpecificPosition++;
+//        positionOfMove = nextMove;
+//        hasMadeMove = true;
+//        board.updateAt(nextMove, X);
     }
 
     @Override
     public boolean gameInProgress() {
         checkedGameIsInProgress = true;
         return board.hasFreeSpace() && !board.hasWinningCombination();
+    }
+
+    @Override
+    public Player getCurrentPlayer() {
+        gotCurrentPlayer = true;
+        return currentPlayer == null ? new GuiHumanPlayer(X) : currentPlayer;
     }
 
     public boolean hasInitialisedGame() {
@@ -137,5 +154,13 @@ public class TicTacToeRulesSpy implements GameRules {
 
     public boolean gameInProgressCheck() {
         return checkedGameIsInProgress;
+    }
+
+    public boolean hasGameBeenPlayed() {
+        return gameIsPlayed;
+    }
+
+    public boolean hasGotCurrentPlayer() {
+        return gotCurrentPlayer;
     }
 }

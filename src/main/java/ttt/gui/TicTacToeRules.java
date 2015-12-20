@@ -85,6 +85,11 @@ public class TicTacToeRules implements GameRules {
         return boardHasFreeSpace() && noWinnerYet();
     }
 
+    @Override
+    public Player getCurrentPlayer() {
+        return players[currentPlayerIndex];
+    }
+
     int getCurrentPlayerIndex() {
         return currentPlayerIndex;
     }
@@ -94,9 +99,5 @@ public class TicTacToeRules implements GameRules {
                 currentPlayerIndex == PLAYER_ONE_INDEX
                         ? PLAYER_TWO_INDEX
                         : PLAYER_ONE_INDEX;
-    }
-
-    private Player getCurrentPlayer() {
-        return players[currentPlayerIndex];
     }
 }

@@ -2,6 +2,7 @@ package ttt.gui;
 
 import ttt.GameType;
 import ttt.board.Board;
+import ttt.player.Player;
 import ttt.player.PlayerSymbol;
 
 public interface GameRules {
@@ -14,6 +15,6 @@ public interface GameRules {
     boolean gameInProgress();
     boolean boardHasFreeSpace();
     int getCurrentPlayersNextMove();
-
     void playGame();
+    Player getCurrentPlayer();
 }

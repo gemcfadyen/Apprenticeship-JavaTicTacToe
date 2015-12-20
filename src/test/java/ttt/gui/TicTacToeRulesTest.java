@@ -12,6 +12,7 @@ import ttt.ui.Prompt;
 import java.io.StringReader;
 
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.instanceOf;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.not;
 import static ttt.GameType.HUMAN_VS_HUMAN;
@@ -226,6 +227,18 @@ public class TicTacToeRulesTest {
         assertThat(board.getSymbolAt(0), is(X));
         assertThat(board.getSymbolAt(3), is(O));
         assertThat(board.getSymbolAt(7), is(VACANT));
+    }
+
+    @Test
+    public void getCurrentPlayer() {
+        GuiHumanPlayer testPlayer = new GuiHumanPlayer(X);
+        FakePlayer fakePlayer = new FakePlayer(O);
+        TicTacToeRules ticTacToeRules = new TicTacToeRules(board, new Player[]{
+                testPlayer, fakePlayer});
+
+        Player currentPlayer = ticTacToeRules.getCurrentPlayer();
+
+        assertThat(currentPlayer, is(instanceOf(GuiHumanPlayer.class)));
     }
 
     private TicTacToeRules initialiseRulesWithFactories(BoardFactory boardFactory, CommandLinePlayerFactory playerFactory) {
