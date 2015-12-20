@@ -11,7 +11,6 @@ public class GuiHumanPlayerSpy extends GuiHumanPlayer {
     }
 
     public void setMove(int move) {
-//        super.setMove(move);
         preloadedWithMove = true;
     }
 

@@ -97,10 +97,6 @@ public class CommandLineGameController {
         return replayOption;
     }
 
-    boolean gameInProgress() {
-        return gameRules.gameInProgress();
-    }
-
     GameType getGameType() {
         return gameType;
     }
