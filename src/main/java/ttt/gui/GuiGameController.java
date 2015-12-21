@@ -48,7 +48,6 @@ public class GuiGameController implements GameController {
         return ticTacToeRules.getCurrentPlayer();
     }
 
-
     void setGameType(GameType gameType) {
         this.gameType = gameType;
     }
