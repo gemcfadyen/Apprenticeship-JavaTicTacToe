@@ -2,7 +2,6 @@ package ttt.gui;
 
 import ttt.GameType;
 import ttt.board.Board;
-import ttt.player.GuiHumanPlayer;
 import ttt.player.Player;
 
 import java.util.List;
@@ -42,25 +41,19 @@ public class GuiGameController implements GameController {
 
     @Override
     public void playMove(int position) {
-        preloadHumanWithMoveAt(position);
-
         ticTacToeRules.playGame();
         Board latestBoard = ticTacToeRules.getBoard();
         printBoard(latestBoard);
         displayExitMessage(latestBoard);
     }
 
+    @Override
+    public Player getCurrentPlayer() {
+        return ticTacToeRules.getCurrentPlayer();
+    }
+
     private void printBoard(Board board) {
         boardView.presentsBoard(board);
-    }
-
-    private void preloadHumanWithMoveAt(int position) {
-        Player currentPlayer = getCurrentPlayer();
-        ((GuiHumanPlayer)currentPlayer).update(Integer.valueOf(position));
-    }
-
-    private Player getCurrentPlayer() {
-        return ticTacToeRules.getCurrentPlayer();
     }
 
     public void setGameType(GameType gameType) {

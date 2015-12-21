@@ -258,7 +258,8 @@ public class TicTacToeBoardPresenter implements DisplayPresenter {
             disableOccupied(button);
 
             DeactivatableElement clickableCell = new JavaFxButton(button);
-            ClickEvent makeMoveOnClick = new UserSelectsButtonForMove(controller, clickableCell);
+            UserSelectsButtonForMove makeMoveOnClick = new UserSelectsButtonForMove(controller, clickableCell);
+            makeMoveOnClick.register(controller.getCurrentPlayer());
             registerClickEvent.register(clickableCell, makeMoveOnClick);
             return null;
         };
