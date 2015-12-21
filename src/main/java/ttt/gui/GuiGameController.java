@@ -55,8 +55,12 @@ public class GuiGameController implements GameController {
     }
 
     private void preloadHumanWithMoveAt(int position) {
-        Player currentPlayer = ticTacToeRules.getCurrentPlayer();
+        Player currentPlayer = getCurrentPlayer();
         ((GuiHumanPlayer)currentPlayer).update(Integer.valueOf(position));
+    }
+
+    private Player getCurrentPlayer() {
+        return ticTacToeRules.getCurrentPlayer();
     }
 
     public void setGameType(GameType gameType) {
