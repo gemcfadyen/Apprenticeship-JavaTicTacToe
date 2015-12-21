@@ -78,7 +78,7 @@ public class TicTacToeRulesTest {
     public void currentPlayerReinitialisedWhenNewGameStarted() {
         TicTacToeRules ticTacToeRules = initialiseRulesWithFactories(
                 new BoardFactoryStub(board, board),
-                new CommandLinePlayerFactoryStub(new FakePlayer(X, 0, 1, 2), new FakePlayer(O, 3, 4))
+                new CommandLinePlayerFactoryStub(new Player[] {new FakePlayer(X, 0, 1, 2), new FakePlayer(O, 3, 4)})
         );
 
         ticTacToeRules.initialiseGame(HUMAN_VS_HUMAN, 3);
