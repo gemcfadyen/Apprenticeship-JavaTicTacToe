@@ -53,7 +53,7 @@ public class TicTacToeRules implements GameRules {
     }
 
     @Override
-    public boolean boardHasFreeSpace() {
+    public boolean hasAvailableMoves() {
         return board.hasFreeSpace();
     }
 
@@ -73,7 +73,7 @@ public class TicTacToeRules implements GameRules {
     }
 
     boolean gameInProgress() {
-        return boardHasFreeSpace() && noWinnerYet();
+        return hasAvailableMoves() && noWinnerYet();
     }
 
     private void takeTurn(int move) {

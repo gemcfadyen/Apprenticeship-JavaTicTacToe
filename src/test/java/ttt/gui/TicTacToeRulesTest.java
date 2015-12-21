@@ -189,7 +189,7 @@ public class TicTacToeRulesTest {
         assertThat(board.getSymbolAt(5), is(X));
         assertThat(board.getSymbolAt(8), is(O));
         assertThat(board.getSymbolAt(7), is(X));
-        assertThat(ticTacToeRules.boardHasFreeSpace(), is(false));
+        assertThat(ticTacToeRules.hasAvailableMoves(), is(false));
     }
 
     @Test

@@ -70,7 +70,7 @@ public class GuiGameController implements GameController {
     private void displayExitMessage(Board board) {
         if (ticTacToeRules.hasWinner()) {
             boardView.printsWinningMessage(board, ticTacToeRules.getWinningSymbol());
-        } else if (!ticTacToeRules.boardHasFreeSpace()) {
+        } else if (!ticTacToeRules.hasAvailableMoves()) {
             boardView.printsDrawMessage(board);
         }
     }

@@ -11,7 +11,7 @@ public interface GameRules {
     boolean hasWinner();
     boolean noWinnerYet();
     Board getBoard();
-    boolean boardHasFreeSpace();
+    boolean hasAvailableMoves();
     void playGame();
     Player getCurrentPlayer();
 }

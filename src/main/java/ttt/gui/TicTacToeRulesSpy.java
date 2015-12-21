@@ -62,7 +62,7 @@ public class TicTacToeRulesSpy implements GameRules {
     }
 
     @Override
-    public boolean boardHasFreeSpace() {
+    public boolean hasAvailableMoves() {
         return board.hasFreeSpace();
     }
 
