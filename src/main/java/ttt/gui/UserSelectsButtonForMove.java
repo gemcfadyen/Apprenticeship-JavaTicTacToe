@@ -1,6 +1,6 @@
 package ttt.gui;
 
-import ttt.player.GuiHumanPlayer;
+import ttt.player.MoveObserver;
 import ttt.player.Player;
 
 public class UserSelectsButtonForMove implements ClickEvent, MovePublisher {
@@ -23,9 +23,10 @@ public class UserSelectsButtonForMove implements ClickEvent, MovePublisher {
 
     @Override
     public void notifyObserver(int indexOfMove) {
-        ((GuiHumanPlayer)observer).update(indexOfMove);
+        ((MoveObserver)observer).update(indexOfMove);
     }
 
+    @Override
     public void register(Player player) {
         this.observer = player;
     }
