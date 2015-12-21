@@ -6,7 +6,7 @@ import ttt.player.Player;
 public interface GameController {
     void presentGameTypes();
     void presentBoardDimensionsFor(GameType gameType);
-    void presentBoard(int dimension);
-    void playMove(int position);
+    void startGame(int dimension);
+    void takeMove(int position);
     Player getCurrentPlayer();
 }

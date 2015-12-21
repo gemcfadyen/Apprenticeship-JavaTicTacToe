@@ -11,13 +11,14 @@ public class UserSelectsButtonForMove implements ClickEvent, MovePublisher {
     public UserSelectsButtonForMove(GameController controller, DeactivatableElement deactivatableElement) {
         this.controller = controller;
         this.deactivatableElement = deactivatableElement;
+        register(controller.getCurrentPlayer());
     }
 
     @Override
     public void action() {
         int position = Integer.valueOf(deactivatableElement.getId());
         notifyObserver(position);
-        controller.playMove(position);
+        controller.takeMove(position);
     }
 
     @Override

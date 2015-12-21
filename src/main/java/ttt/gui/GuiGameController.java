@@ -32,19 +32,15 @@ public class GuiGameController implements GameController {
     }
 
     @Override
-    public void presentBoard(int dimension) {
+    public void startGame(int dimension) {
         ticTacToeRules.initialiseGame(gameType, dimension);
-        Board board = ticTacToeRules.getBoard();
-        ticTacToeRules.playGame();
-        printBoard(board);
+        playTurns();
     }
 
     @Override
-    public void playMove(int position) {
-        ticTacToeRules.playGame();
-        Board latestBoard = ticTacToeRules.getBoard();
-        printBoard(latestBoard);
-        displayExitMessage(latestBoard);
+    public void takeMove(int position) {
+        playTurns();
+        displayExitMessage(ticTacToeRules.getBoard());
     }
 
     @Override
@@ -52,16 +48,18 @@ public class GuiGameController implements GameController {
         return ticTacToeRules.getCurrentPlayer();
     }
 
-    private void printBoard(Board board) {
-        boardView.presentsBoard(board);
-    }
-
-    public void setGameType(GameType gameType) {
+    void setGameType(GameType gameType) {
         this.gameType = gameType;
     }
 
     GameType getGameType() {
         return gameType;
+    }
+
+    private void playTurns() {
+        ticTacToeRules.playGame();
+        Board board = ticTacToeRules.getBoard();
+        boardView.presentsBoard(board);
     }
 
     private void displayExitMessage(Board board) {

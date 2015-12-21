@@ -23,13 +23,13 @@ public class GuiGameControllerSpy implements GameController {
     }
 
     @Override
-    public void presentBoard(int dimensionForBoard) {
+    public void startGame(int dimensionForBoard) {
         hasPresentedBoard = true;
         boardDimension = Integer.valueOf(dimensionForBoard);
     }
 
     @Override
-    public void playMove(int position) {
+    public void takeMove(int position) {
         hasTakenMove = true;
     }
 
