@@ -195,7 +195,7 @@ public class TicTacToeRulesTest {
     @Test
     public void gameLoopsUntilPlayerIsNotReady() {
         GuiHumanPlayer testPlayer = new GuiHumanPlayer(X);
-        testPlayer.setMove(0);
+        testPlayer.update(0);
         FakePlayer fakePlayer = new FakePlayer(O, 3, 7);
         TicTacToeRules ticTacToeRules = new TicTacToeRules(board, new Player[]{
                 testPlayer, fakePlayer});
