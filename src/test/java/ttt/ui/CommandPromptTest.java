@@ -77,7 +77,7 @@ public class CommandPromptTest {
     @Test
     public void printsBoard() {
         Prompt prompt = new CommandPrompt(new StringReader("1\n"), writer, plainFormatter);
-        prompt.presentsBoard(new Board(3));
+        prompt.presentsBoard(new Board(3), null);
 
         assertThat(writer.toString().contains("---------"), is(true));
     }

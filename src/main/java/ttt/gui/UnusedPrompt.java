@@ -3,6 +3,7 @@ package ttt.gui;
 import ttt.GameType;
 import ttt.ReplayOption;
 import ttt.board.Board;
+import ttt.player.Player;
 import ttt.player.PlayerSymbol;
 import ttt.ui.Prompt;
 
@@ -18,7 +19,7 @@ public class UnusedPrompt implements Prompt {
     }
 
     @Override
-    public void presentsBoard(Board board) {
+    public void presentsBoard(Board board, Player currentPlayer) {
     }
 
     @Override

@@ -42,8 +42,6 @@ public class GuiGameController implements GameController {
 
     @Override
     public void playMove(int position) {
-        preloadHumanWithMoveAt(position);
-
         ticTacToeRules.playGame();
         Board latestBoard = ticTacToeRules.getBoard();
         printBoard(latestBoard);
@@ -51,12 +49,12 @@ public class GuiGameController implements GameController {
     }
 
     private void printBoard(Board board) {
-        boardView.presentsBoard(board);
+        boardView.presentsBoard(board, ticTacToeRules.getCurrentPlayer());
     }
 
     private void preloadHumanWithMoveAt(int position) {
         Player currentPlayer = ticTacToeRules.getCurrentPlayer();
-        ((GuiHumanPlayer)currentPlayer).setMove(Integer.valueOf(position));
+        ((GuiHumanPlayer) currentPlayer).setMove(Integer.valueOf(position));
     }
 
     public void setGameType(GameType gameType) {

@@ -2,6 +2,7 @@ package ttt.gui;
 
 import ttt.GameType;
 import ttt.board.Board;
+import ttt.player.Player;
 import ttt.player.PlayerSymbol;
 
 import java.util.List;
@@ -25,7 +26,7 @@ public class DisplayPresenterSpy implements DisplayPresenter {
     }
 
     @Override
-    public void presentsBoard(Board board) {
+    public void presentsBoard(Board board, Player currentPlayer) {
         hasDisplayedBoard = true;
     }
 

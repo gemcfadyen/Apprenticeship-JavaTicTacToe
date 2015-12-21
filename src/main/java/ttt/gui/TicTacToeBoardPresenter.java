@@ -12,6 +12,7 @@ import javafx.scene.text.Text;
 import ttt.GameType;
 import ttt.board.Board;
 import ttt.board.Line;
+import ttt.player.Player;
 import ttt.player.PlayerSymbol;
 
 import java.util.List;
@@ -54,13 +55,13 @@ public class TicTacToeBoardPresenter implements DisplayPresenter {
     }
 
     @Override
-    public void presentsBoard(Board board) {
+    public void presentsBoard(Board board, Player currentPlayer) {
         GridPane boardPane = new GridPane();
         gridPaneSetup(boardPane);
         unusedLabelForConsistentLayout(boardPane);
 
         gridPaneSetup(boardPane);
-        printBoardsOnPane(board, boardPane, getCellLabelForActiveBoard(board), registerEvent());
+        printBoardsOnPane(board, boardPane, getCellLabelForActiveBoard(board), registerEvent(currentPlayer));
 
         scene.setRoot(boardPane);
     }
@@ -253,12 +254,13 @@ public class TicTacToeBoardPresenter implements DisplayPresenter {
         }
     }
 
-    private Function<Button, Void> registerEvent() {
+    private Function<Button, Void> registerEvent(Player currentPlayer) {
         return button -> {
             disableOccupied(button);
 
             DeactivatableElement clickableCell = new JavaFxButton(button);
             ClickEvent makeMoveOnClick = new UserSelectsButtonForMove(controller, clickableCell);
+            ((UserSelectsButtonForMove) makeMoveOnClick).register(currentPlayer);
             registerClickEvent.register(clickableCell, makeMoveOnClick);
             return null;
         };

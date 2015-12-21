@@ -4,6 +4,7 @@ import ttt.GameType;
 import ttt.ReplayOption;
 import ttt.board.Board;
 import ttt.inputvalidation.*;
+import ttt.player.Player;
 import ttt.player.PlayerSymbol;
 
 import java.io.BufferedReader;
@@ -68,7 +69,7 @@ public class CommandPrompt implements Prompt {
     }
 
     @Override
-    public void presentsBoard(Board board) {
+    public void presentsBoard(Board board, Player currentPlayer) {
         print(board);
     }
 

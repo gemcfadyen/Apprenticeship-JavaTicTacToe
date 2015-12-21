@@ -2,6 +2,7 @@ package ttt;
 
 import ttt.board.Board;
 import ttt.board.Line;
+import ttt.player.Player;
 import ttt.player.PlayerSymbol;
 import ttt.ui.Prompt;
 
@@ -64,7 +65,7 @@ public class PromptSpy implements Prompt {
     }
 
     @Override
-    public void presentsBoard(Board board) {
+    public void presentsBoard(Board board, Player currentPlayer) {
         this.lastBoardPrinted = board;
     }
 
