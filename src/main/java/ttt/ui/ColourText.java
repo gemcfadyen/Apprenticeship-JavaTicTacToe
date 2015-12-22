@@ -1,8 +1,11 @@
 package ttt.ui;
 
+import static ttt.player.PlayerSymbol.X;
+
 public class ColourText implements TextDecorator {
     private static final String FONT_COLOUR_ANSII_CHARACTERS = "\033[1;37m";
     private static final String X_COLOUR_ANSII_CHARACTERS = "\033[1;33m";
+    private static final String O_COLOUR_ANSII_CHARACTERS = "\033[1;31m";
 
     private TextPresenter textPresenter;
 
@@ -18,9 +21,9 @@ public class ColourText implements TextDecorator {
     }
 
     private String colour(String symbolForDisplay) {
-        //if (symbol.equals(X)) {
-        return X_COLOUR_ANSII_CHARACTERS + symbolForDisplay;
-        //}
-        // return O_COLOUR_ANSII_CHARACTERS + symbol.getSymbolForDisplay();
+        if (symbolForDisplay.equals(X.getSymbolForDisplay())) {
+            return X_COLOUR_ANSII_CHARACTERS + symbolForDisplay;
+        }
+        return O_COLOUR_ANSII_CHARACTERS + symbolForDisplay;
     }
 }
