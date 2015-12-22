@@ -40,6 +40,11 @@ public class ColourText implements TextDecorator {
         return FONT_COLOUR_ANSII_CHARACTERS + textPresenter.presentGameTypes(gameTypes);
     }
 
+    @Override
+    public String replayMessage() {
+        return FONT_COLOUR_ANSII_CHARACTERS + textPresenter.replayMessage();
+    }
+
     private String colour(String symbolForDisplay) {
         if (symbolForDisplay.equals(X.getSymbolForDisplay())) {
             return X_COLOUR_ANSII_CHARACTERS + symbolForDisplay;

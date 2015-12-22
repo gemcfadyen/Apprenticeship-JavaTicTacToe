@@ -39,4 +39,11 @@ public class StandardTextPresenterTest {
                                  "Enter 2 to play Human vs Unbeatable\n" +
                                  "Enter 3 to play Unbeatable vs Human\n"));
     }
+
+    @Test
+    public void replayMessage() {
+        String replayMessage = standardTextPresenter.replayMessage();
+
+        assertThat(replayMessage, is("Play again? [Y/N]"));
+    }
 }

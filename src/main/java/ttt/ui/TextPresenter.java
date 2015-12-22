@@ -10,4 +10,5 @@ public interface TextPresenter {
     String drawMessage();
     String validationError(ValidationResult validationResult);
     String presentGameTypes(List<GameType> gameTypes);
+    String replayMessage();
 }

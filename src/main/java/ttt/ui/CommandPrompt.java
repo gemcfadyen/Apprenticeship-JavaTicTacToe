@@ -177,7 +177,7 @@ public class CommandPrompt implements Prompt {
     }
 
     private void askUserToPlayAgain() {
-        display(displayFormatter.applyFontColour("Play again? [Y/N]"));
+        display(textPresenter.replayMessage());
     }
 
     private void askUserForTheirMove() {

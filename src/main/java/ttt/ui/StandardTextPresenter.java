@@ -33,6 +33,11 @@ public class StandardTextPresenter implements TextPresenter {
         return gameTypeMessage;
     }
 
+    @Override
+    public String replayMessage() {
+        return "Play again? [Y/N]";
+    }
+
     private String newLine() {
         return "\n";
     }

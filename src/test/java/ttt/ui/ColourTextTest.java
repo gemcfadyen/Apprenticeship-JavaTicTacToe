@@ -52,4 +52,10 @@ public class ColourTextTest {
                 "Enter 2 to play Human vs Unbeatable\n" +
                 "Enter 3 to play Unbeatable vs Human\n"));
     }
+
+    @Test
+    public void replayMessage() {
+        String replayMessage = colouredText.replayMessage();
+        assertThat(replayMessage, is(FONT_COLOUR + "Play again? [Y/N]"));
+    }
 }
