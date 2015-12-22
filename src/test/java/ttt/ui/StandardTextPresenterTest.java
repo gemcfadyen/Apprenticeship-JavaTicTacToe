@@ -34,10 +34,10 @@ public class StandardTextPresenterTest {
 
     @Test
     public void gameTypes() {
-        String gameTypes = standardTextPresenter.presentGameTypes(Arrays.asList(GameType.values()));
+        String gameTypes = standardTextPresenter.chooseGameTypeMessage(Arrays.asList(GameType.values()));
         assertThat(gameTypes, is("Enter 1 to play Human vs Human\n" +
-                                 "Enter 2 to play Human vs Unbeatable\n" +
-                                 "Enter 3 to play Unbeatable vs Human\n"));
+                "Enter 2 to play Human vs Unbeatable\n" +
+                "Enter 3 to play Unbeatable vs Human\n"));
     }
 
     @Test
@@ -45,5 +45,18 @@ public class StandardTextPresenterTest {
         String replayMessage = standardTextPresenter.replayMessage();
 
         assertThat(replayMessage, is("Play again? [Y/N]"));
+    }
+
+    @Test
+    public void nextMoveMessage() {
+        String playerPrompt = standardTextPresenter.chooseNextMoveMessage();
+        assertThat(playerPrompt, is("Please enter the index for your next move"));
+    }
+
+    @Test
+    public void chooseDimensionMessage() {
+        String dimensionMessage = standardTextPresenter.chooseDimensionMessage(1, 3);
+
+        assertThat(dimensionMessage, is("Please enter the dimension of the board you would like to use [1 to 3]"));
     }
 }

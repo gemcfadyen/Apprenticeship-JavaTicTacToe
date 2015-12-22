@@ -23,7 +23,7 @@ public class StandardTextPresenter implements TextPresenter {
     }
 
     @Override
-    public String presentGameTypes(List<GameType> gameTypes) {
+    public String chooseGameTypeMessage(List<GameType> gameTypes) {
         String gameTypeMessage = "";
 
         for (GameType gameType : gameTypes) {
@@ -36,6 +36,16 @@ public class StandardTextPresenter implements TextPresenter {
     @Override
     public String replayMessage() {
         return "Play again? [Y/N]";
+    }
+
+    @Override
+    public String chooseNextMoveMessage() {
+        return "Please enter the index for your next move";
+    }
+
+    @Override
+    public String chooseDimensionMessage(int lowerBoundary, int upperBoundary) {
+        return "Please enter the dimension of the board you would like to use [" + lowerBoundary + " to " + upperBoundary + "]";
     }
 
     private String newLine() {

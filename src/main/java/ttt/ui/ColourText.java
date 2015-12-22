@@ -36,13 +36,23 @@ public class ColourText implements TextDecorator {
     }
 
     @Override
-    public String presentGameTypes(List<GameType> gameTypes) {
-        return FONT_COLOUR_ANSII_CHARACTERS + textPresenter.presentGameTypes(gameTypes);
+    public String chooseGameTypeMessage(List<GameType> gameTypes) {
+        return FONT_COLOUR_ANSII_CHARACTERS + textPresenter.chooseGameTypeMessage(gameTypes);
     }
 
     @Override
     public String replayMessage() {
         return FONT_COLOUR_ANSII_CHARACTERS + textPresenter.replayMessage();
+    }
+
+    @Override
+    public String chooseNextMoveMessage() {
+        return FONT_COLOUR_ANSII_CHARACTERS + textPresenter.chooseNextMoveMessage();
+    }
+
+    @Override
+    public String chooseDimensionMessage(int lowerBoundary, int upperBoundary) {
+        return FONT_COLOUR_ANSII_CHARACTERS + textPresenter.chooseDimensionMessage(lowerBoundary, upperBoundary);
     }
 
     private String colour(String symbolForDisplay) {

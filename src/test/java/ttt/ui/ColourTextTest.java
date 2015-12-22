@@ -47,7 +47,7 @@ public class ColourTextTest {
 
     @Test
     public void gameTypes() {
-        String gameTypes = colouredText.presentGameTypes(Arrays.asList(GameType.values()));
+        String gameTypes = colouredText.chooseGameTypeMessage(Arrays.asList(GameType.values()));
         assertThat(gameTypes, is(FONT_COLOUR + "Enter 1 to play Human vs Human\n" +
                 "Enter 2 to play Human vs Unbeatable\n" +
                 "Enter 3 to play Unbeatable vs Human\n"));
@@ -57,5 +57,19 @@ public class ColourTextTest {
     public void replayMessage() {
         String replayMessage = colouredText.replayMessage();
         assertThat(replayMessage, is(FONT_COLOUR + "Play again? [Y/N]"));
+    }
+
+    @Test
+    public void nextMoveMessage() {
+        String nextMoveMessage = colouredText.chooseNextMoveMessage();
+
+        assertThat(nextMoveMessage, is(FONT_COLOUR + "Please enter the index for your next move"));
+    }
+
+    @Test
+    public void chooseDimensionMessage() {
+        String dimensionMessage = colouredText.chooseDimensionMessage(1, 4);
+
+        assertThat(dimensionMessage, is(FONT_COLOUR + "Please enter the dimension of the board you would like to use [1 to 4]"));
     }
 }

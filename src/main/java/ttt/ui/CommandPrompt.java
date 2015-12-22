@@ -66,7 +66,7 @@ public class CommandPrompt implements Prompt {
 
     @Override
     public void presentGridDimensionsBetween(int lowerBoundary, int upperBoundary) {
-        display(displayFormatter.formatBoardDimensionMessage(lowerBoundary, upperBoundary));
+        display(textPresenter.chooseDimensionMessage(lowerBoundary, upperBoundary));
     }
 
     @Override
@@ -113,7 +113,7 @@ public class CommandPrompt implements Prompt {
     }
 
     private void askUserForGameType(List<GameType> gameTypes) {
-        display(textPresenter.presentGameTypes(gameTypes));
+        display(textPresenter.chooseGameTypeMessage(gameTypes));
     }
 
     private CompositeValidator compositeFor(List<InputValidator> validators) {
@@ -146,7 +146,7 @@ public class CommandPrompt implements Prompt {
     private Function<ValidationResult, Void> functionToRepromptForValidBoardDimension(int lowerDimension, int largestDimension) {
         return validationResult -> {
             display(textPresenter.validationError(validationResult));
-            display(displayFormatter.formatBoardDimensionMessage(lowerDimension, largestDimension));
+            presentGridDimensionsBetween(lowerDimension, largestDimension);
             return null;
         };
     }
@@ -181,7 +181,7 @@ public class CommandPrompt implements Prompt {
     }
 
     private void askUserForTheirMove() {
-        display(displayFormatter.applyFontColour("Please enter the index for your next move"));
+        display(textPresenter.chooseNextMoveMessage());
     }
 
     private List<InputValidator> gameTypeValidators() {
