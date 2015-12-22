@@ -9,7 +9,6 @@ import static org.hamcrest.Matchers.equalTo;
 import static org.junit.Assert.assertThat;
 
 public class WriteToPromptExceptionTest {
-
     private IOException originalException;
     private WriteToPromptException wrappedException;
 

@@ -25,25 +25,22 @@ import static ttt.player.PlayerSymbol.*;
 
 
 public class CommandPromptTest {
-    private static final String CLEAR_SCREEN_ANSI_CHARACTERS = "\033[H\033[2J";
     private StringReader defaultReader;
     private StringWriter writer;
-    private TextPresenter textPresenter;
-    private PlainBoard boardFormatter;
+    private BoardDisplaySpy boardFormatterSpy;
     private TextFormatterSpy textFormatterSpy;
 
     @Before
     public void setup() {
         defaultReader = new StringReader("");
         writer = new StringWriter();
-        textPresenter = new StandardTextPresenter();
-        boardFormatter = new PlainBoard();
         textFormatterSpy = new TextFormatterSpy();
+        boardFormatterSpy = new BoardDisplaySpy();
     }
 
     @Test
     public void askUserForBoardDimension() {
-        Prompt prompt = new CommandPrompt(new StringReader("1\n"), writer, boardFormatter, textFormatterSpy);
+        Prompt prompt = new CommandPrompt(new StringReader("1\n"), writer, boardFormatterSpy, textFormatterSpy);
 
         prompt.presentGridDimensionsBetween(1, 5);
 
@@ -52,7 +49,7 @@ public class CommandPromptTest {
 
     @Test
     public void readsDimensionFromCommandLine() {
-        Prompt prompt = new CommandPrompt(new StringReader("3\n"), writer, boardFormatter, textFormatterSpy);
+        Prompt prompt = new CommandPrompt(new StringReader("3\n"), writer, boardFormatterSpy, textFormatterSpy);
 
         int dimension = prompt.readBoardDimension(HUMAN_VS_HUMAN.dimensionLowerBoundary(), HUMAN_VS_HUMAN.dimensionUpperBoundary());
 
@@ -61,7 +58,7 @@ public class CommandPromptTest {
 
     @Test
     public void repromptsUserWhenNonNumericEnteredForBoardDimension() {
-        Prompt prompt = new CommandPrompt(new StringReader("z\n4\n"), writer, boardFormatter, textFormatterSpy);
+        Prompt prompt = new CommandPrompt(new StringReader("z\n4\n"), writer, boardFormatterSpy, textFormatterSpy);
 
         int dimension = prompt.readBoardDimension(HUMAN_VS_HUMAN.dimensionLowerBoundary(), HUMAN_VS_HUMAN.dimensionUpperBoundary());
 
@@ -74,7 +71,7 @@ public class CommandPromptTest {
 
     @Test
     public void repromptsUserWhenInvalidDimensionEnteredForGameType() {
-        Prompt prompt = new CommandPrompt(new StringReader("100\n4\n"), writer, boardFormatter, textFormatterSpy);
+        Prompt prompt = new CommandPrompt(new StringReader("100\n4\n"), writer, boardFormatterSpy, textFormatterSpy);
 
         int dimension = prompt.readBoardDimension(HUMAN_VS_HUMAN.dimensionLowerBoundary(), HUMAN_VS_UNBEATABLE.dimensionUpperBoundary());
 
@@ -86,51 +83,51 @@ public class CommandPromptTest {
 
     @Test
     public void printsBoard() {
-        Prompt prompt = new CommandPrompt(new StringReader("1\n"), writer, boardFormatter, textPresenter);
+        Prompt prompt = new CommandPrompt(new StringReader("1\n"), writer, boardFormatterSpy, textFormatterSpy);
         prompt.presentsBoard(new Board(3));
 
-        assertThat(writer.toString().contains("---------"), is(true));
+        assertThat(boardFormatterSpy.numberOfTimesBoardDisplayed(), is(1));
     }
 
     @Test
     public void displaysBoardWhenPromptingForNextMove() {
-        Prompt prompt = new CommandPrompt(new StringReader("1\n"), writer, boardFormatter, textPresenter);
+        Prompt prompt = new CommandPrompt(new StringReader("1\n"), writer, boardFormatterSpy, textFormatterSpy);
         prompt.readNextMove(new Board(3));
 
-        assertThat(writer.toString().contains("---------"), is(true));
+        assertThat(boardFormatterSpy.numberOfTimesBoardDisplayed(), is(1));
     }
 
     @Test
     public void repromptClearsScreenBeforePrintingBoard() {
-        Prompt prompt = new CommandPrompt(new StringReader("a\n1\n"), writer, boardFormatter, textFormatterSpy);
+        Prompt prompt = new CommandPrompt(new StringReader("a\n1\n"), writer, boardFormatterSpy, textFormatterSpy);
 
         prompt.readNextMove(new Board(3));
 
         assertThat(textFormatterSpy.numberOfTakeMoveMessage(), is(2));
         assertThat(textFormatterSpy.numberOfValidationErrors(), is(1));
         assertThat(textFormatterSpy.numberOfClearMessages(), is(3));
-        assertThat(writer.toString().contains("---------"), is(true));
+        assertThat(boardFormatterSpy.numberOfTimesBoardDisplayed(), is(2));
     }
 
     @Test
     public void clearScreenAfterValidMoveRead() {
-        Prompt prompt = new CommandPrompt(new StringReader("1\n"), writer, boardFormatter, textPresenter);
+        Prompt prompt = new CommandPrompt(new StringReader("1\n"), writer, boardFormatterSpy, textFormatterSpy);
 
         prompt.readNextMove(new Board(3));
 
-        assertThat(writer.toString().endsWith(CLEAR_SCREEN_ANSI_CHARACTERS + "\n"), is(true));
+        assertThat(textFormatterSpy.numberOfClearMessages(), is(2));
     }
 
     @Test
     public void readsNextMoveAsZeroBasedIndex() {
-        Prompt prompt = new CommandPrompt(new StringReader("1\n"), writer, boardFormatter, textPresenter);
+        Prompt prompt = new CommandPrompt(new StringReader("1\n"), writer, boardFormatterSpy, textFormatterSpy);
 
         assertThat(prompt.readNextMove(new Board(3)), equalTo(0));
     }
 
     @Test
     public void repromptsWhenAlphaCharacterEnteredAsNextMove() {
-        Prompt prompt = new CommandPrompt(new StringReader("a\nz\n1\n"), writer, boardFormatter, textFormatterSpy);
+        Prompt prompt = new CommandPrompt(new StringReader("a\nz\n1\n"), writer, boardFormatterSpy, textFormatterSpy);
 
         assertThat(prompt.readNextMove(new Board(3)), equalTo(0));
 
@@ -141,7 +138,7 @@ public class CommandPromptTest {
 
     @Test
     public void repromptsWhenMoveIsOutsideGrid() {
-        Prompt prompt = new CommandPrompt(new StringReader("100\n-100\n1\n"), writer, boardFormatter, textFormatterSpy);
+        Prompt prompt = new CommandPrompt(new StringReader("100\n-100\n1\n"), writer, boardFormatterSpy, textFormatterSpy);
 
         assertThat(prompt.readNextMove(new Board(3)), equalTo(0));
 
@@ -151,7 +148,7 @@ public class CommandPromptTest {
 
     @Test
     public void repromptsWhenMoveIsAlreadyOccupied() {
-        Prompt prompt = new CommandPrompt(new StringReader("1\n2\n"), writer, boardFormatter, textFormatterSpy);
+        Prompt prompt = new CommandPrompt(new StringReader("1\n2\n"), writer, boardFormatterSpy, textFormatterSpy);
 
         int nextMove = prompt.readNextMove(new Board(X, VACANT, VACANT, VACANT, VACANT, VACANT, VACANT, VACANT, VACANT));
 
@@ -162,7 +159,7 @@ public class CommandPromptTest {
 
     @Test
     public void clearsScreenBeforePromptingForReplay() {
-        Prompt prompt = new CommandPrompt(new StringReader("N\n"), writer, boardFormatter, textFormatterSpy);
+        Prompt prompt = new CommandPrompt(new StringReader("N\n"), writer, boardFormatterSpy, textFormatterSpy);
 
         prompt.readReplayOption();
 
@@ -171,7 +168,7 @@ public class CommandPromptTest {
 
     @Test
     public void presentsReplayOption() {
-        Prompt prompt = new CommandPrompt(defaultReader, writer, boardFormatter, textFormatterSpy);
+        Prompt prompt = new CommandPrompt(defaultReader, writer, boardFormatterSpy, textFormatterSpy);
 
         prompt.presentReplayOption();
 
@@ -181,7 +178,7 @@ public class CommandPromptTest {
 
     @Test
     public void readsReplayOption() {
-        Prompt prompt = new CommandPrompt(new StringReader("Y\n"), writer, boardFormatter, textPresenter);
+        Prompt prompt = new CommandPrompt(new StringReader("Y\n"), writer, boardFormatterSpy, textFormatterSpy);
 
         ReplayOption replayOption = prompt.readReplayOption();
 
@@ -190,7 +187,7 @@ public class CommandPromptTest {
 
     @Test
     public void readsLowerCaseReplayOption() {
-        Prompt prompt = new CommandPrompt(new StringReader("y\n"), writer, boardFormatter, textPresenter);
+        Prompt prompt = new CommandPrompt(new StringReader("y\n"), writer, boardFormatterSpy, textFormatterSpy);
 
         ReplayOption replayOption = prompt.readReplayOption();
 
@@ -200,16 +197,16 @@ public class CommandPromptTest {
 
     @Test
     public void clearsScreenWhenReadingReplayOption() {
-        Prompt prompt = new CommandPrompt(new StringReader("Y\n"), writer, boardFormatter, textPresenter);
+        Prompt prompt = new CommandPrompt(new StringReader("Y\n"), writer, boardFormatterSpy, textFormatterSpy);
 
         prompt.readReplayOption();
 
-        assertThat(writer.toString().endsWith(CLEAR_SCREEN_ANSI_CHARACTERS + "\n"), is(true));
+        assertThat(textFormatterSpy.numberOfClearMessages(), is(2));
     }
 
     @Test
     public void clearsScreenAndRepromptsWhenReplayOptionIsInvalid() {
-        Prompt prompt = new CommandPrompt(new StringReader("A\nN\n"), writer, boardFormatter, textFormatterSpy);
+        Prompt prompt = new CommandPrompt(new StringReader("A\nN\n"), writer, boardFormatterSpy, textFormatterSpy);
 
         prompt.readReplayOption();
 
@@ -220,7 +217,7 @@ public class CommandPromptTest {
 
     @Test
     public void presentsGameTypes() {
-        Prompt prompt = new CommandPrompt(new StringReader("1\n"), writer, boardFormatter, textFormatterSpy);
+        Prompt prompt = new CommandPrompt(new StringReader("1\n"), writer, boardFormatterSpy, textFormatterSpy);
 
         List<GameType> allGameTypes = Arrays.asList(GameType.values());
         prompt.presentGameTypes(allGameTypes);
@@ -231,7 +228,7 @@ public class CommandPromptTest {
 
     @Test
     public void readsGameType() {
-        Prompt prompt = new CommandPrompt(new StringReader("1\n"), writer, boardFormatter, textPresenter);
+        Prompt prompt = new CommandPrompt(new StringReader("1\n"), writer, boardFormatterSpy, textFormatterSpy);
 
         GameType gameType = prompt.readGameType(Arrays.asList(GameType.values()));
 
@@ -240,16 +237,16 @@ public class CommandPromptTest {
 
     @Test
     public void clearsScreenWhenReadingGameTypeOption() {
-        Prompt prompt = new CommandPrompt(new StringReader("1\n"), writer, boardFormatter, textPresenter);
+        Prompt prompt = new CommandPrompt(new StringReader("1\n"), writer, boardFormatterSpy, textFormatterSpy);
 
         prompt.readGameType(Arrays.asList(GameType.values()));
 
-        assertThat(writer.toString().endsWith(CLEAR_SCREEN_ANSI_CHARACTERS + "\n"), is(true));
+        assertThat(textFormatterSpy.numberOfClearMessages(), is(2));
     }
 
     @Test
     public void clearsScreenAndRepromptsGameTypeWhenAlphaCharacterEntered() {
-        Prompt prompt = new CommandPrompt(new StringReader("a\n1\n"), writer, boardFormatter, textFormatterSpy);
+        Prompt prompt = new CommandPrompt(new StringReader("a\n1\n"), writer, boardFormatterSpy, textFormatterSpy);
 
         GameType gameType = prompt.readGameType(Arrays.asList(GameType.values()));
 
@@ -261,7 +258,7 @@ public class CommandPromptTest {
 
     @Test
     public void repromptsWhenInvalidGameTypeEntered() {
-        Prompt prompt = new CommandPrompt(new StringReader("7\n1\n"), writer, boardFormatter, textFormatterSpy);
+        Prompt prompt = new CommandPrompt(new StringReader("7\n1\n"), writer, boardFormatterSpy, textFormatterSpy);
 
         GameType gameType = prompt.readGameType(Arrays.asList(GameType.values()));
 
@@ -272,7 +269,7 @@ public class CommandPromptTest {
 
     @Test
     public void printsWinner() {
-        CommandPrompt prompt = new CommandPrompt(defaultReader, writer, boardFormatter, textFormatterSpy);
+        CommandPrompt prompt = new CommandPrompt(defaultReader, writer, boardFormatterSpy, textFormatterSpy);
         Board board = new Board(
                 X, X, X,
                 O, O, VACANT,
@@ -280,13 +277,13 @@ public class CommandPromptTest {
 
         prompt.printsWinningMessage(board, X);
 
-        assertThat(writer.toString().contains("XXXOO----"), is(true));
+        assertThat(boardFormatterSpy.numberOfTimesBoardDisplayed(), is(1));
         assertThat(textFormatterSpy.numberOfWinningMessages(), is(1));
     }
 
     @Test
     public void printsDrawMessage() {
-        CommandPrompt prompt = new CommandPrompt(defaultReader, writer, boardFormatter, textFormatterSpy);
+        CommandPrompt prompt = new CommandPrompt(defaultReader, writer, boardFormatterSpy, textFormatterSpy);
         Board board = new Board(
                 X, O, X,
                 O, X, X,
@@ -295,20 +292,20 @@ public class CommandPromptTest {
 
         prompt.printsDrawMessage(board);
 
-        assertThat(writer.toString().contains("XOXOXXOXO"), is(true));
+        assertThat(boardFormatterSpy.numberOfTimesBoardDisplayed(), is(1));
         assertThat(textFormatterSpy.numberOfDrawMessages(), is(1));
     }
 
     @Test
     public void clearScreenWhenNewConsoleCreated() {
-        new CommandPrompt(defaultReader, writer, boardFormatter, textFormatterSpy);
+        new CommandPrompt(defaultReader, writer, boardFormatterSpy, textFormatterSpy);
         assertThat(textFormatterSpy.numberOfClearMessages(), is(1));
     }
 
     @Test(expected = WriteToPromptException.class)
     public void raiseOutputExceptionWhenThereIsAProblemWritingToPrompt() {
         Writer writerWhichThrowsIOException = new WriterStubWhichThrowsExceptionOnWrite();
-        Prompt promptWhichThrowsExceptionOnWrite = new CommandPrompt(defaultReader, writerWhichThrowsIOException, boardFormatter, textPresenter);
+        Prompt promptWhichThrowsExceptionOnWrite = new CommandPrompt(defaultReader, writerWhichThrowsIOException, boardFormatterSpy, textFormatterSpy);
         Board board = new Board(
                 X, X, X,
                 O, O, VACANT,
@@ -320,7 +317,7 @@ public class CommandPromptTest {
     @Test(expected = ReadFromPromptException.class)
     public void raiseInputExceptionWhenThereIsAProblemReadingFromPrompt() {
         Reader readerWhichThrowsIOException = new ReaderStubWhichThrowsExceptionOnRead();
-        Prompt promptWhichHasExceptionOnRead = new CommandPrompt(readerWhichThrowsIOException, writer, boardFormatter, textPresenter);
+        Prompt promptWhichHasExceptionOnRead = new CommandPrompt(readerWhichThrowsIOException, writer, boardFormatterSpy, textFormatterSpy);
         promptWhichHasExceptionOnRead.readReplayOption();
     }
 
