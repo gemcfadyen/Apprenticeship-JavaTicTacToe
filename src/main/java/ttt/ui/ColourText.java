@@ -1,11 +1,17 @@
 package ttt.ui;
 
+import ttt.GameType;
+import ttt.inputvalidation.ValidationResult;
+
+import java.util.List;
+
 import static ttt.player.PlayerSymbol.X;
 
 public class ColourText implements TextDecorator {
     private static final String FONT_COLOUR_ANSII_CHARACTERS = "\033[1;37m";
     private static final String X_COLOUR_ANSII_CHARACTERS = "\033[1;33m";
     private static final String O_COLOUR_ANSII_CHARACTERS = "\033[1;31m";
+    private static final String ERROR_COLOUR_ANSII_CHARACTERS = "\033[1;36m";
 
     private TextPresenter textPresenter;
 
@@ -22,6 +28,16 @@ public class ColourText implements TextDecorator {
     @Override
     public String drawMessage() {
         return FONT_COLOUR_ANSII_CHARACTERS + textPresenter.drawMessage();
+    }
+
+    @Override
+    public String validationError(ValidationResult validationResult) {
+        return ERROR_COLOUR_ANSII_CHARACTERS + textPresenter.validationError(validationResult);
+    }
+
+    @Override
+    public String presentGameTypes(List<GameType> gameTypes) {
+        return FONT_COLOUR_ANSII_CHARACTERS + textPresenter.presentGameTypes(gameTypes);
     }
 
     private String colour(String symbolForDisplay) {

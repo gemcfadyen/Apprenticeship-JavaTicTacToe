@@ -113,13 +113,7 @@ public class CommandPrompt implements Prompt {
     }
 
     private void askUserForGameType(List<GameType> gameTypes) {
-        String gameTypeMessage = "";
-
-        for (GameType gameType : gameTypes) {
-            gameTypeMessage += "Enter " + gameType.numericRepresentation() + " to play " + gameType.gameNameForDisplay() + newLine();
-        }
-
-        display(displayFormatter.applyFontColour(gameTypeMessage));
+        display(textPresenter.presentGameTypes(gameTypes));
     }
 
     private CompositeValidator compositeFor(List<InputValidator> validators) {
@@ -151,7 +145,7 @@ public class CommandPrompt implements Prompt {
 
     private Function<ValidationResult, Void> functionToRepromptForValidBoardDimension(int lowerDimension, int largestDimension) {
         return validationResult -> {
-            display(displayFormatter.applyInvalidColour(validationResult.reason()));
+            display(textPresenter.validationError(validationResult));
             display(displayFormatter.formatBoardDimensionMessage(lowerDimension, largestDimension));
             return null;
         };
@@ -159,7 +153,7 @@ public class CommandPrompt implements Prompt {
 
     private Function<ValidationResult, Void> functionToRepromptGameType(List<GameType> gameTypes) {
         return validationResult -> {
-            display(displayFormatter.applyInvalidColour(validationResult.reason()));
+            display(textPresenter.validationError(validationResult));
             askUserForGameType(gameTypes);
             return null;
         };
@@ -168,7 +162,7 @@ public class CommandPrompt implements Prompt {
     private Function<ValidationResult, Void> functionToRepromptForValidMove(Board currentBoard) {
         return validationResult -> {
             print(currentBoard);
-            display(validationResult.reason());
+            display(textPresenter.validationError(validationResult));
             askUserForTheirMove();
             return null;
         };
@@ -176,7 +170,7 @@ public class CommandPrompt implements Prompt {
 
     private Function<ValidationResult, Void> functionToRepromptReplay() {
         return validationResult -> {
-            display(displayFormatter.applyInvalidColour(validationResult.reason()));
+            display(textPresenter.validationError(validationResult));
             askUserToPlayAgain();
             return null;
         };
