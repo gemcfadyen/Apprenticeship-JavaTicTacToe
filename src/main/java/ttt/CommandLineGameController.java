@@ -6,9 +6,7 @@ import ttt.gui.GameRules;
 import ttt.gui.TicTacToeGameConfiguration;
 import ttt.gui.TicTacToeRules;
 import ttt.player.CommandLinePlayerFactory;
-import ttt.ui.CommandPrompt;
-import ttt.ui.PrettyFormatter;
-import ttt.ui.Prompt;
+import ttt.ui.*;
 
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
@@ -113,8 +111,8 @@ public class CommandLineGameController {
         return new CommandPrompt(
                 new InputStreamReader(System.in),
                 new OutputStreamWriter(System.out),
-                new PrettyFormatter()
-        );
+                new PrettyFormatter(),
+                new ColourText(new StandardTextPresenter()));
     }
 
     private static GameRules buildGameRules(CommandPrompt gamePrompt) {

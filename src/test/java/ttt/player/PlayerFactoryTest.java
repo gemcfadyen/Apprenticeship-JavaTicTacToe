@@ -4,6 +4,7 @@ import org.junit.Test;
 import ttt.ui.CommandPrompt;
 import ttt.ui.PlainFormatter;
 import ttt.ui.Prompt;
+import ttt.ui.StandardTextPresenter;
 
 import java.io.StringReader;
 import java.io.StringWriter;
@@ -14,9 +15,15 @@ import static org.junit.Assert.assertThat;
 import static ttt.GameType.*;
 
 public class PlayerFactoryTest {
+
+    private PlainFormatter displayFormatter;
+    private StandardTextPresenter standardTextPresenter;
+
     @Test
     public void createsHumanPlayers() {
-        Prompt commandPrompt = new CommandPrompt(new StringReader(""), new StringWriter(), new PlainFormatter());
+        displayFormatter = new PlainFormatter();
+        standardTextPresenter = new StandardTextPresenter();
+        Prompt commandPrompt = new CommandPrompt(new StringReader(""), new StringWriter(), displayFormatter, standardTextPresenter);
         PlayerFactory playerFactory = new CommandLinePlayerFactory(commandPrompt);
 
         Player[] player = playerFactory.createPlayers(HUMAN_VS_HUMAN, 3);
@@ -28,7 +35,7 @@ public class PlayerFactoryTest {
 
     @Test
     public void createsHumanAndUnbeatablePlayerFor3x3() {
-        Prompt commandPrompt = new CommandPrompt(new StringReader(""), new StringWriter(), new PlainFormatter());
+        Prompt commandPrompt = new CommandPrompt(new StringReader(""), new StringWriter(), new PlainFormatter(), standardTextPresenter);
         PlayerFactory playerFactory = new CommandLinePlayerFactory(commandPrompt);
 
         Player[] player = playerFactory.createPlayers(HUMAN_VS_UNBEATABLE, 3);
@@ -40,7 +47,7 @@ public class PlayerFactoryTest {
 
     @Test
     public void createsUnbeatableAndHumanPlayerFor3x3() {
-        Prompt commandPrompt = new CommandPrompt(new StringReader(""), new StringWriter(), new PlainFormatter());
+        Prompt commandPrompt = new CommandPrompt(new StringReader(""), new StringWriter(), new PlainFormatter(), standardTextPresenter);
         PlayerFactory playerFactory = new CommandLinePlayerFactory(commandPrompt);
 
         Player[] player = playerFactory.createPlayers(UNBEATABLE_VS_HUMAN, 3);
@@ -52,7 +59,7 @@ public class PlayerFactoryTest {
 
     @Test
     public void createsUnbeatableAndHumanFor4x4() {
-        Prompt commandPrompt = new CommandPrompt(new StringReader(""), new StringWriter(), new PlainFormatter());
+        Prompt commandPrompt = new CommandPrompt(new StringReader(""), new StringWriter(), new PlainFormatter(), standardTextPresenter);
         PlayerFactory playerFactory = new CommandLinePlayerFactory(commandPrompt);
 
         Player[] player = playerFactory.createPlayers(UNBEATABLE_VS_HUMAN, 4);

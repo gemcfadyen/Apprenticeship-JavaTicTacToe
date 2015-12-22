@@ -20,11 +20,13 @@ public class CommandPrompt implements Prompt {
     private BufferedReader reader;
     private Writer writer;
     private DisplayFormatter displayFormatter;
+    private final TextPresenter textPresenter;
 
-    public CommandPrompt(Reader reader, Writer writer, DisplayFormatter displayFormatter) {
+    public CommandPrompt(Reader reader, Writer writer, DisplayFormatter displayFormatter, TextPresenter textPresenter) {
         this.displayFormatter = displayFormatter;
         this.reader = new BufferedReader(reader);
         this.writer = writer;
+        this.textPresenter = textPresenter;
 
         clear();
     }
@@ -75,7 +77,7 @@ public class CommandPrompt implements Prompt {
     @Override
     public void printsWinningMessage(Board board, PlayerSymbol symbol) {
         print(board);
-        display(displayFormatter.formatWinningMessage(symbol));
+        display(textPresenter.winningMessage(symbol.getSymbolForDisplay()));
     }
 
     @Override
@@ -94,7 +96,7 @@ public class CommandPrompt implements Prompt {
     }
 
     private void printDrawMessage() {
-        display(displayFormatter.applyFontColour("No winner this time"));
+        display(textPresenter.drawMessage());
     }
 
     private void clear() {
