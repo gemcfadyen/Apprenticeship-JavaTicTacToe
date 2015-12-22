@@ -16,8 +16,12 @@ public class ColourText implements TextDecorator {
     @Override
     public String winningMessage(String winner) {
         String decoratedWinningSymbol = colour(winner);
-        String colouredWinningMessage = FONT_COLOUR_ANSII_CHARACTERS + textPresenter.winningMessage(decoratedWinningSymbol);
-        return colouredWinningMessage;
+        return FONT_COLOUR_ANSII_CHARACTERS + textPresenter.winningMessage(decoratedWinningSymbol);
+    }
+
+    @Override
+    public String drawMessage() {
+        return FONT_COLOUR_ANSII_CHARACTERS + textPresenter.drawMessage();
     }
 
     private String colour(String symbolForDisplay) {

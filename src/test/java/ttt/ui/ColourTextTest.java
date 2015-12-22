@@ -24,4 +24,11 @@ public class ColourTextTest {
 
         assertThat(colouredWinningMessage, is("\033[1;37mCongratulations - \033[1;31mO has won"));
     }
+
+    @Test
+    public void drawMessage() {
+        String colouredDrawMessage = colouredText.drawMessage();
+        assertThat(colouredDrawMessage, is("\033[1;37mNo winner this time"));
+    }
+
 }

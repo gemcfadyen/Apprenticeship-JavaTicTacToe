@@ -18,6 +18,7 @@ public class StandardTextPresenterTest {
 
     @Test
     public void printsDrawMessage() {
-       
+        String drawMessage = standardTextPresenter.drawMessage();
+        assertThat(drawMessage, is("No winner this time"));
     }
 }
