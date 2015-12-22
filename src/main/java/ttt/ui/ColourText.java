@@ -12,7 +12,6 @@ public class ColourText implements TextDecorator {
     private static final String X_COLOUR_ANSII_CHARACTERS = "\033[1;33m";
     private static final String O_COLOUR_ANSII_CHARACTERS = "\033[1;31m";
     private static final String ERROR_COLOUR_ANSII_CHARACTERS = "\033[1;36m";
-
     private TextPresenter textPresenter;
 
     public ColourText(TextPresenter textPresenter) {
@@ -53,6 +52,11 @@ public class ColourText implements TextDecorator {
     @Override
     public String chooseDimensionMessage(int lowerBoundary, int upperBoundary) {
         return FONT_COLOUR_ANSII_CHARACTERS + textPresenter.chooseDimensionMessage(lowerBoundary, upperBoundary);
+    }
+
+    @Override
+    public String clearMessage() {
+        return textPresenter.clearMessage();
     }
 
     private String colour(String symbolForDisplay) {

@@ -28,7 +28,7 @@ public class CommandPromptTest {
     private final StringReader defaultReader = new StringReader("");
     private StringWriter writer = new StringWriter();
     private TextPresenter textPresenter = new StandardTextPresenter();
-    private PlainFormatter plainFormatter = new PlainFormatter();
+    private PlainBoard plainFormatter = new PlainBoard();
 
     @Test
     public void askUserForBoardDimension() {

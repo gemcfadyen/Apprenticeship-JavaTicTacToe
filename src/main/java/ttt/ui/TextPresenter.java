@@ -13,4 +13,5 @@ public interface TextPresenter {
     String replayMessage();
     String chooseNextMoveMessage();
     String chooseDimensionMessage(int lowerBoundary, int upperBoundary);
+    String clearMessage();
 }

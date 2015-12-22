@@ -8,7 +8,7 @@ import ttt.gui.TicTacToeRules;
 import ttt.gui.TicTacToeRulesSpy;
 import ttt.player.PlayerSymbol;
 import ttt.ui.CommandPrompt;
-import ttt.ui.PlainFormatter;
+import ttt.ui.PlainBoard;
 import ttt.ui.Prompt;
 import ttt.ui.StandardTextPresenter;
 
@@ -27,7 +27,7 @@ public class CommandLineGameControllerTest {
     private static final String DO_NOT_REPLAY = "N\n";
     private TicTacToeRulesSpy gameRulesSpy = new TicTacToeRulesSpy();
     private GameConfigurationSpy gameConfigurationSpy = new GameConfigurationSpy();
-    private StandardTextPresenter textPresenter;
+    private StandardTextPresenter textPresenter = new StandardTextPresenter();
 
     @Test
     public void getGameType() {
@@ -166,7 +166,7 @@ public class CommandLineGameControllerTest {
 
     private Prompt createCommandPromptToReadInput(String usersInputs) {
         textPresenter = new StandardTextPresenter();
-        return new CommandPrompt(new StringReader(usersInputs), new StringWriter(), new PlainFormatter(), textPresenter);
+        return new CommandPrompt(new StringReader(usersInputs), new StringWriter(), new PlainBoard(), textPresenter);
     }
 
     private PromptSpy createPromptSpyToReadInput(String usersInput) {

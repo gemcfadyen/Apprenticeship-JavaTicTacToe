@@ -6,6 +6,7 @@ import ttt.inputvalidation.ValidationResult;
 import java.util.List;
 
 public class StandardTextPresenter implements TextPresenter {
+    private static final String CLEAR_SCREEN_ANSII_CHARACTERS = "\033[H\033[2J";
 
     @Override
     public String winningMessage(String winner) {
@@ -46,6 +47,11 @@ public class StandardTextPresenter implements TextPresenter {
     @Override
     public String chooseDimensionMessage(int lowerBoundary, int upperBoundary) {
         return "Please enter the dimension of the board you would like to use [" + lowerBoundary + " to " + upperBoundary + "]";
+    }
+
+    @Override
+    public String clearMessage() {
+        return CLEAR_SCREEN_ANSII_CHARACTERS;
     }
 
     private String newLine() {

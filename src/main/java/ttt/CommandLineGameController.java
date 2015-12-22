@@ -111,7 +111,7 @@ public class CommandLineGameController {
         return new CommandPrompt(
                 new InputStreamReader(System.in),
                 new OutputStreamWriter(System.out),
-                new PrettyFormatter(),
+                new PrettyBoard(),
                 new ColourText(new StandardTextPresenter()));
     }
 

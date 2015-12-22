@@ -16,14 +16,13 @@ import java.util.List;
 import java.util.function.Function;
 
 public class CommandPrompt implements Prompt {
-    private static final String CLEAR_SCREEN_ANSII_CHARACTERS = "\033[H\033[2J";
-    private BufferedReader reader;
-    private Writer writer;
-    private DisplayFormatter displayFormatter;
+    private final BufferedReader reader;
+    private final Writer writer;
+    private final BoardDisplay boardDisplay;
     private final TextPresenter textPresenter;
 
-    public CommandPrompt(Reader reader, Writer writer, DisplayFormatter displayFormatter, TextPresenter textPresenter) {
-        this.displayFormatter = displayFormatter;
+    public CommandPrompt(Reader reader, Writer writer, BoardDisplay boardDisplay, TextPresenter textPresenter) {
+        this.boardDisplay = boardDisplay;
         this.reader = new BufferedReader(reader);
         this.writer = writer;
         this.textPresenter = textPresenter;
@@ -34,7 +33,6 @@ public class CommandPrompt implements Prompt {
     @Override
     public int readBoardDimension(int lowerDimension, int largestDimension) {
         InputValidator compositeValidator = compositeFor(dimensionValidatorsFor(largestDimension));
-
         return asInteger(getValidInput(compositeValidator, input(), functionToRepromptForValidBoardDimension(lowerDimension, largestDimension)));
     }
 
@@ -92,7 +90,7 @@ public class CommandPrompt implements Prompt {
     }
 
     private void print(Board board) {
-        display(displayFormatter.formatForDisplay(board));
+        display(boardDisplay.formatForDisplay(board));
     }
 
     private void printDrawMessage() {
@@ -100,7 +98,7 @@ public class CommandPrompt implements Prompt {
     }
 
     private void clear() {
-        display(CLEAR_SCREEN_ANSII_CHARACTERS);
+        display(textPresenter.clearMessage());
     }
 
     private void display(String message) {
