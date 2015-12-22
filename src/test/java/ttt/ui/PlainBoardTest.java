@@ -7,7 +7,7 @@ import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
 import static ttt.player.PlayerSymbol.*;
 
-public class PlainFormatterTest {
+public class PlainBoardTest {
 
     BoardDisplay boardDisplay = new PlainBoard();
 

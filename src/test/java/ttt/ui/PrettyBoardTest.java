@@ -8,7 +8,7 @@ import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
 import static ttt.player.PlayerSymbol.*;
 
-public class PrettyFormatterTest {
+public class PrettyBoardTest {
     private static final String BOARD_OUTLINE_COLOUR_ANSII_CHARACTERS = "\033[1;36m";
     private static final String NUMBER_COLOUR_ANSII_CHARACTERS = "\033[1;30m";
     private static final String X_COLOUR = "\033[1;33m";
