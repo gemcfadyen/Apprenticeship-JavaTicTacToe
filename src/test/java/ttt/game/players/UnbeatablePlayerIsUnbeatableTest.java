@@ -1,8 +1,10 @@
-package ttt.commandlineapp;
+package ttt.game.players;
 
 import org.junit.Test;
-import ttt.game.BoardFactoryStub;
+import ttt.commandlineapp.*;
 import ttt.game.*;
+import ttt.game.rules.TicTacToeGameConfiguration;
+import ttt.game.rules.TicTacToeRules;
 
 import java.io.StringReader;
 

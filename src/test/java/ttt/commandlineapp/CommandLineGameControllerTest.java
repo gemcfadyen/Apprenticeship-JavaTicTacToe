@@ -1,9 +1,11 @@
 package ttt.commandlineapp;
 
 import org.junit.Test;
-import ttt.game.PlayerSpy;
+import ttt.commandlineapp.formatting.PlainBoard;
+import ttt.commandlineapp.formatting.StandardTextPresenter;
 import ttt.game.*;
-import ttt.guiapp.GameConfigurationSpy;
+import ttt.game.rules.TicTacToeRules;
+import ttt.game.GameConfigurationSpy;
 
 import java.io.StringReader;
 import java.io.StringWriter;
@@ -20,7 +22,6 @@ public class CommandLineGameControllerTest {
     private static final String DO_NOT_REPLAY = "N\n";
     private TicTacToeRulesSpy gameRulesSpy = new TicTacToeRulesSpy();
     private GameConfigurationSpy gameConfigurationSpy = new GameConfigurationSpy();
-    private StandardTextPresenter textPresenter = new StandardTextPresenter();
 
     @Test
     public void getGameType() {
@@ -158,7 +159,7 @@ public class CommandLineGameControllerTest {
     }
 
     private Prompt createCommandPromptToReadInput(String usersInputs) {
-        textPresenter = new StandardTextPresenter();
+        StandardTextPresenter textPresenter = new StandardTextPresenter();
         return new CommandPrompt(new StringReader(usersInputs), new StringWriter(), new PlainBoard(), textPresenter);
     }
 

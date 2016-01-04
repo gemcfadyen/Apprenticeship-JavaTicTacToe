@@ -1,11 +1,10 @@
 package ttt.commandlineapp;
 
-import ttt.game.GameType;
-import ttt.game.ReplayOption;
-import ttt.game.Board;
 import ttt.commandlineapp.inputvalidation.*;
+import ttt.game.Board;
+import ttt.game.GameType;
 import ttt.game.PlayerSymbol;
-import ttt.game.BoardDisplay;
+import ttt.game.ReplayOption;
 
 import java.io.BufferedReader;
 import java.io.IOException;

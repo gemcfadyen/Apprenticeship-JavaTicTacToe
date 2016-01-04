@@ -1,6 +1,7 @@
-package ttt.commandlineapp;
+package ttt.commandlineapp.formatting;
 
 import org.junit.Test;
+import ttt.commandlineapp.ValidationResult;
 import ttt.game.GameType;
 
 import java.util.Arrays;

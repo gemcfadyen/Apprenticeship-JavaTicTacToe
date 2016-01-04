@@ -1,6 +1,7 @@
 package ttt.guiapp;
 
 import ttt.game.GameController;
+import ttt.guiapp.ClickEvent;
 
 public class UserSelectsReplay implements ClickEvent {
     private final GameController controller;

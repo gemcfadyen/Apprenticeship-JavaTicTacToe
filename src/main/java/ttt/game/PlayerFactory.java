@@ -1,18 +1,17 @@
 package ttt.game;
 
-import ttt.commandlineapp.Prompt;
+import ttt.game.players.DelayedUnbeatablePlayer;
+import ttt.game.players.UnbeatablePlayer;
 
-import static ttt.game.GameType.HUMAN_VS_HUMAN;
-import static ttt.game.GameType.HUMAN_VS_UNBEATABLE;
-import static ttt.game.GameType.UNBEATABLE_VS_HUMAN;
+import static ttt.game.GameType.*;
 import static ttt.game.PlayerSymbol.O;
 import static ttt.game.PlayerSymbol.X;
 
 public abstract class PlayerFactory {
     private static final int THREE = 3;
-    private Prompt playerPrompt;
+    private ReadPrompt playerPrompt;
 
-    public PlayerFactory(Prompt playerPrompt) {
+    public PlayerFactory(ReadPrompt playerPrompt) {
         this.playerPrompt = playerPrompt;
     }
 
@@ -27,16 +26,16 @@ public abstract class PlayerFactory {
         return humanVsHuman(playerPrompt);
     }
 
-    private Player[] humanVsHuman(Prompt prompt) {
+    private Player[] humanVsHuman(ReadPrompt prompt) {
         return new Player[]{createHumanPlayer(X, prompt), createHumanPlayer(O, prompt)};
     }
 
-    private Player[] humanVsUnbeatable(Prompt prompt, int dimension) {
+    private Player[] humanVsUnbeatable(ReadPrompt prompt, int dimension) {
         return new Player[]{createHumanPlayer(X, prompt),
                 getUnbeatablePlayerFor(O, dimension)};
     }
 
-    private Player[] unbeatableVsHuman(Prompt prompt, int dimension) {
+    private Player[] unbeatableVsHuman(ReadPrompt prompt, int dimension) {
         return new Player[]{getUnbeatablePlayerFor(X, dimension), createHumanPlayer(O, prompt)};
     }
 
@@ -46,5 +45,5 @@ public abstract class PlayerFactory {
                 : new DelayedUnbeatablePlayer(symbol, new UnbeatablePlayer(X));
     }
 
-    public abstract Player createHumanPlayer(PlayerSymbol symbol, Prompt prompt);
+    public abstract Player createHumanPlayer(PlayerSymbol symbol, ReadPrompt prompt);
 }

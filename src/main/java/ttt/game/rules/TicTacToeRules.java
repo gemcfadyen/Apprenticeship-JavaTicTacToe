@@ -1,4 +1,6 @@
-package ttt.game;
+package ttt.game.rules;
+
+import ttt.game.*;
 
 public class TicTacToeRules implements GameRules {
     private static final int PLAYER_ONE_INDEX = 0;

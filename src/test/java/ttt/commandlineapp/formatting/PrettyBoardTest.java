@@ -1,9 +1,8 @@
-package ttt.commandlineapp;
+package ttt.commandlineapp.formatting;
 
 import org.junit.Test;
 import ttt.game.Board;
-import ttt.commandlineapp.PrettyBoard;
-import ttt.game.BoardDisplay;
+import ttt.commandlineapp.BoardDisplay;
 import ttt.game.PlayerSymbol;
 
 import static org.hamcrest.Matchers.is;

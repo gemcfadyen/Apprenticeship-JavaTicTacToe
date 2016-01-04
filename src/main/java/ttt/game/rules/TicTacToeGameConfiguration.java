@@ -1,4 +1,7 @@
-package ttt.game;
+package ttt.game.rules;
+
+import ttt.game.GameConfiguration;
+import ttt.game.GameType;
 
 import java.util.Arrays;
 import java.util.List;

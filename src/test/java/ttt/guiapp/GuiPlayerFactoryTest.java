@@ -1,9 +1,9 @@
 package ttt.guiapp;
 
 import org.junit.Test;
-import ttt.game.DelayedUnbeatablePlayer;
+import ttt.game.players.DelayedUnbeatablePlayer;
 import ttt.game.Player;
-import ttt.game.UnbeatablePlayer;
+import ttt.game.players.UnbeatablePlayer;
 
 import static org.hamcrest.Matchers.instanceOf;
 import static org.hamcrest.Matchers.is;

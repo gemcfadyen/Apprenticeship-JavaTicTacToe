@@ -1,12 +1,13 @@
-package ttt.game;
+package ttt.commandlineapp;
 
-import ttt.commandlineapp.CommandLinePlayerFactory;
+import ttt.game.GameType;
+import ttt.game.Player;
 
 public class CommandLinePlayerFactorySpy extends CommandLinePlayerFactory {
     private Player[] players;
     private GameType gameType;
 
-    CommandLinePlayerFactorySpy(Player... players) {
+    public CommandLinePlayerFactorySpy(Player... players) {
         super(new UnusedPrompt());
         this.players = players;
     }

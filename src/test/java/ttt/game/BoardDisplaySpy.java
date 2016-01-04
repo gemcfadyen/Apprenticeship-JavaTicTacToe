@@ -1,7 +1,6 @@
 package ttt.game;
 
-import ttt.game.Board;
-import ttt.game.BoardDisplay;
+import ttt.commandlineapp.BoardDisplay;
 
 public class BoardDisplaySpy implements BoardDisplay {
     private int numberOfBoards = 0;

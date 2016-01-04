@@ -1,9 +1,9 @@
-package ttt.game;
+package ttt.game.players;
 
 import org.junit.Test;
 import ttt.game.Board;
-import ttt.game.DelayedUnbeatablePlayer;
-import ttt.game.UnbeatablePlayer;
+import ttt.game.players.DelayedUnbeatablePlayer;
+import ttt.game.players.UnbeatablePlayer;
 
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;

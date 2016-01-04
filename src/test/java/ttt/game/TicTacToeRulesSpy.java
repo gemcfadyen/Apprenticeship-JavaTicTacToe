@@ -42,7 +42,7 @@ public class TicTacToeRulesSpy implements GameRules {
     @Override
     public void initialiseGame(GameType gameType, int dimension) {
         if (board == null) {
-            board = new Board(Integer.valueOf(dimension));
+            board = new Board(dimension);
         }
         hasInitialisedGame = true;
     }
@@ -66,7 +66,7 @@ public class TicTacToeRulesSpy implements GameRules {
     @Override
     public Player getCurrentPlayer() {
         gotCurrentPlayer = true;
-        return currentPlayer;  //TODO move return currentPlayer == null ? new GuiHumanPlayer(X) : currentPlayer;
+        return currentPlayer;
     }
 
     public boolean hasInitialisedGame() {

@@ -1,4 +1,8 @@
-package ttt.game;
+package ttt.game.players;
+
+import ttt.game.Board;
+import ttt.game.Player;
+import ttt.game.PlayerSymbol;
 
 import java.util.List;
 

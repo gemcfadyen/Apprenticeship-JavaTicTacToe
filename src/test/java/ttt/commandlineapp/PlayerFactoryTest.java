@@ -1,10 +1,11 @@
-package ttt.guiapp;
+package ttt.commandlineapp;
 
 import org.junit.Test;
-import ttt.commandlineapp.*;
-import ttt.game.DelayedUnbeatablePlayer;
+import ttt.commandlineapp.formatting.PlainBoard;
+import ttt.commandlineapp.formatting.StandardTextPresenter;
 import ttt.game.Player;
-import ttt.game.UnbeatablePlayer;
+import ttt.game.players.DelayedUnbeatablePlayer;
+import ttt.game.players.UnbeatablePlayer;
 
 import java.io.StringReader;
 import java.io.StringWriter;

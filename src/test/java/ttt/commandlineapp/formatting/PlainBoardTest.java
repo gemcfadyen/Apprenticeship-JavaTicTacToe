@@ -1,9 +1,8 @@
-package ttt.commandlineapp;
+package ttt.commandlineapp.formatting;
 
 import org.junit.Test;
 import ttt.game.Board;
-import ttt.commandlineapp.PlainBoard;
-import ttt.game.BoardDisplay;
+import ttt.commandlineapp.BoardDisplay;
 
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;

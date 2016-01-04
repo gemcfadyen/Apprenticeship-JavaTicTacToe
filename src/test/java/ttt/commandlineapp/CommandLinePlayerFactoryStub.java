@@ -2,7 +2,6 @@ package ttt.commandlineapp;
 
 import ttt.game.GameType;
 import ttt.game.Player;
-import ttt.game.UnusedPrompt;
 
 public class CommandLinePlayerFactoryStub extends CommandLinePlayerFactory {
     private Player[] players;

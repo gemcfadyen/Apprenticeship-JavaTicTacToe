@@ -1,9 +1,9 @@
 package ttt.guiapp;
 
-import ttt.commandlineapp.Prompt;
 import ttt.game.Player;
 import ttt.game.PlayerFactory;
 import ttt.game.PlayerSymbol;
+import ttt.game.ReadPrompt;
 
 public class GuiPlayerFactory extends PlayerFactory {
 
@@ -12,7 +12,7 @@ public class GuiPlayerFactory extends PlayerFactory {
     }
 
     @Override
-    public Player createHumanPlayer(PlayerSymbol symbol, Prompt unused) {
+    public Player createHumanPlayer(PlayerSymbol symbol, ReadPrompt unused) {
         return new GuiHumanPlayer(symbol);
     }
 }

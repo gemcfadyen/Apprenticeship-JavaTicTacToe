@@ -1,9 +1,7 @@
-package ttt.guiapp;
+package ttt.commandlineapp;
 
 import org.junit.Test;
-import ttt.commandlineapp.PromptSpy;
 import ttt.game.Board;
-import ttt.commandlineapp.HumanPlayer;
 
 import java.io.IOException;
 import java.io.StringReader;

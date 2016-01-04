@@ -3,13 +3,12 @@ package ttt.commandlineapp;
 import ttt.game.Board;
 import ttt.game.Player;
 import ttt.game.PlayerSymbol;
+import ttt.game.ReadPrompt;
 
 public class HumanPlayer extends Player {
-    private Prompt prompt;
 
-    public HumanPlayer(PlayerSymbol symbol, Prompt prompt) {
-        super(symbol);
-        this.prompt = prompt;
+    public HumanPlayer(PlayerSymbol symbol, ReadPrompt prompt) {
+        super(symbol, prompt);
     }
 
     @Override

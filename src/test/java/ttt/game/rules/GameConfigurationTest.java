@@ -1,9 +1,8 @@
-package ttt.guiapp;
+package ttt.game.rules;
 
 import org.junit.Test;
 import ttt.game.GameConfiguration;
 import ttt.game.GameType;
-import ttt.game.TicTacToeGameConfiguration;
 
 import java.util.List;
 

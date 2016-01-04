@@ -3,11 +3,12 @@ package ttt.commandlineapp;
 import ttt.game.Board;
 import ttt.game.Player;
 import ttt.game.PlayerSymbol;
+import ttt.game.ReadPrompt;
 
 import java.util.Random;
 
 public class RandomPlayer extends Player {
-    public RandomPlayer(PlayerSymbol playerSymbol, Prompt prompt) {
+    public RandomPlayer(PlayerSymbol playerSymbol, ReadPrompt prompt) {
         super(playerSymbol, prompt);
     }
 

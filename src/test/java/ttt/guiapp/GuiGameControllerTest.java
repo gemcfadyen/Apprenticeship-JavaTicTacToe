@@ -2,7 +2,7 @@ package ttt.guiapp;
 
 import org.junit.Test;
 import ttt.game.Board;
-import ttt.game.DisplayPresenterSpy;
+import ttt.game.GameConfigurationSpy;
 import ttt.game.TicTacToeRulesSpy;
 
 import static org.hamcrest.MatcherAssert.assertThat;

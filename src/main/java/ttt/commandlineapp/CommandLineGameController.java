@@ -1,6 +1,11 @@
 package ttt.commandlineapp;
 
+import ttt.commandlineapp.formatting.ColourText;
+import ttt.commandlineapp.formatting.PrettyBoard;
+import ttt.commandlineapp.formatting.StandardTextPresenter;
 import ttt.game.*;
+import ttt.game.rules.TicTacToeGameConfiguration;
+import ttt.game.rules.TicTacToeRules;
 
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;

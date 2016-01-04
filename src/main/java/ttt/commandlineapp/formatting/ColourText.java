@@ -1,5 +1,8 @@
-package ttt.commandlineapp;
+package ttt.commandlineapp.formatting;
 
+import ttt.commandlineapp.TextDecorator;
+import ttt.commandlineapp.TextPresenter;
+import ttt.commandlineapp.ValidationResult;
 import ttt.game.GameType;
 
 import java.util.List;

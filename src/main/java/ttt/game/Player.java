@@ -1,16 +1,14 @@
 package ttt.game;
 
-import ttt.commandlineapp.Prompt;
-
 public abstract class Player {
     private PlayerSymbol symbol;
-    protected Prompt prompt;
+    protected ReadPrompt prompt;
 
     public Player(PlayerSymbol symbol) {
         this.symbol = symbol;
     }
 
-    public Player(PlayerSymbol symbol, Prompt prompt) {
+    public Player(PlayerSymbol symbol, ReadPrompt prompt) {
         this(symbol);
         this.prompt = prompt;
     }

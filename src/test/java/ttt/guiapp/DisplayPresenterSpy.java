@@ -1,8 +1,8 @@
-package ttt.game;
+package ttt.guiapp;
 
+import ttt.game.Board;
 import ttt.game.DisplayPresenter;
 import ttt.game.GameType;
-import ttt.game.Board;
 import ttt.game.PlayerSymbol;
 
 import java.util.List;

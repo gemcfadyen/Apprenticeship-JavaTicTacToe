@@ -1,9 +1,11 @@
-package ttt.game;
+package ttt.game.rules;
 
 import org.junit.Test;
 import ttt.commandlineapp.CommandLinePlayerFactory;
+import ttt.commandlineapp.CommandLinePlayerFactorySpy;
 import ttt.commandlineapp.CommandLinePlayerFactoryStub;
 import ttt.commandlineapp.Prompt;
+import ttt.game.*;
 import ttt.guiapp.GuiHumanPlayer;
 
 import static org.hamcrest.MatcherAssert.assertThat;

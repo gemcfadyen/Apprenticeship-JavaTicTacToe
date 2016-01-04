@@ -1,5 +1,8 @@
 package ttt.guiapp;
 
+import ttt.guiapp.RollOn;
+import ttt.guiapp.RollableElement;
+
 public class UserRollsMouseOnGameStatus implements RollOn {
     private RollableElement rolloverElement;
     private String text;

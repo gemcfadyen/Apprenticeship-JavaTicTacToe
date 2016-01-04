@@ -6,8 +6,8 @@ import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 import ttt.game.BoardFactory;
 import ttt.game.GameRules;
-import ttt.game.TicTacToeGameConfiguration;
-import ttt.game.TicTacToeRules;
+import ttt.game.rules.TicTacToeGameConfiguration;
+import ttt.game.rules.TicTacToeRules;
 
 public class JavaFxGui extends Application {
 

@@ -1,9 +1,8 @@
-package ttt.guiapp;
+package ttt.game.players;
 
 import org.junit.Test;
 import ttt.game.Board;
 import ttt.game.Player;
-import ttt.game.UnbeatablePlayer;
 
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;

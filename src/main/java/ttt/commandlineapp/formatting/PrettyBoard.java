@@ -1,8 +1,8 @@
-package ttt.commandlineapp;
+package ttt.commandlineapp.formatting;
 
+import ttt.commandlineapp.BoardDisplay;
 import ttt.game.Board;
 import ttt.game.Line;
-import ttt.game.BoardDisplay;
 import ttt.game.PlayerSymbol;
 
 import java.util.List;

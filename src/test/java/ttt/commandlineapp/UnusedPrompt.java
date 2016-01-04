@@ -1,10 +1,10 @@
-package ttt.game;
+package ttt.commandlineapp;
 
-import ttt.game.GameType;
-import ttt.game.ReplayOption;
-import ttt.game.Board;
-import ttt.game.PlayerSymbol;
 import ttt.commandlineapp.Prompt;
+import ttt.game.Board;
+import ttt.game.GameType;
+import ttt.game.PlayerSymbol;
+import ttt.game.ReplayOption;
 
 import java.util.List;
 

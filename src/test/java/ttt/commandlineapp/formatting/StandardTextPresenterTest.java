@@ -1,9 +1,8 @@
-package ttt.commandlineapp;
+package ttt.commandlineapp.formatting;
 
 import org.junit.Test;
-import ttt.game.GameType;
-import ttt.commandlineapp.StandardTextPresenter;
 import ttt.commandlineapp.ValidationResult;
+import ttt.game.GameType;
 
 import java.util.Arrays;
 

@@ -1,7 +1,6 @@
 package ttt.game;
 
 import org.junit.Test;
-import ttt.game.GameType;
 
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
