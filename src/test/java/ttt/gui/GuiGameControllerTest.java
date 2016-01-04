@@ -5,8 +5,7 @@ import ttt.board.Board;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
-import static ttt.GameType.*;
-import static ttt.player.GuiHumanPlayer.IGNORE_AS_MOVE_WILL_COME_FROM_DISPLAY;
+import static ttt.GameType.HUMAN_VS_HUMAN;
 import static ttt.player.PlayerSymbol.*;
 
 public class GuiGameControllerTest {
@@ -35,34 +34,16 @@ public class GuiGameControllerTest {
     }
 
     @Test
-    public void initialisesAndDisplaysEmptyBoard() {
+    public void initialisesGameAndPlayGame() {
         GameConfigurationSpy humanVsHumanGameConfiguration = new GameConfigurationSpy(HUMAN_VS_HUMAN);
-        gameRulesSpy = new TicTacToeRulesSpy(new Board(3), IGNORE_AS_MOVE_WILL_COME_FROM_DISPLAY);
+        gameRulesSpy = new TicTacToeRulesSpy(new Board(3));
         GuiGameController controller = new GuiGameController(humanVsHumanGameConfiguration, gameRulesSpy, createViewFactory());
         controller.setGameType(HUMAN_VS_HUMAN);
 
-        controller.presentBoard("3");
+        controller.presentBoard(3);
 
-        assertThat(boardPresenterSpy.hasDrawnBoard(), is(true));
         assertThat(gameRulesSpy.hasInitialisedGame(), is(true));
-        assertThat(gameRulesSpy.numberOfTimesPlayerAskedForMove(), is(1));
-        assertThat(gameRulesSpy.hasMadeMove(), is(false));
-    }
-
-    @Test
-    public void initialisesGameAndDisplaysBoardWithFirstAutomatedMove() {
-        GameConfigurationSpy unbeatableVsHumanGameConfiguration = new GameConfigurationSpy(UNBEATABLE_VS_HUMAN);
-        gameRulesSpy = new TicTacToeRulesSpy(new Board(3), 1);
-        GuiGameController controller = new GuiGameController(unbeatableVsHumanGameConfiguration, gameRulesSpy, createViewFactory());
-        controller.setGameType(UNBEATABLE_VS_HUMAN);
-
-        controller.presentBoard("3");
-
-        assertThat(boardPresenterSpy.hasDrawnBoard(), is(true));
-        assertThat(gameRulesSpy.hasInitialisedGame(), is(true));
-        assertThat(gameRulesSpy.getCurrentPlayersNextMove(), is(1));
-        assertThat(gameRulesSpy.hasMadeMove(), is(true));
-        assertThat(gameRulesSpy.gameInProgressCheck(), is(true));
+        assertThat(gameRulesSpy.hasGameBeenPlayed(), is(true));
     }
 
     @Test
@@ -75,108 +56,30 @@ public class GuiGameControllerTest {
     }
 
     @Test
-    public void humanTakesMove() {
-        gameRulesSpy = new TicTacToeRulesSpy(new Board(3), IGNORE_AS_MOVE_WILL_COME_FROM_DISPLAY);
+    public void guiHumanGetsPreloadedWithMove() {
+        GuiHumanPlayerSpy guiHumanPlayer = new GuiHumanPlayerSpy(X);
+        gameRulesSpy = new TicTacToeRulesSpy(new Board(3), guiHumanPlayer);
         GuiGameController controller = new GuiGameController(gameConfigurationSpy, gameRulesSpy, createViewFactory());
-        controller.setGameType(HUMAN_VS_HUMAN);
 
-        controller.playMove("1");
+        controller.playMove(1);
 
-        assertThat(gameRulesSpy.hasMadeMove(), is(true));
-        assertThat(gameRulesSpy.gameInProgressCheck(), is(true));
-        assertThat(gameRulesSpy.getPositionOfMove(), is(1));
+        assertThat(gameRulesSpy.hasGotCurrentPlayer(), is(true));
+        assertThat(guiHumanPlayer.hasBeenPreloadedWithMove(), is(true));
+        assertThat(gameRulesSpy.hasGameBeenPlayed(), is(true));
         assertThat(boardPresenterSpy.hasDrawnBoard(), is(true));
-        assertThat(gameRulesSpy.numberOfTimesPlayerAskedForMove(), is(1));
-        assertThat(gameRulesSpy.numberOfMoves(), is(1));
-    }
-
-    @Test
-    public void humanVsComputerGameMeansBothPlayersTakeTurn() {
-        GameConfigurationSpy humanVsUnbeatableGameConfiguration = new GameConfigurationSpy(HUMAN_VS_UNBEATABLE);
-        gameRulesSpy = new TicTacToeRulesSpy(new Board(3), 1);
-        GuiGameController controller = new GuiGameController(humanVsUnbeatableGameConfiguration, gameRulesSpy, createViewFactory());
-        controller.setGameType(HUMAN_VS_UNBEATABLE);
-
-        controller.playMove("3");
-
-        assertThat(gameRulesSpy.hasMadeMove(), is(true));
-        assertThat(gameRulesSpy.numberOfMoves(), is(2));
-        assertThat(gameRulesSpy.numberOfTimesPlayerAskedForMove(), is(1));
-        assertThat(gameRulesSpy.gameInProgressCheck(), is(true));
-        assertThat(gameRulesSpy.numberOfTimesBoardCheckedForWin(), is(2));
-        assertThat(boardPresenterSpy.numberOfTimesBoardIsDrawn(), is(2));
-    }
-
-    @Test
-    public void unbeatablePlayerStopsWhenBoardIsFull() {
-        GameConfigurationSpy humanVsUnbeatableGameConfiguration = new GameConfigurationSpy(HUMAN_VS_UNBEATABLE);
-        gameRulesSpy = new TicTacToeRulesSpy(new Board(
-                VACANT, O, X,
-                X, O, X,
-                O, X, O), 0);
-        GuiGameController controller = new GuiGameController(humanVsUnbeatableGameConfiguration, gameRulesSpy, createViewFactory());
-        controller.setGameType(HUMAN_VS_UNBEATABLE);
-
-        controller.playMove("0");
-
-        assertThat(gameRulesSpy.hasMadeMove(), is(true));
-        assertThat(gameRulesSpy.numberOfMoves(), is(1));
-        assertThat(gameRulesSpy.numberOfTimesBoardCheckedForWin(), is(1));
-        assertThat(boardPresenterSpy.hasIdentifiedAWin(), is(false));
-        assertThat(boardPresenterSpy.numberOfTimesBoardIsDrawn(), is(1));
-    }
-    @Test
-
-    public void unbeatablePlayerStopsWhenBoardHasWinner() {
-        GameConfigurationSpy humanVsUnbeatableGameConfiguration = new GameConfigurationSpy(HUMAN_VS_UNBEATABLE);
-        gameRulesSpy = new TicTacToeRulesSpy(new Board(
-                VACANT, VACANT, O,
-                X, O, O,
-                X, X, VACANT), 8);
-        GuiGameController controller = new GuiGameController(humanVsUnbeatableGameConfiguration, gameRulesSpy, createViewFactory());
-        controller.setGameType(HUMAN_VS_UNBEATABLE);
-
-        controller.playMove("8");
-
-        assertThat(gameRulesSpy.hasMadeMove(), is(true));
-        assertThat(gameRulesSpy.numberOfMoves(), is(1));
-        assertThat(gameRulesSpy.numberOfTimesBoardIsObtained(), is(1));
-        assertThat(gameRulesSpy.gameInProgressCheck(), is(true));
-        assertThat(gameRulesSpy.numberOfTimesBoardCheckedForWin(), is(1));
-        assertThat(boardPresenterSpy.hasIdentifiedAWin(), is(true));
-    }
-
-    @Test
-    public void playersTakeTurnsWhenGameTypeIsUnbeatableVsHuman() {
-        GameConfigurationSpy humanVsUnbeatableGameConfiguration = new GameConfigurationSpy(UNBEATABLE_VS_HUMAN);
-        gameRulesSpy = new TicTacToeRulesSpy(new Board(3), 1);
-        GuiGameController controller = new GuiGameController(humanVsUnbeatableGameConfiguration, gameRulesSpy, createViewFactory());
-        controller.setGameType(UNBEATABLE_VS_HUMAN);
-
-        controller.playMove("3");
-
-        assertThat(gameRulesSpy.hasMadeMove(), is(true));
-        assertThat(gameRulesSpy.numberOfTimesBoardIsObtained(), is(2));
-        assertThat(gameRulesSpy.numberOfMoves(), is(2));
-        assertThat(gameRulesSpy.numberOfTimesPlayerAskedForMove(), is(1));
-        assertThat(gameRulesSpy.boardCheckedForFreeSpace(), is(true));
-        assertThat(gameRulesSpy.gameInProgressCheck(), is(true));
-        assertThat(gameRulesSpy.numberOfTimesBoardCheckedForWin(), is(2));
-        assertThat(boardPresenterSpy.numberOfTimesBoardIsDrawn(), is(2));
     }
 
     @Test
     public void gameHasWinner() {
-        Board board = new Board(
-                VACANT, O, X,
+        Board winningBoard = new Board(
+                X, O, X,
                 X, O, VACANT,
                 X, VACANT, VACANT
         );
-        gameRulesSpy = new TicTacToeRulesSpy(board, 0);
+        gameRulesSpy = new TicTacToeRulesSpy(winningBoard);
         GuiGameController controller = new GuiGameController(gameConfigurationSpy, gameRulesSpy, createViewFactory());
-        controller.setGameType(HUMAN_VS_HUMAN);
 
-        controller.playMove("0");
+        controller.playMove(-1);
 
         assertThat(gameRulesSpy.gameCheckedForWin(), is(true));
         assertThat(gameRulesSpy.hasGotWinnersSymbol(), is(true));
@@ -186,33 +89,32 @@ public class GuiGameControllerTest {
 
     @Test
     public void gameHasDraw() {
-        Board board = new Board(
+        Board drawnBoard = new Board(
                 X, O, X,
                 O, O, X,
-                X, VACANT, O
+                X, X, O
         );
-        gameRulesSpy = new TicTacToeRulesSpy(board, 7);
+        gameRulesSpy = new TicTacToeRulesSpy(drawnBoard);
         GuiGameController controller = new GuiGameController(gameConfigurationSpy, gameRulesSpy, createViewFactory());
-        controller.setGameType(HUMAN_VS_HUMAN);
 
-        controller.playMove("7");
+        controller.playMove(-1);
 
-        assertThat(gameRulesSpy.boardCheckedForFreeSpace(), is(true));
-        assertThat(boardPresenterSpy.hasDrawnBoard(), is(true));
+        assertThat(gameRulesSpy.hasGameBeenPlayed(), is(true));
+        assertThat(gameRulesSpy.numberOfTimesBoardIsObtained(), is(1));
+        assertThat(boardPresenterSpy.hasIdentifiedADraw(), is(true));
     }
 
     @Test
     public void winningOnLastTurnDisplaysWin() {
-        Board board = new Board(
+        Board winningBoard = new Board(
                 X, O, X,
                 X, O, O,
-                VACANT, X, O
+                X, X, O
         );
-        gameRulesSpy = new TicTacToeRulesSpy(board, 6);
+        gameRulesSpy = new TicTacToeRulesSpy(winningBoard);
         GuiGameController controller = new GuiGameController(gameConfigurationSpy, gameRulesSpy, createViewFactory());
-        controller.setGameType(HUMAN_VS_HUMAN);
 
-        controller.playMove("6");
+        controller.playMove(6);
 
         assertThat(gameRulesSpy.gameCheckedForWin(), is(true));
         assertThat(gameRulesSpy.hasGotWinnersSymbol(), is(true));

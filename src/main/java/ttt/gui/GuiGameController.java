@@ -2,10 +2,10 @@ package ttt.gui;
 
 import ttt.GameType;
 import ttt.board.Board;
+import ttt.player.GuiHumanPlayer;
+import ttt.player.Player;
 
 import java.util.List;
-
-import static ttt.player.GuiHumanPlayer.IGNORE_AS_MOVE_WILL_COME_FROM_DISPLAY;
 
 public class GuiGameController implements GameController {
 
@@ -33,51 +33,34 @@ public class GuiGameController implements GameController {
     }
 
     @Override
-    public void presentBoard(String dimension) {
+    public void presentBoard(int dimension) {
         ticTacToeRules.initialiseGame(gameType, dimension);
         Board board = ticTacToeRules.getBoard();
-
-        playAutomatedMoveIfAppropriate();
-        boardView.presentsBoard(board);
+        ticTacToeRules.playGame();
+        printBoard(board);
     }
 
     @Override
-    public void playMove(String position) {
-        playMoveIfSpaceOnBoard(Integer.valueOf(position));
-        playAutomatedMoveIfAppropriate();
+    public void playMove(int position) {
+        preloadHumanWithMoveAt(position);
+
+        ticTacToeRules.playGame();
+        Board latestBoard = ticTacToeRules.getBoard();
+        printBoard(latestBoard);
+        displayExitMessage(latestBoard);
+    }
+
+    private void printBoard(Board board) {
+        boardView.presentsBoard(board);
+    }
+
+    private void preloadHumanWithMoveAt(int position) {
+        Player currentPlayer = ticTacToeRules.getCurrentPlayer();
+        ((GuiHumanPlayer)currentPlayer).setMove(Integer.valueOf(position));
     }
 
     public void setGameType(GameType gameType) {
         this.gameType = gameType;
-    }
-
-    private void playAutomatedMoveIfAppropriate() {
-        int move = ticTacToeRules.getCurrentPlayersNextMove();
-        if (nonInteractiveMove(move)) {
-            playMoveIfSpaceOnBoard(move);
-        }
-    }
-
-    private boolean nonInteractiveMove(int automatedMove) {
-        return automatedMove != IGNORE_AS_MOVE_WILL_COME_FROM_DISPLAY;
-    }
-
-    private void playMoveIfSpaceOnBoard(int currentPlayersNextMove) {
-        if (ticTacToeRules.gameInProgress()) {
-            playTurn(currentPlayersNextMove);
-        }
-    }
-
-    private void playTurn(int currentPlayersNextMove) {
-        ticTacToeRules.takeTurn(currentPlayersNextMove);
-        Board board = presentBoard();
-        displayExitMessage(board);
-    }
-
-    private Board presentBoard() {
-        Board board = ticTacToeRules.getBoard();
-        boardView.presentsBoard(board);
-        return board;
     }
 
     GameType getGameType() {
@@ -87,7 +70,7 @@ public class GuiGameController implements GameController {
     private void displayExitMessage(Board board) {
         if (ticTacToeRules.hasWinner()) {
             boardView.printsWinningMessage(board, ticTacToeRules.getWinningSymbol());
-        } else if (!ticTacToeRules.boardHasFreeSpace()) {
+        } else if (!ticTacToeRules.hasAvailableMoves()) {
             boardView.printsDrawMessage(board);
         }
     }

@@ -82,13 +82,11 @@ public class CommandLineGameController {
     }
 
     private void initialiseGame(int dimension) {
-        gameRules.initialiseGame(gameType, String.valueOf(dimension));
+        gameRules.initialiseGame(gameType, dimension);
     }
 
     void playMatch() {
-        while (gameInProgress()) {
-            updateBoardWithPlayersMove();
-        }
+        gameRules.playGame();
         printExitMessage();
     }
 
@@ -97,19 +95,6 @@ public class CommandLineGameController {
         gamePrompt.presentReplayOption();
         replayOption = gamePrompt.readReplayOption();
         return replayOption;
-    }
-
-    void updateBoardWithPlayersMove() {
-        int nextMove = gameRules.getCurrentPlayersNextMove();
-        playMove(nextMove);
-    }
-
-    void playMove(int nextMove) {
-        gameRules.takeTurn(nextMove);
-    }
-
-    boolean gameInProgress() {
-        return gameRules.gameInProgress();
     }
 
     GameType getGameType() {

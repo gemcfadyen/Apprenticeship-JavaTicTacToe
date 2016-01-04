@@ -11,6 +11,6 @@ public class UserSelectsButtonForMove implements ClickEvent {
 
     @Override
     public void action() {
-        controller.playMove(deactivatableElement.getId());
+        controller.playMove(Integer.valueOf(deactivatableElement.getId()));
     }
 }

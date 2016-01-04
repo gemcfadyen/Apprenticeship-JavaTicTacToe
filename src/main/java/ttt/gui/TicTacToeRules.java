@@ -27,17 +27,19 @@ public class TicTacToeRules implements GameRules {
     }
 
     @Override
-    public void initialiseGame(GameType gameType, String dimension) {
-        Integer boardDimension = Integer.valueOf(dimension);
-        board = boardFactory.createBoardWithSize(boardDimension);
-        players = playerFactory.createPlayers(gameType, boardDimension);
+    public void initialiseGame(GameType gameType, int dimension) {
+        board = boardFactory.createBoardWithSize(dimension);
+        players = playerFactory.createPlayers(gameType, dimension);
         currentPlayerIndex = PLAYER_ONE_INDEX;
     }
 
     @Override
-    public void takeTurn(int move) {
-        board.updateAt(move, players[currentPlayerIndex].getSymbol());
-        togglePlayer();
+    public void playGame() {
+        while (getCurrentPlayer().isReady()
+                && gameInProgress()) {
+            int currentPlayersNextMove = getCurrentPlayersNextMove();
+            takeTurn(currentPlayersNextMove);
+        }
     }
 
     @Override
@@ -51,13 +53,8 @@ public class TicTacToeRules implements GameRules {
     }
 
     @Override
-    public boolean boardHasFreeSpace() {
+    public boolean hasAvailableMoves() {
         return board.hasFreeSpace();
-    }
-
-    @Override
-    public int getCurrentPlayersNextMove() {
-        return players[currentPlayerIndex].chooseNextMoveFrom(board);
     }
 
     @Override
@@ -71,13 +68,25 @@ public class TicTacToeRules implements GameRules {
     }
 
     @Override
-    public boolean gameInProgress() {
-        return boardHasFreeSpace() && noWinnerYet();
+    public Player getCurrentPlayer() {
+        return players[currentPlayerIndex];
     }
 
+    boolean gameInProgress() {
+        return hasAvailableMoves() && noWinnerYet();
+    }
+
+    private void takeTurn(int move) {
+        board.updateAt(move, getCurrentPlayer().getSymbol());
+        togglePlayer();
+    }
 
     int getCurrentPlayerIndex() {
         return currentPlayerIndex;
+    }
+
+    private int getCurrentPlayersNextMove() {
+        return getCurrentPlayer().chooseNextMoveFrom(board);
     }
 
     private void togglePlayer() {

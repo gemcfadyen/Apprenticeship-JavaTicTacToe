@@ -29,4 +29,14 @@ public class HumanPlayerTest {
 
         assertThat(player.chooseNextMoveFrom(board), is(1));
     }
+
+    @Test
+    public void humanPlayerIsReady() {
+         PromptSpy prompt = new PromptSpy(new StringReader("1\n"));
+        HumanPlayer player = new HumanPlayer(X, prompt);
+        Board board = new Board(X, VACANT, X, O, X, O, X, O, VACANT);
+
+        assertThat(player.isReady(), is(true));
+
+    }
 }

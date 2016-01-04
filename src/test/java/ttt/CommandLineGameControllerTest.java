@@ -24,7 +24,6 @@ public class CommandLineGameControllerTest {
     private static final String HUMAN_VS_HUMAN_ID = "1\n";
     private static final String INPUT_FOR_3x3 = "3\n";
     private static final String DO_NOT_REPLAY = "N\n";
-    private static final int NO_NEXT_MOVE_REQUIRED = -1;
     private TicTacToeRulesSpy gameRulesSpy = new TicTacToeRulesSpy();
     private GameConfigurationSpy gameConfigurationSpy = new GameConfigurationSpy();
 
@@ -62,36 +61,15 @@ public class CommandLineGameControllerTest {
     }
 
     @Test
-    public void gameIsOverWhenBoardIsFull() {
-        gameRulesSpy = new TicTacToeRulesSpy(
-                boardWith(
-                        X, O, X,
-                        X, X, O,
-                        O, O, X
-                ), NO_NEXT_MOVE_REQUIRED
-        );
-        CommandLineGameController commandLineGameController = new CommandLineGameController(
-                gameConfigurationSpy,
-                gameRulesSpy,
-                commandPrompt()
-        );
-
-        boolean gameInProgress = commandLineGameController.gameInProgress();
-
-        assertThat(gameInProgress, is(false));
-        assertThat(gameRulesSpy.gameInProgressCheck(), is(true));
-    }
-
-    @Test
     public void gameIsWonWhenPlayerPlacesWinningMove() {
         PromptSpy gamePrompt = new PromptSpy(new StringReader(""));
-        Board board = boardWith(
-                X, VACANT, X,
+        Board finalBoard = boardWith(
+                X, X, X,
                 O, X, O,
                 O, X, O);
         CommandLineGameController commandLineGameController = new CommandLineGameController(
                 gameConfigurationSpy,
-                new TicTacToeRulesSpy(board, 1),
+                new TicTacToeRulesSpy(finalBoard),
                 gamePrompt
         );
 
@@ -107,7 +85,7 @@ public class CommandLineGameControllerTest {
                 X, X, X,
                 O, VACANT, VACANT,
                 O, VACANT, VACANT);
-        TicTacToeRulesSpy gameRulesSpy = new TicTacToeRulesSpy(board, NO_NEXT_MOVE_REQUIRED);
+        TicTacToeRulesSpy gameRulesSpy = new TicTacToeRulesSpy(board);
         CommandLineGameController commandLineGameController = new CommandLineGameController(
                 gameConfigurationSpy,
                 gameRulesSpy,
@@ -129,7 +107,7 @@ public class CommandLineGameControllerTest {
                 X, O, X,
                 O, O, X,
                 O, X, O);
-        TicTacToeRulesSpy gameRulesSpy = new TicTacToeRulesSpy(board, NO_NEXT_MOVE_REQUIRED);
+        TicTacToeRulesSpy gameRulesSpy = new TicTacToeRulesSpy(board);
         CommandLineGameController commandLineGameController = new CommandLineGameController(
                 gameConfigurationSpy,
                 gameRulesSpy,
@@ -150,7 +128,7 @@ public class CommandLineGameControllerTest {
                 O, X, O,
                 O, O, X
         );
-        TicTacToeRulesSpy gameRules = new TicTacToeRulesSpy(board, 1);
+        TicTacToeRulesSpy gameRules = new TicTacToeRulesSpy(board);
         CommandLineGameController commandLineGameController = new CommandLineGameController(
                 gameConfigurationSpy,
                 gameRules,
@@ -162,21 +140,6 @@ public class CommandLineGameControllerTest {
         assertThat(gamePrompt.getNumberOfTimesXHasWon(), is(1));
         assertThat(gamePrompt.getNumberOfTimesReplayPresented(), is(1));
         assertThat(gamePrompt.getNumberOfTimesReplayOptionRead(), is(1));
-    }
-
-    @Test
-    public void boardIsUpdatedWithPlayersMove() {
-        Board board = new Board(3);
-        CommandLineGameController commandLineGameController = new CommandLineGameController(
-                gameConfigurationSpy,
-                new TicTacToeRulesSpy(board, 1),
-                commandPrompt()
-        );
-
-        commandLineGameController.updateBoardWithPlayersMove();
-
-        assertThat(board.getSymbolAt(1), is(X));
-        assertThat(board.getVacantPositions().size(), is(8));
     }
 
     @Test
@@ -197,10 +160,6 @@ public class CommandLineGameControllerTest {
 
     private Board boardWith(PlayerSymbol... layout) {
         return new Board(layout);
-    }
-
-    private CommandPrompt commandPrompt() {
-        return new CommandPrompt(new StringReader(""), new StringWriter(), new PlainFormatter());
     }
 
     private Prompt createCommandPromptToReadInput(String usersInputs) {

@@ -21,4 +21,8 @@ public abstract class Player {
     public PlayerSymbol getSymbol() {
         return symbol;
     }
+
+    public boolean isReady() {
+        return true;
+    }
 }

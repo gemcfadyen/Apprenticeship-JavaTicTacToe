@@ -3,18 +3,17 @@ package ttt.gui;
 import org.junit.Test;
 import ttt.BoardFactoryStub;
 import ttt.CommandLinePlayerFactoryStub;
-import ttt.PromptSpy;
 import ttt.board.Board;
 import ttt.board.BoardFactory;
 import ttt.player.CommandLinePlayerFactory;
+import ttt.player.FakePlayer;
+import ttt.player.GuiHumanPlayer;
 import ttt.player.Player;
 import ttt.ui.Prompt;
 
-import java.io.StringReader;
-
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.instanceOf;
 import static org.hamcrest.Matchers.is;
-import static org.hamcrest.Matchers.not;
 import static ttt.GameType.HUMAN_VS_HUMAN;
 import static ttt.GameType.HUMAN_VS_UNBEATABLE;
 import static ttt.player.PlayerSymbol.*;
@@ -24,15 +23,6 @@ public class TicTacToeRulesTest {
     private Board board = new Board(3);
     private Player[] players = new CommandLinePlayerFactory(UNUSED_PROMPT).createPlayers(HUMAN_VS_HUMAN, 3);
 
-    @Test
-    public void makesMove() {
-        TicTacToeRules ticTacToeRules = initialiseRules(board, players);
-        int firstPlayer = ticTacToeRules.getCurrentPlayerIndex();
-        ticTacToeRules.takeTurn(1);
-
-        assertThat(board.getSymbolAt(1), is(X));
-        assertThat(firstPlayer, is(not(ticTacToeRules.getCurrentPlayerIndex())));
-    }
 
     @Test
     public void hasWinner() {
@@ -67,7 +57,7 @@ public class TicTacToeRulesTest {
         CommandLinePlayerFactorySpy playerFactorySpy = new CommandLinePlayerFactorySpy();
         TicTacToeRules gamesRules = initialiseRulesWithFactories(new BoardFactory(), playerFactorySpy);
 
-        gamesRules.initialiseGame(HUMAN_VS_HUMAN, "3");
+        gamesRules.initialiseGame(HUMAN_VS_HUMAN, 3);
 
         assertThat(playerFactorySpy.getGameTypeUsed(), is(HUMAN_VS_HUMAN));
     }
@@ -79,7 +69,7 @@ public class TicTacToeRulesTest {
                 new CommandLinePlayerFactoryStub(players)
         );
 
-        ticTacToeRules.initialiseGame(HUMAN_VS_HUMAN, "3");
+        ticTacToeRules.initialiseGame(HUMAN_VS_HUMAN, 3);
 
         assertThat(ticTacToeRules.getBoard(), is(board));
     }
@@ -88,11 +78,12 @@ public class TicTacToeRulesTest {
     public void currentPlayerReinitialisedWhenNewGameStarted() {
         TicTacToeRules ticTacToeRules = initialiseRulesWithFactories(
                 new BoardFactoryStub(board, board),
-                new CommandLinePlayerFactoryStub(players)
+                new CommandLinePlayerFactoryStub(new Player[] {new FakePlayer(X, 0, 1, 2), new FakePlayer(O, 3, 4)})
         );
 
-        intialiseGameAndTogglePlayer(ticTacToeRules);
-        ticTacToeRules.initialiseGame(HUMAN_VS_UNBEATABLE, "3");
+        ticTacToeRules.initialiseGame(HUMAN_VS_HUMAN, 3);
+        ticTacToeRules.playGame();
+        ticTacToeRules.initialiseGame(HUMAN_VS_UNBEATABLE, 3);
 
         assertThat(ticTacToeRules.getCurrentPlayerIndex(), is(0));
     }
@@ -109,7 +100,7 @@ public class TicTacToeRulesTest {
                 new CommandLinePlayerFactory(UNUSED_PROMPT)
         );
 
-        ticTacToeRules.initialiseGame(HUMAN_VS_HUMAN, "3");
+        ticTacToeRules.initialiseGame(HUMAN_VS_HUMAN, 3);
 
         assertThat(ticTacToeRules.getBoard(), is(board));
     }
@@ -168,16 +159,64 @@ public class TicTacToeRulesTest {
     }
 
     @Test
-    public void getCurrentPlayersNextMove() {
-        PromptSpy promptSpy = new PromptSpy(new StringReader("1"));
-        TicTacToeRules gamesRules = initialiseRules(
-                board,
-                new CommandLinePlayerFactory(promptSpy).createPlayers(HUMAN_VS_HUMAN, 3)
-        );
+    public void gameLoopsUntilThereIsAWinner() {
+        TicTacToeRules ticTacToeRules = new TicTacToeRules(board, new Player[]{
+                new FakePlayer(X, 0, 1, 2), new FakePlayer(O, 3, 4)});
 
-        int move = gamesRules.getCurrentPlayersNextMove();
+        ticTacToeRules.playGame();
 
-        assertThat(move, is(1));
+        assertThat(board.getSymbolAt(0), is(X));
+        assertThat(board.getSymbolAt(3), is(O));
+        assertThat(board.getSymbolAt(1), is(X));
+        assertThat(board.getSymbolAt(4), is(O));
+        assertThat(board.getSymbolAt(2), is(X));
+        assertThat(ticTacToeRules.hasWinner(), is(true));
+    }
+
+    @Test
+    public void gameLoopsUntilNoSpaceOnBoard() {
+        TicTacToeRules ticTacToeRules = new TicTacToeRules(board, new Player[]{
+                new FakePlayer(X, 0, 2, 4, 5, 7), new FakePlayer(O, 1, 3, 6, 8)});
+
+        ticTacToeRules.playGame();
+
+        assertThat(board.getSymbolAt(0), is(X));
+        assertThat(board.getSymbolAt(1), is(O));
+        assertThat(board.getSymbolAt(2), is(X));
+        assertThat(board.getSymbolAt(3), is(O));
+        assertThat(board.getSymbolAt(4), is(X));
+        assertThat(board.getSymbolAt(6), is(O));
+        assertThat(board.getSymbolAt(5), is(X));
+        assertThat(board.getSymbolAt(8), is(O));
+        assertThat(board.getSymbolAt(7), is(X));
+        assertThat(ticTacToeRules.hasAvailableMoves(), is(false));
+    }
+
+    @Test
+    public void gameLoopsUntilPlayerIsNotReady() {
+        GuiHumanPlayer testPlayer = new GuiHumanPlayer(X);
+        testPlayer.setMove(0);
+        FakePlayer fakePlayer = new FakePlayer(O, 3, 7);
+        TicTacToeRules ticTacToeRules = new TicTacToeRules(board, new Player[]{
+                testPlayer, fakePlayer});
+
+        ticTacToeRules.playGame();
+
+        assertThat(board.getSymbolAt(0), is(X));
+        assertThat(board.getSymbolAt(3), is(O));
+        assertThat(board.getSymbolAt(7), is(VACANT));
+    }
+
+    @Test
+    public void getCurrentPlayer() {
+        GuiHumanPlayer testPlayer = new GuiHumanPlayer(X);
+        FakePlayer fakePlayer = new FakePlayer(O);
+        TicTacToeRules ticTacToeRules = new TicTacToeRules(board, new Player[]{
+                testPlayer, fakePlayer});
+
+        Player currentPlayer = ticTacToeRules.getCurrentPlayer();
+
+        assertThat(currentPlayer, is(instanceOf(GuiHumanPlayer.class)));
     }
 
     private TicTacToeRules initialiseRulesWithFactories(BoardFactory boardFactory, CommandLinePlayerFactory playerFactory) {
@@ -192,11 +231,6 @@ public class TicTacToeRulesTest {
                 board,
                 players
         );
-    }
-
-    private void intialiseGameAndTogglePlayer(TicTacToeRules ticTacToeRules) {
-        ticTacToeRules.initialiseGame(HUMAN_VS_HUMAN, "3");
-        ticTacToeRules.takeTurn(1);
     }
 }
 
