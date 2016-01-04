@@ -1,8 +1,6 @@
 package ttt.guiapp;
 
 import ttt.game.GameController;
-import ttt.guiapp.ClickEvent;
-import ttt.guiapp.ClickableElement;
 
 public class UserSelectsBoardDimension implements ClickEvent {
     private GameController controller;

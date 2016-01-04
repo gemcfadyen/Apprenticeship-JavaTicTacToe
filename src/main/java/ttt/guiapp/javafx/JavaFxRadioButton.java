@@ -1,6 +1,8 @@
-package ttt.guiapp;
+package ttt.guiapp.javafx;
 
 import javafx.scene.control.RadioButton;
+import ttt.guiapp.ClickEvent;
+import ttt.guiapp.ClickableElement;
 
 public class JavaFxRadioButton implements ClickableElement {
     private RadioButton radioButton;

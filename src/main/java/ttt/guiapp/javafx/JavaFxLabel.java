@@ -1,6 +1,7 @@
-package ttt.guiapp;
+package ttt.guiapp.javafx;
 
 import javafx.scene.control.Label;
+import ttt.guiapp.*;
 
 public class JavaFxLabel implements ClickableElement, RollableElement {
     private Label label;

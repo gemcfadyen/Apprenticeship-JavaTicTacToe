@@ -2,8 +2,6 @@ package ttt.guiapp;
 
 import ttt.game.GameController;
 import ttt.game.GameType;
-import ttt.guiapp.ClickEvent;
-import ttt.guiapp.ClickableElement;
 
 public class UserSelectsGameType implements ClickEvent {
     private GameController controller;

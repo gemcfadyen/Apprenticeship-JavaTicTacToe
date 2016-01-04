@@ -2,10 +2,6 @@ package ttt.guiapp;
 
 import ttt.game.GameController;
 import ttt.game.Player;
-import ttt.guiapp.ClickEvent;
-import ttt.guiapp.DeactivatableElement;
-import ttt.guiapp.MoveObserver;
-import ttt.guiapp.MovePublisher;
 
 public class UserSelectsButtonForMove implements ClickEvent, MovePublisher {
     private GameController controller;

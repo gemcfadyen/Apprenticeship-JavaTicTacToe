@@ -1,6 +1,8 @@
-package ttt.guiapp;
+package ttt.guiapp.javafx;
 
 import javafx.scene.control.Button;
+import ttt.guiapp.ClickEvent;
+import ttt.guiapp.DeactivatableElement;
 
 public class JavaFxButton implements DeactivatableElement {
     private Button button;

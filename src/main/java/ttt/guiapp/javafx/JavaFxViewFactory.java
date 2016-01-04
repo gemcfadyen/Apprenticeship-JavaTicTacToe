@@ -1,8 +1,10 @@
-package ttt.guiapp;
+package ttt.guiapp.javafx;
 
 import javafx.scene.Scene;
 import ttt.game.DisplayPresenter;
 import ttt.game.GameRules;
+import ttt.guiapp.GuiGameController;
+import ttt.guiapp.ViewFactory;
 
 public class JavaFxViewFactory implements ViewFactory {
     private Scene scene;

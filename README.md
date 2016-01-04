@@ -20,4 +20,4 @@ Using TDD write Human vs Human game of Tic Tac Toe in java
 
 1. To execute the gui game navigate /Apprenticeship-JavaTicTacToe/build/libs do the following
 
-`java -cp Apprenticeship-JavaTicTacToe-1.0.jar ttt.guiapp.JavaFxGui`
+`java -cp Apprenticeship-JavaTicTacToe-1.0.jar ttt.guiapp.javafx.JavaFxGui`

@@ -12,6 +12,7 @@ import org.junit.Test;
 import ttt.game.BoardFactory;
 import ttt.game.rules.TicTacToeGameConfiguration;
 import ttt.game.rules.TicTacToeRules;
+import ttt.guiapp.javafx.JavaFxViewFactory;
 
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
