@@ -1,12 +1,10 @@
 package ttt.commandlineapp;
 
 import ttt.game.GameType;
-import ttt.commandlineapp.TextPresenter;
-import ttt.commandlineapp.ValidationResult;
 
 import java.util.List;
 
-class TextFormatterSpy implements TextPresenter {
+public class TextFormatterSpy implements TextPresenter {
     private boolean hasPresentedGameDimensions = false;
     private int numberOfDimensionPrompts = 0;
     private int numberOfValidationErrors = 0;

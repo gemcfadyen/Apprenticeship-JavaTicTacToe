@@ -17,4 +17,8 @@ public class FakePlayer extends Player {
     public int chooseNextMoveFrom(Board board) {
         return moves[currentMoveIndex++];
     }
+
+    public boolean isReady() {
+        return moves.length != 0;
+    }
 }

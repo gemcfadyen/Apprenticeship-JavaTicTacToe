@@ -9,10 +9,13 @@ import javafx.scene.control.RadioButton;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.text.Text;
-import ttt.game.*;
+import ttt.game.DisplayPresenter;
+import ttt.game.GameType;
+import ttt.game.PlayerSymbol;
 import ttt.game.board.Board;
 import ttt.game.board.Line;
 import ttt.guiapp.*;
+import ttt.guiapp.eventlisteners.*;
 
 import java.util.List;
 import java.util.Objects;

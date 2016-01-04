@@ -4,6 +4,7 @@ import org.junit.Test;
 import ttt.game.board.Board;
 import ttt.game.GameConfigurationSpy;
 import ttt.game.TicTacToeRulesSpy;
+import ttt.guiapp.players.GuiHumanPlayerSpy;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;

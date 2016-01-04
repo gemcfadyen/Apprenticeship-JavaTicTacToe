@@ -4,6 +4,8 @@ import ttt.commandlineapp.formatting.ColourText;
 import ttt.commandlineapp.formatting.PrettyBoard;
 import ttt.commandlineapp.formatting.StandardTextPresenter;
 import ttt.commandlineapp.players.CommandLinePlayerFactory;
+import ttt.commandlineapp.prompt.CommandPrompt;
+import ttt.commandlineapp.prompt.Prompt;
 import ttt.game.*;
 import ttt.game.board.BoardFactory;
 import ttt.game.rules.TicTacToeGameConfiguration;

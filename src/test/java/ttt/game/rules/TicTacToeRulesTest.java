@@ -1,16 +1,14 @@
 package ttt.game.rules;
 
 import org.junit.Test;
-import ttt.commandlineapp.players.CommandLinePlayerFactory;
-import ttt.commandlineapp.CommandLinePlayerFactorySpy;
-import ttt.commandlineapp.CommandLinePlayerFactoryStub;
-import ttt.commandlineapp.Prompt;
-import ttt.game.*;
+import ttt.game.Player;
+import ttt.game.PlayerFactory;
+import ttt.game.PlayerFactorySpy;
 import ttt.game.board.Board;
 import ttt.game.board.BoardFactory;
 import ttt.game.board.BoardFactoryStub;
 import ttt.game.players.FakePlayer;
-import ttt.guiapp.players.GuiHumanPlayer;
+import ttt.game.players.UnbeatablePlayer;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.instanceOf;
@@ -20,10 +18,10 @@ import static ttt.game.GameType.HUMAN_VS_UNBEATABLE;
 import static ttt.game.PlayerSymbol.*;
 
 public class TicTacToeRulesTest {
-    private static final Prompt UNUSED_PROMPT = null;
     private Board board = new Board(3);
-    private Player[] players = new CommandLinePlayerFactory(UNUSED_PROMPT).createPlayers(HUMAN_VS_HUMAN, 3);
-
+    private Player[] players = new Player[] {
+           new FakePlayer(X), new FakePlayer(O)
+    };
 
     @Test
     public void hasWinner() {
@@ -55,7 +53,7 @@ public class TicTacToeRulesTest {
 
     @Test
     public void gameTypeIsSet() {
-        CommandLinePlayerFactorySpy playerFactorySpy = new CommandLinePlayerFactorySpy();
+        PlayerFactorySpy playerFactorySpy = new PlayerFactorySpy();
         TicTacToeRules gamesRules = initialiseRulesWithFactories(new BoardFactory(), playerFactorySpy);
 
         gamesRules.initialiseGame(HUMAN_VS_HUMAN, 3);
@@ -67,7 +65,7 @@ public class TicTacToeRulesTest {
     public void initialisesGame() {
         TicTacToeRules ticTacToeRules = initialiseRulesWithFactories(
                 new BoardFactoryStub(board),
-                new CommandLinePlayerFactoryStub(players)
+                new PlayerFactoryStub(players)
         );
 
         ticTacToeRules.initialiseGame(HUMAN_VS_HUMAN, 3);
@@ -79,7 +77,7 @@ public class TicTacToeRulesTest {
     public void currentPlayerReinitialisedWhenNewGameStarted() {
         TicTacToeRules ticTacToeRules = initialiseRulesWithFactories(
                 new BoardFactoryStub(board, board),
-                new CommandLinePlayerFactoryStub(new FakePlayer(X, 0, 1, 2), new FakePlayer(O, 3, 4))
+                new PlayerFactoryStub(new FakePlayer(X, 0, 1, 2), new FakePlayer(O, 3, 4))
         );
 
         ticTacToeRules.initialiseGame(HUMAN_VS_HUMAN, 3);
@@ -98,7 +96,7 @@ public class TicTacToeRulesTest {
         );
         TicTacToeRules ticTacToeRules = initialiseRulesWithFactories(
                 new BoardFactoryStub(board),
-                new CommandLinePlayerFactory(UNUSED_PROMPT)
+                new PlayerFactorySpy()
         );
 
         ticTacToeRules.initialiseGame(HUMAN_VS_HUMAN, 3);
@@ -199,17 +197,14 @@ public class TicTacToeRulesTest {
 
     @Test
     public void gameLoopsUntilPlayerIsNotReady() {
-        GuiHumanPlayer testPlayer = new GuiHumanPlayer(X);
-        testPlayer.update(0);
         TicTacToeRules ticTacToeRules = new TicTacToeRules(
                 board,
-                new Player[]{testPlayer, new FakePlayer(O, 3, 7)}
+                new Player[]{new FakePlayer(X, 3, 7), new FakePlayer(O)}
         );
 
         ticTacToeRules.playGame();
 
-        assertThat(board.getSymbolAt(0), is(X));
-        assertThat(board.getSymbolAt(3), is(O));
+        assertThat(board.getSymbolAt(3), is(X));
         assertThat(board.getSymbolAt(7), is(VACANT));
     }
 
@@ -217,15 +212,15 @@ public class TicTacToeRulesTest {
     public void getCurrentPlayer() {
         TicTacToeRules ticTacToeRules = new TicTacToeRules(
                 board,
-                new Player[]{new GuiHumanPlayer(X), new FakePlayer(O)}
+                new Player[]{new UnbeatablePlayer(X), new FakePlayer(O)}
         );
 
         Player currentPlayer = ticTacToeRules.getCurrentPlayer();
 
-        assertThat(currentPlayer, is(instanceOf(GuiHumanPlayer.class)));
+        assertThat(currentPlayer, is(instanceOf(UnbeatablePlayer.class)));
     }
 
-    private TicTacToeRules initialiseRulesWithFactories(BoardFactory boardFactory, CommandLinePlayerFactory playerFactory) {
+    private TicTacToeRules initialiseRulesWithFactories(BoardFactory boardFactory, PlayerFactory playerFactory) {
         return new TicTacToeRules(
                 boardFactory,
                 playerFactory
