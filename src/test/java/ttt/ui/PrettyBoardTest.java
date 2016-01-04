@@ -8,13 +8,12 @@ import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
 import static ttt.player.PlayerSymbol.*;
 
-public class PrettyFormatterTest {
-    private static final String FONT_COLOUR_ANSII_CHARACTERS = "\033[1;37m";
+public class PrettyBoardTest {
     private static final String BOARD_OUTLINE_COLOUR_ANSII_CHARACTERS = "\033[1;36m";
     private static final String NUMBER_COLOUR_ANSII_CHARACTERS = "\033[1;30m";
     private static final String X_COLOUR = "\033[1;33m";
     private static final String O_COLOUR = "\033[1;31m";
-    private final DisplayFormatter formatter = new PrettyFormatter();
+    private final BoardDisplay formatter = new PrettyBoard();
 
     @Test
     public void printsNew3x3Board() {
@@ -85,40 +84,6 @@ public class PrettyFormatterTest {
         );
 
         assertThat(formattedBoard, is(BOARD_OUTLINE_COLOUR_ANSII_CHARACTERS + formatted4x4BoardWithMoves()));
-    }
-
-    @Test
-    public void formatsWinningMessage() {
-        String formattedWinningMessage = formatter.formatWinningMessage(X);
-
-        String expectedMessage = FONT_COLOUR_ANSII_CHARACTERS
-                + "Congratulations - "
-                + X_COLOUR + "X"
-                + FONT_COLOUR_ANSII_CHARACTERS
-                + " has won";
-        assertThat(formattedWinningMessage, is(expectedMessage));
-    }
-
-    @Test
-    public void formatsBoardDimensionMessage() {
-        String formattedBoardDimensionMessage = formatter.formatBoardDimensionMessage(1, 3);
-
-        assertThat(formattedBoardDimensionMessage, is(FONT_COLOUR_ANSII_CHARACTERS
-                + "Please enter the dimension of the board you would like to use [1 to 3]"));
-    }
-
-    @Test
-    public void coloursText() {
-        String formattedMessage = formatter.applyFontColour("Reason");
-
-        assertThat(formattedMessage, is(FONT_COLOUR_ANSII_CHARACTERS + "Reason"));
-    }
-
-    @Test
-    public void coloursInvalidText() {
-        String formattedMessage = formatter.applyInvalidColour("Reason");
-
-        assertThat(formattedMessage, is(BOARD_OUTLINE_COLOUR_ANSII_CHARACTERS + "Reason"));
     }
 
     private String vacant3x3Board() {

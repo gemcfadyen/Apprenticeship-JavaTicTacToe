@@ -16,15 +16,16 @@ import java.util.List;
 import java.util.function.Function;
 
 public class CommandPrompt implements Prompt {
-    private static final String CLEAR_SCREEN_ANSII_CHARACTERS = "\033[H\033[2J";
-    private BufferedReader reader;
-    private Writer writer;
-    private DisplayFormatter displayFormatter;
+    private final BufferedReader reader;
+    private final Writer writer;
+    private final BoardDisplay boardDisplay;
+    private final TextPresenter textPresenter;
 
-    public CommandPrompt(Reader reader, Writer writer, DisplayFormatter displayFormatter) {
-        this.displayFormatter = displayFormatter;
+    public CommandPrompt(Reader reader, Writer writer, BoardDisplay boardDisplay, TextPresenter textPresenter) {
+        this.boardDisplay = boardDisplay;
         this.reader = new BufferedReader(reader);
         this.writer = writer;
+        this.textPresenter = textPresenter;
 
         clear();
     }
@@ -32,7 +33,6 @@ public class CommandPrompt implements Prompt {
     @Override
     public int readBoardDimension(int lowerDimension, int largestDimension) {
         InputValidator compositeValidator = compositeFor(dimensionValidatorsFor(largestDimension));
-
         return asInteger(getValidInput(compositeValidator, input(), functionToRepromptForValidBoardDimension(lowerDimension, largestDimension)));
     }
 
@@ -64,7 +64,7 @@ public class CommandPrompt implements Prompt {
 
     @Override
     public void presentGridDimensionsBetween(int lowerBoundary, int upperBoundary) {
-        display(displayFormatter.formatBoardDimensionMessage(lowerBoundary, upperBoundary));
+        display(textPresenter.chooseDimensionMessage(lowerBoundary, upperBoundary));
     }
 
     @Override
@@ -75,7 +75,7 @@ public class CommandPrompt implements Prompt {
     @Override
     public void printsWinningMessage(Board board, PlayerSymbol symbol) {
         print(board);
-        display(displayFormatter.formatWinningMessage(symbol));
+        display(textPresenter.winningMessage(symbol.getSymbolForDisplay()));
     }
 
     @Override
@@ -90,15 +90,15 @@ public class CommandPrompt implements Prompt {
     }
 
     private void print(Board board) {
-        display(displayFormatter.formatForDisplay(board));
+        display(boardDisplay.formatForDisplay(board));
     }
 
     private void printDrawMessage() {
-        display(displayFormatter.applyFontColour("No winner this time"));
+        display(textPresenter.drawMessage());
     }
 
     private void clear() {
-        display(CLEAR_SCREEN_ANSII_CHARACTERS);
+        display(textPresenter.clearMessage());
     }
 
     private void display(String message) {
@@ -111,13 +111,7 @@ public class CommandPrompt implements Prompt {
     }
 
     private void askUserForGameType(List<GameType> gameTypes) {
-        String gameTypeMessage = "";
-
-        for (GameType gameType : gameTypes) {
-            gameTypeMessage += "Enter " + gameType.numericRepresentation() + " to play " + gameType.gameNameForDisplay() + newLine();
-        }
-
-        display(displayFormatter.applyFontColour(gameTypeMessage));
+        display(textPresenter.chooseGameTypeMessage(gameTypes));
     }
 
     private CompositeValidator compositeFor(List<InputValidator> validators) {
@@ -149,15 +143,15 @@ public class CommandPrompt implements Prompt {
 
     private Function<ValidationResult, Void> functionToRepromptForValidBoardDimension(int lowerDimension, int largestDimension) {
         return validationResult -> {
-            display(displayFormatter.applyInvalidColour(validationResult.reason()));
-            display(displayFormatter.formatBoardDimensionMessage(lowerDimension, largestDimension));
+            display(textPresenter.validationError(validationResult));
+            presentGridDimensionsBetween(lowerDimension, largestDimension);
             return null;
         };
     }
 
     private Function<ValidationResult, Void> functionToRepromptGameType(List<GameType> gameTypes) {
         return validationResult -> {
-            display(displayFormatter.applyInvalidColour(validationResult.reason()));
+            display(textPresenter.validationError(validationResult));
             askUserForGameType(gameTypes);
             return null;
         };
@@ -166,7 +160,7 @@ public class CommandPrompt implements Prompt {
     private Function<ValidationResult, Void> functionToRepromptForValidMove(Board currentBoard) {
         return validationResult -> {
             print(currentBoard);
-            display(validationResult.reason());
+            display(textPresenter.validationError(validationResult));
             askUserForTheirMove();
             return null;
         };
@@ -174,18 +168,18 @@ public class CommandPrompt implements Prompt {
 
     private Function<ValidationResult, Void> functionToRepromptReplay() {
         return validationResult -> {
-            display(displayFormatter.applyInvalidColour(validationResult.reason()));
+            display(textPresenter.validationError(validationResult));
             askUserToPlayAgain();
             return null;
         };
     }
 
     private void askUserToPlayAgain() {
-        display(displayFormatter.applyFontColour("Play again? [Y/N]"));
+        display(textPresenter.replayMessage());
     }
 
     private void askUserForTheirMove() {
-        display(displayFormatter.applyFontColour("Please enter the index for your next move"));
+        display(textPresenter.chooseNextMoveMessage());
     }
 
     private List<InputValidator> gameTypeValidators() {
