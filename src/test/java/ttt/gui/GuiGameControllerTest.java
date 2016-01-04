@@ -40,7 +40,7 @@ public class GuiGameControllerTest {
         GuiGameController controller = new GuiGameController(humanVsHumanGameConfiguration, gameRulesSpy, createViewFactory());
         controller.setGameType(HUMAN_VS_HUMAN);
 
-        controller.presentBoard(3);
+        controller.startGame(3);
 
         assertThat(gameRulesSpy.hasInitialisedGame(), is(true));
         assertThat(gameRulesSpy.hasGameBeenPlayed(), is(true));
@@ -61,10 +61,10 @@ public class GuiGameControllerTest {
         gameRulesSpy = new TicTacToeRulesSpy(new Board(3), guiHumanPlayer);
         GuiGameController controller = new GuiGameController(gameConfigurationSpy, gameRulesSpy, createViewFactory());
 
-        controller.playMove(1);
+        controller.takeMove(1);
 
-        assertThat(gameRulesSpy.hasGotCurrentPlayer(), is(true));
-        assertThat(guiHumanPlayer.hasBeenPreloadedWithMove(), is(true));
+        assertThat(gameRulesSpy.hasGotCurrentPlayer(), is(false));
+        assertThat(guiHumanPlayer.hasBeenPreloadedWithMove(), is(false));
         assertThat(gameRulesSpy.hasGameBeenPlayed(), is(true));
         assertThat(boardPresenterSpy.hasDrawnBoard(), is(true));
     }
@@ -79,7 +79,7 @@ public class GuiGameControllerTest {
         gameRulesSpy = new TicTacToeRulesSpy(winningBoard);
         GuiGameController controller = new GuiGameController(gameConfigurationSpy, gameRulesSpy, createViewFactory());
 
-        controller.playMove(-1);
+        controller.takeMove(1);
 
         assertThat(gameRulesSpy.gameCheckedForWin(), is(true));
         assertThat(gameRulesSpy.hasGotWinnersSymbol(), is(true));
@@ -97,10 +97,10 @@ public class GuiGameControllerTest {
         gameRulesSpy = new TicTacToeRulesSpy(drawnBoard);
         GuiGameController controller = new GuiGameController(gameConfigurationSpy, gameRulesSpy, createViewFactory());
 
-        controller.playMove(-1);
+        controller.takeMove(1);
 
         assertThat(gameRulesSpy.hasGameBeenPlayed(), is(true));
-        assertThat(gameRulesSpy.numberOfTimesBoardIsObtained(), is(1));
+        assertThat(gameRulesSpy.numberOfTimesBoardIsObtained(), is(2));
         assertThat(boardPresenterSpy.hasIdentifiedADraw(), is(true));
     }
 
@@ -114,7 +114,7 @@ public class GuiGameControllerTest {
         gameRulesSpy = new TicTacToeRulesSpy(winningBoard);
         GuiGameController controller = new GuiGameController(gameConfigurationSpy, gameRulesSpy, createViewFactory());
 
-        controller.playMove(6);
+        controller.takeMove(1);
 
         assertThat(gameRulesSpy.gameCheckedForWin(), is(true));
         assertThat(gameRulesSpy.hasGotWinnersSymbol(), is(true));

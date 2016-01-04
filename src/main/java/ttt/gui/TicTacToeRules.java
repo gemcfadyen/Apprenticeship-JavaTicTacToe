@@ -43,6 +43,16 @@ public class TicTacToeRules implements GameRules {
     }
 
     @Override
+    public boolean hasWinner() {
+        return board.hasWinningCombination();
+    }
+
+    @Override
+    public boolean noWinnerYet() {
+        return !hasWinner();
+    }
+
+    @Override
     public PlayerSymbol getWinningSymbol() {
         return board.getWinningSymbol();
     }
@@ -55,16 +65,6 @@ public class TicTacToeRules implements GameRules {
     @Override
     public boolean hasAvailableMoves() {
         return board.hasFreeSpace();
-    }
-
-    @Override
-    public boolean hasWinner() {
-        return board.hasWinningCombination();
-    }
-
-    @Override
-    public boolean noWinnerYet() {
-        return !hasWinner();
     }
 
     @Override

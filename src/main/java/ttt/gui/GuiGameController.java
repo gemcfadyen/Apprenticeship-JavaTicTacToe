@@ -2,7 +2,6 @@ package ttt.gui;
 
 import ttt.GameType;
 import ttt.board.Board;
-import ttt.player.GuiHumanPlayer;
 import ttt.player.Player;
 
 import java.util.List;
@@ -33,38 +32,34 @@ public class GuiGameController implements GameController {
     }
 
     @Override
-    public void presentBoard(int dimension) {
+    public void startGame(int dimension) {
         ticTacToeRules.initialiseGame(gameType, dimension);
-        Board board = ticTacToeRules.getBoard();
-        ticTacToeRules.playGame();
-        printBoard(board);
+        playTurns();
     }
 
     @Override
-    public void playMove(int position) {
-        preloadHumanWithMoveAt(position);
-
-        ticTacToeRules.playGame();
-        Board latestBoard = ticTacToeRules.getBoard();
-        printBoard(latestBoard);
-        displayExitMessage(latestBoard);
+    public void takeMove(int position) {
+        playTurns();
+        displayExitMessage(ticTacToeRules.getBoard());
     }
 
-    private void printBoard(Board board) {
-        boardView.presentsBoard(board);
+    @Override
+    public Player getCurrentPlayer() {
+        return ticTacToeRules.getCurrentPlayer();
     }
 
-    private void preloadHumanWithMoveAt(int position) {
-        Player currentPlayer = ticTacToeRules.getCurrentPlayer();
-        ((GuiHumanPlayer)currentPlayer).setMove(Integer.valueOf(position));
-    }
-
-    public void setGameType(GameType gameType) {
+    void setGameType(GameType gameType) {
         this.gameType = gameType;
     }
 
     GameType getGameType() {
         return gameType;
+    }
+
+    private void playTurns() {
+        ticTacToeRules.playGame();
+        Board board = ticTacToeRules.getBoard();
+        boardView.presentsBoard(board);
     }
 
     private void displayExitMessage(Board board) {

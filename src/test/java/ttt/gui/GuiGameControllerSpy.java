@@ -1,6 +1,7 @@
 package ttt.gui;
 
 import ttt.GameType;
+import ttt.player.Player;
 
 public class GuiGameControllerSpy implements GameController {
     private boolean hasPresentedBoardDimensions = false;
@@ -22,14 +23,19 @@ public class GuiGameControllerSpy implements GameController {
     }
 
     @Override
-    public void presentBoard(int dimensionForBoard) {
+    public void startGame(int dimensionForBoard) {
         hasPresentedBoard = true;
         boardDimension = Integer.valueOf(dimensionForBoard);
     }
 
     @Override
-    public void playMove(int position) {
+    public void takeMove(int position) {
         hasTakenMove = true;
+    }
+
+    @Override
+    public Player getCurrentPlayer() {
+        return null;
     }
 
     public boolean hasPresentedGameTypes() {

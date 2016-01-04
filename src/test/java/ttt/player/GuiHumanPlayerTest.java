@@ -12,7 +12,7 @@ public class GuiHumanPlayerTest {
     @Test
     public void playerIsReadyToMove() {
         GuiHumanPlayer guiHuman = new GuiHumanPlayer(X);
-        guiHuman.setMove(3);
+        guiHuman.update(3);
 
         assertThat(guiHuman.isReady(), is(true));
     }
@@ -28,7 +28,7 @@ public class GuiHumanPlayerTest {
     @Test
     public void onceMoveIsMadePlayerIsNotReady() {
         GuiHumanPlayer guiHuman = new GuiHumanPlayer(X);
-        guiHuman.setMove(4);
+        guiHuman.update(4);
 
         guiHuman.chooseNextMoveFrom(new Board(3));
 

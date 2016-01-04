@@ -10,7 +10,7 @@ public class GuiHumanPlayerSpy extends GuiHumanPlayer {
         super(symbol);
     }
 
-    public void setMove(int move) {
+    public void update(int move) {
         preloadedWithMove = true;
     }
 

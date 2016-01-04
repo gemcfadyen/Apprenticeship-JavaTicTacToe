@@ -2,7 +2,7 @@ package ttt.player;
 
 import ttt.board.Board;
 
-public class GuiHumanPlayer extends Player implements ConfigurableMovePlayer {
+public class GuiHumanPlayer extends Player implements MoveObserver {
     private static final int UNSET_MOVE = -1;
     private int moveFromGui = UNSET_MOVE;
 
@@ -23,7 +23,7 @@ public class GuiHumanPlayer extends Player implements ConfigurableMovePlayer {
     }
 
     @Override
-    public void setMove(int moveFromGui) {
+    public void update(int moveFromGui) {
         this.moveFromGui = moveFromGui;
     }
 }

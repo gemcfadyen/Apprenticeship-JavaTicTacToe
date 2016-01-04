@@ -78,7 +78,7 @@ public class TicTacToeRulesTest {
     public void currentPlayerReinitialisedWhenNewGameStarted() {
         TicTacToeRules ticTacToeRules = initialiseRulesWithFactories(
                 new BoardFactoryStub(board, board),
-                new CommandLinePlayerFactoryStub(new Player[] {new FakePlayer(X, 0, 1, 2), new FakePlayer(O, 3, 4)})
+                new CommandLinePlayerFactoryStub(new FakePlayer(X, 0, 1, 2), new FakePlayer(O, 3, 4))
         );
 
         ticTacToeRules.initialiseGame(HUMAN_VS_HUMAN, 3);
@@ -160,8 +160,10 @@ public class TicTacToeRulesTest {
 
     @Test
     public void gameLoopsUntilThereIsAWinner() {
-        TicTacToeRules ticTacToeRules = new TicTacToeRules(board, new Player[]{
-                new FakePlayer(X, 0, 1, 2), new FakePlayer(O, 3, 4)});
+        TicTacToeRules ticTacToeRules = new TicTacToeRules(
+                board,
+                new Player[]{new FakePlayer(X, 0, 1, 2), new FakePlayer(O, 3, 4)}
+        );
 
         ticTacToeRules.playGame();
 
@@ -175,8 +177,10 @@ public class TicTacToeRulesTest {
 
     @Test
     public void gameLoopsUntilNoSpaceOnBoard() {
-        TicTacToeRules ticTacToeRules = new TicTacToeRules(board, new Player[]{
-                new FakePlayer(X, 0, 2, 4, 5, 7), new FakePlayer(O, 1, 3, 6, 8)});
+        TicTacToeRules ticTacToeRules = new TicTacToeRules(
+                board,
+                new Player[]{new FakePlayer(X, 0, 2, 4, 5, 7), new FakePlayer(O, 1, 3, 6, 8)}
+        );
 
         ticTacToeRules.playGame();
 
@@ -195,10 +199,11 @@ public class TicTacToeRulesTest {
     @Test
     public void gameLoopsUntilPlayerIsNotReady() {
         GuiHumanPlayer testPlayer = new GuiHumanPlayer(X);
-        testPlayer.setMove(0);
-        FakePlayer fakePlayer = new FakePlayer(O, 3, 7);
-        TicTacToeRules ticTacToeRules = new TicTacToeRules(board, new Player[]{
-                testPlayer, fakePlayer});
+        testPlayer.update(0);
+        TicTacToeRules ticTacToeRules = new TicTacToeRules(
+                board,
+                new Player[]{testPlayer, new FakePlayer(O, 3, 7)}
+        );
 
         ticTacToeRules.playGame();
 
@@ -209,10 +214,10 @@ public class TicTacToeRulesTest {
 
     @Test
     public void getCurrentPlayer() {
-        GuiHumanPlayer testPlayer = new GuiHumanPlayer(X);
-        FakePlayer fakePlayer = new FakePlayer(O);
-        TicTacToeRules ticTacToeRules = new TicTacToeRules(board, new Player[]{
-                testPlayer, fakePlayer});
+        TicTacToeRules ticTacToeRules = new TicTacToeRules(
+                board,
+                new Player[]{new GuiHumanPlayer(X), new FakePlayer(O)}
+        );
 
         Player currentPlayer = ticTacToeRules.getCurrentPlayer();
 
