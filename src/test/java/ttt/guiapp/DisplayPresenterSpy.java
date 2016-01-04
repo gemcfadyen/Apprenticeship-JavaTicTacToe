@@ -1,6 +1,6 @@
 package ttt.guiapp;
 
-import ttt.game.Board;
+import ttt.game.board.Board;
 import ttt.game.DisplayPresenter;
 import ttt.game.GameType;
 import ttt.game.PlayerSymbol;

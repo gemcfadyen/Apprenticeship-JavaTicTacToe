@@ -1,6 +1,7 @@
-package ttt.game;
+package ttt.game.board;
 
 import org.junit.Test;
+import ttt.game.PlayerSymbol;
 
 import java.util.Arrays;
 import java.util.List;

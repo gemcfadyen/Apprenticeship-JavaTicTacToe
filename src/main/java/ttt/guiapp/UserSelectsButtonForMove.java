@@ -2,6 +2,7 @@ package ttt.guiapp;
 
 import ttt.game.GameController;
 import ttt.game.Player;
+import ttt.guiapp.players.MoveObserver;
 
 public class UserSelectsButtonForMove implements ClickEvent, MovePublisher {
     private GameController controller;

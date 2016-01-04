@@ -3,7 +3,7 @@ package ttt.commandlineapp.inputvalidation;
 import org.junit.Test;
 import ttt.commandlineapp.InputValidator;
 import ttt.commandlineapp.ValidationResult;
-import ttt.game.Board;
+import ttt.game.board.Board;
 
 import java.util.ArrayList;
 import java.util.Collections;

@@ -1,5 +1,7 @@
 package ttt.game;
 
+import ttt.game.board.Board;
+
 public class TicTacToeRulesSpy implements GameRules {
     private Player currentPlayer;
     private Board board;

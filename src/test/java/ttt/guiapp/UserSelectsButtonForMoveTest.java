@@ -2,6 +2,7 @@ package ttt.guiapp;
 
 import org.junit.Before;
 import org.junit.Test;
+import ttt.guiapp.players.GuiHumanPlayer;
 
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;

@@ -1,5 +1,7 @@
-package ttt.commandlineapp;
+package ttt.commandlineapp.players;
 
+import ttt.commandlineapp.Prompt;
+import ttt.commandlineapp.players.HumanPlayer;
 import ttt.game.Player;
 import ttt.game.PlayerFactory;
 import ttt.game.PlayerSymbol;

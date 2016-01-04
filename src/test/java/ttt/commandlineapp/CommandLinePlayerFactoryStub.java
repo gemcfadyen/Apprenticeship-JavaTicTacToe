@@ -1,5 +1,6 @@
 package ttt.commandlineapp;
 
+import ttt.commandlineapp.players.CommandLinePlayerFactory;
 import ttt.game.GameType;
 import ttt.game.Player;
 

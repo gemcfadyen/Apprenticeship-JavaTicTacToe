@@ -1,6 +1,6 @@
 package ttt.commandlineapp;
 
-import ttt.game.Board;
+import ttt.game.board.Board;
 import ttt.game.Player;
 import ttt.game.PlayerSymbol;
 import ttt.game.ReadPrompt;

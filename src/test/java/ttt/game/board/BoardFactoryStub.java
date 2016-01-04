@@ -1,7 +1,4 @@
-package ttt.game;
-
-import ttt.game.Board;
-import ttt.game.BoardFactory;
+package ttt.game.board;
 
 public class BoardFactoryStub extends BoardFactory {
     private Board[] boards;

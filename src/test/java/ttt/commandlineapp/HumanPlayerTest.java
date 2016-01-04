@@ -1,7 +1,8 @@
 package ttt.commandlineapp;
 
 import org.junit.Test;
-import ttt.game.Board;
+import ttt.commandlineapp.players.HumanPlayer;
+import ttt.game.board.Board;
 
 import java.io.IOException;
 import java.io.StringReader;

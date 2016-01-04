@@ -1,7 +1,7 @@
 package ttt.game.players;
 
 import org.junit.Test;
-import ttt.game.Board;
+import ttt.game.board.Board;
 import ttt.game.Player;
 
 import static org.hamcrest.Matchers.is;

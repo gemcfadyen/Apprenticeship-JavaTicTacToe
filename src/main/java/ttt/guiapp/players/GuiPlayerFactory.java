@@ -1,4 +1,4 @@
-package ttt.guiapp;
+package ttt.guiapp.players;
 
 import ttt.game.Player;
 import ttt.game.PlayerFactory;

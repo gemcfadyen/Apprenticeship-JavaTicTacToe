@@ -4,6 +4,8 @@ import org.junit.Test;
 import ttt.game.players.DelayedUnbeatablePlayer;
 import ttt.game.Player;
 import ttt.game.players.UnbeatablePlayer;
+import ttt.guiapp.players.GuiHumanPlayer;
+import ttt.guiapp.players.GuiPlayerFactory;
 
 import static org.hamcrest.Matchers.instanceOf;
 import static org.hamcrest.Matchers.is;

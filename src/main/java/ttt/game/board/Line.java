@@ -1,4 +1,6 @@
-package ttt.game;
+package ttt.game.board;
+
+import ttt.game.PlayerSymbol;
 
 import static ttt.game.PlayerSymbol.O;
 import static ttt.game.PlayerSymbol.X;

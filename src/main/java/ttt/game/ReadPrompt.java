@@ -1,5 +1,7 @@
 package ttt.game;
 
+import ttt.game.board.Board;
+
 import java.util.List;
 
 public interface ReadPrompt {

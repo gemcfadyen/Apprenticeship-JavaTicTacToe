@@ -2,7 +2,7 @@ package ttt.commandlineapp.inputvalidation;
 
 import org.junit.Test;
 import ttt.commandlineapp.ValidationResult;
-import ttt.game.Board;
+import ttt.game.board.Board;
 
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;

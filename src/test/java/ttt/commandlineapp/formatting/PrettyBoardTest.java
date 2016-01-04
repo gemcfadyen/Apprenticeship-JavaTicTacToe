@@ -1,7 +1,7 @@
 package ttt.commandlineapp.formatting;
 
 import org.junit.Test;
-import ttt.game.Board;
+import ttt.game.board.Board;
 import ttt.commandlineapp.BoardDisplay;
 import ttt.game.PlayerSymbol;
 

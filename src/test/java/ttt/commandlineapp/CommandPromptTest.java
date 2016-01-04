@@ -4,8 +4,8 @@ import org.junit.Before;
 import org.junit.Test;
 import ttt.game.GameType;
 import ttt.game.ReplayOption;
-import ttt.game.Board;
-import ttt.game.BoardDisplaySpy;
+import ttt.game.board.Board;
+import ttt.game.board.BoardDisplaySpy;
 
 import java.io.Reader;
 import java.io.StringReader;

@@ -4,12 +4,12 @@ import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
-import ttt.game.BoardFactory;
+import ttt.game.board.BoardFactory;
 import ttt.game.GameRules;
 import ttt.game.rules.TicTacToeGameConfiguration;
 import ttt.game.rules.TicTacToeRules;
 import ttt.guiapp.GuiGameController;
-import ttt.guiapp.GuiPlayerFactory;
+import ttt.guiapp.players.GuiPlayerFactory;
 
 public class JavaFxGui extends Application {
 

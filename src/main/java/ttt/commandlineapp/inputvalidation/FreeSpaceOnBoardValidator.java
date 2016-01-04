@@ -2,7 +2,7 @@ package ttt.commandlineapp.inputvalidation;
 
 import ttt.commandlineapp.InputValidator;
 import ttt.commandlineapp.ValidationResult;
-import ttt.game.Board;
+import ttt.game.board.Board;
 
 public class FreeSpaceOnBoardValidator implements InputValidator {
     private final Board board;

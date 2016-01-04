@@ -4,6 +4,8 @@ import org.junit.Test;
 import ttt.commandlineapp.formatting.PlainBoard;
 import ttt.commandlineapp.formatting.StandardTextPresenter;
 import ttt.game.*;
+import ttt.game.board.Board;
+import ttt.game.board.BoardFactory;
 import ttt.game.rules.TicTacToeRules;
 import ttt.game.GameConfigurationSpy;
 

@@ -1,5 +1,7 @@
 package ttt.game;
 
+import ttt.game.board.Board;
+
 public class PlayerSpy extends Player {
     private int numberOfTurnsTaken;
 

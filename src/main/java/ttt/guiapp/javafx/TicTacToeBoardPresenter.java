@@ -10,6 +10,8 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.text.Text;
 import ttt.game.*;
+import ttt.game.board.Board;
+import ttt.game.board.Line;
 import ttt.guiapp.*;
 
 import java.util.List;

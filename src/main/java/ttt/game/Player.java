@@ -1,5 +1,7 @@
 package ttt.game;
 
+import ttt.game.board.Board;
+
 public abstract class Player {
     private PlayerSymbol symbol;
     protected ReadPrompt prompt;

@@ -2,7 +2,10 @@ package ttt.game.players;
 
 import org.junit.Test;
 import ttt.commandlineapp.*;
+import ttt.commandlineapp.players.CommandLinePlayerFactory;
 import ttt.game.*;
+import ttt.game.board.Board;
+import ttt.game.board.BoardFactoryStub;
 import ttt.game.rules.TicTacToeGameConfiguration;
 import ttt.game.rules.TicTacToeRules;
 

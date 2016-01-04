@@ -1,4 +1,4 @@
-package ttt.game;
+package ttt.game.board;
 
 import org.junit.Test;
 

@@ -1,4 +1,4 @@
-package ttt.game;
+package ttt.game.board;
 
 import ttt.commandlineapp.BoardDisplay;
 

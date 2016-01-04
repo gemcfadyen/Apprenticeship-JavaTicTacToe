@@ -1,12 +1,16 @@
 package ttt.game.rules;
 
 import org.junit.Test;
-import ttt.commandlineapp.CommandLinePlayerFactory;
+import ttt.commandlineapp.players.CommandLinePlayerFactory;
 import ttt.commandlineapp.CommandLinePlayerFactorySpy;
 import ttt.commandlineapp.CommandLinePlayerFactoryStub;
 import ttt.commandlineapp.Prompt;
 import ttt.game.*;
-import ttt.guiapp.GuiHumanPlayer;
+import ttt.game.board.Board;
+import ttt.game.board.BoardFactory;
+import ttt.game.board.BoardFactoryStub;
+import ttt.game.players.FakePlayer;
+import ttt.guiapp.players.GuiHumanPlayer;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.instanceOf;

@@ -1,7 +1,6 @@
 package ttt.commandlineapp;
 
-import ttt.commandlineapp.Prompt;
-import ttt.game.Board;
+import ttt.game.board.Board;
 import ttt.game.GameType;
 import ttt.game.PlayerSymbol;
 import ttt.game.ReplayOption;

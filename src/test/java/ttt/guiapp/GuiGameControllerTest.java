@@ -1,7 +1,7 @@
 package ttt.guiapp;
 
 import org.junit.Test;
-import ttt.game.Board;
+import ttt.game.board.Board;
 import ttt.game.GameConfigurationSpy;
 import ttt.game.TicTacToeRulesSpy;
 

@@ -1,4 +1,8 @@
-package ttt.game;
+package ttt.game.players;
+
+import ttt.game.Player;
+import ttt.game.PlayerSymbol;
+import ttt.game.board.Board;
 
 public class FakePlayer extends Player {
     private final int[] moves;

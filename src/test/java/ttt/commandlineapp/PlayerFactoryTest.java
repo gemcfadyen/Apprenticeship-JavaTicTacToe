@@ -3,6 +3,8 @@ package ttt.commandlineapp;
 import org.junit.Test;
 import ttt.commandlineapp.formatting.PlainBoard;
 import ttt.commandlineapp.formatting.StandardTextPresenter;
+import ttt.commandlineapp.players.CommandLinePlayerFactory;
+import ttt.commandlineapp.players.HumanPlayer;
 import ttt.game.Player;
 import ttt.game.players.DelayedUnbeatablePlayer;
 import ttt.game.players.UnbeatablePlayer;

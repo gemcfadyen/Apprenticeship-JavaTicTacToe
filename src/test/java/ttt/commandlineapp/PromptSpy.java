@@ -1,6 +1,8 @@
 package ttt.commandlineapp;
 
 import ttt.game.*;
+import ttt.game.board.Board;
+import ttt.game.board.Line;
 
 import java.io.BufferedReader;
 import java.io.IOException;

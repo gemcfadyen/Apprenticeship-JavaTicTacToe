@@ -1,6 +1,7 @@
 package ttt.guiapp;
 
 import ttt.game.*;
+import ttt.game.board.Board;
 
 import java.util.List;
 
