@@ -1,4 +1,4 @@
-package ttt.guiapp;
+package ttt.guiapp.javafx;
 
 import javafx.embed.swing.JFXPanel;
 import javafx.scene.Scene;
@@ -9,18 +9,13 @@ import javafx.scene.layout.GridPane;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import ttt.game.board.BoardFactory;
-import ttt.game.rules.TicTacToeGameConfiguration;
-import ttt.game.rules.TicTacToeRules;
-import ttt.guiapp.javafx.JavaFxViewFactory;
-import ttt.guiapp.players.GuiPlayerFactory;
 
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
 
 public class GameIsPlayedThroughTheGuiTest {
     private Scene scene;
-    private GuiGameController controller;
+    private JavaFxGui gui;
 
     @BeforeClass
     public static void setUp() throws Exception {
@@ -30,17 +25,12 @@ public class GameIsPlayedThroughTheGuiTest {
     @Before
     public void setup() {
         scene = new Scene(new GridPane(), 700, 700);
-        TicTacToeRules ticTacToeRules = new TicTacToeRules(new BoardFactory(), new GuiPlayerFactory());
-        controller = new GuiGameController(
-                new TicTacToeGameConfiguration(),
-                ticTacToeRules,
-                new JavaFxViewFactory(scene)
-        );
+        gui = new JavaFxGui();
     }
 
     @Test
     public void playersTakeTurnsUntilGameIsWon() {
-        controller.presentGameTypes();
+        gui.playTicTacToe(scene);
 
         selectHumanVsHumanGameType(scene);
         select3x3Grid(scene);
@@ -56,8 +46,7 @@ public class GameIsPlayedThroughTheGuiTest {
 
     @Test
     public void playersTakeTurnsUntilGameIsDrawn() {
-        controller.presentGameTypes();
-
+        gui.playTicTacToe(scene);
         selectHumanVsHumanGameType(scene);
         select3x3Grid(scene);
 
