@@ -1,4 +1,6 @@
 # Apprenticeship-JavaTicTacToe
+[![Build Status](https://travis-ci.org/gemcfadyen/Apprenticeship-JavaTicTacToe.svg?branch=master)](https://travis-ci.org/gemcfadyen/Apprenticeship-JavaTicTacToe)
+
 Using TDD write Human vs Human game of Tic Tac Toe in java
 
 - Concentrate on TDD.
