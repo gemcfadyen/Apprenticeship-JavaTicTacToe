@@ -32,10 +32,8 @@ public class TicTacToeRules implements GameRules {
 
     @Override
     public void playGame() {
-        while (getCurrentPlayer().isReady()
-                && gameInProgress()) {
-            int currentPlayersNextMove = getCurrentPlayersNextMove();
-            takeTurn(currentPlayersNextMove);
+        while (getCurrentPlayer().isReady() && gameInProgress()) {
+            takeTurn(getCurrentPlayersNextMove());
         }
     }
 
@@ -73,13 +71,13 @@ public class TicTacToeRules implements GameRules {
         return hasAvailableMoves() && noWinnerYet();
     }
 
+    int getCurrentPlayerIndex() {
+        return currentPlayerIndex;
+    }
+
     private void takeTurn(int move) {
         board.updateAt(move, getCurrentPlayer().getSymbol());
         togglePlayer();
-    }
-
-    int getCurrentPlayerIndex() {
-        return currentPlayerIndex;
     }
 
     private int getCurrentPlayersNextMove() {

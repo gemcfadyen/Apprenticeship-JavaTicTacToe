@@ -1,6 +1,5 @@
 package ttt.commandlineapp.formatting;
 
-import ttt.commandlineapp.TextDecorator;
 import ttt.commandlineapp.TextPresenter;
 import ttt.commandlineapp.ValidationResult;
 import ttt.game.GameType;
@@ -9,7 +8,7 @@ import java.util.List;
 
 import static ttt.game.PlayerSymbol.X;
 
-public class ColourText implements TextDecorator {
+public class ColourText implements TextPresenter {
     private static final String FONT_COLOUR_ANSII_CHARACTERS = "\033[1;37m";
     private static final String X_COLOUR_ANSII_CHARACTERS = "\033[1;33m";
     private static final String O_COLOUR_ANSII_CHARACTERS = "\033[1;31m";
